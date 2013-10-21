@@ -71,7 +71,7 @@ public class CraftingPillarBlock extends BaseBlockContainer
 		 * 
 		 * if (d0 - (double)y > 2.0D) { return 1; }
 		 * 
-		 * if ((double)y - d0 > 0.0D) { return 0; } }
+		 * if ((double)y - d0 > 0.0D) { return 0; }
 		 */
 		
 		int l = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;

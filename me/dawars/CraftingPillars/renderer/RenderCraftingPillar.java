@@ -34,7 +34,7 @@ import net.minecraft.item.ItemStack;
 
 public class RenderCraftingPillar extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler
 {
-	private static final ResourceLocation TEXTURE_WORKPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/elysianWorkpillar.png");// FIXME:
+	private static final ResourceLocation TEXTURE_WORKPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/elysianWorkpillar.png");
 	
 	public static ModelBase model = new ModelBase()
 	{

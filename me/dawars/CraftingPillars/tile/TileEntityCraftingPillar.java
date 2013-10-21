@@ -2,11 +2,13 @@ package me.dawars.CraftingPillars.tile;
 
 import java.util.Random;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import me.dawars.CraftingPillars.CraftingPillars;
+import me.dawars.CraftingPillars.client.CustomParticle;
 import me.dawars.CraftingPillars.container.ContainerCraftingPillar;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
@@ -164,6 +166,21 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 		
 		if(!this.worldObj.isRemote)
 			this.worldObj.spawnEntityInWorld(itemCrafted);
+		else
+		{
+			for(int i = 0; i < 8; i++)
+			{
+				CustomParticle particle = new CustomParticle(this.worldObj, this.xCoord+0.25D+random.nextDouble()/2D, this.yCoord+1.25D+random.nextDouble()/2D, this.zCoord+0.25D+random.nextDouble()/2D, 0D, 0D, 0D);
+				particle.setRBGColorF(1F, 1F, 1F);
+				particle.multipleParticleScaleBy(1F);
+				particle.setBrightness(200);
+				particle.setParticleTextureIndex(83);
+				FMLClientHandler.instance().getClient().effectRenderer.addEffect(particle);
+				this.worldObj.playSoundAtEntity(FMLClientHandler.instance().getClient().thePlayer, "random.levelup", 0.75F, 1.0F);
+				//particle.setTextureFile("/mods/elysium/textures/misc/particles/fost.png");
+				//this.worldObj.spawnParticle("smoke", this.xCoord+0.25D+random.nextDouble()/2D, this.yCoord+1.25D+random.nextDouble()/2D, this.zCoord+0.25D+random.nextDouble()/2D, 0D, 0D, 0D);
+			}
+		}
 		
 		this.onCrafting(player, this.inventory[this.getSizeInventory()]);
 		
