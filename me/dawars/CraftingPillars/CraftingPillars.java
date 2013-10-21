@@ -1,0 +1,66 @@
+package me.dawars.CraftingPillars;
+
+import java.io.File;
+
+import me.dawars.CraftingPillars.blocks.CraftingPillarBlock;
+import me.dawars.CraftingPillars.proxy.CommonProxy;
+import me.dawars.CraftingPillars.tile.TileEntityCraftingPillar;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.Property;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.LanguageRegistry;
+
+@Mod(name = CraftingPillars.name, version = CraftingPillars.version, useMetadata = false, modid = CraftingPillars.id, dependencies="required-after:Forge@[8.9.0,)")
+public class CraftingPillars {
+
+	public static final String version = "1.0";
+	public static final String name = "Crafting Pillars";
+	public static final String id = "craftingpillars";
+	
+	@SidedProxy(clientSide = "me.dawars.CraftingPillars.proxy.ClientProxy", serverSide = "me.dawars.CraftingPillars.proxy.CommonProxy")
+	public static CommonProxy proxy;
+	
+	public static Configuration config;
+	
+	public static int craftingPillarRenderID;
+	
+	public static Block blockCraftingPillar;
+	
+	@EventHandler
+	public void load(FMLPreInitializationEvent evt)
+	{
+		config = new Configuration(new File(evt.getModConfigurationDirectory(), "CraftingPillars.cfg"));
+		try
+		{
+			config.load();
+			//Block Registering
+			Property idCraftingPillar = CraftingPillars.config.getBlock("palestone.id", BlockIds.idCraftingPillar);
+			blockCraftingPillar = (new CraftingPillarBlock(idCraftingPillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("palestone");
+			registerBlock(blockCraftingPillar, "Crafting Pillar");
+		
+			GameRegistry.addRecipe(new ItemStack(blockCraftingPillar), new Object[] {"SSS"," C ","SSS", Character.valueOf('S'), Block.cobblestone, Character.valueOf('C'), Block.workbench});
+		
+			GameRegistry.registerTileEntity(TileEntityCraftingPillar.class, "TileEntityCraftingPillar");
+			
+			proxy.registerRenderers();
+
+		}
+		finally
+		{
+			config.save();
+		}
+	}
+	
+	public static void registerBlock(Block block, String name)
+	{
+		GameRegistry.registerBlock(block, CraftingPillars.id+":"+block.getUnlocalizedName().substring(5));
+		LanguageRegistry.addName(block, name);
+	}
+}
