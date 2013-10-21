@@ -34,8 +34,8 @@ import net.minecraft.item.ItemStack;
 
 public class RenderCraftingPillar extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler
 {
-	private static final ResourceLocation TEXTURE_WORKPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/elysianWorkpillar.png");//FIXME:
-
+	private static final ResourceLocation TEXTURE_WORKPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/elysianWorkpillar.png");// FIXME:
+	
 	public static ModelBase model = new ModelBase()
 	{
 		
@@ -47,53 +47,47 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 	private ModelRenderer pillartop;
 	private ModelRenderer top;
 	
-    private Random random;
-    private RenderItem itemRenderer;
+	private Random random;
+	private RenderItem itemRenderer;
 	
 	public RenderCraftingPillar()
 	{
 		random = new Random();
-        itemRenderer = new RenderItem() {
-        	/* Customize rendered stack size
-        	@Override
-        	public byte getMiniBlockCount(ItemStack stack)
-            {
-                byte ret = 1;
-                if (stack.stackSize > 1 ) ret = 2;
-                if (stack.stackSize > 5 ) ret = 3;
-                if (stack.stackSize > 20) ret = 4;
-                if (stack.stackSize > 40) ret = 5;
-                return ret;
-            }
-
-            /**
-             * Allows for a subclass to override how many rendered items appear in a
-             * "mini item 3d stack"
-             * @param stack
-             * @return
-             
-        	@Override
-            public byte getMiniItemCount(ItemStack stack)
-            {
-                byte ret = 1;
-                if (stack.stackSize > 1) ret = 2;
-                if (stack.stackSize > 15) ret = 3;
-                if (stack.stackSize > 31) ret = 4;
-                return ret;
-            }
-            */
-            @Override
-            public boolean shouldBob() {
-                return false;
-            }
-            @Override
-            public boolean shouldSpreadItems() {
-                return false;
-            }
-        };
-        itemRenderer.setRenderManager(RenderManager.instance);
-        
-        
+		itemRenderer = new RenderItem()
+		{
+			/*
+			 * Customize rendered stack size
+			 * 
+			 * @Override public byte getMiniBlockCount(ItemStack stack) { byte
+			 * ret = 1; if (stack.stackSize > 1 ) ret = 2; if (stack.stackSize >
+			 * 5 ) ret = 3; if (stack.stackSize > 20) ret = 4; if
+			 * (stack.stackSize > 40) ret = 5; return ret; }
+			 * 
+			 * /** Allows for a subclass to override how many rendered items
+			 * appear in a "mini item 3d stack"
+			 * 
+			 * @param stack
+			 * 
+			 * @return
+			 * 
+			 * @Override public byte getMiniItemCount(ItemStack stack) { byte
+			 * ret = 1; if (stack.stackSize > 1) ret = 2; if (stack.stackSize >
+			 * 15) ret = 3; if (stack.stackSize > 31) ret = 4; return ret; }
+			 */
+			@Override
+			public boolean shouldBob()
+			{
+				return false;
+			}
+			
+			@Override
+			public boolean shouldSpreadItems()
+			{
+				return false;
+			}
+		};
+		itemRenderer.setRenderManager(RenderManager.instance);
+		
 		model.textureWidth = 128;
 		model.textureHeight = 64;
 		
@@ -149,74 +143,81 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 	public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f)
 	{
 		glPushMatrix();
-			glTranslated(x+0.5D, y+1.5D, z+0.5D);
-			glScaled(0.0625D, 0.0625D, 0.0625D);
-			glRotatef(180F, 1F, 0F, 0F);
-			glRotatef(90F*(tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord)-2), 0F, 1F, 0F);
-	
-//			glBindTexture(GL_TEXTURE_2D, Minecraft.getMinecraft().renderEngine.func_110577_a(TEXTURE_WORKPILLAR)); ??
-			Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_WORKPILLAR);
-			render(tile, 1F);
+		glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
+		glScaled(0.0625D, 0.0625D, 0.0625D);
+		glRotatef(180F, 1F, 0F, 0F);
+		glRotatef(90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
+		
+		// glBindTexture(GL_TEXTURE_2D,
+		// Minecraft.getMinecraft().renderEngine.func_110577_a(TEXTURE_WORKPILLAR));
+		// ??
+		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_WORKPILLAR);
+		render(tile, 1F);
 		glPopMatrix();
-	
+		
 		TileEntityCraftingPillar workTile = (TileEntityCraftingPillar) tile;
 		EntityItem citem = new EntityItem(tile.worldObj);
 		citem.hoverStart = workTile.rot;
-	
+		
 		glPushMatrix();
-			glTranslated(x, y, z);
-			for(int i = 0; i < 3; i++)
+		glTranslated(x, y, z);
+		for(int i = 0; i < 3; i++)
+		{
+			for(int k = 0; k < 3; k++)
 			{
-				for(int k = 0; k < 3; k++)
+				if(workTile.getStackInSlot(i * 3 + k) != null)
 				{
-					if(workTile.getStackInSlot(i*3 + k) != null)
-					{
-						citem.setEntityItemStack(workTile.getStackInSlot(i*3 + k));
-						glPushMatrix();
-							glTranslated(0.1875D + i*0.3125D, 1D + 0.1875D/3D, 0.1875D + k*0.3125D);
-							glScalef(0.5F, 0.5F, 0.5F);
-							itemRenderer.doRenderItem(citem, 0D, 0D, 0D, 0F, 0F);
-						glPopMatrix();
-					}
+					citem.setEntityItemStack(workTile.getStackInSlot(i * 3 + k));
+					glPushMatrix();
+					glTranslated(0.1875D + i * 0.3125D, 1D + 0.1875D / 3D, 0.1875D + k * 0.3125D);
+					glScalef(0.5F, 0.5F, 0.5F);
+					itemRenderer.doRenderItem(citem, 0D, 0D, 0D, 0F, 0F);
+					glPopMatrix();
 				}
 			}
+		}
+		
+		if(workTile.getStackInSlot(workTile.getSizeInventory()) != null)
+		{
+			glPushMatrix();
+			citem.hoverStart = -workTile.rot;
+			citem.setEntityItemStack(workTile.getStackInSlot(workTile.getSizeInventory()));
+			itemRenderer.doRenderItem(citem, 0.5D, 1.5D, 0.5D, 0F, 0F);
+			glPopMatrix();
+		}
+		glPopMatrix();
+	}
 	
-			if(workTile.getStackInSlot(workTile.getSizeInventory()) != null)
-			{
-				glPushMatrix();
-					citem.hoverStart = -workTile.rot;
-					citem.setEntityItemStack(workTile.getStackInSlot(workTile.getSizeInventory()));
-					itemRenderer.doRenderItem(citem, 0.5D, 1.5D, 0.5D, 0F, 0F);
-				glPopMatrix();
-			}
-		glPopMatrix();
-	}
-
 	@Override
-	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
+	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
+	{
 		glPushMatrix();
-			glTranslated(0, 1.0D, 0);
-			glScaled(0.0625D, 0.0625D, 0.0625D);
-			glRotatef(180F, 1F, 0F, 0F);
-			glRotatef(90F, 0F, 1F, 0F);
-			FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_WORKPILLAR);
-			render(null, 1F);
+		glTranslated(0, 1.0D, 0);
+		glScaled(0.0625D, 0.0625D, 0.0625D);
+		glRotatef(180F, 1F, 0F, 0F);
+		glRotatef(90F, 0F, 1F, 0F);
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_WORKPILLAR);
+		render(null, 1F);
 		glPopMatrix();
 	}
-
-	@Override //No TileEntity here can't use
-	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+	
+	@Override
+	// No TileEntity here can't use
+	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
+	{
 		
 		return false;
 	}
 	
 	@Override
-	public boolean shouldRender3DInInventory() {
+	public boolean shouldRender3DInInventory()
+	{
 		return true;
 	}
-
+	
 	@Override
-	public int getRenderId() {
+	public int getRenderId()
+	{
 		return CraftingPillars.craftingPillarRenderID;
 	}
 }

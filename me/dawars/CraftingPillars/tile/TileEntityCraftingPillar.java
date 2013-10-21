@@ -30,9 +30,9 @@ import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 public class TileEntityCraftingPillar extends BaseTileEntity implements IInventory, ISidedInventory
 {
 	private ContainerCraftingPillar container = new ContainerCraftingPillar();
-	private ItemStack[] inventory = new ItemStack[this.getSizeInventory()+1];
+	private ItemStack[] inventory = new ItemStack[this.getSizeInventory() + 1];
 	
-	//@SideOnly(Side.CLIENT)
+	// @SideOnly(Side.CLIENT)
 	public float rot = 0F;
 	
 	@Override
@@ -41,7 +41,8 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 		if(this.worldObj.isRemote)
 		{
 			this.rot += 0.1F;
-			if(this.rot >= 360F) this.rot -= 360F;
+			if(this.rot >= 360F)
+				this.rot -= 360F;
 		}
 		
 		super.updateEntity();
@@ -50,11 +51,11 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)
 	{
-		//System.out.println("read: "+this.worldObj.isRemote);
+		// System.out.println("read: "+this.worldObj.isRemote);
 		
 		super.readFromNBT(nbt);
 		
-		this.inventory = new ItemStack[this.getSizeInventory()+1];
+		this.inventory = new ItemStack[this.getSizeInventory() + 1];
 		NBTTagList nbtlist = nbt.getTagList("Items");
 		
 		for(int i = 0; i < nbtlist.tagCount(); i++)
@@ -62,7 +63,7 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 			NBTTagCompound nbtslot = (NBTTagCompound) nbtlist.tagAt(i);
 			int j = nbtslot.getByte("Slot") & 255;
 			
-			if((j >= 0) && (j < this.getSizeInventory()+1))
+			if((j >= 0) && (j < this.getSizeInventory() + 1))
 				this.inventory[j] = ItemStack.loadItemStackFromNBT(nbtslot);
 		}
 	}
@@ -70,18 +71,18 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 	@Override
 	public void writeToNBT(NBTTagCompound nbt)
 	{
-		//System.out.println("write: "+this.worldObj.isRemote);
+		// System.out.println("write: "+this.worldObj.isRemote);
 		
 		super.writeToNBT(nbt);
 		
 		NBTTagList nbtlist = new NBTTagList();
 		
-		for(int i = 0; i < this.getSizeInventory()+1; i++)
+		for(int i = 0; i < this.getSizeInventory() + 1; i++)
 		{
 			if(this.inventory[i] != null)
 			{
 				NBTTagCompound nbtslot = new NBTTagCompound();
-				nbtslot.setByte("Slot", (byte)i);
+				nbtslot.setByte("Slot", (byte) i);
 				this.inventory[i].writeToNBT(nbtslot);
 				nbtlist.appendTag(nbtslot);
 			}
@@ -93,7 +94,7 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 	@Override
 	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
 	{
-		//System.out.println("receive: "+this.worldObj.isRemote);
+		// System.out.println("receive: "+this.worldObj.isRemote);
 		NBTTagCompound nbt = pkt.data;
 		this.readFromNBT(nbt);
 	}
@@ -101,13 +102,11 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 	@Override
 	public Packet getDescriptionPacket()
 	{
-		//System.out.println("send: "+this.worldObj.isRemote);
+		// System.out.println("send: "+this.worldObj.isRemote);
 		NBTTagCompound nbt = new NBTTagCompound();
 		this.writeToNBT(nbt);
 		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, nbt);
 	}
-	
-	
 	
 	@Override
 	public void onInventoryChanged()
@@ -126,8 +125,9 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 	{
 		int meta = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
 		
-		/*if(!this.worldObj.isRemote)
-			System.out.println(meta);*/
+		/*
+		 * if(!this.worldObj.isRemote) System.out.println(meta);
+		 */
 		
 		for(int i = 0; i < 3; i++)
 		{
@@ -135,30 +135,32 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 			{
 				if(meta == 0)
 				{
-					this.container.craftMatrix.setInventorySlotContents(8 - k*3 - i, this.getStackInSlot(i*3 + k));
-				}
-				else if(meta == 1)
-				{
-					this.container.craftMatrix.setInventorySlotContents(i*3 + k, this.getStackInSlot(i*3 + k));
-				}
-				else if(meta == 2)
-				{
-					this.container.craftMatrix.setInventorySlotContents(k*3 + i, this.getStackInSlot(i*3 + k));
+					this.container.craftMatrix.setInventorySlotContents(8 - k * 3 - i, this.getStackInSlot(i * 3 + k));
 				}
 				else
-				{
-					this.container.craftMatrix.setInventorySlotContents(8 - i*3 - k, this.getStackInSlot(i*3 + k));
-				}
+					if(meta == 1)
+					{
+						this.container.craftMatrix.setInventorySlotContents(i * 3 + k, this.getStackInSlot(i * 3 + k));
+					}
+					else
+						if(meta == 2)
+						{
+							this.container.craftMatrix.setInventorySlotContents(k * 3 + i, this.getStackInSlot(i * 3 + k));
+						}
+						else
+						{
+							this.container.craftMatrix.setInventorySlotContents(8 - i * 3 - k, this.getStackInSlot(i * 3 + k));
+						}
 			}
 		}
 	}
 	
 	public void craftItem(EntityPlayer player)
 	{
-		EntityItem itemCrafted = new EntityItem(this.worldObj, this.xCoord+0.5D, this.yCoord+1.5D, this.zCoord+0.5D, this.inventory[this.getSizeInventory()]);
-		itemCrafted.motionX = random.nextDouble()/4 - 0.125D;
-		itemCrafted.motionZ = random.nextDouble()/4 - 0.125D;
-		itemCrafted.motionY = random.nextDouble()/4;
+		EntityItem itemCrafted = new EntityItem(this.worldObj, this.xCoord + 0.5D, this.yCoord + 1.5D, this.zCoord + 0.5D, this.inventory[this.getSizeInventory()]);
+		itemCrafted.motionX = random.nextDouble() / 4 - 0.125D;
+		itemCrafted.motionZ = random.nextDouble() / 4 - 0.125D;
+		itemCrafted.motionY = random.nextDouble() / 4;
 		
 		if(!this.worldObj.isRemote)
 			this.worldObj.spawnEntityInWorld(itemCrafted);
@@ -204,46 +206,55 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 		GameRegistry.onItemCrafted(player, stack, this.container.craftMatrix);
 		stack.onCrafting(this.worldObj, player, this.inventory[this.getSizeInventory()].stackSize);
 		
-		if (stack.itemID == Block.workbench.blockID)
+		if(stack.itemID == Block.workbench.blockID)
 		{
 			player.addStat(AchievementList.buildWorkBench, 1);
 		}
-		else if (stack.itemID == Item.pickaxeWood.itemID)
-		{
-			player.addStat(AchievementList.buildPickaxe, 1);
-		}
-		else if (stack.itemID == Block.furnaceIdle.blockID)
-		{
-			player.addStat(AchievementList.buildFurnace, 1);
-		}
-		else if (stack.itemID == Item.hoeWood.itemID)
-		{
-			player.addStat(AchievementList.buildHoe, 1);
-		}
-		else if (stack.itemID == Item.bread.itemID)
-		{
-			player.addStat(AchievementList.makeBread, 1);
-		}
-		else if (stack.itemID == Item.cake.itemID)
-		{
-			player.addStat(AchievementList.bakeCake, 1);
-		}
-		else if (stack.itemID == Item.pickaxeStone.itemID)
-		{
-			player.addStat(AchievementList.buildBetterPickaxe, 1);
-		}
-		else if (stack.itemID == Item.swordWood.itemID)
-		{
-			player.addStat(AchievementList.buildSword, 1);
-		}
-		else if (stack.itemID == Block.enchantmentTable.blockID)
-		{
-			player.addStat(AchievementList.enchantments, 1);
-		}
-		else if (stack.itemID == Block.bookShelf.blockID)
-		{
-			player.addStat(AchievementList.bookcase, 1);
-		}
+		else
+			if(stack.itemID == Item.pickaxeWood.itemID)
+			{
+				player.addStat(AchievementList.buildPickaxe, 1);
+			}
+			else
+				if(stack.itemID == Block.furnaceIdle.blockID)
+				{
+					player.addStat(AchievementList.buildFurnace, 1);
+				}
+				else
+					if(stack.itemID == Item.hoeWood.itemID)
+					{
+						player.addStat(AchievementList.buildHoe, 1);
+					}
+					else
+						if(stack.itemID == Item.bread.itemID)
+						{
+							player.addStat(AchievementList.makeBread, 1);
+						}
+						else
+							if(stack.itemID == Item.cake.itemID)
+							{
+								player.addStat(AchievementList.bakeCake, 1);
+							}
+							else
+								if(stack.itemID == Item.pickaxeStone.itemID)
+								{
+									player.addStat(AchievementList.buildBetterPickaxe, 1);
+								}
+								else
+									if(stack.itemID == Item.swordWood.itemID)
+									{
+										player.addStat(AchievementList.buildSword, 1);
+									}
+									else
+										if(stack.itemID == Block.enchantmentTable.blockID)
+										{
+											player.addStat(AchievementList.enchantments, 1);
+										}
+										else
+											if(stack.itemID == Block.bookShelf.blockID)
+											{
+												player.addStat(AchievementList.bookcase, 1);
+											}
 	}
 	
 	public void dropItemFromSlot(int slot)
@@ -253,23 +264,21 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 			EntityItem droppedItem = new EntityItem(this.worldObj, this.xCoord + 0.5D, this.yCoord + 1.5D, this.zCoord + 0.5D);
 			droppedItem.setEntityItemStack(this.decrStackSize(slot, 1));
 			
-			droppedItem.motionX = random.nextDouble()/4 - 0.125D;
-			droppedItem.motionZ = random.nextDouble()/4 - 0.125D;
-			droppedItem.motionY = random.nextDouble()/4;
+			droppedItem.motionX = random.nextDouble() / 4 - 0.125D;
+			droppedItem.motionZ = random.nextDouble() / 4 - 0.125D;
+			droppedItem.motionY = random.nextDouble() / 4;
 			
 			if(!this.worldObj.isRemote)
 				this.worldObj.spawnEntityInWorld(droppedItem);
 		}
 	}
 	
-	
-
 	@Override
 	public int getSizeInventory()
 	{
 		return 9;
 	}
-
+	
 	@Override
 	public ItemStack getStackInSlot(int slot)
 	{
@@ -288,7 +297,7 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 		
 		this.onInventoryChanged();
 	}
-
+	
 	@Override
 	public ItemStack decrStackSize(int slot, int amount)
 	{
@@ -317,7 +326,7 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 		
 		return stack;
 	}
-
+	
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slot)
 	{
@@ -329,33 +338,38 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 		
 		return stack;
 	}
-
+	
 	@Override
 	public String getInvName()
 	{
 		return "Fancy Workbench";
 	}
-
+	
 	@Override
 	public boolean isInvNameLocalized()
 	{
 		return true;
 	}
-
+	
 	@Override
 	public int getInventoryStackLimit()
 	{
 		return 64;
 	}
-
+	
 	@Override
-	public void openChest(){}
-
+	public void openChest()
+	{
+	}
+	
 	@Override
-	public void closeChest(){}
-
+	public void closeChest()
+	{
+	}
+	
 	@Override
-	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
+	public boolean isItemValidForSlot(int i, ItemStack itemstack)
+	{
 		return true;
 	}
 	
@@ -364,17 +378,17 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 	{
 		return null;
 	}
-
+	
 	@Override
 	public boolean canInsertItem(int slot, ItemStack itemstack, int side)
 	{
 		return false;
 	}
-
+	
 	@Override
 	public boolean canExtractItem(int slot, ItemStack itemstack, int side)
 	{
 		return false;
 	}
-
+	
 }

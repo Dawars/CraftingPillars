@@ -27,19 +27,21 @@ import cpw.mods.fml.relauncher.Side;
 public class ClientProxy extends CommonProxy
 {
 	/* INSTANCES */
-	public Object getClient() {
+	public Object getClient()
+	{
 		return FMLClientHandler.instance().getClient();
 	}
-
-	public World getClientWorld() {
+	
+	public World getClientWorld()
+	{
 		return FMLClientHandler.instance().getClient().theWorld;
 	}
 	
 	@Override
 	public void registerRenderers()
 	{
-//	FIXME	MainMenuAPI.registerMenu("Elysian Menu", ElysianMenu.class);
-//		MainMenuAPI.registerMenu("Misc Elysian Menu", MiscElysianMenu.class);
+		// FIXME MainMenuAPI.registerMenu("Elysian Menu", ElysianMenu.class);
+		// MainMenuAPI.registerMenu("Misc Elysian Menu", MiscElysianMenu.class);
 		
 		CraftingPillars.craftingPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
 		
@@ -51,18 +53,22 @@ public class ClientProxy extends CommonProxy
 	
 	/* NETWORKING */
 	@Override
-	public void sendToServer(Packet packet) {
+	public void sendToServer(Packet packet)
+	{
 		FMLClientHandler.instance().getClient().getNetHandler().addToSendQueue(packet);
 	}
 	
-	/*@Override
-	public void sendToPlayer(EntityPlayer entityplayer, ElysiumPacket packet){}
+	/*
+	 * @Override public void sendToPlayer(EntityPlayer entityplayer,
+	 * ElysiumPacket packet){}
+	 * 
+	 * @Override public void sendToPlayers(Packet packet, World world, int x,
+	 * int y, int z, int maxDistance){}
+	 */
 	
 	@Override
-	public void sendToPlayers(Packet packet, World world, int x, int y, int z, int maxDistance){}*/
-	
-	@Override
-	public String playerName() {
+	public String playerName()
+	{
 		return FMLClientHandler.instance().getClient().thePlayer.username;
 	}
 }

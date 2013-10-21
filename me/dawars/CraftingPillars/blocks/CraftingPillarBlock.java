@@ -16,11 +16,13 @@ import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class CraftingPillarBlock extends BaseBlockContainer{
-
-	public CraftingPillarBlock(int id, Material mat) {
+public class CraftingPillarBlock extends BaseBlockContainer
+{
+	public CraftingPillarBlock(int id, Material mat)
+	{
 		super(id, mat);
 	}
+	
 	@Override
 	public int getRenderType()
 	{
@@ -60,26 +62,21 @@ public class CraftingPillarBlock extends BaseBlockContainer{
 	
 	public static int determineOrientation(World world, int x, int y, int z, EntityLivingBase entity)
 	{
-		//Used for up and down orientation
+		// Used for up and down orientation
 		
-		/*if (MathHelper.abs((float)entity.posX - (float)x) < 2.0F && MathHelper.abs((float)entity.posZ - (float)z) < 2.0F)
-		{
-			double d0 = entity.posY + 1.82D - (double)entity.yOffset;
-
-			if (d0 - (double)y > 2.0D)
-			{
-				return 1;
-			}
-
-			if ((double)y - d0 > 0.0D)
-			{
-				return 0;
-			}
-		}*/
-
-		int l = MathHelper.floor_double((double)(entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-		//Direction numbers
-		//return l == 0 ? 2 : (l == 1 ? 5 : (l == 2 ? 3 : (l == 3 ? 4 : 0)));
+		/*
+		 * if (MathHelper.abs((float)entity.posX - (float)x) < 2.0F &&
+		 * MathHelper.abs((float)entity.posZ - (float)z) < 2.0F) { double d0 =
+		 * entity.posY + 1.82D - (double)entity.yOffset;
+		 * 
+		 * if (d0 - (double)y > 2.0D) { return 1; }
+		 * 
+		 * if ((double)y - d0 > 0.0D) { return 0; } }
+		 */
+		
+		int l = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+		// Direction numbers
+		// return l == 0 ? 2 : (l == 1 ? 5 : (l == 2 ? 3 : (l == 3 ? 4 : 0)));
 		return l;
 	}
 	
@@ -92,14 +89,18 @@ public class CraftingPillarBlock extends BaseBlockContainer{
 			
 			if(player.isSneaking())
 			{
-				hitX = (int) Math.floor(hitX/0.33F);
-				if(hitX > 2) hitX = 2;
-				if(hitX < 0) hitX = 0;
-				hitZ = (int) Math.floor(hitZ/0.33F);
-				if(hitZ > 2) hitZ = 2;
-				if(hitZ < 0) hitZ = 0;
+				hitX = (int) Math.floor(hitX / 0.33F);
+				if(hitX > 2)
+					hitX = 2;
+				if(hitX < 0)
+					hitX = 0;
+				hitZ = (int) Math.floor(hitZ / 0.33F);
+				if(hitZ > 2)
+					hitZ = 2;
+				if(hitZ < 0)
+					hitZ = 0;
 				
-				int i = (int) (hitX*3 + hitZ);
+				int i = (int) (hitX * 3 + hitZ);
 				
 				if(workTile.getStackInSlot(i) != null)
 				{
@@ -108,14 +109,18 @@ public class CraftingPillarBlock extends BaseBlockContainer{
 			}
 			if(player.getCurrentEquippedItem() != null)
 			{
-				hitX = (int) Math.floor(hitX/0.33F);
-				if(hitX > 2) hitX = 2;
-				if(hitX < 0) hitX = 0;
-				hitZ = (int) Math.floor(hitZ/0.33F);
-				if(hitZ > 2) hitZ = 2;
-				if(hitZ < 0) hitZ = 0;
+				hitX = (int) Math.floor(hitX / 0.33F);
+				if(hitX > 2)
+					hitX = 2;
+				if(hitX < 0)
+					hitX = 0;
+				hitZ = (int) Math.floor(hitZ / 0.33F);
+				if(hitZ > 2)
+					hitZ = 2;
+				if(hitZ < 0)
+					hitZ = 0;
 				
-				int i = (int) (hitX*3 + hitZ);
+				int i = (int) (hitX * 3 + hitZ);
 				
 				if(workTile.getStackInSlot(i) == null)
 				{
@@ -125,14 +130,15 @@ public class CraftingPillarBlock extends BaseBlockContainer{
 					ItemStack in = new ItemStack(player.getCurrentEquippedItem().itemID, 1, player.getCurrentEquippedItem().getItemDamage());
 					workTile.setInventorySlotContents(i, in);
 				}
-				else if((workTile.getStackInSlot(i).itemID == player.getCurrentEquippedItem().itemID) && (workTile.getStackInSlot(i).stackSize < workTile.getStackInSlot(i).getMaxStackSize()))
-				{
-					if(!player.capabilities.isCreativeMode)
-						player.getCurrentEquippedItem().stackSize--;
-					
-					workTile.decrStackSize(i, -1);
-					workTile.onInventoryChanged();
-				}
+				else
+					if((workTile.getStackInSlot(i).itemID == player.getCurrentEquippedItem().itemID) && (workTile.getStackInSlot(i).stackSize < workTile.getStackInSlot(i).getMaxStackSize()))
+					{
+						if(!player.capabilities.isCreativeMode)
+							player.getCurrentEquippedItem().stackSize--;
+						
+						workTile.decrStackSize(i, -1);
+						workTile.onInventoryChanged();
+					}
 			}
 		}
 		
@@ -148,17 +154,17 @@ public class CraftingPillarBlock extends BaseBlockContainer{
 		{
 			for(int k = 0; k < 3; k++)
 			{
-				if(workTile.getStackInSlot(i*3 + k) != null)
+				if(workTile.getStackInSlot(i * 3 + k) != null)
 				{
-					EntityItem itemDropped = new EntityItem(world, x + 0.1875D+i*0.3125D, y+1D, z + 0.1875D+k*0.3125D, workTile.getStackInSlot(i*3 + k));
+					EntityItem itemDropped = new EntityItem(world, x + 0.1875D + i * 0.3125D, y + 1D, z + 0.1875D + k * 0.3125D, workTile.getStackInSlot(i * 3 + k));
 					itemDropped.motionX = itemDropped.motionY = itemDropped.motionZ = 0D;
 					
 					if(!world.isRemote)
 						world.spawnEntityInWorld(itemDropped);
 					
-					if(workTile.getStackInSlot(i*3 + k).hasTagCompound())
+					if(workTile.getStackInSlot(i * 3 + k).hasTagCompound())
 					{
-						itemDropped.getEntityItem().setTagCompound((NBTTagCompound)workTile.getStackInSlot(i*3 + k).getTagCompound().copy());
+						itemDropped.getEntityItem().setTagCompound((NBTTagCompound) workTile.getStackInSlot(i * 3 + k).getTagCompound().copy());
 					}
 				}
 			}
@@ -166,7 +172,7 @@ public class CraftingPillarBlock extends BaseBlockContainer{
 		
 		super.breakBlock(world, x, y, z, par5, par6);
 	}
-
+	
 	@Override
 	public TileEntity createNewTileEntity(World world)
 	{
@@ -175,14 +181,14 @@ public class CraftingPillarBlock extends BaseBlockContainer{
 	}
 	
 	@Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister itemIcon)
-    {
-        this.blockIcon = itemIcon.registerIcon(CraftingPillars.id + ":fancy_workbench_side");
-    }
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister itemIcon)
+	{
+		this.blockIcon = itemIcon.registerIcon(CraftingPillars.id + ":fancy_workbench_side");
+	}
 	
 	@Override
-    @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
 	public Icon getIcon(int par1, int par2)
 	{
 		return this.blockIcon;
