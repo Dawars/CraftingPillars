@@ -12,6 +12,7 @@ import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -19,8 +20,16 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(name = CraftingPillars.name, version = CraftingPillars.version, useMetadata = false, modid = CraftingPillars.id, dependencies="required-after:Forge@[8.9.0,)")
 public class CraftingPillars {
-
-	public static final String version = "1.0";
+	
+	@Instance(CraftingPillars.id)
+	private static CraftingPillars instance;
+	
+	public static CraftingPillars getInstance()
+	{
+		return instance;
+	}
+	
+	public static final String version = "1.2";
 	public static final String name = "Crafting Pillars";
 	public static final String id = "craftingpillars";
 	
@@ -45,7 +54,6 @@ public class CraftingPillars {
 			blockCraftingPillar = (new CraftingPillarBlock(idCraftingPillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("palestone");
 			registerBlock(blockCraftingPillar, "Crafting Pillar");
 		
-			GameRegistry.addRecipe(new ItemStack(blockCraftingPillar), new Object[] {"SSS"," C ","SSS", Character.valueOf('S'), Block.cobblestone, Character.valueOf('C'), Block.workbench});
 		
 			GameRegistry.registerTileEntity(TileEntityCraftingPillar.class, "TileEntityCraftingPillar");
 			
@@ -56,6 +64,8 @@ public class CraftingPillars {
 		{
 			config.save();
 		}
+		GameRegistry.addRecipe(new ItemStack(blockCraftingPillar), new Object[] {"SSS"," C ","SSS", Character.valueOf('S'), Block.cobblestone, Character.valueOf('C'), Block.workbench});
+
 	}
 	
 	public static void registerBlock(Block block, String name)

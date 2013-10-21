@@ -54,14 +54,34 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 	{
 		random = new Random();
         itemRenderer = new RenderItem() {
-            @Override
-            public byte getMiniBlockCount(ItemStack stack) {
-                return SignedBytes.saturatedCast(Math.min(stack.stackSize / 32, 15) + 1);
+        	/* Customize rendered stack size
+        	@Override
+        	public byte getMiniBlockCount(ItemStack stack)
+            {
+                byte ret = 1;
+                if (stack.stackSize > 1 ) ret = 2;
+                if (stack.stackSize > 5 ) ret = 3;
+                if (stack.stackSize > 20) ret = 4;
+                if (stack.stackSize > 40) ret = 5;
+                return ret;
             }
-            @Override
-            public byte getMiniItemCount(ItemStack stack) {
-                return SignedBytes.saturatedCast(Math.min(stack.stackSize / 32, 7) + 1);
+
+            /**
+             * Allows for a subclass to override how many rendered items appear in a
+             * "mini item 3d stack"
+             * @param stack
+             * @return
+             
+        	@Override
+            public byte getMiniItemCount(ItemStack stack)
+            {
+                byte ret = 1;
+                if (stack.stackSize > 1) ret = 2;
+                if (stack.stackSize > 15) ret = 3;
+                if (stack.stackSize > 31) ret = 4;
+                return ret;
             }
+            */
             @Override
             public boolean shouldBob() {
                 return false;
@@ -178,6 +198,7 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 			glTranslated(0, 1.0D, 0);
 			glScaled(0.0625D, 0.0625D, 0.0625D);
 			glRotatef(180F, 1F, 0F, 0F);
+			glRotatef(90F, 0F, 1F, 0F);
 			FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_WORKPILLAR);
 			render(null, 1F);
 		glPopMatrix();
