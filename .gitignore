@@ -15,6 +15,7 @@ local.properties
 .classpath
 .settings/
 .loadpath
+*.zip
 
 # External tool builders
 .externalToolBuilders/

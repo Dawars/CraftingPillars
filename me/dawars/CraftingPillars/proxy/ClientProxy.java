@@ -9,7 +9,9 @@ import java.io.InputStream;
 
 import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.renderer.RenderCraftingPillar;
+import me.dawars.CraftingPillars.renderer.RenderFurnacePillar;
 import me.dawars.CraftingPillars.tile.TileEntityCraftingPillar;
+import me.dawars.CraftingPillars.tile.TileEntityFurnacePillar;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -40,14 +42,14 @@ public class ClientProxy extends CommonProxy
 	@Override
 	public void registerRenderers()
 	{
-		// FIXME MainMenuAPI.registerMenu("Elysian Menu", ElysianMenu.class);
-		// MainMenuAPI.registerMenu("Misc Elysian Menu", MiscElysianMenu.class);
-		
 		CraftingPillars.craftingPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
+		CraftingPillars.furnacePillarRenderID = RenderingRegistry.getNextAvailableRenderId();
 		
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCraftingPillar.class, new RenderCraftingPillar());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFurnacePillar.class, new RenderFurnacePillar());
 		
 		RenderingRegistry.registerBlockHandler(new RenderCraftingPillar());
+		RenderingRegistry.registerBlockHandler(new RenderFurnacePillar());
 		
 	}
 	

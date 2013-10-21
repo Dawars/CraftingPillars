@@ -3,9 +3,12 @@ package me.dawars.CraftingPillars;
 import java.io.File;
 
 import me.dawars.CraftingPillars.blocks.CraftingPillarBlock;
+import me.dawars.CraftingPillars.blocks.FurnacePillarBlock;
 import me.dawars.CraftingPillars.proxy.CommonProxy;
 import me.dawars.CraftingPillars.tile.TileEntityCraftingPillar;
+import me.dawars.CraftingPillars.tile.TileEntityFurnacePillar;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.Configuration;
@@ -39,8 +42,10 @@ public class CraftingPillars
 	public static Configuration config;
 	
 	public static int craftingPillarRenderID;
+	public static int furnacePillarRenderID;
 	
 	public static Block blockCraftingPillar;
+	public static Block blockFurnaceCraftingPillar;
 	
 	@EventHandler
 	public void load(FMLPreInitializationEvent evt)
@@ -50,11 +55,16 @@ public class CraftingPillars
 		{
 			config.load();
 			// Block Registering
-			Property idCraftingPillar = CraftingPillars.config.getBlock("palestone.id", BlockIds.idCraftingPillar);
-			blockCraftingPillar = (new CraftingPillarBlock(idCraftingPillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("palestone");
+			Property idCraftingPillar = CraftingPillars.config.getBlock("CraftingPillar.id", BlockIds.idCraftingPillar);
+			blockCraftingPillar = (new CraftingPillarBlock(idCraftingPillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("fancy_workbench_side");
 			registerBlock(blockCraftingPillar, "Crafting Pillar");
 			
+			Property idFurnacePillar = CraftingPillars.config.getBlock("FurnacePillar.id", BlockIds.idFurnacePillar);
+			blockFurnaceCraftingPillar = (new FurnacePillarBlock(idFurnacePillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("furnace_pillar_side");
+			registerBlock(blockFurnaceCraftingPillar, "Furnace Pillar");
+			
 			GameRegistry.registerTileEntity(TileEntityCraftingPillar.class, "TileEntityCraftingPillar");
+			GameRegistry.registerTileEntity(TileEntityFurnacePillar.class, "TileEntityFurnacePillar");
 			
 			proxy.registerRenderers();
 			
