@@ -59,7 +59,8 @@ public class FurnacePillarBlock extends BaseBlockContainer
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack)
 	{
 		int meta = determineOrientation(world, x, y, z, entity);
-		
+		if(!world.isRemote)
+			System.out.println("Meta: "+meta);
 		world.setBlockMetadataWithNotify(x, y, z, meta, 0);
 	}
 	
@@ -86,52 +87,126 @@ public class FurnacePillarBlock extends BaseBlockContainer
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
 	{
-		if(hitY == 1F)
+		TileEntityFurnacePillar pillarTile = (TileEntityFurnacePillar) world.getBlockTileEntity(x, y, z);
+		
+		hitX *= 16F;
+		hitZ *= 16F;
+		
+		int meta = world.getBlockMetadata(x, y, z);
+		if(meta == 0)
 		{
-			TileEntityFurnacePillar workTile = (TileEntityFurnacePillar) world.getBlockTileEntity(x, y, z);
+			hitX = 16F-hitX;
+			hitZ = 16F-hitZ;
+		}
+		if(meta == 1)
+		{
+			float s = hitX;
+			hitX = 16F-hitZ;
+			hitZ = s;
+		}
+		/*else if(meta == 2)
+		{
+			hitX = hitX;
+			hitZ = hitZ;
+		}*/
+		else if(meta == 3)
+		{
+			float s = hitX;
+			hitX = hitZ;
+			hitZ = 16F-s;
+		}
+		
+		if(!world.isRemote)
+		{
+			System.out.println("Hit: "+hitX+" "+hitZ);
 			
-			if(player.isSneaking())
+			if(1F < hitX && hitX < 7F && 5F < hitZ && hitZ < 11F)
+				System.out.println("Slot: 0");
+			
+			if(9F < hitX && hitX < 15F && 5F < hitZ && hitZ < 11F)
+				System.out.println("Slot: 2");
+		}
+		
+		if(player.isSneaking())
+		{
+			if(hitY < 1F)
 			{
-				if(hitY < 1F)
-					workTile.dropItemFromSlot(1);
-				else
-				{
-					
-				}
+				pillarTile.dropItemFromSlot(1);
 			}
-			
-			if(player.getCurrentEquippedItem() != null)
+			else
 			{
-				hitX = (int) Math.floor(hitX / 0.33F);
-				if(hitX > 2)
-					hitX = 2;
-				if(hitX < 0)
-					hitX = 0;
-				hitZ = (int) Math.floor(hitZ / 0.33F);
-				if(hitZ > 2)
-					hitZ = 2;
-				if(hitZ < 0)
-					hitZ = 0;
+				if(1F < hitX && hitX < 7F && 5F < hitZ && hitZ < 11F)
+					pillarTile.dropItemFromSlot(0);
 				
-				int i = (int) (hitX * 3 + hitZ);
-				
-				if(workTile.getStackInSlot(i) == null)
+				if(9F < hitX && hitX < 15F && 5F < hitZ && hitZ < 11F)
+					pillarTile.dropItemFromSlot(2);
+			}
+		}
+		else if(player.getCurrentEquippedItem() != null)
+		{
+			if(hitY < 1F)
+			{
+				if(pillarTile.getStackInSlot(1) == null)
 				{
 					if(!player.capabilities.isCreativeMode)
 						player.getCurrentEquippedItem().stackSize--;
 					
 					ItemStack in = new ItemStack(player.getCurrentEquippedItem().itemID, 1, player.getCurrentEquippedItem().getItemDamage());
-					workTile.setInventorySlotContents(i, in);
+					pillarTile.setInventorySlotContents(1, in);
 				}
 				else
-					if((workTile.getStackInSlot(i).itemID == player.getCurrentEquippedItem().itemID) && (workTile.getStackInSlot(i).stackSize < workTile.getStackInSlot(i).getMaxStackSize()))
+					if((pillarTile.getStackInSlot(1).itemID == player.getCurrentEquippedItem().itemID) && (pillarTile.getStackInSlot(1).stackSize < pillarTile.getStackInSlot(1).getMaxStackSize()))
 					{
 						if(!player.capabilities.isCreativeMode)
 							player.getCurrentEquippedItem().stackSize--;
 						
-						workTile.decrStackSize(i, -1);
-						workTile.onInventoryChanged();
+						pillarTile.decrStackSize(1, -1);
+						pillarTile.onInventoryChanged();
 					}
+			}
+			else
+			{
+				if(1F < hitX && hitX < 7F && 5F < hitZ && hitZ < 11F)
+				{
+					if(pillarTile.getStackInSlot(0) == null)
+					{
+						if(!player.capabilities.isCreativeMode)
+							player.getCurrentEquippedItem().stackSize--;
+						
+						ItemStack in = new ItemStack(player.getCurrentEquippedItem().itemID, 1, player.getCurrentEquippedItem().getItemDamage());
+						pillarTile.setInventorySlotContents(0, in);
+					}
+					else
+						if((pillarTile.getStackInSlot(0).itemID == player.getCurrentEquippedItem().itemID) && (pillarTile.getStackInSlot(0).stackSize < pillarTile.getStackInSlot(0).getMaxStackSize()))
+						{
+							if(!player.capabilities.isCreativeMode)
+								player.getCurrentEquippedItem().stackSize--;
+							
+							pillarTile.decrStackSize(0, -1);
+							pillarTile.onInventoryChanged();
+						}
+				}
+				
+				/*if(9F < hitX && hitX < 15F && 5F < hitZ && hitZ < 11F)
+				{
+					if(workTile.getStackInSlot(2) == null)
+					{
+						if(!player.capabilities.isCreativeMode)
+							player.getCurrentEquippedItem().stackSize--;
+						
+						ItemStack in = new ItemStack(player.getCurrentEquippedItem().itemID, 1, player.getCurrentEquippedItem().getItemDamage());
+						workTile.setInventorySlotContents(2, in);
+					}
+					else
+						if((workTile.getStackInSlot(2).itemID == player.getCurrentEquippedItem().itemID) && (workTile.getStackInSlot(2).stackSize < workTile.getStackInSlot(2).getMaxStackSize()))
+						{
+							if(!player.capabilities.isCreativeMode)
+								player.getCurrentEquippedItem().stackSize--;
+							
+							workTile.decrStackSize(2, -1);
+							workTile.onInventoryChanged();
+						}
+				}*/
 			}
 		}
 		

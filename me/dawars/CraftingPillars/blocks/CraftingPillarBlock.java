@@ -107,7 +107,7 @@ public class CraftingPillarBlock extends BaseBlockContainer
 					workTile.dropItemFromSlot(i);
 				}
 			}
-			if(player.getCurrentEquippedItem() != null)
+			else if(player.getCurrentEquippedItem() != null)
 			{
 				hitX = (int) Math.floor(hitX / 0.33F);
 				if(hitX > 2)

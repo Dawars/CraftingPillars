@@ -72,7 +72,7 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 			@Override
 			public boolean shouldSpreadItems()
 			{
-				return false;
+				return true;
 			}
 		};
 		
@@ -184,8 +184,26 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 		citem.hoverStart = pillarTile.rot;
 		
 		glPushMatrix();
-		glTranslated(x, y, z);
-		
+			glTranslated(x+0.5D, y+1.25D, z+0.5D);
+			glRotatef(90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
+			if(pillarTile.getStackInSlot(0) != null)
+			{
+				glPushMatrix();
+					glTranslatef(-7F/16F, 0F, -3F/16F);
+					glScalef(2F/3F, 2F/3F, 2F/3F);
+					citem.setEntityItemStack(pillarTile.getStackInSlot(0));
+					itemRenderer.doRenderItem(citem, 0D, 0D, 0D, 0F, 0F);
+				glPopMatrix();
+			}
+			if(pillarTile.getStackInSlot(2) != null)
+			{
+				glPushMatrix();
+					glTranslatef(1F/16F, 0F, -3F/16F);
+					glScalef(2F/3F, 2F/3F, 2F/3F);
+					citem.setEntityItemStack(pillarTile.getStackInSlot(2));
+					itemRenderer.doRenderItem(citem, 0D, 0D, 0D, 0F, 0F);
+				glPopMatrix();
+			}
 		glPopMatrix();
 	}
 	
