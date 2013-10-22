@@ -9,28 +9,36 @@ import cpw.mods.fml.relauncher.SideOnly;
 import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.container.ContainerCraftingPillar;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFurnace;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
+import net.minecraft.item.ItemTool;
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.stats.AchievementList;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
 public class TileEntityFurnacePillar extends BaseTileEntity implements IInventory, ISidedInventory
 {
-	private ContainerCraftingPillar container = new ContainerCraftingPillar();//TODO: ADD SEPARATE FILE
-	private ItemStack[] inventory = new ItemStack[this.getSizeInventory() + 1];
+	private ItemStack[] inventory = new ItemStack[this.getSizeInventory()];
+	public int burnTime, cookTime;
 	
 	// @SideOnly(Side.CLIENT)
 	public float rot = 0F;
@@ -45,39 +53,58 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 				this.rot -= 360F;
 		}
 		
+		boolean changed = false;
+		
+		if(this.burnTime > 0)
+			this.burnTime--;
+		else
+			if(this.canBurn())
+				this.burnItem();
+		
+		if(!this.worldObj.isRemote && this.burnTime > 0)
+		{
+			if(this.cookTime > 0)
+				this.cookTime--;
+			else if(this.canSmelt())
+				this.smeltItem();
+		}
+		
+		if(changed)
+			this.onInventoryChanged();
+		
 		super.updateEntity();
 	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)
 	{
-		// System.out.println("read: "+this.worldObj.isRemote);
-		
 		super.readFromNBT(nbt);
 		
-		this.inventory = new ItemStack[this.getSizeInventory() + 1];
+		this.inventory = new ItemStack[this.getSizeInventory()];
 		NBTTagList nbtlist = nbt.getTagList("Items");
-		
 		for(int i = 0; i < nbtlist.tagCount(); i++)
 		{
 			NBTTagCompound nbtslot = (NBTTagCompound) nbtlist.tagAt(i);
 			int j = nbtslot.getByte("Slot") & 255;
 			
-			if((j >= 0) && (j < this.getSizeInventory() + 1))
+			if((j >= 0) && (j < this.getSizeInventory()))
 				this.inventory[j] = ItemStack.loadItemStackFromNBT(nbtslot);
 		}
+		
+		this.burnTime = nbt.getInteger("BurnTime");
+		this.cookTime = nbt.getInteger("CookTime");
 	}
 	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt)
 	{
-		// System.out.println("write: "+this.worldObj.isRemote);
-		
 		super.writeToNBT(nbt);
 		
-		NBTTagList nbtlist = new NBTTagList();
+		nbt.setInteger("BurnTime", this.burnTime);
+		nbt.setInteger("CookTime", this.cookTime);
 		
-		for(int i = 0; i < this.getSizeInventory() + 1; i++)
+		NBTTagList nbtlist = new NBTTagList();
+		for(int i = 0; i < this.getSizeInventory(); i++)
 		{
 			if(this.inventory[i] != null)
 			{
@@ -87,14 +114,12 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 				nbtlist.appendTag(nbtslot);
 			}
 		}
-		
 		nbt.setTag("Items", nbtlist);
 	}
 	
 	@Override
 	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
 	{
-		// System.out.println("receive: "+this.worldObj.isRemote);
 		NBTTagCompound nbt = pkt.data;
 		this.readFromNBT(nbt);
 	}
@@ -102,159 +127,9 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 	@Override
 	public Packet getDescriptionPacket()
 	{
-		// System.out.println("send: "+this.worldObj.isRemote);
 		NBTTagCompound nbt = new NBTTagCompound();
 		this.writeToNBT(nbt);
 		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, nbt);
-	}
-	
-	@Override
-	public void onInventoryChanged()
-	{
-		super.onInventoryChanged();
-		
-		if(!this.worldObj.isRemote)
-		{
-			rotateCraftingGrid();
-			this.inventory[this.getSizeInventory()] = CraftingManager.getInstance().findMatchingRecipe(this.container.craftMatrix, this.worldObj);
-			CraftingPillars.proxy.sendToPlayers(this.getDescriptionPacket(), this.worldObj, this.xCoord, this.yCoord, this.zCoord, 128);
-		}
-	}
-	
-	public void rotateCraftingGrid()
-	{
-		int meta = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
-		
-		/*
-		 * if(!this.worldObj.isRemote) System.out.println(meta);
-		 */
-		
-		for(int i = 0; i < 3; i++)
-		{
-			for(int k = 0; k < 3; k++)
-			{
-				if(meta == 0)
-				{
-					this.container.craftMatrix.setInventorySlotContents(8 - k * 3 - i, this.getStackInSlot(i * 3 + k));
-				}
-				else
-					if(meta == 1)
-					{
-						this.container.craftMatrix.setInventorySlotContents(i * 3 + k, this.getStackInSlot(i * 3 + k));
-					}
-					else
-						if(meta == 2)
-						{
-							this.container.craftMatrix.setInventorySlotContents(k * 3 + i, this.getStackInSlot(i * 3 + k));
-						}
-						else
-						{
-							this.container.craftMatrix.setInventorySlotContents(8 - i * 3 - k, this.getStackInSlot(i * 3 + k));
-						}
-			}
-		}
-	}
-	
-	public void craftItem(EntityPlayer player)
-	{
-		EntityItem itemCrafted = new EntityItem(this.worldObj, this.xCoord + 0.5D, this.yCoord + 1.5D, this.zCoord + 0.5D, this.inventory[this.getSizeInventory()]);
-		itemCrafted.motionX = random.nextDouble() / 4 - 0.125D;
-		itemCrafted.motionZ = random.nextDouble() / 4 - 0.125D;
-		itemCrafted.motionY = random.nextDouble() / 4;
-		
-		if(!this.worldObj.isRemote)
-			this.worldObj.spawnEntityInWorld(itemCrafted);
-		
-		this.onCrafting(player, this.inventory[this.getSizeInventory()]);
-		
-		for(int i = 0; i < this.getSizeInventory(); i++)
-		{
-			ItemStack itemstack1 = this.getStackInSlot(i);
-			
-			if(itemstack1 != null)
-			{
-				this.decrStackSize(i, 1);
-				
-				if(itemstack1.getItem().hasContainerItem())
-				{
-					ItemStack itemstack2 = itemstack1.getItem().getContainerItemStack(itemstack1);
-					
-					if(itemstack2.isItemStackDamageable() && itemstack2.getItemDamage() > itemstack2.getMaxDamage())
-					{
-						MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(player, itemstack2));
-						itemstack2 = null;
-					}
-					
-					if(itemstack2 != null && (!itemstack1.getItem().doesContainerItemLeaveCraftingGrid(itemstack1) || !player.inventory.addItemStackToInventory(itemstack2)))
-					{
-						if(this.getStackInSlot(i) == null)
-						{
-							this.setInventorySlotContents(i, itemstack2);
-						}
-						else
-						{
-							player.dropPlayerItem(itemstack2);
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	public void onCrafting(EntityPlayer player, ItemStack stack)
-	{
-		GameRegistry.onItemCrafted(player, stack, this.container.craftMatrix);
-		stack.onCrafting(this.worldObj, player, this.inventory[this.getSizeInventory()].stackSize);
-		
-		if(stack.itemID == Block.workbench.blockID)
-		{
-			player.addStat(AchievementList.buildWorkBench, 1);
-		}
-		else
-			if(stack.itemID == Item.pickaxeWood.itemID)
-			{
-				player.addStat(AchievementList.buildPickaxe, 1);
-			}
-			else
-				if(stack.itemID == Block.furnaceIdle.blockID)
-				{
-					player.addStat(AchievementList.buildFurnace, 1);
-				}
-				else
-					if(stack.itemID == Item.hoeWood.itemID)
-					{
-						player.addStat(AchievementList.buildHoe, 1);
-					}
-					else
-						if(stack.itemID == Item.bread.itemID)
-						{
-							player.addStat(AchievementList.makeBread, 1);
-						}
-						else
-							if(stack.itemID == Item.cake.itemID)
-							{
-								player.addStat(AchievementList.bakeCake, 1);
-							}
-							else
-								if(stack.itemID == Item.pickaxeStone.itemID)
-								{
-									player.addStat(AchievementList.buildBetterPickaxe, 1);
-								}
-								else
-									if(stack.itemID == Item.swordWood.itemID)
-									{
-										player.addStat(AchievementList.buildSword, 1);
-									}
-									else
-										if(stack.itemID == Block.enchantmentTable.blockID)
-										{
-											player.addStat(AchievementList.enchantments, 1);
-										}
-										else
-											if(stack.itemID == Block.bookShelf.blockID)
-											{
-												player.addStat(AchievementList.bookcase, 1);
-											}
 	}
 	
 	public void dropItemFromSlot(int slot)
@@ -276,7 +151,7 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 	@Override
 	public int getSizeInventory()
 	{
-		return 9;
+		return 3;
 	}
 	
 	@Override
@@ -391,4 +266,65 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 		return false;
 	}
 	
+	public boolean canSmelt()
+	{
+		if(this.inventory[0] == null)
+			return false;
+		ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(this.inventory[0]);
+		if(result == null)
+			return false;
+		if(this.inventory[2] != null)
+		{
+			if(!this.inventory[2].isItemEqual(result))
+				return false;
+			if(this.inventory[2].stackSize + result.stackSize >= result.getMaxStackSize())
+				return false;
+			if(this.inventory[2].stackSize + result.stackSize >= this.getInventoryStackLimit())
+				return false;
+		}
+		if(result.stackSize >= this.getInventoryStackLimit())
+			return false;
+		return true;
+	}
+	
+	public void smeltItem()
+	{
+		if(this.canSmelt())
+		{
+			ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(this.inventory[0]);
+			
+			if(this.inventory[2] == null)
+				this.inventory[2] = itemstack.copy();
+			else
+				if(this.inventory[2].isItemEqual(itemstack))
+					inventory[2].stackSize += itemstack.stackSize;
+			
+			this.inventory[0].stackSize--;
+			
+			if(this.inventory[0].stackSize <= 0)
+				this.inventory[0] = null;
+			else
+				if(this.inventory[2].stackSize+itemstack.stackSize <= this.getInventoryStackLimit() && this.inventory[2].stackSize+itemstack.stackSize <= itemstack.getMaxStackSize())
+					this.cookTime = 150;
+		}
+	}
+	
+	public boolean canBurn()
+	{
+		if(this.inventory[1] == null)
+			return false;
+		if(TileEntityFurnace.getItemBurnTime(this.inventory[1]) <= 0)
+			return false;
+		return this.canSmelt();
+	}
+	
+	public void burnItem()
+	{
+		if(this.cookTime == 0)
+			this.cookTime = 150;
+		this.burnTime = TileEntityFurnace.getItemBurnTime(this.inventory[1]);
+		this.inventory[1].stackSize--;
+		if(this.inventory[1].stackSize <= 0)
+			this.inventory[1] = null;
+	}
 }

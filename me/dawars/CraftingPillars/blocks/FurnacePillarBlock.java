@@ -49,10 +49,10 @@ public class FurnacePillarBlock extends BaseBlockContainer
 	{
 		TileEntityFurnacePillar workTile = (TileEntityFurnacePillar) world.getBlockTileEntity(x, y, z);
 		
-		if(workTile.getStackInSlot(workTile.getSizeInventory()) != null)
+		/*if(workTile.getStackInSlot(workTile.getSizeInventory()) != null)
 		{
 			workTile.craftItem(player);
-		}
+		}*/
 	}
 	
 	@Override
@@ -92,24 +92,14 @@ public class FurnacePillarBlock extends BaseBlockContainer
 			
 			if(player.isSneaking())
 			{
-				hitX = (int) Math.floor(hitX / 0.33F);
-				if(hitX > 2)
-					hitX = 2;
-				if(hitX < 0)
-					hitX = 0;
-				hitZ = (int) Math.floor(hitZ / 0.33F);
-				if(hitZ > 2)
-					hitZ = 2;
-				if(hitZ < 0)
-					hitZ = 0;
-				
-				int i = (int) (hitX * 3 + hitZ);
-				
-				if(workTile.getStackInSlot(i) != null)
+				if(hitY < 1F)
+					workTile.dropItemFromSlot(1);
+				else
 				{
-					workTile.dropItemFromSlot(i);
+					
 				}
 			}
+			
 			if(player.getCurrentEquippedItem() != null)
 			{
 				hitX = (int) Math.floor(hitX / 0.33F);
@@ -153,23 +143,18 @@ public class FurnacePillarBlock extends BaseBlockContainer
 	{
 		TileEntityFurnacePillar workTile = (TileEntityFurnacePillar) world.getBlockTileEntity(x, y, z);
 		
-		for(int i = 0; i < 3; i++)
+		for(int i = 0; i < workTile.getSizeInventory(); i++)
 		{
-			for(int k = 0; k < 3; k++)
+			if(workTile.getStackInSlot(i) != null)
 			{
-				if(workTile.getStackInSlot(i * 3 + k) != null)
-				{
-					EntityItem itemDropped = new EntityItem(world, x + 0.1875D + i * 0.3125D, y + 1D, z + 0.1875D + k * 0.3125D, workTile.getStackInSlot(i * 3 + k));
-					itemDropped.motionX = itemDropped.motionY = itemDropped.motionZ = 0D;
-					
-					if(!world.isRemote)
-						world.spawnEntityInWorld(itemDropped);
-					
-					if(workTile.getStackInSlot(i * 3 + k).hasTagCompound())
-					{
-						itemDropped.getEntityItem().setTagCompound((NBTTagCompound) workTile.getStackInSlot(i * 3 + k).getTagCompound().copy());
-					}
-				}
+				EntityItem itemDropped = new EntityItem(world, x+0.5D, y, z+0.5D, workTile.getStackInSlot(i));
+				itemDropped.motionX = itemDropped.motionY = itemDropped.motionZ = 0D;
+				
+				if(workTile.getStackInSlot(i).hasTagCompound())
+					itemDropped.getEntityItem().setTagCompound((NBTTagCompound) workTile.getStackInSlot(i).getTagCompound().copy());
+				
+				if(!world.isRemote)
+					world.spawnEntityInWorld(itemDropped);
 			}
 		}
 		
@@ -188,22 +173,18 @@ public class FurnacePillarBlock extends BaseBlockContainer
     /**
      * A randomly called display update to be able to add particles or other items for display
      */
-    public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random rand)
+    public void randomDisplayTick(World world, int x, int y, int z, Random rand)
     {
-        double d0 = (double)((float)par2 + 0.5F);
-        double d1 = (double)((float)par3 + 0.5F);
-        double d2 = (double)((float)par4 + 0.5F);
-
-        for(int i = 0; i < rand.nextInt(3)+1; i++)
-        {
-        	float rx = rand.nextFloat()/2 - 0.25F;
-        	float rz = rand.nextFloat()/2 - 0.25F;
-        	
-        	float ry = rand.nextFloat()/2 - 0.25F;
-        	
-	        par1World.spawnParticle("smoke", d0 + rx, d1 + ry, d2 + rz, 0.0D, 0.0D, 0.0D);
-	        par1World.spawnParticle("flame", d0 + rx, d1 + ry, d2 + rz, 0.0D, 0.0D, 0.0D);
-        }
+		if(((TileEntityFurnacePillar)world.getBlockTileEntity(x, y, z)).burnTime > 0)
+	        //for(int i = 0; i < rand.nextInt(3)+1; i++)
+	        {
+	        	double rx = x + rand.nextDouble()/2 + 0.25D;
+	        	double ry = y + rand.nextDouble()/2 + 0.25D;
+	        	double rz = z + rand.nextDouble()/2 + 0.25D;
+	        	
+		        world.spawnParticle("smoke", rx, ry, rz, 0D, 0D, 0D);
+		        world.spawnParticle("flame", rx, ry, rz, 0D, 0D, 0D);
+	        }
     }
 	
 	@Override

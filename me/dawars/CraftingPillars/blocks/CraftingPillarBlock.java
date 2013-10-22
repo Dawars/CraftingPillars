@@ -159,13 +159,11 @@ public class CraftingPillarBlock extends BaseBlockContainer
 					EntityItem itemDropped = new EntityItem(world, x + 0.1875D + i * 0.3125D, y + 1D, z + 0.1875D + k * 0.3125D, workTile.getStackInSlot(i * 3 + k));
 					itemDropped.motionX = itemDropped.motionY = itemDropped.motionZ = 0D;
 					
+					if(workTile.getStackInSlot(i * 3 + k).hasTagCompound())
+						itemDropped.getEntityItem().setTagCompound((NBTTagCompound) workTile.getStackInSlot(i * 3 + k).getTagCompound().copy());
+					
 					if(!world.isRemote)
 						world.spawnEntityInWorld(itemDropped);
-					
-					if(workTile.getStackInSlot(i * 3 + k).hasTagCompound())
-					{
-						itemDropped.getEntityItem().setTagCompound((NBTTagCompound) workTile.getStackInSlot(i * 3 + k).getTagCompound().copy());
-					}
 				}
 			}
 		}

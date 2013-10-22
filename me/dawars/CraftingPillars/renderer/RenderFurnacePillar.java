@@ -35,14 +35,15 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-public class RenderFurnacePillar extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler {
-	private static final ResourceLocation TEXTURE_FURNACEPILLAR = new ResourceLocation(
-			CraftingPillars.id + ":textures/models/furnacePillar.png");
-
-	public static ModelBase model = new ModelBase() {
-
+public class RenderFurnacePillar extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler
+{
+	private static final ResourceLocation TEXTURE_FURNACEPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/furnacePillar.png");
+	
+	public static ModelBase model = new ModelBase()
+	{
+		
 	};
-
+	
 	private ModelRenderer CraftingBottom;
 	private ModelRenderer CraftingBotSlab;
 	private ModelRenderer Pillar1;
@@ -51,45 +52,52 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 	private ModelRenderer Pillar2;
 	private ModelRenderer Pillar3;
 	private ModelRenderer Pillar4;
-
+	
 	private Random random;
 	private RenderItem itemRenderer;
 	private RenderItem fuelRenderer;
-
-	public RenderFurnacePillar() {
+	
+	public RenderFurnacePillar()
+	{
 		random = new Random();
-		itemRenderer = new RenderItem() {
-
+		itemRenderer = new RenderItem()
+		{
+			
 			@Override
-			public boolean shouldBob() {
+			public boolean shouldBob()
+			{
 				return false;
 			}
-
+			
 			@Override
-			public boolean shouldSpreadItems() {
+			public boolean shouldSpreadItems()
+			{
 				return false;
 			}
 		};
 		
-		fuelRenderer = new RenderItem() {
-
+		fuelRenderer = new RenderItem()
+		{
+			
 			@Override
-			public boolean shouldBob() {
+			public boolean shouldBob()
+			{
 				return false;
 			}
-
+			
 			@Override
-			public boolean shouldSpreadItems() {
+			public boolean shouldSpreadItems()
+			{
 				return false;
 			}
 		};
 		
 		itemRenderer.setRenderManager(RenderManager.instance);
 		fuelRenderer.setRenderManager(RenderManager.instance);
-
+		
 		model.textureWidth = 128;
 		model.textureHeight = 64;
-
+		
 		CraftingBottom = new ModelRenderer(model, 0, 0);
 		CraftingBottom.addBox(0F, 0F, 0F, 16, 2, 16);
 		CraftingBottom.setRotationPoint(-8F, 22F, -8F);
@@ -139,8 +147,9 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 		Pillar4.mirror = true;
 		setRotation(Pillar4, 0F, 0F, 0F);
 	}
-
-	public void render(TileEntity tileentity, float f) {
+	
+	public void render(TileEntity tileentity, float f)
+	{
 		CraftingBottom.render(f);
 		CraftingBotSlab.render(f);
 		Pillar1.render(f);
@@ -150,16 +159,17 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 		Pillar3.render(f);
 		Pillar4.render(f);
 	}
-
-	private void setRotation(ModelRenderer model, float x, float y, float z) {
+	
+	private void setRotation(ModelRenderer model, float x, float y, float z)
+	{
 		model.rotateAngleX = x;
 		model.rotateAngleY = y;
 		model.rotateAngleZ = z;
 	}
-
+	
 	@Override
-	public void renderTileEntityAt(TileEntity tile, double x, double y,
-			double z, float f) {
+	public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f)
+	{
 		glPushMatrix();
 		glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
 		glScaled(0.0625D, 0.0625D, 0.0625D);
@@ -168,54 +178,20 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_FURNACEPILLAR);
 		render(tile, 1F);
 		glPopMatrix();
-
-		TileEntityFurnacePillar workTile = (TileEntityFurnacePillar) tile;
+		
+		TileEntityFurnacePillar pillarTile = (TileEntityFurnacePillar) tile;
 		EntityItem citem = new EntityItem(tile.worldObj);
-		citem.hoverStart = workTile.rot;
-
+		citem.hoverStart = pillarTile.rot;
+		
 		glPushMatrix();
 		glTranslated(x, y, z);
-		for (int i = 0; i < 3; i++) {
-			for (int k = 0; k < 3; k++) {
-				if (workTile.getStackInSlot(i * 3 + k) != null) {
-					citem.setEntityItemStack(workTile.getStackInSlot(i * 3 + k));
-					glPushMatrix();
-					glTranslated(0.1875D + i * 0.3125D, 1D + 0.1875D / 3D, 0.1875D + k * 0.3125D);
-					glScalef(0.5F, 0.5F, 0.5F);
-					itemRenderer.doRenderItem(citem, 0D, 0D, 0D, 0F, 0F);
-					glPopMatrix();
-				}
-			}
-		}
-
-		if (workTile.getStackInSlot(workTile.getSizeInventory()) != null) {
-			glPushMatrix();
-
-			citem.hoverStart = workTile.rot/2;
-//			citem.setEntityItemStack(workTile.getStackInSlot(workTile.getSizeInventory()));
-			citem.setEntityItemStack(new ItemStack(Block.coalBlock));
-			fuelRenderer.doRenderItem(citem, 0.5D, 0.3D, 0.5D, 0F, 0F);
-			
-			//if itemstack instanceof item
-			citem.hoverStart = (float)3.14/2F + workTile.rot/2;
-			fuelRenderer.doRenderItem(citem, 0.5D, 0.3D, 0.5D, 0F, 0F);
-			
-//			CustomParticle particle = new CustomParticle(tile.worldObj, tile.xCoord+0.25D+random.nextDouble()/2D, tile.yCoord+1.25D+random.nextDouble()/2D, tile.zCoord+0.25D+random.nextDouble()/2D, 0D, 0D, 0D);
-//			particle.setRBGColorF(1F, 1F, 1F);
-//			particle.multipleParticleScaleBy(1F);
-//			particle.setBrightness(200);
-//			particle.setParticleTextureIndex(83);
-//			FMLClientHandler.instance().getClient().effectRenderer.addEffect(particle);
-//			tile.playSoundAtEntity(FMLClientHandler.instance().getClient().thePlayer, "random.levelup", 0.75F, 1.0F);
-
-
-			glPopMatrix();
-		}
+		
 		glPopMatrix();
 	}
-
+	
 	@Override
-	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
+	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
+	{
 		glPushMatrix();
 		glTranslated(0, 1.0D, 0);
 		glScaled(0.0625D, 0.0625D, 0.0625D);
@@ -225,22 +201,24 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 		render(null, 1F);
 		glPopMatrix();
 	}
-
+	
 	@Override
 	// No TileEntity here can't use
-	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z,
-			Block block, int modelId, RenderBlocks renderer) {
-
+	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
+	{
+		
 		return false;
 	}
-
+	
 	@Override
-	public boolean shouldRender3DInInventory() {
+	public boolean shouldRender3DInInventory()
+	{
 		return true;
 	}
-
+	
 	@Override
-	public int getRenderId() {
+	public int getRenderId()
+	{
 		return CraftingPillars.furnacePillarRenderID;
 	}
 }
