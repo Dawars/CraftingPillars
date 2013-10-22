@@ -14,6 +14,7 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 import me.dawars.CraftingPillars.CraftingPillars;
+import me.dawars.CraftingPillars.client.CustomParticle;
 import me.dawars.CraftingPillars.tile.TileEntityFurnacePillar;
 import me.dawars.CraftingPillars.tile.TileEntityFurnacePillar;
 import net.minecraft.block.Block;
@@ -31,6 +32,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class RenderFurnacePillar extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler {
@@ -52,6 +54,7 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 
 	private Random random;
 	private RenderItem itemRenderer;
+	private RenderItem fuelRenderer;
 
 	public RenderFurnacePillar() {
 		random = new Random();
@@ -67,7 +70,22 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 				return false;
 			}
 		};
+		
+		fuelRenderer = new RenderItem() {
+
+			@Override
+			public boolean shouldBob() {
+				return false;
+			}
+
+			@Override
+			public boolean shouldSpreadItems() {
+				return false;
+			}
+		};
+		
 		itemRenderer.setRenderManager(RenderManager.instance);
+		fuelRenderer.setRenderManager(RenderManager.instance);
 
 		model.textureWidth = 128;
 		model.textureHeight = 64;
@@ -146,12 +164,7 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 		glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
 		glScaled(0.0625D, 0.0625D, 0.0625D);
 		glRotatef(180F, 1F, 0F, 0F);
-		glRotatef(90F * (tile.worldObj.getBlockMetadata(tile.xCoord,
-				tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
-
-		// glBindTexture(GL_TEXTURE_2D,
-		// Minecraft.getMinecraft().renderEngine.func_110577_a(TEXTURE_WORKPILLAR));
-		// ??
+		glRotatef(90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
 		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_FURNACEPILLAR);
 		render(tile, 1F);
 		glPopMatrix();
@@ -167,8 +180,7 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 				if (workTile.getStackInSlot(i * 3 + k) != null) {
 					citem.setEntityItemStack(workTile.getStackInSlot(i * 3 + k));
 					glPushMatrix();
-					glTranslated(0.1875D + i * 0.3125D, 1D + 0.1875D / 3D,
-							0.1875D + k * 0.3125D);
+					glTranslated(0.1875D + i * 0.3125D, 1D + 0.1875D / 3D, 0.1875D + k * 0.3125D);
 					glScalef(0.5F, 0.5F, 0.5F);
 					itemRenderer.doRenderItem(citem, 0D, 0D, 0D, 0F, 0F);
 					glPopMatrix();
@@ -178,25 +190,38 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 
 		if (workTile.getStackInSlot(workTile.getSizeInventory()) != null) {
 			glPushMatrix();
-			citem.hoverStart = -workTile.rot;
-			citem.setEntityItemStack(workTile.getStackInSlot(workTile
-					.getSizeInventory()));
-			itemRenderer.doRenderItem(citem, 0.5D, 1.5D, 0.5D, 0F, 0F);
+
+			citem.hoverStart = workTile.rot/2;
+//			citem.setEntityItemStack(workTile.getStackInSlot(workTile.getSizeInventory()));
+			citem.setEntityItemStack(new ItemStack(Block.coalBlock));
+			fuelRenderer.doRenderItem(citem, 0.5D, 0.3D, 0.5D, 0F, 0F);
+			
+			//if itemstack instanceof item
+			citem.hoverStart = (float)3.14/2F + workTile.rot/2;
+			fuelRenderer.doRenderItem(citem, 0.5D, 0.3D, 0.5D, 0F, 0F);
+			
+//			CustomParticle particle = new CustomParticle(tile.worldObj, tile.xCoord+0.25D+random.nextDouble()/2D, tile.yCoord+1.25D+random.nextDouble()/2D, tile.zCoord+0.25D+random.nextDouble()/2D, 0D, 0D, 0D);
+//			particle.setRBGColorF(1F, 1F, 1F);
+//			particle.multipleParticleScaleBy(1F);
+//			particle.setBrightness(200);
+//			particle.setParticleTextureIndex(83);
+//			FMLClientHandler.instance().getClient().effectRenderer.addEffect(particle);
+//			tile.playSoundAtEntity(FMLClientHandler.instance().getClient().thePlayer, "random.levelup", 0.75F, 1.0F);
+
+
 			glPopMatrix();
 		}
 		glPopMatrix();
 	}
 
 	@Override
-	public void renderInventoryBlock(Block block, int metadata, int modelID,
-			RenderBlocks renderer) {
+	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
 		glPushMatrix();
 		glTranslated(0, 1.0D, 0);
 		glScaled(0.0625D, 0.0625D, 0.0625D);
 		glRotatef(180F, 1F, 0F, 0F);
 		glRotatef(90F, 0F, 1F, 0F);
-		FMLClientHandler.instance().getClient().renderEngine
-				.bindTexture(TEXTURE_FURNACEPILLAR);
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_FURNACEPILLAR);
 		render(null, 1F);
 		glPopMatrix();
 	}

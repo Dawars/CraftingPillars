@@ -1,5 +1,7 @@
 package me.dawars.CraftingPillars.blocks;
 
+import java.util.Random;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import me.dawars.CraftingPillars.CraftingPillars;
@@ -27,7 +29,7 @@ public class FurnacePillarBlock extends BaseBlockContainer
 	@Override
 	public int getRenderType()
 	{
-		return CraftingPillars.craftingPillarRenderID;
+		return CraftingPillars.furnacePillarRenderID;
 	}
 	
 	@Override
@@ -177,9 +179,32 @@ public class FurnacePillarBlock extends BaseBlockContainer
 	@Override
 	public TileEntity createNewTileEntity(World world)
 	{
-		TileEntityCraftingPillar tile = new TileEntityCraftingPillar();
+		TileEntityFurnacePillar tile = new TileEntityFurnacePillar();
 		return tile;
 	}
+	
+	@SideOnly(Side.CLIENT)
+	@Override
+    /**
+     * A randomly called display update to be able to add particles or other items for display
+     */
+    public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random rand)
+    {
+        double d0 = (double)((float)par2 + 0.5F);
+        double d1 = (double)((float)par3 + 0.5F);
+        double d2 = (double)((float)par4 + 0.5F);
+
+        for(int i = 0; i < rand.nextInt(3)+1; i++)
+        {
+        	float rx = rand.nextFloat()/2 - 0.25F;
+        	float rz = rand.nextFloat()/2 - 0.25F;
+        	
+        	float ry = rand.nextFloat()/2 - 0.25F;
+        	
+	        par1World.spawnParticle("smoke", d0 + rx, d1 + ry, d2 + rz, 0.0D, 0.0D, 0.0D);
+	        par1World.spawnParticle("flame", d0 + rx, d1 + ry, d2 + rz, 0.0D, 0.0D, 0.0D);
+        }
+    }
 	
 	@Override
 	@SideOnly(Side.CLIENT)
