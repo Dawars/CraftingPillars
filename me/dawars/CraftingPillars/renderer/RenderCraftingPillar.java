@@ -83,7 +83,7 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 			@Override
 			public boolean shouldSpreadItems()
 			{
-				return false;
+				return true;
 			}
 		};
 		itemRenderer.setRenderManager(RenderManager.instance);

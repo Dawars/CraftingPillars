@@ -26,6 +26,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.stats.AchievementList;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
@@ -359,7 +360,7 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 	@Override
 	public String getInvName()
 	{
-		return "Fancy Workbench";
+		return "Crafting Pillar";
 	}
 	
 	@Override
@@ -387,13 +388,13 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack)
 	{
-		return true;
+		return false;
 	}
 	
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side)
 	{
-		return null;
+		return new int[] {};
 	}
 	
 	@Override
