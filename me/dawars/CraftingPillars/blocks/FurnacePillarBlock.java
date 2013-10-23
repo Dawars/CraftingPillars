@@ -54,18 +54,19 @@ public class FurnacePillarBlock extends BaseBlockContainer
 			pillarTile.dropItemFromSlot(2, pillarTile.getStackInSlot(2).stackSize);
 		}
 		
-		/*if(workTile.getStackInSlot(workTile.getSizeInventory()) != null)
-		{
-			workTile.craftItem(player);
-		}*/
+		/*
+		 * if(workTile.getStackInSlot(workTile.getSizeInventory()) != null) {
+		 * workTile.craftItem(player); }
+		 */
 	}
 	
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack)
 	{
 		int meta = determineOrientation(world, x, y, z, entity);
-		/*if(!world.isRemote)
-			System.out.println("Meta: "+meta);*/
+		/*
+		 * if(!world.isRemote) System.out.println("Meta: "+meta);
+		 */
 		world.setBlockMetadataWithNotify(x, y, z, meta, 0);
 	}
 	
@@ -100,37 +101,34 @@ public class FurnacePillarBlock extends BaseBlockContainer
 		int meta = world.getBlockMetadata(x, y, z);
 		if(meta == 0)
 		{
-			hitX = 16F-hitX;
-			hitZ = 16F-hitZ;
+			hitX = 16F - hitX;
+			hitZ = 16F - hitZ;
 		}
 		if(meta == 1)
 		{
 			float s = hitX;
-			hitX = 16F-hitZ;
+			hitX = 16F - hitZ;
 			hitZ = s;
 		}
-		/*else if(meta == 2)
-		{
-			hitX = hitX;
-			hitZ = hitZ;
-		}*/
+		/*
+		 * else if(meta == 2) { hitX = hitX; hitZ = hitZ; }
+		 */
 		else if(meta == 3)
 		{
 			float s = hitX;
 			hitX = hitZ;
-			hitZ = 16F-s;
+			hitZ = 16F - s;
 		}
 		
-		/*if(!world.isRemote)
-		{
-			System.out.println("Hit: "+hitX+" "+hitZ);
-			
-			if(1F < hitX && hitX < 7F && 5F < hitZ && hitZ < 11F)
-				System.out.println("Slot: 0");
-			
-			if(9F < hitX && hitX < 15F && 5F < hitZ && hitZ < 11F)
-				System.out.println("Slot: 2");
-		}*/
+		/*
+		 * if(!world.isRemote) { System.out.println("Hit: "+hitX+" "+hitZ);
+		 * 
+		 * if(1F < hitX && hitX < 7F && 5F < hitZ && hitZ < 11F)
+		 * System.out.println("Slot: 0");
+		 * 
+		 * if(9F < hitX && hitX < 15F && 5F < hitZ && hitZ < 11F)
+		 * System.out.println("Slot: 2"); }
+		 */
 		
 		if(player.isSneaking())
 		{
@@ -159,15 +157,14 @@ public class FurnacePillarBlock extends BaseBlockContainer
 					ItemStack in = new ItemStack(player.getCurrentEquippedItem().itemID, 1, player.getCurrentEquippedItem().getItemDamage());
 					pillarTile.setInventorySlotContents(1, in);
 				}
-				else
-					if((pillarTile.getStackInSlot(1).itemID == player.getCurrentEquippedItem().itemID) && (pillarTile.getStackInSlot(1).stackSize < pillarTile.getStackInSlot(1).getMaxStackSize()))
-					{
-						if(!player.capabilities.isCreativeMode)
-							player.getCurrentEquippedItem().stackSize--;
-						
-						pillarTile.decrStackSize(1, -1);
-						pillarTile.onInventoryChanged();
-					}
+				else if((pillarTile.getStackInSlot(1).itemID == player.getCurrentEquippedItem().itemID) && (pillarTile.getStackInSlot(1).stackSize < pillarTile.getStackInSlot(1).getMaxStackSize()))
+				{
+					if(!player.capabilities.isCreativeMode)
+						player.getCurrentEquippedItem().stackSize--;
+					
+					pillarTile.decrStackSize(1, -1);
+					pillarTile.onInventoryChanged();
+				}
 			}
 			else
 			{
@@ -181,37 +178,36 @@ public class FurnacePillarBlock extends BaseBlockContainer
 						ItemStack in = new ItemStack(player.getCurrentEquippedItem().itemID, 1, player.getCurrentEquippedItem().getItemDamage());
 						pillarTile.setInventorySlotContents(0, in);
 					}
-					else
-						if((pillarTile.getStackInSlot(0).itemID == player.getCurrentEquippedItem().itemID) && (pillarTile.getStackInSlot(0).stackSize < pillarTile.getStackInSlot(0).getMaxStackSize()))
-						{
-							if(!player.capabilities.isCreativeMode)
-								player.getCurrentEquippedItem().stackSize--;
-							
-							pillarTile.decrStackSize(0, -1);
-							pillarTile.onInventoryChanged();
-						}
-				}
-				
-				/*if(9F < hitX && hitX < 15F && 5F < hitZ && hitZ < 11F)
-				{
-					if(workTile.getStackInSlot(2) == null)
+					else if((pillarTile.getStackInSlot(0).itemID == player.getCurrentEquippedItem().itemID) && (pillarTile.getStackInSlot(0).stackSize < pillarTile.getStackInSlot(0).getMaxStackSize()))
 					{
 						if(!player.capabilities.isCreativeMode)
 							player.getCurrentEquippedItem().stackSize--;
 						
-						ItemStack in = new ItemStack(player.getCurrentEquippedItem().itemID, 1, player.getCurrentEquippedItem().getItemDamage());
-						workTile.setInventorySlotContents(2, in);
+						pillarTile.decrStackSize(0, -1);
+						pillarTile.onInventoryChanged();
 					}
-					else
-						if((workTile.getStackInSlot(2).itemID == player.getCurrentEquippedItem().itemID) && (workTile.getStackInSlot(2).stackSize < workTile.getStackInSlot(2).getMaxStackSize()))
-						{
-							if(!player.capabilities.isCreativeMode)
-								player.getCurrentEquippedItem().stackSize--;
-							
-							workTile.decrStackSize(2, -1);
-							workTile.onInventoryChanged();
-						}
-				}*/
+				}
+				
+				/*
+				 * if(9F < hitX && hitX < 15F && 5F < hitZ && hitZ < 11F) {
+				 * if(workTile.getStackInSlot(2) == null) {
+				 * if(!player.capabilities.isCreativeMode)
+				 * player.getCurrentEquippedItem().stackSize--;
+				 * 
+				 * ItemStack in = new
+				 * ItemStack(player.getCurrentEquippedItem().itemID, 1,
+				 * player.getCurrentEquippedItem().getItemDamage());
+				 * workTile.setInventorySlotContents(2, in); } else
+				 * if((workTile.getStackInSlot(2).itemID ==
+				 * player.getCurrentEquippedItem().itemID) &&
+				 * (workTile.getStackInSlot(2).stackSize <
+				 * workTile.getStackInSlot(2).getMaxStackSize())) {
+				 * if(!player.capabilities.isCreativeMode)
+				 * player.getCurrentEquippedItem().stackSize--;
+				 * 
+				 * workTile.decrStackSize(2, -1); workTile.onInventoryChanged();
+				 * } }
+				 */
 			}
 		}
 		
@@ -227,7 +223,7 @@ public class FurnacePillarBlock extends BaseBlockContainer
 		{
 			if(workTile.getStackInSlot(i) != null)
 			{
-				EntityItem itemDropped = new EntityItem(world, x+0.5D, y, z+0.5D, workTile.getStackInSlot(i));
+				EntityItem itemDropped = new EntityItem(world, x + 0.5D, y, z + 0.5D, workTile.getStackInSlot(i));
 				itemDropped.motionX = itemDropped.motionY = itemDropped.motionZ = 0D;
 				
 				if(workTile.getStackInSlot(i).hasTagCompound())
@@ -250,22 +246,22 @@ public class FurnacePillarBlock extends BaseBlockContainer
 	
 	@SideOnly(Side.CLIENT)
 	@Override
-    /**
-     * A randomly called display update to be able to add particles or other items for display
-     */
-    public void randomDisplayTick(World world, int x, int y, int z, Random rand)
-    {
-		if(((TileEntityFurnacePillar)world.getBlockTileEntity(x, y, z)).burnTime > 0)
-	        //for(int i = 0; i < rand.nextInt(3)+1; i++)
-	        {
-	        	double rx = x + rand.nextDouble()/2 + 0.25D;
-	        	double ry = y + rand.nextDouble()/2 + 0.25D;
-	        	double rz = z + rand.nextDouble()/2 + 0.25D;
-	        	
-		        world.spawnParticle("smoke", rx, ry, rz, 0D, 0D, 0D);
-		        world.spawnParticle("flame", rx, ry, rz, 0D, 0D, 0D);
-	        }
-    }
+	/**
+	 * A randomly called display update to be able to add particles or other items for display
+	 */
+	public void randomDisplayTick(World world, int x, int y, int z, Random rand)
+	{
+		if(((TileEntityFurnacePillar) world.getBlockTileEntity(x, y, z)).burnTime > 0)
+		// for(int i = 0; i < rand.nextInt(3)+1; i++)
+		{
+			double rx = x + rand.nextDouble() / 2 + 0.25D;
+			double ry = y + rand.nextDouble() / 2 + 0.25D;
+			double rz = z + rand.nextDouble() / 2 + 0.25D;
+			
+			world.spawnParticle("smoke", rx, ry, rz, 0D, 0D, 0D);
+			world.spawnParticle("flame", rx, ry, rz, 0D, 0D, 0D);
+		}
+	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)

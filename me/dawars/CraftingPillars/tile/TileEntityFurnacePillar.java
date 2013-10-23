@@ -58,17 +58,15 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 		
 		if(this.burnTime > 0)
 			this.burnTime--;
-		else
-			if(this.canBurn())
-				this.burnItem();
+		else if(this.canBurn())
+			this.burnItem();
 		
 		if(!this.worldObj.isRemote && this.burnTime > 0 && this.getStackInSlot(0) != null)
 		{
 			if(this.cookTime > 0)
 				this.cookTime--;
-			else
-				if(this.canSmelt())
-					this.smeltItem();
+			else if(this.canSmelt())
+				this.smeltItem();
 		}
 		
 		if(changed)
@@ -143,8 +141,10 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 		{
 			if(this.getStackInSlot(0) == null)
 				this.cookTime = 150;
-			/*if(this.cookTime == 0 && this.getStackInSlot(0) != null)
-				this.cookTime = 150;*/
+			/*
+			 * if(this.cookTime == 0 && this.getStackInSlot(0) != null)
+			 * this.cookTime = 150;
+			 */
 			CraftingPillars.proxy.sendToPlayers(this.getDescriptionPacket(), this.worldObj, this.xCoord, this.yCoord, this.zCoord, 64);
 		}
 	}
@@ -154,7 +154,7 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 		if(!this.worldObj.isRemote && this.getStackInSlot(slot) != null)
 		{
 			EntityItem droppedItem = new EntityItem(this.worldObj, this.xCoord + 0.5D, this.yCoord + (slot == 1 ? 1D : 1.5D), this.zCoord + 0.5D);
-			//int max = this.getStackInSlot(slot).stackSize;
+			// int max = this.getStackInSlot(slot).stackSize;
 			droppedItem.setEntityItemStack(this.decrStackSize(slot, amount));
 			
 			droppedItem.motionX = random.nextDouble() / 4 - 0.125D;
@@ -318,17 +318,15 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 		
 		if(this.inventory[2] == null)
 			this.inventory[2] = itemstack.copy();
-		else
-			if(this.inventory[2].isItemEqual(itemstack))
-				inventory[2].stackSize += itemstack.stackSize;
+		else if(this.inventory[2].isItemEqual(itemstack))
+			inventory[2].stackSize += itemstack.stackSize;
 		
 		this.inventory[0].stackSize--;
 		
 		if(this.inventory[0].stackSize <= 0)
 			this.inventory[0] = null;
-		else
-			if(this.inventory[2].stackSize+itemstack.stackSize <= this.getInventoryStackLimit() && this.inventory[2].stackSize+itemstack.stackSize <= itemstack.getMaxStackSize())
-				this.cookTime = 150;
+		else if(this.inventory[2].stackSize + itemstack.stackSize <= this.getInventoryStackLimit() && this.inventory[2].stackSize + itemstack.stackSize <= itemstack.getMaxStackSize())
+			this.cookTime = 150;
 		
 		this.onInventoryChanged();
 	}

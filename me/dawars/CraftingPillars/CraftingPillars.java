@@ -38,7 +38,6 @@ public class CraftingPillars
 	public static final String name = "Crafting Pillars";
 	public static final String id = "craftingpillars";
 	
-	
 	@SidedProxy(clientSide = "me.dawars.CraftingPillars.proxy.ClientProxy", serverSide = "me.dawars.CraftingPillars.proxy.CommonProxy")
 	public static CommonProxy proxy;
 	
@@ -50,9 +49,8 @@ public class CraftingPillars
 	public static Block blockCraftingPillar;
 	public static Block blockFurnacePillar;
 	
+	public static final Achievement achievementRecursion = new Achievement(510, "recursion", -2, 0, /* blockCraftingPillar */Block.dirt, null).registerAchievement();
 	
-	public static final Achievement achievementRecursion = new Achievement(510, "recursion", -2, 0, blockCraftingPillar, null).registerAchievement();
-
 	@EventHandler
 	public void load(FMLPreInitializationEvent evt)
 	{
@@ -72,8 +70,8 @@ public class CraftingPillars
 			GameRegistry.registerTileEntity(TileEntityCraftingPillar.class, "TileEntityCraftingPillar");
 			GameRegistry.registerTileEntity(TileEntityFurnacePillar.class, "TileEntityFurnacePillar");
 			
-			LanguageRegistry.instance().addStringLocalization("achievement.theCakeIsALie", "The cake is a lie!");
-			LanguageRegistry.instance().addStringLocalization("achievement.theCakeIsALie.desc", "Craft a cake in a CraftingPillar");
+			LanguageRegistry.instance().addStringLocalization("achievement.recursion", "Recursion!");
+			LanguageRegistry.instance().addStringLocalization("achievement.recursion.desc", "Craft a CraftingPillar in a CraftingPillar");
 			
 			proxy.registerRenderers();
 			

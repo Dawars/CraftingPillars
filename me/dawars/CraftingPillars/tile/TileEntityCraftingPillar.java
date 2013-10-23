@@ -141,20 +141,18 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 				{
 					this.container.craftMatrix.setInventorySlotContents(8 - k * 3 - i, this.getStackInSlot(i * 3 + k));
 				}
+				else if(meta == 1)
+				{
+					this.container.craftMatrix.setInventorySlotContents(i * 3 + k, this.getStackInSlot(i * 3 + k));
+				}
+				else if(meta == 2)
+				{
+					this.container.craftMatrix.setInventorySlotContents(k * 3 + i, this.getStackInSlot(i * 3 + k));
+				}
 				else
-					if(meta == 1)
-					{
-						this.container.craftMatrix.setInventorySlotContents(i * 3 + k, this.getStackInSlot(i * 3 + k));
-					}
-					else
-						if(meta == 2)
-						{
-							this.container.craftMatrix.setInventorySlotContents(k * 3 + i, this.getStackInSlot(i * 3 + k));
-						}
-						else
-						{
-							this.container.craftMatrix.setInventorySlotContents(8 - i * 3 - k, this.getStackInSlot(i * 3 + k));
-						}
+				{
+					this.container.craftMatrix.setInventorySlotContents(8 - i * 3 - k, this.getStackInSlot(i * 3 + k));
+				}
 			}
 		}
 	}
@@ -173,14 +171,17 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 		{
 			for(int i = 0; i < 8; i++)
 			{
-				CustomParticle particle = new CustomParticle(this.worldObj, this.xCoord-0.25D+random.nextDouble()*1.5D, this.yCoord+random.nextDouble()*1.5D, this.zCoord-0.25D+random.nextDouble()*1.5D, 0D, 0D, 0D);
+				CustomParticle particle = new CustomParticle(this.worldObj, this.xCoord - 0.25D + random.nextDouble() * 1.5D, this.yCoord + random.nextDouble() * 1.5D, this.zCoord - 0.25D + random.nextDouble() * 1.5D, 0D, 0D, 0D);
 				particle.setRBGColorF(1F, 1F, 1F);
 				particle.multipleParticleScaleBy(1F);
-				particle.setParticleTextureIndex(82);//83 villager
+				particle.setParticleTextureIndex(82);// 83 villager
 				FMLClientHandler.instance().getClient().effectRenderer.addEffect(particle);
 				this.worldObj.playSoundAtEntity(FMLClientHandler.instance().getClient().thePlayer, "random.levelup", 0.75F, 1.0F);
-				//particle.setTextureFile("/mods/elysium/textures/misc/particles/fost.png");
-				//this.worldObj.spawnParticle("smoke", this.xCoord+0.25D+random.nextDouble()/2D, this.yCoord+1.25D+random.nextDouble()/2D, this.zCoord+0.25D+random.nextDouble()/2D, 0D, 0D, 0D);
+				// particle.setTextureFile("/mods/elysium/textures/misc/particles/fost.png");
+				// this.worldObj.spawnParticle("smoke",
+				// this.xCoord+0.25D+random.nextDouble()/2D,
+				// this.yCoord+1.25D+random.nextDouble()/2D,
+				// this.zCoord+0.25D+random.nextDouble()/2D, 0D, 0D, 0D);
 			}
 		}
 		
@@ -226,54 +227,27 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 		stack.onCrafting(this.worldObj, player, this.inventory[this.getSizeInventory()].stackSize);
 		
 		if(stack.itemID == Block.workbench.blockID)
-		{
 			player.addStat(AchievementList.buildWorkBench, 1);
-		}
-		else
-			if(stack.itemID == Item.pickaxeWood.itemID)
-			{
-				player.addStat(AchievementList.buildPickaxe, 1);
-			}
-			else
-				if(stack.itemID == Block.furnaceIdle.blockID)
-				{
-					player.addStat(AchievementList.buildFurnace, 1);
-				}
-				else
-					if(stack.itemID == Item.hoeWood.itemID)
-					{
-						player.addStat(AchievementList.buildHoe, 1);
-					}
-					else
-						if(stack.itemID == Item.bread.itemID)
-						{
-							player.addStat(AchievementList.makeBread, 1);
-						}
-						else
-							if(stack.itemID == Item.cake.itemID)
-							{
-								player.addStat(AchievementList.bakeCake, 1);
-							}
-							else
-								if(stack.itemID == Item.pickaxeStone.itemID)
-								{
-									player.addStat(AchievementList.buildBetterPickaxe, 1);
-								}
-								else
-									if(stack.itemID == Item.swordWood.itemID)
-									{
-										player.addStat(AchievementList.buildSword, 1);
-									}
-									else
-										if(stack.itemID == Block.enchantmentTable.blockID)
-										{
-											player.addStat(AchievementList.enchantments, 1);
-										}
-										else
-											if(stack.itemID == Block.bookShelf.blockID)
-											{
-												player.addStat(AchievementList.bookcase, 1);
-											}
+		else if(stack.itemID == Item.pickaxeWood.itemID)
+			player.addStat(AchievementList.buildPickaxe, 1);
+		else if(stack.itemID == Block.furnaceIdle.blockID)
+			player.addStat(AchievementList.buildFurnace, 1);
+		else if(stack.itemID == Item.hoeWood.itemID)
+			player.addStat(AchievementList.buildHoe, 1);
+		else if(stack.itemID == Item.bread.itemID)
+			player.addStat(AchievementList.makeBread, 1);
+		else if(stack.itemID == Item.cake.itemID)
+			player.addStat(AchievementList.bakeCake, 1);
+		else if(stack.itemID == Item.pickaxeStone.itemID)
+			player.addStat(AchievementList.buildBetterPickaxe, 1);
+		else if(stack.itemID == Item.swordWood.itemID)
+			player.addStat(AchievementList.buildSword, 1);
+		else if(stack.itemID == Block.enchantmentTable.blockID)
+			player.addStat(AchievementList.enchantments, 1);
+		else if(stack.itemID == Block.bookShelf.blockID)
+			player.addStat(AchievementList.bookcase, 1);
+		else if(stack.itemID == CraftingPillars.blockCraftingPillar.blockID)
+			player.addStat(CraftingPillars.achievementRecursion, 1);
 	}
 	
 	public void dropItemFromSlot(int slot)
