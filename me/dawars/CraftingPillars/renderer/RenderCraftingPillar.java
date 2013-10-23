@@ -2,6 +2,7 @@ package me.dawars.CraftingPillars.renderer;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import java.awt.Color;
 import java.util.Random;
 
 import javax.swing.Renderer;
@@ -20,6 +21,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -56,25 +58,6 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 		random = new Random();
 		itemRenderer = new RenderItem()
 		{
-			/*
-			 * Customize rendered stack size
-			 * 
-			 * @Override public byte getMiniBlockCount(ItemStack stack) { byte
-			 * ret = 1; if (stack.stackSize > 1 ) ret = 2; if (stack.stackSize >
-			 * 5 ) ret = 3; if (stack.stackSize > 20) ret = 4; if
-			 * (stack.stackSize > 40) ret = 5; return ret; }
-			 * 
-			 * /** Allows for a subclass to override how many rendered items
-			 * appear in a "mini item 3d stack"
-			 * 
-			 * @param stack
-			 * 
-			 * @return
-			 * 
-			 * @Override public byte getMiniItemCount(ItemStack stack) { byte
-			 * ret = 1; if (stack.stackSize > 1) ret = 2; if (stack.stackSize >
-			 * 15) ret = 3; if (stack.stackSize > 31) ret = 4; return ret; }
-			 */
 			@Override
 			public boolean shouldBob()
 			{
@@ -180,9 +163,11 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 			{
 				if(workTile.getStackInSlot(i * 3 + k) != null)
 				{
+					
 					citem.setEntityItemStack(workTile.getStackInSlot(i * 3 + k));
 					glPushMatrix();
 					glTranslated(0.1875D + i * 0.3125D, 1D + 0.1875D / 3D, 0.1875D + k * 0.3125D);
+					RenderingHelper.renderFloatingText(0F, 0.25F, 0F, 0.5F, ""+workTile.getStackInSlot(i * 3 + k).stackSize, Color.yellow.getRGB());
 					glScalef(0.5F, 0.5F, 0.5F);
 					itemRenderer.doRenderItem(citem, 0D, 0D, 0D, 0F, 0F);
 					glPopMatrix();
