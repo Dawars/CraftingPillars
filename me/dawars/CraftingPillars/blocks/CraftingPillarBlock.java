@@ -46,7 +46,12 @@ public class CraftingPillarBlock extends BaseBlockContainer
 	{
 		TileEntityCraftingPillar workTile = (TileEntityCraftingPillar) world.getBlockTileEntity(x, y, z);
 		
-		if(workTile.getStackInSlot(workTile.getSizeInventory()) != null)
+		if(player.isSneaking())
+		{
+			while(workTile.getStackInSlot(workTile.getSizeInventory()) != null)
+				workTile.craftItem(player);
+		}
+		else if(workTile.getStackInSlot(workTile.getSizeInventory()) != null)
 		{
 			workTile.craftItem(player);
 		}
