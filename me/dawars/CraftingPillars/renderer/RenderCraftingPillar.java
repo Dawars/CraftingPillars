@@ -164,9 +164,6 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 		glRotatef(180F, 1F, 0F, 0F);
 		glRotatef(90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
 		
-		// glBindTexture(GL_TEXTURE_2D,
-		// Minecraft.getMinecraft().renderEngine.func_110577_a(TEXTURE_WORKPILLAR));
-		// ??
 		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_WORKPILLAR);
 		render(tile, 1F);
 		glPopMatrix();
@@ -218,10 +215,8 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 	}
 	
 	@Override
-	// No TileEntity here can't use
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
 	{
-		
 		return false;
 	}
 	

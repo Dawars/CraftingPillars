@@ -267,7 +267,7 @@ public class FurnacePillarBlock extends BaseBlockContainer
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister itemIcon)
 	{
-		this.blockIcon = itemIcon.registerIcon(CraftingPillars.id + ":fancy_workbench_side");
+		this.blockIcon = itemIcon.registerIcon(CraftingPillars.id + ":furnacePillar");
 	}
 	
 	@Override

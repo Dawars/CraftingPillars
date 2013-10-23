@@ -8,8 +8,10 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import me.dawars.CraftingPillars.CraftingPillars;
+import me.dawars.CraftingPillars.renderer.RenderAnvilPillar;
 import me.dawars.CraftingPillars.renderer.RenderCraftingPillar;
 import me.dawars.CraftingPillars.renderer.RenderFurnacePillar;
+import me.dawars.CraftingPillars.tile.TileEntityAnvilPillar;
 import me.dawars.CraftingPillars.tile.TileEntityCraftingPillar;
 import me.dawars.CraftingPillars.tile.TileEntityFurnacePillar;
 import net.minecraft.block.Block;
@@ -44,13 +46,15 @@ public class ClientProxy extends CommonProxy
 	{
 		CraftingPillars.craftingPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
 		CraftingPillars.furnacePillarRenderID = RenderingRegistry.getNextAvailableRenderId();
+		CraftingPillars.anvilPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
 		
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCraftingPillar.class, new RenderCraftingPillar());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFurnacePillar.class, new RenderFurnacePillar());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAnvilPillar.class, new RenderAnvilPillar());
 		
 		RenderingRegistry.registerBlockHandler(new RenderCraftingPillar());
 		RenderingRegistry.registerBlockHandler(new RenderFurnacePillar());
-		
+		RenderingRegistry.registerBlockHandler(new RenderAnvilPillar());
 	}
 	
 	/* NETWORKING */
