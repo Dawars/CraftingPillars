@@ -12,6 +12,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -38,7 +39,7 @@ import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 public class TileEntityFurnacePillar extends BaseTileEntity implements IInventory, ISidedInventory
 {
 	private ItemStack[] inventory = new ItemStack[this.getSizeInventory()];
-	public int burnTime, cookTime;
+	public int burnTime, cookTime, xp;
 	
 	// @SideOnly(Side.CLIENT)
 	public float rot = 0F;
@@ -140,8 +141,10 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 		
 		if(!this.worldObj.isRemote)
 		{
-			if(this.cookTime == 0 && this.getStackInSlot(0) != null)
+			if(this.getStackInSlot(0) == null)
 				this.cookTime = 150;
+			/*if(this.cookTime == 0 && this.getStackInSlot(0) != null)
+				this.cookTime = 150;*/
 			CraftingPillars.proxy.sendToPlayers(this.getDescriptionPacket(), this.worldObj, this.xCoord, this.yCoord, this.zCoord, 64);
 		}
 	}
@@ -159,6 +162,13 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 			droppedItem.motionY = random.nextDouble() / 2;
 			droppedItem.setEntityItemStack(new ItemStack(droppedItem.getEntityItem().getItem(), amount));
 			this.worldObj.spawnEntityInWorld(droppedItem);
+			
+			if(slot == 2 && xp > 0)
+			{
+				System.out.println(xp);
+				EntityXPOrb xpEntity = new EntityXPOrb(this.worldObj, this.xCoord + 0.5D, this.yCoord + 1.5D, this.zCoord + 0.5D, xp);
+				this.worldObj.spawnEntityInWorld(xpEntity);
+			}
 		}
 	}
 	
@@ -304,6 +314,7 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 	public void smeltItem()
 	{
 		ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(this.inventory[0]);
+		this.xp += FurnaceRecipes.smelting().getExperience(this.inventory[0]);
 		
 		if(this.inventory[2] == null)
 			this.inventory[2] = itemstack.copy();

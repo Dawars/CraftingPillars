@@ -12,6 +12,7 @@ import me.dawars.CraftingPillars.client.CustomParticle;
 import me.dawars.CraftingPillars.container.ContainerCraftingPillar;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -160,22 +161,22 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 	
 	public void craftItem(EntityPlayer player)
 	{
-		EntityItem itemCrafted = new EntityItem(this.worldObj, this.xCoord + 0.5D, this.yCoord + 1.5D, this.zCoord + 0.5D, this.inventory[this.getSizeInventory()]);
-		itemCrafted.motionX = random.nextDouble() / 4 - 0.125D;
-		itemCrafted.motionZ = random.nextDouble() / 4 - 0.125D;
-		itemCrafted.motionY = random.nextDouble() / 4;
-		
 		if(!this.worldObj.isRemote)
+		{
+			EntityItem itemCrafted = new EntityItem(this.worldObj, this.xCoord + 0.5D, this.yCoord + 1.5D, this.zCoord + 0.5D, this.inventory[this.getSizeInventory()]);
+			itemCrafted.motionX = random.nextDouble() / 4 - 0.125D;
+			itemCrafted.motionZ = random.nextDouble() / 4 - 0.125D;
+			itemCrafted.motionY = random.nextDouble() / 4;
 			this.worldObj.spawnEntityInWorld(itemCrafted);
+		}
 		else
 		{
 			for(int i = 0; i < 8; i++)
 			{
-				CustomParticle particle = new CustomParticle(this.worldObj, this.xCoord+0.25D+random.nextDouble()/2D, this.yCoord+1.25D+random.nextDouble()/2D, this.zCoord+0.25D+random.nextDouble()/2D, 0D, 0D, 0D);
+				CustomParticle particle = new CustomParticle(this.worldObj, this.xCoord-0.25D+random.nextDouble()*1.5D, this.yCoord+random.nextDouble()*1.5D, this.zCoord-0.25D+random.nextDouble()*1.5D, 0D, 0D, 0D);
 				particle.setRBGColorF(1F, 1F, 1F);
 				particle.multipleParticleScaleBy(1F);
-				particle.setBrightness(200);
-				particle.setParticleTextureIndex(83);
+				particle.setParticleTextureIndex(82);//83 villager
 				FMLClientHandler.instance().getClient().effectRenderer.addEffect(particle);
 				this.worldObj.playSoundAtEntity(FMLClientHandler.instance().getClient().thePlayer, "random.levelup", 0.75F, 1.0F);
 				//particle.setTextureFile("/mods/elysium/textures/misc/particles/fost.png");
