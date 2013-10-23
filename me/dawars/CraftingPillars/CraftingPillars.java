@@ -11,6 +11,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemStack;
+import net.minecraft.stats.Achievement;
+import net.minecraft.stats.AchievementList;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
 import cpw.mods.fml.common.Mod;
@@ -36,6 +38,7 @@ public class CraftingPillars
 	public static final String name = "Crafting Pillars";
 	public static final String id = "craftingpillars";
 	
+	
 	@SidedProxy(clientSide = "me.dawars.CraftingPillars.proxy.ClientProxy", serverSide = "me.dawars.CraftingPillars.proxy.CommonProxy")
 	public static CommonProxy proxy;
 	
@@ -47,6 +50,9 @@ public class CraftingPillars
 	public static Block blockCraftingPillar;
 	public static Block blockFurnacePillar;
 	
+	
+	public static final Achievement achievementRecursion = new Achievement(510, "recursion", -2, 0, blockCraftingPillar, null).registerAchievement();
+
 	@EventHandler
 	public void load(FMLPreInitializationEvent evt)
 	{
@@ -65,6 +71,9 @@ public class CraftingPillars
 			
 			GameRegistry.registerTileEntity(TileEntityCraftingPillar.class, "TileEntityCraftingPillar");
 			GameRegistry.registerTileEntity(TileEntityFurnacePillar.class, "TileEntityFurnacePillar");
+			
+			LanguageRegistry.instance().addStringLocalization("achievement.theCakeIsALie", "The cake is a lie!");
+			LanguageRegistry.instance().addStringLocalization("achievement.theCakeIsALie.desc", "Craft a cake in a CraftingPillar");
 			
 			proxy.registerRenderers();
 			
