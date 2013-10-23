@@ -45,7 +45,7 @@ public class CraftingPillars
 	public static int furnacePillarRenderID;
 	
 	public static Block blockCraftingPillar;
-	public static Block blockFurnaceCraftingPillar;
+	public static Block blockFurnacePillar;
 	
 	@EventHandler
 	public void load(FMLPreInitializationEvent evt)
@@ -56,12 +56,12 @@ public class CraftingPillars
 			config.load();
 			// Block Registering
 			Property idCraftingPillar = CraftingPillars.config.getBlock("CraftingPillar.id", BlockIds.idCraftingPillar);
-			blockCraftingPillar = (new CraftingPillarBlock(idCraftingPillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("fancy_workbench_side");
+			blockCraftingPillar = (new CraftingPillarBlock(idCraftingPillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("crafting_pillar_side");
 			registerBlock(blockCraftingPillar, "Crafting Pillar");
 			
 			Property idFurnacePillar = CraftingPillars.config.getBlock("FurnacePillar.id", BlockIds.idFurnacePillar);
-			blockFurnaceCraftingPillar = (new FurnacePillarBlock(idFurnacePillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("furnace_pillar_side");
-			registerBlock(blockFurnaceCraftingPillar, "Furnace Pillar");
+			blockFurnacePillar = (new FurnacePillarBlock(idFurnacePillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("furnace_pillar_side");
+			registerBlock(blockFurnacePillar, "Furnace Pillar");
 			
 			GameRegistry.registerTileEntity(TileEntityCraftingPillar.class, "TileEntityCraftingPillar");
 			GameRegistry.registerTileEntity(TileEntityFurnacePillar.class, "TileEntityFurnacePillar");
@@ -74,6 +74,7 @@ public class CraftingPillars
 			config.save();
 		}
 		GameRegistry.addRecipe(new ItemStack(blockCraftingPillar), new Object[] { "SSS", " C ", "SSS", Character.valueOf('S'), Block.cobblestone, Character.valueOf('C'), Block.workbench });
+		GameRegistry.addRecipe(new ItemStack(blockFurnacePillar), new Object[] { "SSS", " F ", "SSS", Character.valueOf('S'), Block.cobblestone, Character.valueOf('C'), Block.workbench });
 	}
 	
 	public static void registerBlock(Block block, String name)

@@ -47,7 +47,12 @@ public class FurnacePillarBlock extends BaseBlockContainer
 	@Override
 	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player)
 	{
-		TileEntityFurnacePillar workTile = (TileEntityFurnacePillar) world.getBlockTileEntity(x, y, z);
+		TileEntityFurnacePillar pillarTile = (TileEntityFurnacePillar) world.getBlockTileEntity(x, y, z);
+		
+		if(pillarTile.getStackInSlot(2) != null)
+		{
+			pillarTile.dropItemFromSlot(2, pillarTile.getStackInSlot(2).stackSize);
+		}
 		
 		/*if(workTile.getStackInSlot(workTile.getSizeInventory()) != null)
 		{
@@ -59,8 +64,8 @@ public class FurnacePillarBlock extends BaseBlockContainer
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack)
 	{
 		int meta = determineOrientation(world, x, y, z, entity);
-		if(!world.isRemote)
-			System.out.println("Meta: "+meta);
+		/*if(!world.isRemote)
+			System.out.println("Meta: "+meta);*/
 		world.setBlockMetadataWithNotify(x, y, z, meta, 0);
 	}
 	
@@ -116,7 +121,7 @@ public class FurnacePillarBlock extends BaseBlockContainer
 			hitZ = 16F-s;
 		}
 		
-		if(!world.isRemote)
+		/*if(!world.isRemote)
 		{
 			System.out.println("Hit: "+hitX+" "+hitZ);
 			
@@ -125,21 +130,21 @@ public class FurnacePillarBlock extends BaseBlockContainer
 			
 			if(9F < hitX && hitX < 15F && 5F < hitZ && hitZ < 11F)
 				System.out.println("Slot: 2");
-		}
+		}*/
 		
 		if(player.isSneaking())
 		{
 			if(hitY < 1F)
 			{
-				pillarTile.dropItemFromSlot(1);
+				pillarTile.dropItemFromSlot(1, 1);
 			}
 			else
 			{
 				if(1F < hitX && hitX < 7F && 5F < hitZ && hitZ < 11F)
-					pillarTile.dropItemFromSlot(0);
+					pillarTile.dropItemFromSlot(0, 1);
 				
 				if(9F < hitX && hitX < 15F && 5F < hitZ && hitZ < 11F)
-					pillarTile.dropItemFromSlot(2);
+					pillarTile.dropItemFromSlot(2, 1);
 			}
 		}
 		else if(player.getCurrentEquippedItem() != null)

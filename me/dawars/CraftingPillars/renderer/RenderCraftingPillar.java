@@ -34,7 +34,7 @@ import net.minecraft.item.ItemStack;
 
 public class RenderCraftingPillar extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler
 {
-	private static final ResourceLocation TEXTURE_WORKPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/elysianWorkpillar.png");
+	private static final ResourceLocation TEXTURE_WORKPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/craftingPillar.png");
 	
 	public static ModelBase model = new ModelBase()
 	{
@@ -49,6 +49,7 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 	
 	private Random random;
 	private RenderItem itemRenderer;
+	private RenderItem resultRenderer;
 	
 	public RenderCraftingPillar()
 	{
@@ -86,7 +87,22 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 				return true;
 			}
 		};
+		resultRenderer = new RenderItem()
+		{
+			@Override
+			public boolean shouldBob()
+			{
+				return true;
+			}
+			
+			@Override
+			public boolean shouldSpreadItems()
+			{
+				return true;
+			}
+		};
 		itemRenderer.setRenderManager(RenderManager.instance);
+		resultRenderer.setRenderManager(RenderManager.instance);
 		
 		model.textureWidth = 128;
 		model.textureHeight = 64;
@@ -182,7 +198,7 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 			glPushMatrix();
 			citem.hoverStart = -workTile.rot;
 			citem.setEntityItemStack(workTile.getStackInSlot(workTile.getSizeInventory()));
-			itemRenderer.doRenderItem(citem, 0.5D, 1.5D, 0.5D, 0F, 0F);
+			resultRenderer.doRenderItem(citem, 0.5F, 1.5F, 0.5F, 0F, 0F);
 			glPopMatrix();
 		}
 		glPopMatrix();

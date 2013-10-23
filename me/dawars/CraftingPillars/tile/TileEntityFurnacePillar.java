@@ -61,12 +61,13 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 			if(this.canBurn())
 				this.burnItem();
 		
-		if(!this.worldObj.isRemote && this.burnTime > 0)
+		if(!this.worldObj.isRemote && this.burnTime > 0 && this.getStackInSlot(0) != null)
 		{
 			if(this.cookTime > 0)
 				this.cookTime--;
-			else if(this.canSmelt())
-				this.smeltItem();
+			else
+				if(this.canSmelt())
+					this.smeltItem();
 		}
 		
 		if(changed)
@@ -132,19 +133,32 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, nbt);
 	}
 	
-	public void dropItemFromSlot(int slot)
+	@Override
+	public void onInventoryChanged()
 	{
-		if(this.getStackInSlot(slot) != null)
+		super.onInventoryChanged();
+		
+		if(!this.worldObj.isRemote)
 		{
-			EntityItem droppedItem = new EntityItem(this.worldObj, this.xCoord + 0.5D, this.yCoord + 1.5D, this.zCoord + 0.5D);
-			droppedItem.setEntityItemStack(this.decrStackSize(slot, 1));
+			if(this.cookTime == 0 && this.getStackInSlot(0) != null)
+				this.cookTime = 150;
+			CraftingPillars.proxy.sendToPlayers(this.getDescriptionPacket(), this.worldObj, this.xCoord, this.yCoord, this.zCoord, 64);
+		}
+	}
+	
+	public void dropItemFromSlot(int slot, int amount)
+	{
+		if(!this.worldObj.isRemote && this.getStackInSlot(slot) != null)
+		{
+			EntityItem droppedItem = new EntityItem(this.worldObj, this.xCoord + 0.5D, this.yCoord + (slot == 1 ? 1D : 1.5D), this.zCoord + 0.5D);
+			//int max = this.getStackInSlot(slot).stackSize;
+			droppedItem.setEntityItemStack(this.decrStackSize(slot, amount));
 			
 			droppedItem.motionX = random.nextDouble() / 4 - 0.125D;
 			droppedItem.motionZ = random.nextDouble() / 4 - 0.125D;
-			droppedItem.motionY = random.nextDouble() / 4;
-			
-			if(!this.worldObj.isRemote)
-				this.worldObj.spawnEntityInWorld(droppedItem);
+			droppedItem.motionY = random.nextDouble() / 2;
+			droppedItem.setEntityItemStack(new ItemStack(droppedItem.getEntityItem().getItem(), amount));
+			this.worldObj.spawnEntityInWorld(droppedItem);
 		}
 	}
 	
@@ -289,24 +303,23 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 	
 	public void smeltItem()
 	{
-		if(this.canSmelt())
-		{
-			ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(this.inventory[0]);
-			
-			if(this.inventory[2] == null)
-				this.inventory[2] = itemstack.copy();
-			else
-				if(this.inventory[2].isItemEqual(itemstack))
-					inventory[2].stackSize += itemstack.stackSize;
-			
-			this.inventory[0].stackSize--;
-			
-			if(this.inventory[0].stackSize <= 0)
-				this.inventory[0] = null;
-			else
-				if(this.inventory[2].stackSize+itemstack.stackSize <= this.getInventoryStackLimit() && this.inventory[2].stackSize+itemstack.stackSize <= itemstack.getMaxStackSize())
-					this.cookTime = 150;
-		}
+		ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(this.inventory[0]);
+		
+		if(this.inventory[2] == null)
+			this.inventory[2] = itemstack.copy();
+		else
+			if(this.inventory[2].isItemEqual(itemstack))
+				inventory[2].stackSize += itemstack.stackSize;
+		
+		this.inventory[0].stackSize--;
+		
+		if(this.inventory[0].stackSize <= 0)
+			this.inventory[0] = null;
+		else
+			if(this.inventory[2].stackSize+itemstack.stackSize <= this.getInventoryStackLimit() && this.inventory[2].stackSize+itemstack.stackSize <= itemstack.getMaxStackSize())
+				this.cookTime = 150;
+		
+		this.onInventoryChanged();
 	}
 	
 	public boolean canBurn()
@@ -326,5 +339,6 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 		this.inventory[1].stackSize--;
 		if(this.inventory[1].stackSize <= 0)
 			this.inventory[1] = null;
+		this.onInventoryChanged();
 	}
 }

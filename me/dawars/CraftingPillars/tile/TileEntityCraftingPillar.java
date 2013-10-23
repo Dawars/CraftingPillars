@@ -120,7 +120,7 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 		{
 			rotateCraftingGrid();
 			this.inventory[this.getSizeInventory()] = CraftingManager.getInstance().findMatchingRecipe(this.container.craftMatrix, this.worldObj);
-			CraftingPillars.proxy.sendToPlayers(this.getDescriptionPacket(), this.worldObj, this.xCoord, this.yCoord, this.zCoord, 128);
+			CraftingPillars.proxy.sendToPlayers(this.getDescriptionPacket(), this.worldObj, this.xCoord, this.yCoord, this.zCoord, 64);
 		}
 	}
 	
