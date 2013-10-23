@@ -74,7 +74,7 @@ public class CraftingPillars
 			config.save();
 		}
 		GameRegistry.addRecipe(new ItemStack(blockCraftingPillar), new Object[] { "SSS", " C ", "SSS", Character.valueOf('S'), Block.cobblestone, Character.valueOf('C'), Block.workbench });
-		GameRegistry.addRecipe(new ItemStack(blockFurnacePillar), new Object[] { "SSS", " F ", "SSS", Character.valueOf('S'), Block.stone, Character.valueOf('C'), Block.furnaceIdle });
+		GameRegistry.addRecipe(new ItemStack(blockFurnacePillar), new Object[] { "SSS", " F ", "SSS", Character.valueOf('S'), Block.stone, Character.valueOf('F'), Block.furnaceIdle });
 	}
 	
 	public static void registerBlock(Block block, String name)
