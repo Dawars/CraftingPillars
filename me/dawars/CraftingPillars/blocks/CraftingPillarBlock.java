@@ -12,6 +12,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -48,8 +49,8 @@ public class CraftingPillarBlock extends BaseBlockContainer
 		
 		if(player.isSneaking())
 		{
-			while(workTile.getStackInSlot(workTile.getSizeInventory()) != null)
-				workTile.craftItem(player);
+//			while(workTile.getStackInSlot(workTile.getSizeInventory()) != null)//FIXME: végtelenciklus
+//				workTile.craftItem(player);
 		}
 		else if(workTile.getStackInSlot(workTile.getSizeInventory()) != null)
 		{
@@ -87,10 +88,12 @@ public class CraftingPillarBlock extends BaseBlockContainer
 	
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
-	{
+	{			
+		player.sendChatToPlayer(new ChatMessageComponent().addText("event"));
+		TileEntityCraftingPillar workTile = (TileEntityCraftingPillar) world.getBlockTileEntity(x, y, z);
+
 		if(hitY == 1F)
 		{
-			TileEntityCraftingPillar workTile = (TileEntityCraftingPillar) world.getBlockTileEntity(x, y, z);
 			
 			if(player.isSneaking())
 			{
@@ -135,7 +138,7 @@ public class CraftingPillarBlock extends BaseBlockContainer
 					ItemStack in = new ItemStack(player.getCurrentEquippedItem().itemID, 1, player.getCurrentEquippedItem().getItemDamage());
 					workTile.setInventorySlotContents(i, in);
 				}
-				else if((workTile.getStackInSlot(i).itemID == player.getCurrentEquippedItem().itemID) && (workTile.getStackInSlot(i).stackSize < workTile.getStackInSlot(i).getMaxStackSize()))
+				else if((workTile.getStackInSlot(i).isItemEqual(player.getCurrentEquippedItem())) && (workTile.getStackInSlot(i).stackSize < workTile.getStackInSlot(i).getMaxStackSize()))
 				{
 					if(!player.capabilities.isCreativeMode)
 						player.getCurrentEquippedItem().stackSize--;
@@ -143,6 +146,14 @@ public class CraftingPillarBlock extends BaseBlockContainer
 					workTile.decrStackSize(i, -1);
 					workTile.onInventoryChanged();
 				}
+			}
+		} else {
+			if(world.isRemote)//FIXME: packethandler needed
+			{
+				if(workTile.showNum)
+					workTile.showNum = false;
+				else
+					workTile.showNum = true;
 			}
 		}
 		

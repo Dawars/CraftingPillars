@@ -39,6 +39,12 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 	// @SideOnly(Side.CLIENT)
 	public float rot = 0F;
 	
+	public boolean showNum;
+
+	public TileEntityCraftingPillar(){
+		this.showNum = false;
+	}
+	
 	@Override
 	public void updateEntity()
 	{
@@ -70,6 +76,7 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 			if((j >= 0) && (j < this.getSizeInventory() + 1))
 				this.inventory[j] = ItemStack.loadItemStackFromNBT(nbtslot);
 		}
+		showNum = nbt.getBoolean("showNum");
 	}
 	
 	@Override
@@ -93,6 +100,7 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 		}
 		
 		nbt.setTag("Items", nbtlist);
+		nbt.setBoolean("showNum", showNum);
 	}
 	
 	@Override

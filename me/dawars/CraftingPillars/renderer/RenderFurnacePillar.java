@@ -190,22 +190,22 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 		{
 			glPushMatrix();
 			citem.setEntityItemStack(pillarTile.getStackInSlot(0));
-			itemRenderer.doRenderItem(citem, -4F / 16F, 1.125F, 0F, 0F, 0F);
+			itemRenderer.doRenderItem(citem, 0F, 1.125F, 0F, 0F, 0F);
 			glPopMatrix();
 		}
 		if(pillarTile.getStackInSlot(2) != null)
 		{
 			glPushMatrix();
 			citem.setEntityItemStack(pillarTile.getStackInSlot(2));
-			itemRenderer.doRenderItem(citem, 4F / 16F, 1.125F, 0F, 0F, 0F);
+			itemRenderer.doRenderItem(citem, 0F, 1.125F + pillarTile.burnTime/5F, 0F, 0F, 0F);
 			glPopMatrix();
 		}
 		if(pillarTile.getStackInSlot(1) != null)
 		{
 			glPushMatrix();
 			citem.setEntityItemStack(pillarTile.getStackInSlot(1));
-			citem.hoverStart = 0F;
-			fuelRenderer.doRenderItem(citem, 0F, 0.25F, 0F, 0F, 0F);
+			citem.hoverStart = pillarTile.burnTime > 0 ? (-pillarTile.rot / 4) : 0F;//FIXME: adjust values
+			fuelRenderer.doRenderItem(citem, 0F, 0.3F, 0F, 0F, 0F);
 			glPopMatrix();
 		}
 		glPopMatrix();

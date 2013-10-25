@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraft.stats.AchievementList;
 import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Property;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -91,6 +92,10 @@ public class CraftingPillars
 		}
 		GameRegistry.addRecipe(new ItemStack(blockCraftingPillar), new Object[] { "SSS", " C ", "SSS", Character.valueOf('S'), Block.cobblestone, Character.valueOf('C'), Block.workbench });
 		GameRegistry.addRecipe(new ItemStack(blockFurnacePillar), new Object[] { "SSS", " F ", "SSS", Character.valueOf('S'), Block.stone, Character.valueOf('F'), Block.furnaceIdle });
+	
+	
+		MinecraftForge.EVENT_BUS.register(new me.dawars.CraftingPillars.event.EventHandler());
+	
 	}
 	
 	public static void registerBlock(Block block, String name)

@@ -132,6 +132,17 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, nbt);
 	}
 	
+	 @SideOnly(Side.CLIENT)
+
+	    /**
+	     * Returns an integer between 0 and the passed value representing how close the current item is to being completely
+	     * cooked
+	     */
+	    public int getCookProgressScaled(int par1)
+	    {
+	        return this.cookTime * par1 / 200;
+	    }
+
 	@Override
 	public void onInventoryChanged()
 	{
@@ -149,17 +160,18 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 		}
 	}
 	
-	public void dropItemFromSlot(int slot, int amount)
+	public void dropItemFromSlot(int slot, int amount, int side)
 	{
 		if(!this.worldObj.isRemote && this.getStackInSlot(slot) != null)
 		{
-			EntityItem droppedItem = new EntityItem(this.worldObj, this.xCoord + 0.5D, this.yCoord + (slot == 1 ? 1D : 1.5D), this.zCoord + 0.5D);
+			//TODO: drop out of clicked side
+			EntityItem droppedItem = new EntityItem(this.worldObj, this.xCoord + 0.5D, this.yCoord + (slot == 1 ? 1.2D : 1.5D), this.zCoord + 0.5D);
 			// int max = this.getStackInSlot(slot).stackSize;
 			droppedItem.setEntityItemStack(this.decrStackSize(slot, amount));
 			
 			droppedItem.motionX = random.nextDouble() / 4 - 0.125D;
 			droppedItem.motionZ = random.nextDouble() / 4 - 0.125D;
-			droppedItem.motionY = random.nextDouble() / 2;
+			droppedItem.motionY = random.nextDouble() / 4;
 			droppedItem.setEntityItemStack(new ItemStack(droppedItem.getEntityItem().getItem(), amount));
 			this.worldObj.spawnEntityInWorld(droppedItem);
 			
@@ -171,6 +183,12 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 			}
 		}
 	}
+	
+	public void dropItemFromSlot(int slot, int amount)
+	{
+		dropItemFromSlot(slot, amount, -1);
+	}
+
 	
 	@Override
 	public int getSizeInventory()
@@ -275,7 +293,7 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side)
 	{
-		return null;
+		return new int[]{};
 	}
 	
 	@Override
