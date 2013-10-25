@@ -194,10 +194,11 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 			glPopMatrix();
 		}
 		if(pillarTile.getStackInSlot(2) != null)
-		{
+		{//TODO: split the new item and
+			//FIXME: add a fake slot for processed item
 			glPushMatrix();
 			citem.setEntityItemStack(pillarTile.getStackInSlot(2));
-			itemRenderer.doRenderItem(citem, 0F, 1.125F + pillarTile.burnTime/5F, 0F, 0F, 0F);
+			itemRenderer.doRenderItem(citem, 0F, 1.125F + pillarTile.getCookProgressScaled(24)/50F, 0F, 0F, 0F);
 			glPopMatrix();
 		}
 		if(pillarTile.getStackInSlot(1) != null)
