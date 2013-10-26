@@ -32,6 +32,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.stats.AchievementList;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
@@ -160,33 +161,46 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 		}
 	}
 	
-	public void dropItemFromSlot(int slot, int amount, int side)
+//	public void dropItemFromSlot(int slot, int amount, int side)
+//	{
+//		if(!this.worldObj.isRemote && this.getStackInSlot(slot) != null)
+//		{
+//			//TODO: drop out of clicked side
+//			EntityItem droppedItem = new EntityItem(this.worldObj, this.xCoord + 0.5D, this.yCoord + (slot == 1 ? 1.2D : 1.5D), this.zCoord + 0.5D);
+//			// int max = this.getStackInSlot(slot).stackSize;
+//			droppedItem.setEntityItemStack(this.decrStackSize(slot, amount));
+//			
+//			droppedItem.motionX = random.nextDouble() / 4 - 0.125D;
+//			droppedItem.motionZ = random.nextDouble() / 4 - 0.125D;
+//			droppedItem.motionY = random.nextDouble() / 4;
+//			droppedItem.setEntityItemStack(new ItemStack(droppedItem.getEntityItem().getItem(), amount));
+//			this.worldObj.spawnEntityInWorld(droppedItem);
+//			
+//			if(slot == 2 && xp > 0)
+//			{
+//				System.out.println(xp);
+//				EntityXPOrb xpEntity = new EntityXPOrb(this.worldObj, this.xCoord + 0.5D, this.yCoord + 1.5D, this.zCoord + 0.5D, xp);
+//				this.worldObj.spawnEntityInWorld(xpEntity);
+//			}
+//		}
+//	}
+	
+	public void dropItemFromSlot(int slot, int i)
 	{
-		if(!this.worldObj.isRemote && this.getStackInSlot(slot) != null)
+		if(this.getStackInSlot(slot) != null)
 		{
-			//TODO: drop out of clicked side
-			EntityItem droppedItem = new EntityItem(this.worldObj, this.xCoord + 0.5D, this.yCoord + (slot == 1 ? 1.2D : 1.5D), this.zCoord + 0.5D);
-			// int max = this.getStackInSlot(slot).stackSize;
-			droppedItem.setEntityItemStack(this.decrStackSize(slot, amount));
+			EntityItem droppedItem = new EntityItem(this.worldObj, this.xCoord + 0.5D, this.yCoord + 1.5D, this.zCoord + 0.5D);
+			
+			ItemStack decrStack = this.decrStackSize(slot, i);
+			droppedItem.setEntityItemStack(decrStack);
 			
 			droppedItem.motionX = random.nextDouble() / 4 - 0.125D;
 			droppedItem.motionZ = random.nextDouble() / 4 - 0.125D;
 			droppedItem.motionY = random.nextDouble() / 4;
-			droppedItem.setEntityItemStack(new ItemStack(droppedItem.getEntityItem().getItem(), amount));
-			this.worldObj.spawnEntityInWorld(droppedItem);
 			
-			if(slot == 2 && xp > 0)
-			{
-				System.out.println(xp);
-				EntityXPOrb xpEntity = new EntityXPOrb(this.worldObj, this.xCoord + 0.5D, this.yCoord + 1.5D, this.zCoord + 0.5D, xp);
-				this.worldObj.spawnEntityInWorld(xpEntity);
-			}
+			if(!this.worldObj.isRemote)
+				this.worldObj.spawnEntityInWorld(droppedItem);
 		}
-	}
-	
-	public void dropItemFromSlot(int slot, int amount)
-	{
-		dropItemFromSlot(slot, amount, -1);
 	}
 
 	
@@ -328,6 +342,7 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 			return false;
 		return true;
 	}
+	
 	
 	public void smeltItem()
 	{

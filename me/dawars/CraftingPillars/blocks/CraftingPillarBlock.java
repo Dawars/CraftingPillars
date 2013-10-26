@@ -89,7 +89,6 @@ public class CraftingPillarBlock extends BaseBlockContainer
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
 	{			
-		player.sendChatToPlayer(new ChatMessageComponent().addText("event"));
 		TileEntityCraftingPillar workTile = (TileEntityCraftingPillar) world.getBlockTileEntity(x, y, z);
 
 		if(hitY == 1F)

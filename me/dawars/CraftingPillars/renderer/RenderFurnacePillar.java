@@ -56,6 +56,7 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 	private Random random;
 	private RenderItem itemRenderer;
 	private RenderItem fuelRenderer;
+	private RenderItem resultRenderer;
 	
 	public RenderFurnacePillar()
 	{
@@ -72,10 +73,10 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 			@Override
 			public boolean shouldSpreadItems()
 			{
-				return true;
+				return false;
 			}
 		};
-		
+
 		fuelRenderer = new RenderItem()
 		{
 			
@@ -92,8 +93,25 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 			}
 		};
 		
+		resultRenderer = new RenderItem()
+		{
+			
+			@Override
+			public boolean shouldBob()
+			{
+				return true;
+			}
+			
+			@Override
+			public boolean shouldSpreadItems()
+			{
+				return false;
+			}
+		};
+		
 		itemRenderer.setRenderManager(RenderManager.instance);
 		fuelRenderer.setRenderManager(RenderManager.instance);
+		resultRenderer.setRenderManager(RenderManager.instance);
 		
 		model.textureWidth = 128;
 		model.textureHeight = 64;
@@ -181,11 +199,13 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 		
 		TileEntityFurnacePillar pillarTile = (TileEntityFurnacePillar) tile;
 		EntityItem citem = new EntityItem(tile.worldObj);
-		citem.hoverStart = pillarTile.rot;
+		citem.hoverStart = 0F;
 		
 		glPushMatrix();
 		glTranslated(x + 0.5D, y, z + 0.5D);
 		glRotatef(90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, -1F, 0F);
+		
+		//Input
 		if(pillarTile.getStackInSlot(0) != null)
 		{
 			glPushMatrix();
@@ -193,19 +213,25 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 			itemRenderer.doRenderItem(citem, 0F, 1.125F, 0F, 0F, 0F);
 			glPopMatrix();
 		}
-		if(pillarTile.getStackInSlot(2) != null)
-		{//TODO: split the new item and
+		
+		//TODO: split the new item and
 			//FIXME: add a fake slot for processed item
+		citem.hoverStart = pillarTile.rot;
+
+		//Output
+		if(pillarTile.getStackInSlot(2) != null)
+		{
 			glPushMatrix();
 			citem.setEntityItemStack(pillarTile.getStackInSlot(2));
-			itemRenderer.doRenderItem(citem, 0F, 1.125F + pillarTile.getCookProgressScaled(24)/50F, 0F, 0F, 0F);
+			resultRenderer.doRenderItem(citem, 0F, 1.5F, 0F, 0F, 0F);
 			glPopMatrix();
 		}
+		//Fuel
 		if(pillarTile.getStackInSlot(1) != null)
 		{
 			glPushMatrix();
 			citem.setEntityItemStack(pillarTile.getStackInSlot(1));
-			citem.hoverStart = pillarTile.burnTime > 0 ? (-pillarTile.rot / 4) : 0F;//FIXME: adjust values
+			citem.hoverStart = 0F;
 			fuelRenderer.doRenderItem(citem, 0F, 0.3F, 0F, 0F, 0F);
 			glPopMatrix();
 		}

@@ -2,6 +2,7 @@ package me.dawars.CraftingPillars.blocks;
 
 import java.util.Random;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import me.dawars.CraftingPillars.CraftingPillars;
@@ -11,9 +12,13 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.stats.AchievementList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
@@ -43,6 +48,20 @@ public class FurnacePillarBlock extends BaseBlockContainer
 	{
 		return false;
 	}
+
+	@Override
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack)
+	{
+		int meta = determineOrientation(world, x, y, z, entity);
+		
+		world.setBlockMetadataWithNotify(x, y, z, meta, 0);
+	}
+	
+	public static int determineOrientation(World world, int x, int y, int z, EntityLivingBase entity)
+	{
+		int l = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+		return l;
+	}
 	
 	@Override
 	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player)
@@ -51,6 +70,7 @@ public class FurnacePillarBlock extends BaseBlockContainer
 		
 		if(pillarTile.getStackInSlot(2) != null)
 		{
+			onCrafting(pillarTile.getStackInSlot(2), player);
 			pillarTile.dropItemFromSlot(2, pillarTile.getStackInSlot(2).stackSize);
 		}
 		
@@ -60,6 +80,59 @@ public class FurnacePillarBlock extends BaseBlockContainer
 		 */
 	}
 	
+
+	public void onCrafting(ItemStack itemstack, EntityPlayer player)//?field_75228_b
+	{
+		int field_75228_b = itemstack.stackSize;
+		itemstack.onCrafting(player.worldObj, player, field_75228_b);
+
+		if(itemstack != null)
+		{
+		    if (!player.worldObj.isRemote)
+		    {
+		        int i = field_75228_b;
+		        float f = FurnaceRecipes.smelting().getExperience(itemstack);
+		        int j;
+		
+		        if (f == 0.0F)
+		        {
+		            i = 0;
+		        }
+		        else if (f < 1.0F)
+		        {
+		            j = MathHelper.floor_float((float)i * f);
+		
+		            if (j < MathHelper.ceiling_float_int((float)i * f) && (float)Math.random() < (float)i * f - (float)j)
+		            {
+		                ++j;
+		            }
+		
+		            i = j;
+		        }
+		
+		        while (i > 0)
+		        {
+		            j = EntityXPOrb.getXPSplit(i);
+		            i -= j;
+		            player.worldObj.spawnEntityInWorld(new EntityXPOrb(player.worldObj, player.posX, player.posY + 0.5D, player.posZ + 0.5D, j));
+		        }
+		    }
+		
+		    field_75228_b = 0;
+		
+		    GameRegistry.onItemSmelted(player, itemstack);
+		
+		    if (itemstack.itemID == Item.ingotIron.itemID)
+		    {
+		    	player.addStat(AchievementList.acquireIron, 1);
+		    }
+		
+		    if (itemstack.itemID == Item.fishCooked.itemID)
+		    {
+		    	player.addStat(AchievementList.cookFish, 1);
+		    }
+		}
+	}
 	
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
