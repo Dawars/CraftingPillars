@@ -33,7 +33,7 @@ import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
 public class TileEntityCraftingPillar extends BaseTileEntity implements IInventory, ISidedInventory
 {
-	private ContainerCraftingPillar container = new ContainerCraftingPillar();
+	public ContainerCraftingPillar container = new ContainerCraftingPillar();
 	private ItemStack[] inventory = new ItemStack[this.getSizeInventory() + 1];
 	
 	// @SideOnly(Side.CLIENT)
@@ -41,7 +41,8 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 	
 	public boolean showNum;
 
-	public TileEntityCraftingPillar(){
+	public TileEntityCraftingPillar()
+	{
 		this.showNum = false;
 	}
 	
@@ -129,6 +130,8 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 		{
 			rotateCraftingGrid();
 			this.inventory[this.getSizeInventory()] = CraftingManager.getInstance().findMatchingRecipe(this.container.craftMatrix, this.worldObj);
+			/*if(this.inventory[this.getSizeInventory()] == null)
+				System.out.println("asd");*/
 			CraftingPillars.proxy.sendToPlayers(this.getDescriptionPacket(), this.worldObj, this.xCoord, this.yCoord, this.zCoord, 64);
 		}
 	}
@@ -174,6 +177,41 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 			itemCrafted.motionZ = random.nextDouble() / 4 - 0.125D;
 			itemCrafted.motionY = random.nextDouble() / 4;
 			this.worldObj.spawnEntityInWorld(itemCrafted);
+			
+			this.onCrafting(player, this.inventory[this.getSizeInventory()]);
+			
+			for(int i = 0; i < this.getSizeInventory(); i++)
+			{
+				ItemStack itemstack1 = this.getStackInSlot(i);
+				
+				if(itemstack1 != null)
+				{
+					this.decrStackSize(i, 1);
+					
+					if(itemstack1.getItem().hasContainerItem())
+					{
+						ItemStack itemstack2 = itemstack1.getItem().getContainerItemStack(itemstack1);
+						
+						if(itemstack2.isItemStackDamageable() && itemstack2.getItemDamage() > itemstack2.getMaxDamage())
+						{
+							MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(player, itemstack2));
+							itemstack2 = null;
+						}
+						
+						if(itemstack2 != null && (!itemstack1.getItem().doesContainerItemLeaveCraftingGrid(itemstack1) || !player.inventory.addItemStackToInventory(itemstack2)))
+						{
+							if(this.getStackInSlot(i) == null)
+							{
+								this.setInventorySlotContents(i, itemstack2);
+							}
+							else
+							{
+								player.dropPlayerItem(itemstack2);
+							}
+						}
+					}
+				}
+			}
 		}
 		else
 		{
@@ -183,48 +221,10 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 				particle.setRBGColorF(1F, 1F, 1F);
 				particle.multipleParticleScaleBy(1F);
 				particle.setParticleTextureIndex(82);// 83 villager
+				// particle.setParticleTextureIndex(-1);
+				// particle.setTextureFile("/mods/elysium/textures/misc/particles/fost.png");
 				FMLClientHandler.instance().getClient().effectRenderer.addEffect(particle);
 				this.worldObj.playSoundAtEntity(FMLClientHandler.instance().getClient().thePlayer, "random.levelup", 0.75F, 1.0F);
-				// particle.setTextureFile("/mods/elysium/textures/misc/particles/fost.png");
-				// this.worldObj.spawnParticle("smoke",
-				// this.xCoord+0.25D+random.nextDouble()/2D,
-				// this.yCoord+1.25D+random.nextDouble()/2D,
-				// this.zCoord+0.25D+random.nextDouble()/2D, 0D, 0D, 0D);
-			}
-		}
-		
-		this.onCrafting(player, this.inventory[this.getSizeInventory()]);
-		
-		for(int i = 0; i < this.getSizeInventory(); i++)
-		{
-			ItemStack itemstack1 = this.getStackInSlot(i);
-			
-			if(itemstack1 != null)
-			{
-				this.decrStackSize(i, 1);
-				
-				if(itemstack1.getItem().hasContainerItem())
-				{
-					ItemStack itemstack2 = itemstack1.getItem().getContainerItemStack(itemstack1);
-					
-					if(itemstack2.isItemStackDamageable() && itemstack2.getItemDamage() > itemstack2.getMaxDamage())
-					{
-						MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(player, itemstack2));
-						itemstack2 = null;
-					}
-					
-					if(itemstack2 != null && (!itemstack1.getItem().doesContainerItemLeaveCraftingGrid(itemstack1) || !player.inventory.addItemStackToInventory(itemstack2)))
-					{
-						if(this.getStackInSlot(i) == null)
-						{
-							this.setInventorySlotContents(i, itemstack2);
-						}
-						else
-						{
-							player.dropPlayerItem(itemstack2);
-						}
-					}
-				}
 			}
 		}
 	}

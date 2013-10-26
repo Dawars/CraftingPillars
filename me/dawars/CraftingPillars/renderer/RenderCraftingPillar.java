@@ -168,12 +168,12 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 					glPushMatrix();
 					glTranslated(0.1875D + i * 0.3125D, 1D + 0.1875D / 3D, 0.1875D + k * 0.3125D);
 					
-					if(workTile.showNum)
-					{
-						glDisable(GL11.GL_LIGHTING);
-						RenderingHelper.renderFloatingText(0F, 0.25F, 0F, 0.5F, ""+workTile.getStackInSlot(i * 3 + k).stackSize, Color.white.getRGB());
-						glEnable(GL11.GL_LIGHTING);
-					}
+					//if(workTile.showNum)
+					//{
+						glDisable(GL_LIGHTING);
+						RenderingHelper.renderFloatingText(0F, 0.25F, 0F, 0.5F, ""+workTile.getStackInSlot(i * 3 + k).stackSize, Color.yellow.getRGB());
+						glEnable(GL_LIGHTING);
+					//}
 					
 					glScalef(0.5F, 0.5F, 0.5F);
 					itemRenderer.doRenderItem(citem, 0D, 0D, 0D, 0F, 0F);
@@ -188,6 +188,12 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 			citem.hoverStart = -workTile.rot;
 			citem.setEntityItemStack(workTile.getStackInSlot(workTile.getSizeInventory()));
 			resultRenderer.doRenderItem(citem, 0.5F, 1.5F, 0.5F, 0F, 0F);
+			//if(workTile.showNum)
+			//{
+				glDisable(GL_LIGHTING);
+				RenderingHelper.renderFloatingText(0.5F, 2F, 0.5F, 1F, ""+workTile.getStackInSlot(workTile.getSizeInventory()).stackSize, Color.yellow.getRGB());
+				glEnable(GL_LIGHTING);
+			//}
 			glPopMatrix();
 		}
 		glPopMatrix();

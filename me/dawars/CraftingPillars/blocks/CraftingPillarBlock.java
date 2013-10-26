@@ -45,16 +45,19 @@ public class CraftingPillarBlock extends BaseBlockContainer
 	@Override
 	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player)
 	{
-		TileEntityCraftingPillar workTile = (TileEntityCraftingPillar) world.getBlockTileEntity(x, y, z);
-		
-		if(player.isSneaking())
+		if(!world.isRemote)
 		{
-//			while(workTile.getStackInSlot(workTile.getSizeInventory()) != null)//FIXME: végtelenciklus
-//				workTile.craftItem(player);
-		}
-		else if(workTile.getStackInSlot(workTile.getSizeInventory()) != null)
-		{
-			workTile.craftItem(player);
+			TileEntityCraftingPillar workTile = (TileEntityCraftingPillar) world.getBlockTileEntity(x, y, z);
+			
+			if(player.isSneaking())
+			{
+				while(workTile.getStackInSlot(workTile.getSizeInventory()) != null)
+					workTile.craftItem(player);
+			}
+			else if(workTile.getStackInSlot(workTile.getSizeInventory()) != null)
+			{
+				workTile.craftItem(player);
+			}
 		}
 	}
 	
@@ -62,38 +65,23 @@ public class CraftingPillarBlock extends BaseBlockContainer
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack)
 	{
 		int meta = determineOrientation(world, x, y, z, entity);
-		
 		world.setBlockMetadataWithNotify(x, y, z, meta, 0);
 	}
 	
 	public static int determineOrientation(World world, int x, int y, int z, EntityLivingBase entity)
 	{
-		// Used for up and down orientation
-		
-		/*
-		 * if (MathHelper.abs((float)entity.posX - (float)x) < 2.0F &&
-		 * MathHelper.abs((float)entity.posZ - (float)z) < 2.0F) { double d0 =
-		 * entity.posY + 1.82D - (double)entity.yOffset;
-		 * 
-		 * if (d0 - (double)y > 2.0D) { return 1; }
-		 * 
-		 * if ((double)y - d0 > 0.0D) { return 0; }
-		 */
-		
-		int l = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-		// Direction numbers
-		// return l == 0 ? 2 : (l == 1 ? 5 : (l == 2 ? 3 : (l == 3 ? 4 : 0)));
-		return l;
+		return MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
 	}
 	
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
-	{			
+	{
+		if(world.isRemote)
+			return true;
+		
 		TileEntityCraftingPillar workTile = (TileEntityCraftingPillar) world.getBlockTileEntity(x, y, z);
-
 		if(hitY == 1F)
 		{
-			
 			if(player.isSneaking())
 			{
 				hitX = (int) Math.floor(hitX / 0.33F);
@@ -146,14 +134,6 @@ public class CraftingPillarBlock extends BaseBlockContainer
 					workTile.onInventoryChanged();
 				}
 			}
-		} else {
-			if(world.isRemote)//FIXME: packethandler needed
-			{
-				if(workTile.showNum)
-					workTile.showNum = false;
-				else
-					workTile.showNum = true;
-			}
 		}
 		
 		return true;
@@ -162,22 +142,23 @@ public class CraftingPillarBlock extends BaseBlockContainer
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int par5, int par6)
 	{
-		TileEntityCraftingPillar workTile = (TileEntityCraftingPillar) world.getBlockTileEntity(x, y, z);
-		
-		for(int i = 0; i < 3; i++)
+		if(!world.isRemote)
 		{
-			for(int k = 0; k < 3; k++)
+			TileEntityCraftingPillar workTile = (TileEntityCraftingPillar) world.getBlockTileEntity(x, y, z);
+			for(int i = 0; i < 3; i++)
 			{
-				if(workTile.getStackInSlot(i * 3 + k) != null)
+				for(int k = 0; k < 3; k++)
 				{
-					EntityItem itemDropped = new EntityItem(world, x + 0.1875D + i * 0.3125D, y + 1D, z + 0.1875D + k * 0.3125D, workTile.getStackInSlot(i * 3 + k));
-					itemDropped.motionX = itemDropped.motionY = itemDropped.motionZ = 0D;
-					
-					if(workTile.getStackInSlot(i * 3 + k).hasTagCompound())
-						itemDropped.getEntityItem().setTagCompound((NBTTagCompound) workTile.getStackInSlot(i * 3 + k).getTagCompound().copy());
-					
-					if(!world.isRemote)
+					if(workTile.getStackInSlot(i * 3 + k) != null)
+					{
+						EntityItem itemDropped = new EntityItem(world, x + 0.1875D + i * 0.3125D, y + 1D, z + 0.1875D + k * 0.3125D, workTile.getStackInSlot(i * 3 + k));
+						itemDropped.motionX = itemDropped.motionY = itemDropped.motionZ = 0D;
+						
+						if(workTile.getStackInSlot(i * 3 + k).hasTagCompound())
+							itemDropped.getEntityItem().setTagCompound((NBTTagCompound) workTile.getStackInSlot(i * 3 + k).getTagCompound().copy());
+						
 						world.spawnEntityInWorld(itemDropped);
+					}
 				}
 			}
 		}
