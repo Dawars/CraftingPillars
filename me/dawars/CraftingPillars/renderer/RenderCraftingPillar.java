@@ -171,7 +171,7 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 					//if(workTile.showNum)
 					//{
 						glDisable(GL_LIGHTING);
-						RenderingHelper.renderFloatingText(0F, 0.25F, 0F, 0.5F, ""+workTile.getStackInSlot(i * 3 + k).stackSize, Color.yellow.getRGB());
+						RenderingHelper.renderFloatingText(0F, 0.15F, 0F, 0.2F, ""+workTile.getStackInSlot(i * 3 + k).stackSize, Color.white.getRGB());
 						glEnable(GL_LIGHTING);
 					//}
 					
@@ -191,7 +191,7 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 			//if(workTile.showNum)
 			//{
 				glDisable(GL_LIGHTING);
-				RenderingHelper.renderFloatingText(0.5F, 2F, 0.5F, 1F, ""+workTile.getStackInSlot(workTile.getSizeInventory()).stackSize, Color.yellow.getRGB());
+				RenderingHelper.renderFloatingText(0.5F, 1.88F, 0.5F, 0.3F, ""+workTile.getStackInSlot(workTile.getSizeInventory()).stackSize, Color.white.getRGB());
 				glEnable(GL_LIGHTING);
 			//}
 			glPopMatrix();
