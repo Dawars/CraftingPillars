@@ -58,7 +58,7 @@ public class CraftingPillars
 	public static Block blockShowOffPillar;
 	public static Block blockCraftingPillar;
 	public static Block blockFurnacePillar;
-	public static Block blockAnvilPillar;
+//	public static Block blockAnvilPillar;
 	
 	public static boolean floatingItems = true;
 	
@@ -85,14 +85,14 @@ public class CraftingPillars
 			blockShowOffPillar = (new ShowOffPillarBlock(idShowOffPillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("showOffPillar");
 			registerBlock(blockShowOffPillar, "Show-Off Pillar");
 			
-			Property idAnvilPillar = CraftingPillars.config.getBlock("AnvilPillar.id", BlockIds.idAnvilPillar);
-			blockAnvilPillar = (new AnvilPillarBlock(idAnvilPillar.getInt(), Material.anvil)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("anvilPillar");
-			registerBlock(blockAnvilPillar, "Anvil Pillar");
+//			Property idAnvilPillar = CraftingPillars.config.getBlock("AnvilPillar.id", BlockIds.idAnvilPillar);
+//			blockAnvilPillar = (new AnvilPillarBlock(idAnvilPillar.getInt(), Material.anvil)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("anvilPillar");
+//			registerBlock(blockAnvilPillar, "Anvil Pillar");
 			
 			GameRegistry.registerTileEntity(TileEntityShowOffPillar.class, "TileEntityShowOffPillar");
 			GameRegistry.registerTileEntity(TileEntityCraftingPillar.class, "TileEntityCraftingPillar");
 			GameRegistry.registerTileEntity(TileEntityFurnacePillar.class, "TileEntityFurnacePillar");
-			GameRegistry.registerTileEntity(TileEntityAnvilPillar.class, "TileEntityAnvilPillar");
+//			GameRegistry.registerTileEntity(TileEntityAnvilPillar.class, "TileEntityAnvilPillar");
 			
 			LanguageRegistry.instance().addStringLocalization("achievement.recursion", "Recursion I");
 			LanguageRegistry.instance().addStringLocalization("achievement.recursion.desc", "Craft a CraftingPillar in a CraftingPillar");

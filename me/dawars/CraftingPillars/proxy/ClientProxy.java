@@ -49,17 +49,17 @@ public class ClientProxy extends CommonProxy
 		CraftingPillars.showOffPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
 		CraftingPillars.craftingPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
 		CraftingPillars.furnacePillarRenderID = RenderingRegistry.getNextAvailableRenderId();
-		CraftingPillars.anvilPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
+//		CraftingPillars.anvilPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
 		
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCraftingPillar.class, new RenderCraftingPillar());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityShowOffPillar.class, new RenderShowOffPillar());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFurnacePillar.class, new RenderFurnacePillar());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAnvilPillar.class, new RenderAnvilPillar());
+//		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAnvilPillar.class, new RenderAnvilPillar());
 		
 		RenderingRegistry.registerBlockHandler(new RenderCraftingPillar());
 		RenderingRegistry.registerBlockHandler(new RenderShowOffPillar());
 		RenderingRegistry.registerBlockHandler(new RenderFurnacePillar());
-		RenderingRegistry.registerBlockHandler(new RenderAnvilPillar());
+//		RenderingRegistry.registerBlockHandler(new RenderAnvilPillar());
 	}
 	
 	/* NETWORKING */

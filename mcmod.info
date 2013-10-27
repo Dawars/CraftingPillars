@@ -3,7 +3,7 @@
   "modid": "craftingpillars",
   "name": "Crafting Pillars Mod",
   "description": "Adds a redesigned crafting table. You interact with it directly. Others can see what you are doing. Things won't pop out every time you go away.",
-  "version": "1.2",
+  "version": "1.3",
   "mcversion": "1.6.2, 1.6.4",
   "logoFile": "assets/craftingpillars/textures/logo.png",
   "url": "http://www.minecraftforum.net/topic/2046867-164crafting-pillar-mod-make-crafting-look-better-smp-support",
@@ -11,7 +11,7 @@
   "authors": ["Dawars", "FBalazs379"],
   "credits": "Made by Dawars and FBalazs",
   "parent": "",
-  "screenshots": ["assets/craftingpillars/textures/recipe.png", "assets/craftingpillars/textures/workingPillar1.png", "assets/craftingpillars/textures/workingPillar2.png"],
+  "screenshots": ["/assets/craftingpillars/textures/recipe.png", "/assets/craftingpillars/textures/workingPillar1.png", "/assets/craftingpillars/textures/workingPillar2.png"],
   "dependencies": []
 }
 ]
