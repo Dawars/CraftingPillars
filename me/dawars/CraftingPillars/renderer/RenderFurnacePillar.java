@@ -151,14 +151,18 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 		EntityItem citem = new EntityItem(tile.worldObj);
 		
 		glPushMatrix();
+		
 			glTranslated(x+0.5D, y, z+0.5D);
-			
+//			glRotatef(90F * tile.blockMetadata, 0F, 1F, 0F);
+
 			//Input
 			if(pillarTile.getStackInSlot(0) != null)
 			{//TODO: tilt
-				citem.hoverStart = CraftingPillars.floatingItems ? pillarTile.rot : 0F;
-				citem.setEntityItemStack(pillarTile.getStackInSlot(0));
-				resultRenderer.render(citem, 0F, 1.125F, 0F, pillarTile.showNum);
+				glPushMatrix();
+					citem.hoverStart = 0F;
+					citem.setEntityItemStack(pillarTile.getStackInSlot(0));
+					resultRenderer.render(citem, 0F, 1.125F, 0F, pillarTile.showNum);
+				glPopMatrix();
 			}
 		
 			//Output
@@ -179,7 +183,7 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 					glTranslatef(0F, 1.75F - pillarTile.cookTime/150F, 0F);
 					citem.hoverStart = 0F;
 					citem.setEntityItemStack(FurnaceRecipes.smelting().getSmeltingResult(pillarTile.getStackInSlot(0)));
-					resultRenderer.render(citem, 0F, 0F, 0F, false);
+					resultRenderer.render(citem, 0F, 0F, 0.01F, false);
 				glPopMatrix();
 			}
 			

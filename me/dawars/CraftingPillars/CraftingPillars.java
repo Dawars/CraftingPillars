@@ -5,13 +5,16 @@ import java.io.File;
 import me.dawars.CraftingPillars.blocks.AnvilPillarBlock;
 import me.dawars.CraftingPillars.blocks.CraftingPillarBlock;
 import me.dawars.CraftingPillars.blocks.FurnacePillarBlock;
+import me.dawars.CraftingPillars.blocks.ShowOffPillarBlock;
 import me.dawars.CraftingPillars.proxy.CommonProxy;
 import me.dawars.CraftingPillars.tile.TileEntityAnvilPillar;
 import me.dawars.CraftingPillars.tile.TileEntityCraftingPillar;
 import me.dawars.CraftingPillars.tile.TileEntityFurnacePillar;
+import me.dawars.CraftingPillars.tile.TileEntityShowOffPillar;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraft.stats.AchievementList;
@@ -47,17 +50,20 @@ public class CraftingPillars
 	
 	public static Configuration config;
 	
+	public static int showOffPillarRenderID;
 	public static int craftingPillarRenderID;
 	public static int furnacePillarRenderID;
 	public static int anvilPillarRenderID;
 	
+	public static Block blockShowOffPillar;
 	public static Block blockCraftingPillar;
 	public static Block blockFurnacePillar;
 	public static Block blockAnvilPillar;
 	
 	public static boolean floatingItems = true;
 	
-	public static final Achievement achievementRecursion = new Achievement(510, "recursion", -2, 0, /* blockCraftingPillar */Block.dirt, null).registerAchievement();
+	public static final Achievement achievementRecursion = new Achievement(510, "recursion", -2, 0, /* blockCraftingPillar */Item.redstone, AchievementList.openInventory).registerAchievement();
+	public static final Achievement achievementShowoff = new Achievement(511, "showoff", -3, -2, /* blockCraftingPillar */Item.diamond, achievementRecursion).registerAchievement();
 	
 	@EventHandler
 	public void load(FMLPreInitializationEvent evt)
@@ -75,16 +81,24 @@ public class CraftingPillars
 			blockFurnacePillar = (new FurnacePillarBlock(idFurnacePillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("furnacePillar");
 			registerBlock(blockFurnacePillar, "Furnace Pillar");
 			
+			Property idShowOffPillar = CraftingPillars.config.getBlock("ShowOffPillar.id", BlockIds.idShowOffPillar);
+			blockShowOffPillar = (new ShowOffPillarBlock(idShowOffPillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("showOffPillar");
+			registerBlock(blockShowOffPillar, "Show-Off Pillar");
+			
 			Property idAnvilPillar = CraftingPillars.config.getBlock("AnvilPillar.id", BlockIds.idAnvilPillar);
-			blockAnvilPillar = (new AnvilPillarBlock(idAnvilPillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("anvilPillar");
+			blockAnvilPillar = (new AnvilPillarBlock(idAnvilPillar.getInt(), Material.anvil)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("anvilPillar");
 			registerBlock(blockAnvilPillar, "Anvil Pillar");
 			
+			GameRegistry.registerTileEntity(TileEntityShowOffPillar.class, "TileEntityShowOffPillar");
 			GameRegistry.registerTileEntity(TileEntityCraftingPillar.class, "TileEntityCraftingPillar");
 			GameRegistry.registerTileEntity(TileEntityFurnacePillar.class, "TileEntityFurnacePillar");
 			GameRegistry.registerTileEntity(TileEntityAnvilPillar.class, "TileEntityAnvilPillar");
 			
-			LanguageRegistry.instance().addStringLocalization("achievement.recursion", "Recursion!");
+			LanguageRegistry.instance().addStringLocalization("achievement.recursion", "Recursion I");
 			LanguageRegistry.instance().addStringLocalization("achievement.recursion.desc", "Craft a CraftingPillar in a CraftingPillar");
+			
+			LanguageRegistry.instance().addStringLocalization("achievement.showoff", "Recursion II");
+			LanguageRegistry.instance().addStringLocalization("achievement.showoff.desc", "Show off your Show-Off Pillar!");
 			
 			proxy.registerRenderers();
 			
@@ -93,6 +107,7 @@ public class CraftingPillars
 		{
 			config.save();
 		}
+		GameRegistry.addRecipe(new ItemStack(blockShowOffPillar), new Object[] { "SSS", " S ", "SSS", Character.valueOf('S'), Block.cobblestone });
 		GameRegistry.addRecipe(new ItemStack(blockCraftingPillar), new Object[] { "SSS", " C ", "SSS", Character.valueOf('S'), Block.cobblestone, Character.valueOf('C'), Block.workbench });
 		GameRegistry.addRecipe(new ItemStack(blockFurnacePillar), new Object[] { "SSS", " F ", "SSS", Character.valueOf('S'), Block.stone, Character.valueOf('F'), Block.furnaceIdle });
 	

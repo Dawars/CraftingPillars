@@ -182,7 +182,7 @@ public class CraftingPillarBlock extends BaseBlockContainer
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister itemIcon)
 	{
-		this.blockIcon = itemIcon.registerIcon(CraftingPillars.id + ":craftingPillar");
+		this.blockIcon = itemIcon.registerIcon(CraftingPillars.id + ":craftingPillar_side");
 	}
 	
 	@Override

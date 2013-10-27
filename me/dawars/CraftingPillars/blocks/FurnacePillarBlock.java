@@ -52,6 +52,17 @@ public class FurnacePillarBlock extends BaseBlockContainer
 	}
 	
 	@Override
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack)
+	{
+		world.setBlockMetadataWithNotify(x, y, z, determineOrientation(world, x, y, z, entity), 0);
+	}
+	
+	public static int determineOrientation(World world, int x, int y, int z, EntityLivingBase entity)
+	{
+		return MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+	}
+	
+	@Override
 	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player)
 	{
 		if(!world.isRemote)
@@ -137,7 +148,7 @@ public class FurnacePillarBlock extends BaseBlockContainer
 		
 		TileEntityFurnacePillar pillarTile = (TileEntityFurnacePillar) world.getBlockTileEntity(x, y, z);
 		
-		if(hitY < 1F && !player.isSneaking())
+		if(!player.isSneaking() && player.inventory.getCurrentItem() == null)
 		{
 			pillarTile.showNum = !pillarTile.showNum;
 			pillarTile.onInventoryChanged();
@@ -257,7 +268,7 @@ public class FurnacePillarBlock extends BaseBlockContainer
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister itemIcon)
 	{
-		this.blockIcon = itemIcon.registerIcon(CraftingPillars.id + ":furnacePillar");
+		this.blockIcon = itemIcon.registerIcon(CraftingPillars.id + ":craftingPillar_side");
 	}
 	
 	@Override

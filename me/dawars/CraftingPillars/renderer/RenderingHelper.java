@@ -37,7 +37,7 @@ public class RenderingHelper
 			}
 			this.doRenderItem(item, x, y, z, 0F, 0F);
 		}
-		
+
 		@Override
 		public boolean shouldBob()
 		{
