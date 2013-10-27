@@ -137,6 +137,12 @@ public class FurnacePillarBlock extends BaseBlockContainer
 		
 		TileEntityFurnacePillar pillarTile = (TileEntityFurnacePillar) world.getBlockTileEntity(x, y, z);
 		
+		if(hitY < 1F && !player.isSneaking())
+		{
+			pillarTile.showNum = !pillarTile.showNum;
+			pillarTile.onInventoryChanged();
+		}
+		
 		if(player.isSneaking())
 		{
 			if(hitY < 1F)

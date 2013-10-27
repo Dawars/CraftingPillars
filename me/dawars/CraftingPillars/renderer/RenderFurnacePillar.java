@@ -158,7 +158,7 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 			{//TODO: tilt
 				citem.hoverStart = CraftingPillars.floatingItems ? pillarTile.rot : 0F;
 				citem.setEntityItemStack(pillarTile.getStackInSlot(0));
-				resultRenderer.render(citem, 0F, 1.125F, 0F, pillarTile.getStackInSlot(0).stackSize);
+				resultRenderer.render(citem, 0F, 1.125F, 0F, pillarTile.showNum);
 			}
 		
 			//Output
@@ -166,10 +166,9 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 			{
 				glPushMatrix();
 					glTranslatef(0F, 1.75F, 0F);
-//					glScalef(1.5F, 1.5F, 1.5F);
-					citem.hoverStart = -pillarTile.rot;
+					citem.hoverStart = 0F;
 					citem.setEntityItemStack(pillarTile.getStackInSlot(2));
-					resultRenderer.render(citem, 0F, 0F, 0F, pillarTile.getStackInSlot(2).stackSize);
+					resultRenderer.render(citem, 0F, 0F, 0F, pillarTile.showNum);
 				glPopMatrix();
 			}
 			
@@ -178,10 +177,9 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 			{
 				glPushMatrix();
 					glTranslatef(0F, 1.75F - pillarTile.cookTime/150F, 0F);
-//					glScalef(1.5F, 1.5F, 1.5F);
-					citem.hoverStart = -pillarTile.rot;
+					citem.hoverStart = 0F;
 					citem.setEntityItemStack(FurnaceRecipes.smelting().getSmeltingResult(pillarTile.getStackInSlot(0)));
-					resultRenderer.render(citem, 0F, 0F, 0F, 0);
+					resultRenderer.render(citem, 0F, 0F, 0F, false);
 				glPopMatrix();
 			}
 			
@@ -190,7 +188,7 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 			{
 				citem.hoverStart = 0F;
 				citem.setEntityItemStack(pillarTile.getStackInSlot(1));
-				itemRenderer.render(citem, 0F, 0.3F, 0F, 0);
+				itemRenderer.render(citem, 0F, 0.3F, 0F, pillarTile.showNum);
 			}
 		glPopMatrix();
 	}

@@ -44,7 +44,8 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 	
 	// @SideOnly(Side.CLIENT)
 	public float rot = 0F;
-	
+	public boolean showNum = false;
+
 	@Override
 	public void updateEntity()
 	{
@@ -91,6 +92,7 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 		
 		this.burnTime = nbt.getInteger("BurnTime");
 		this.cookTime = nbt.getInteger("CookTime");
+		this.showNum = nbt.getBoolean("showNum");
 	}
 	
 	@Override
@@ -113,6 +115,7 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 			}
 		}
 		nbt.setTag("Items", nbtlist);
+		nbt.setBoolean("showNum", this.showNum);
 	}
 	
 	@Override

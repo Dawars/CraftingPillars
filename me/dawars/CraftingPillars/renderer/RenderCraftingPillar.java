@@ -139,7 +139,7 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 					glPushMatrix();
 						glTranslated(0.1875D + i * 0.3125D, 1D + 0.1875D / 3D, 0.1875D + k * 0.3125D);
 						glScalef(0.5F, 0.5F, 0.5F);
-						itemRenderer.render(citem, 0F, 0F, 0F, workTile.showNum ? workTile.getStackInSlot(i * 3 + k).stackSize : 0);
+						itemRenderer.render(citem, 0F, 0F, 0F, workTile.showNum);
 					glPopMatrix();
 				}
 			}
@@ -150,7 +150,7 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 			glPushMatrix();
 			citem.hoverStart = -workTile.rot;
 			citem.setEntityItemStack(workTile.getStackInSlot(workTile.getSizeInventory()));
-			resultRenderer.render(citem, 0.5F, 1.5F, 0.5F, workTile.showNum ? workTile.getStackInSlot(workTile.getSizeInventory()).stackSize : 0);
+			resultRenderer.render(citem, 0.5F, 1.5F, 0.5F, workTile.showNum);
 			glPopMatrix();
 		}
 		glPopMatrix();

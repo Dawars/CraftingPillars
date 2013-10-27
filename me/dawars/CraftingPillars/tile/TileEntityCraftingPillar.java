@@ -39,12 +39,7 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 	// @SideOnly(Side.CLIENT)
 	public float rot = 0F;
 	
-	public boolean showNum;
-
-	public TileEntityCraftingPillar()
-	{
-		this.showNum = false;
-	}
+	public boolean showNum = false;
 	
 	@Override
 	public void updateEntity()
@@ -77,7 +72,7 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 			if((j >= 0) && (j < this.getSizeInventory() + 1))
 				this.inventory[j] = ItemStack.loadItemStackFromNBT(nbtslot);
 		}
-		showNum = nbt.getBoolean("showNum");
+		this.showNum = nbt.getBoolean("showNum");
 	}
 	
 	@Override
@@ -101,7 +96,7 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 		}
 		
 		nbt.setTag("Items", nbtlist);
-		nbt.setBoolean("showNum", showNum);
+		nbt.setBoolean("showNum", this.showNum);
 	}
 	
 	@Override
@@ -213,17 +208,17 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 		}
 		else
 		{
-			for(int i = 0; i < 8; i++)
-			{
-				CustomParticle particle = new CustomParticle(this.worldObj, this.xCoord - 0.25D + random.nextDouble() * 1.5D, this.yCoord + random.nextDouble() * 1.5D, this.zCoord - 0.25D + random.nextDouble() * 1.5D, 0D, 0D, 0D);
-				particle.setRBGColorF(1F, 1F, 1F);
-				particle.multipleParticleScaleBy(1F);
-				particle.setParticleTextureIndex(82);// 83 villager
-				// particle.setParticleTextureIndex(-1);
-				// particle.setTextureFile("/mods/elysium/textures/misc/particles/fost.png");
-				FMLClientHandler.instance().getClient().effectRenderer.addEffect(particle);
-				this.worldObj.playSoundAtEntity(FMLClientHandler.instance().getClient().thePlayer, "random.levelup", 0.75F, 1.0F);
-			}
+//			for(int i = 0; i < 8; i++)
+//			{
+//				CustomParticle particle = new CustomParticle(this.worldObj, this.xCoord - 0.25D + random.nextDouble() * 1.5D, this.yCoord + random.nextDouble() * 1.5D, this.zCoord - 0.25D + random.nextDouble() * 1.5D, 0D, 0D, 0D);
+//				particle.setRBGColorF(1F, 1F, 1F);
+//				particle.multipleParticleScaleBy(1F);
+//				particle.setParticleTextureIndex(82);// 83 villager
+//				// particle.setParticleTextureIndex(-1);
+//				// particle.setTextureFile("/mods/elysium/textures/misc/particles/fost.png");
+//				FMLClientHandler.instance().getClient().effectRenderer.addEffect(particle);
+//				this.worldObj.playSoundAtEntity(FMLClientHandler.instance().getClient().thePlayer, "random.levelup", 0.75F, 1.0F);
+//			}
 		}
 	}
 	

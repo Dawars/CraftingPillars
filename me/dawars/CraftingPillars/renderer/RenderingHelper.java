@@ -26,12 +26,13 @@ public class RenderingHelper
 			this.setRenderManager(RenderManager.instance);
 		}
 		
-		public void render(EntityItem item, float x, float y, float z, int number)
+		public void render(EntityItem item, float x, float y, float z, boolean showNum)
 		{
-			if(number > 0)
+			int number = item.getEntityItem().stackSize;
+			if(number > 0 && showNum)
 			{
 				glDisable(GL_LIGHTING);
-				renderFloatingText(x, y+(this.bob ? 0.5F : 0.3F), z, 0.4F, ""+number, Color.white.getRGB());
+				renderFloatingText(x, y+(this.bob ? 0.5F : 0.4F), z, 0.4F, ""+number, Color.white.getRGB());
 				glEnable(GL_LIGHTING);
 			}
 			this.doRenderItem(item, x, y, z, 0F, 0F);
