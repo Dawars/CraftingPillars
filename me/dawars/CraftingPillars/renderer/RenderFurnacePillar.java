@@ -34,6 +34,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 
 public class RenderFurnacePillar extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler
 {
@@ -214,8 +215,6 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 			glPopMatrix();
 		}
 		
-		//TODO: split the new item and
-			//FIXME: add a fake slot for processed item
 		citem.hoverStart = pillarTile.rot;
 
 		//Output
@@ -226,6 +225,16 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 			resultRenderer.doRenderItem(citem, 0F, 1.5F, 0F, 0F, 0F);
 			glPopMatrix();
 		}
+		
+		//processed item
+		if(pillarTile.getStackInSlot(0) != null && pillarTile.burnTime > 0)
+		{
+			glPushMatrix();
+			citem.setEntityItemStack(FurnaceRecipes.smelting().getSmeltingResult(pillarTile.getStackInSlot(0)));
+			resultRenderer.doRenderItem(citem, 0F, 1.6F - pillarTile.getCookProgressScaled(13), 0F, 0F, 0F);
+			glPopMatrix();
+		}
+		
 		//Fuel
 		if(pillarTile.getStackInSlot(1) != null)
 		{
