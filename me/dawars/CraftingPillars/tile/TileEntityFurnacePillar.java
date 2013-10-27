@@ -47,30 +47,32 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 	@Override
 	public void updateEntity()
 	{
+		System.out.println((this.worldObj.isRemote ? "Client: " : "Server: ")+this.cookTime+" "+this.burnTime);
+		
 		if(this.worldObj.isRemote)
 		{
 			this.rot += 0.1F;
 			if(this.rot >= 360F)
 				this.rot -= 360F;
 		}
-		
-		boolean changed = false;
-		
-		if(this.burnTime > 0)
-			this.burnTime--;
-		else if(this.canBurn())
-			this.burnItem();
-		
-		if(!this.worldObj.isRemote && this.burnTime > 0 && this.getStackInSlot(0) != null)
+		else
 		{
-			if(this.cookTime > 0)
-				this.cookTime--;
-			else if(this.canSmelt())
-				this.smeltItem();
+			boolean changed = true;
+			
+			if(this.burnTime > 0)
+				this.burnTime--;
+			else if(this.canBurn())
+				this.burnItem();
+			
+			if(this.canSmelt())
+				if(this.cookTime > 0)
+					this.cookTime--;
+				else
+					this.smeltItem();
+			
+			if(changed)
+				this.onInventoryChanged();
 		}
-		
-		if(changed)
-			this.onInventoryChanged();
 		
 		super.updateEntity();
 	}
@@ -131,17 +133,6 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 		this.writeToNBT(nbt);
 		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, nbt);
 	}
-	
-	 @SideOnly(Side.CLIENT)
-
-	    /**
-	     * Returns an integer between 0 and the passed value representing how close the current item is to being completely
-	     * cooked
-	     */
-	    public int getCookProgressScaled(int par1)
-	    {
-	        return this.cookTime * par1 / 200;
-	    }
 
 	@Override
 	public void onInventoryChanged()
@@ -149,16 +140,12 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 		super.onInventoryChanged();
 		
 		if(!this.worldObj.isRemote)
-		{
-//			if(this.getStackInSlot(0) == null)
-//				this.cookTime = 200;
-
 			CraftingPillars.proxy.sendToPlayers(this.getDescriptionPacket(), this.worldObj, this.xCoord, this.yCoord, this.zCoord, 64);
-		}
 	}
+	
 	public void dropItemFromSlot(int slot, int i)
 	{
-		if(this.getStackInSlot(slot) != null)
+		if(!this.worldObj.isRemote && this.getStackInSlot(slot) != null)
 		{
 			//TODO: drop out of clicked side
 			EntityItem droppedItem = new EntityItem(this.worldObj, this.xCoord + 0.5D, this.yCoord + 1.5D, this.zCoord + 0.5D);
@@ -170,11 +157,9 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 			droppedItem.motionZ = random.nextDouble() / 4 - 0.125D;
 			droppedItem.motionY = random.nextDouble() / 4;
 			
-			if(!this.worldObj.isRemote)
-				this.worldObj.spawnEntityInWorld(droppedItem);
+			this.worldObj.spawnEntityInWorld(droppedItem);
 		}
 	}
-
 	
 	@Override
 	public int getSizeInventory()
@@ -315,7 +300,6 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 		return true;
 	}
 	
-	
 	public void smeltItem()
 	{
 		ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(this.inventory[0]);
@@ -330,8 +314,7 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 		
 		if(this.inventory[0].stackSize <= 0)
 			this.inventory[0] = null;
-		else if(this.inventory[2].stackSize + itemstack.stackSize <= this.getInventoryStackLimit() && this.inventory[2].stackSize + itemstack.stackSize <= itemstack.getMaxStackSize())
-			this.cookTime = 150;
+		this.cookTime = 150;
 		
 		this.onInventoryChanged();
 	}

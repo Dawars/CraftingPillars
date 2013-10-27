@@ -8,6 +8,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.tile.TileEntityCraftingPillar;
 import me.dawars.CraftingPillars.tile.TileEntityFurnacePillar;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLivingBase;
@@ -49,39 +50,32 @@ public class FurnacePillarBlock extends BaseBlockContainer
 	{
 		return false;
 	}
-
-	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack)
-	{
-		int meta = determineOrientation(world, x, y, z, entity);
-		
-		world.setBlockMetadataWithNotify(x, y, z, meta, 0);
-	}
-	
-	public static int determineOrientation(World world, int x, int y, int z, EntityLivingBase entity)
-	{
-		int l = MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
-		return l;
-	}
 	
 	@Override
 	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player)
 	{
-		TileEntityFurnacePillar pillarTile = (TileEntityFurnacePillar) world.getBlockTileEntity(x, y, z);
-		
-		if(pillarTile.getStackInSlot(2) != null)
+		if(!world.isRemote)
 		{
-			onCrafting(pillarTile.getStackInSlot(2), player);
-			pillarTile.dropItemFromSlot(2, pillarTile.getStackInSlot(2).stackSize);
+			TileEntityFurnacePillar pillarTile = (TileEntityFurnacePillar) world.getBlockTileEntity(x, y, z);
+			
+			if(pillarTile.getStackInSlot(2) != null)
+			{
+				if(player.isSneaking())
+				{
+					onCrafting(pillarTile.getStackInSlot(2), player);
+					pillarTile.dropItemFromSlot(2, pillarTile.getStackInSlot(2).stackSize);
+				}
+				else
+				{
+					ItemStack itemStack = pillarTile.getStackInSlot(2);
+					itemStack.stackSize = 1;
+					onCrafting(itemStack, player);
+					pillarTile.dropItemFromSlot(2, 1);
+				}
+			}
 		}
-		
-		/*
-		 * if(workTile.getStackInSlot(workTile.getSizeInventory()) != null) {
-		 * workTile.craftItem(player); }
-		 */
 	}
 	
-
 	public void onCrafting(ItemStack itemstack, EntityPlayer player)//?field_75228_b
 	{
 		int field_75228_b = itemstack.stackSize;
@@ -138,6 +132,9 @@ public class FurnacePillarBlock extends BaseBlockContainer
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
 	{
+		if(world.isRemote)
+			return true;
+		
 		TileEntityFurnacePillar pillarTile = (TileEntityFurnacePillar) world.getBlockTileEntity(x, y, z);
 		
 		if(player.isSneaking())
@@ -172,7 +169,6 @@ public class FurnacePillarBlock extends BaseBlockContainer
 						player.getCurrentEquippedItem().stackSize--;
 					
 					pillarTile.decrStackSize(1, -1);
-					pillarTile.onInventoryChanged();
 				}
 			}
 			else
@@ -194,7 +190,6 @@ public class FurnacePillarBlock extends BaseBlockContainer
 						player.getCurrentEquippedItem().stackSize--;
 					
 					pillarTile.decrStackSize(0, -1);
-					pillarTile.onInventoryChanged();
 				}
 			}
 		}
@@ -205,20 +200,22 @@ public class FurnacePillarBlock extends BaseBlockContainer
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int par5, int par6)
 	{
-		TileEntityFurnacePillar workTile = (TileEntityFurnacePillar) world.getBlockTileEntity(x, y, z);
-		
-		for(int i = 0; i < workTile.getSizeInventory(); i++)
+		if(!world.isRemote)
 		{
-			if(workTile.getStackInSlot(i) != null)
+			TileEntityFurnacePillar pillarTile = (TileEntityFurnacePillar) world.getBlockTileEntity(x, y, z);
+			
+			for(int i = 0; i < pillarTile.getSizeInventory(); i++)
 			{
-				EntityItem itemDropped = new EntityItem(world, x + 0.5D, y, z + 0.5D, workTile.getStackInSlot(i));
-				itemDropped.motionX = itemDropped.motionY = itemDropped.motionZ = 0D;
-				
-				if(workTile.getStackInSlot(i).hasTagCompound())
-					itemDropped.getEntityItem().setTagCompound((NBTTagCompound) workTile.getStackInSlot(i).getTagCompound().copy());
-				
-				if(!world.isRemote)
+				if(pillarTile.getStackInSlot(i) != null)
+				{
+					EntityItem itemDropped = new EntityItem(world, x + 0.5D, y, z + 0.5D, pillarTile.getStackInSlot(i));
+					itemDropped.motionX = itemDropped.motionY = itemDropped.motionZ = 0D;
+					
+					if(pillarTile.getStackInSlot(i).hasTagCompound())
+						itemDropped.getEntityItem().setTagCompound((NBTTagCompound) pillarTile.getStackInSlot(i).getTagCompound().copy());
+					
 					world.spawnEntityInWorld(itemDropped);
+				}
 			}
 		}
 		
@@ -240,7 +237,6 @@ public class FurnacePillarBlock extends BaseBlockContainer
 	public void randomDisplayTick(World world, int x, int y, int z, Random rand)
 	{
 		if(((TileEntityFurnacePillar) world.getBlockTileEntity(x, y, z)).burnTime > 0)
-		// for(int i = 0; i < rand.nextInt(3)+1; i++)
 		{
 			double rx = x + rand.nextDouble() / 2 + 0.25D;
 			double ry = y + rand.nextDouble() / 2 + 0.25D;

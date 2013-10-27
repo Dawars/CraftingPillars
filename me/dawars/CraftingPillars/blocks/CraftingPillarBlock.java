@@ -64,8 +64,7 @@ public class CraftingPillarBlock extends BaseBlockContainer
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack)
 	{
-		int meta = determineOrientation(world, x, y, z, entity);
-		world.setBlockMetadataWithNotify(x, y, z, meta, 0);
+		world.setBlockMetadataWithNotify(x, y, z, determineOrientation(world, x, y, z, entity), 0);
 	}
 	
 	public static int determineOrientation(World world, int x, int y, int z, EntityLivingBase entity)
@@ -76,6 +75,9 @@ public class CraftingPillarBlock extends BaseBlockContainer
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
 	{
+		if(world.isRemote)
+			return true;
+		
 		TileEntityCraftingPillar workTile = (TileEntityCraftingPillar) world.getBlockTileEntity(x, y, z);
 
 		if(hitY < 1F && !player.isSneaking())
@@ -84,61 +86,58 @@ public class CraftingPillarBlock extends BaseBlockContainer
 			workTile.onInventoryChanged();
 		}
 		
-		if(!world.isRemote)
-		{		
-			if(hitY == 1F)
+		if(hitY == 1F)
+		{
+			if(player.isSneaking())
 			{
-				if(player.isSneaking())
+				hitX = (int) Math.floor(hitX / 0.33F);
+				if(hitX > 2)
+					hitX = 2;
+				if(hitX < 0)
+					hitX = 0;
+				hitZ = (int) Math.floor(hitZ / 0.33F);
+				if(hitZ > 2)
+					hitZ = 2;
+				if(hitZ < 0)
+					hitZ = 0;
+				
+				int i = (int) (hitX * 3 + hitZ);
+				
+				if(workTile.getStackInSlot(i) != null)
 				{
-					hitX = (int) Math.floor(hitX / 0.33F);
-					if(hitX > 2)
-						hitX = 2;
-					if(hitX < 0)
-						hitX = 0;
-					hitZ = (int) Math.floor(hitZ / 0.33F);
-					if(hitZ > 2)
-						hitZ = 2;
-					if(hitZ < 0)
-						hitZ = 0;
-					
-					int i = (int) (hitX * 3 + hitZ);
-					
-					if(workTile.getStackInSlot(i) != null)
-					{
-						workTile.dropItemFromSlot(i);
-					}
+					workTile.dropItemFromSlot(i);
 				}
-				else if(player.getCurrentEquippedItem() != null)
+			}
+			else if(player.getCurrentEquippedItem() != null)
+			{
+				hitX = (int) Math.floor(hitX / 0.33F);
+				if(hitX > 2)
+					hitX = 2;
+				if(hitX < 0)
+					hitX = 0;
+				hitZ = (int) Math.floor(hitZ / 0.33F);
+				if(hitZ > 2)
+					hitZ = 2;
+				if(hitZ < 0)
+					hitZ = 0;
+				
+				int i = (int) (hitX * 3 + hitZ);
+				
+				if(workTile.getStackInSlot(i) == null)
 				{
-					hitX = (int) Math.floor(hitX / 0.33F);
-					if(hitX > 2)
-						hitX = 2;
-					if(hitX < 0)
-						hitX = 0;
-					hitZ = (int) Math.floor(hitZ / 0.33F);
-					if(hitZ > 2)
-						hitZ = 2;
-					if(hitZ < 0)
-						hitZ = 0;
+					if(!player.capabilities.isCreativeMode)
+						player.getCurrentEquippedItem().stackSize--;
 					
-					int i = (int) (hitX * 3 + hitZ);
+					ItemStack in = new ItemStack(player.getCurrentEquippedItem().itemID, 1, player.getCurrentEquippedItem().getItemDamage());
+					workTile.setInventorySlotContents(i, in);
+				}
+				else if((workTile.getStackInSlot(i).isItemEqual(player.getCurrentEquippedItem())) && (workTile.getStackInSlot(i).stackSize < workTile.getStackInSlot(i).getMaxStackSize()))
+				{
+					if(!player.capabilities.isCreativeMode)
+						player.getCurrentEquippedItem().stackSize--;
 					
-					if(workTile.getStackInSlot(i) == null)
-					{
-						if(!player.capabilities.isCreativeMode)
-							player.getCurrentEquippedItem().stackSize--;
-						
-						ItemStack in = new ItemStack(player.getCurrentEquippedItem().itemID, 1, player.getCurrentEquippedItem().getItemDamage());
-						workTile.setInventorySlotContents(i, in);
-					}
-					else if((workTile.getStackInSlot(i).isItemEqual(player.getCurrentEquippedItem())) && (workTile.getStackInSlot(i).stackSize < workTile.getStackInSlot(i).getMaxStackSize()))
-					{
-						if(!player.capabilities.isCreativeMode)
-							player.getCurrentEquippedItem().stackSize--;
-						
-						workTile.decrStackSize(i, -1);
-						workTile.onInventoryChanged();
-					}
+					workTile.decrStackSize(i, -1);
+					workTile.onInventoryChanged();
 				}
 			}
 		}

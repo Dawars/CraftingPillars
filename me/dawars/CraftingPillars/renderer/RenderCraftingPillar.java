@@ -56,36 +56,8 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 	public RenderCraftingPillar()
 	{
 		random = new Random();
-		itemRenderer = new RenderItem()
-		{
-			@Override
-			public boolean shouldBob()
-			{
-				return false;
-			}
-			
-			@Override
-			public boolean shouldSpreadItems()
-			{
-				return true;
-			}
-		};
-		resultRenderer = new RenderItem()
-		{
-			@Override
-			public boolean shouldBob()
-			{
-				return true;
-			}
-			
-			@Override
-			public boolean shouldSpreadItems()
-			{
-				return true;
-			}
-		};
-		itemRenderer.setRenderManager(RenderManager.instance);
-		resultRenderer.setRenderManager(RenderManager.instance);
+		itemRenderer = new RenderingHelper.ItemRender(false, true);
+		resultRenderer = new RenderingHelper.ItemRender(true, true);
 		
 		model.textureWidth = 128;
 		model.textureHeight = 64;
@@ -153,7 +125,7 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 		
 		TileEntityCraftingPillar workTile = (TileEntityCraftingPillar) tile;
 		EntityItem citem = new EntityItem(tile.worldObj);
-		citem.hoverStart = workTile.rot;
+		citem.hoverStart = CraftingPillars.floatingItems ? workTile.rot : 0F;
 		
 		glPushMatrix();
 		glTranslated(x, y, z);

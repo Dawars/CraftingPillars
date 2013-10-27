@@ -56,63 +56,13 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 	
 	private Random random;
 	private RenderItem itemRenderer;
-	private RenderItem fuelRenderer;
 	private RenderItem resultRenderer;
 	
 	public RenderFurnacePillar()
 	{
 		random = new Random();
-		itemRenderer = new RenderItem()
-		{
-			
-			@Override
-			public boolean shouldBob()
-			{
-				return false;
-			}
-			
-			@Override
-			public boolean shouldSpreadItems()
-			{
-				return false;
-			}
-		};
-
-		fuelRenderer = new RenderItem()
-		{
-			
-			@Override
-			public boolean shouldBob()
-			{
-				return false;
-			}
-			
-			@Override
-			public boolean shouldSpreadItems()
-			{
-				return true;
-			}
-		};
-		
-		resultRenderer = new RenderItem()
-		{
-			
-			@Override
-			public boolean shouldBob()
-			{
-				return false;
-			}
-			
-			@Override
-			public boolean shouldSpreadItems()
-			{
-				return false;
-			}
-		};
-		
-		itemRenderer.setRenderManager(RenderManager.instance);
-		fuelRenderer.setRenderManager(RenderManager.instance);
-		resultRenderer.setRenderManager(RenderManager.instance);
+		itemRenderer = new RenderingHelper.ItemRender(false, true);
+		resultRenderer = new RenderingHelper.ItemRender(true, true);
 		
 		model.textureWidth = 128;
 		model.textureHeight = 64;
@@ -193,61 +143,55 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 		glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
 		glScaled(0.0625D, 0.0625D, 0.0625D);
 		glRotatef(180F, 1F, 0F, 0F);
-		glRotatef(90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
 		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_FURNACEPILLAR);
 		render(tile, 1F);
 		glPopMatrix();
 		
 		TileEntityFurnacePillar pillarTile = (TileEntityFurnacePillar) tile;
 		EntityItem citem = new EntityItem(tile.worldObj);
-		citem.hoverStart = 0F;
 		
 		glPushMatrix();
-		glTranslated(x + 0.5D, y, z + 0.5D);
-		glRotatef(90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, -1F, 0F);
+			glTranslated(x+0.5D, y, z+0.5D);
+			
+			//Input
+			if(pillarTile.getStackInSlot(0) != null)
+			{
+				citem.hoverStart = CraftingPillars.floatingItems ? pillarTile.rot : 0F;
+				citem.setEntityItemStack(pillarTile.getStackInSlot(0));
+				itemRenderer.doRenderItem(citem, 0F, 1.125F, 0F, 0F, 0F);
+			}
 		
-		//Input
-		if(pillarTile.getStackInSlot(0) != null)
-		{
-			glPushMatrix();
-			glTranslated(0, 1.12D, 0);
-
-			glRotatef(90F, 1F, 0F, 0F);
-
-			citem.setEntityItemStack(pillarTile.getStackInSlot(0));
-			itemRenderer.doRenderItem(citem, 0F, 0F, 0F, 0F, 0F);
-			glPopMatrix();
-		}
-		
-		citem.hoverStart = pillarTile.rot;
-
-		//Output
-		if(pillarTile.getStackInSlot(2) != null)
-		{
-			glPushMatrix();
-			citem.setEntityItemStack(pillarTile.getStackInSlot(2));
-			resultRenderer.doRenderItem(citem, 0F, 1.5F, 0F, 0F, 0F);
-			glPopMatrix();
-		}
-		
-		//processed item
-		if(pillarTile.getStackInSlot(0) != null && pillarTile.burnTime > 0)
-		{
-			glPushMatrix();
-			citem.setEntityItemStack(FurnaceRecipes.smelting().getSmeltingResult(pillarTile.getStackInSlot(0)));
-			resultRenderer.doRenderItem(citem, 0F, 1.5F - pillarTile.getCookProgressScaled(13) / 10F, 0F, 0F, 0F);
-			glPopMatrix();
-		}
-		
-		//Fuel
-		if(pillarTile.getStackInSlot(1) != null)
-		{
-			glPushMatrix();
-			citem.setEntityItemStack(pillarTile.getStackInSlot(1));
-			citem.hoverStart = 0F;
-			fuelRenderer.doRenderItem(citem, 0F, 0.3F, 0F, 0F, 0F);
-			glPopMatrix();
-		}
+			//Output
+			if(pillarTile.getStackInSlot(2) != null)
+			{
+				glPushMatrix();
+					glTranslatef(0F, 1.75F, 0F);
+					glScalef(1.5F, 1.5F, 1.5F);
+					citem.hoverStart = -pillarTile.rot;
+					citem.setEntityItemStack(pillarTile.getStackInSlot(2));
+					resultRenderer.doRenderItem(citem, 0F, 0F, 0F, 0F, 0F);
+				glPopMatrix();
+			}
+			
+			//processed item
+			if(pillarTile.canSmelt() && pillarTile.burnTime > 0)
+			{
+				glPushMatrix();
+					glTranslatef(0F, 1.75F - pillarTile.cookTime/150F, 0F);
+					glScalef(1.5F, 1.5F, 1.5F);
+					citem.hoverStart = -pillarTile.rot;
+					citem.setEntityItemStack(FurnaceRecipes.smelting().getSmeltingResult(pillarTile.getStackInSlot(0)));
+					itemRenderer.doRenderItem(citem, 0F, 0F, 0F, 0F, 0F);
+				glPopMatrix();
+			}
+			
+			//Fuel
+			if(pillarTile.getStackInSlot(1) != null)
+			{
+				citem.hoverStart = 0F;
+				citem.setEntityItemStack(pillarTile.getStackInSlot(1));
+				itemRenderer.doRenderItem(citem, 0F, 0.3F, 0F, 0F, 0F);
+			}
 		glPopMatrix();
 	}
 	

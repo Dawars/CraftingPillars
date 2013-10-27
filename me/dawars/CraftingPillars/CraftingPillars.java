@@ -55,6 +55,8 @@ public class CraftingPillars
 	public static Block blockFurnacePillar;
 	public static Block blockAnvilPillar;
 	
+	public static boolean floatingItems = true;
+	
 	public static final Achievement achievementRecursion = new Achievement(510, "recursion", -2, 0, /* blockCraftingPillar */Block.dirt, null).registerAchievement();
 	
 	@EventHandler
@@ -93,7 +95,6 @@ public class CraftingPillars
 		}
 		GameRegistry.addRecipe(new ItemStack(blockCraftingPillar), new Object[] { "SSS", " C ", "SSS", Character.valueOf('S'), Block.cobblestone, Character.valueOf('C'), Block.workbench });
 		GameRegistry.addRecipe(new ItemStack(blockFurnacePillar), new Object[] { "SSS", " F ", "SSS", Character.valueOf('S'), Block.stone, Character.valueOf('F'), Block.furnaceIdle });
-	
 	
 		MinecraftForge.EVENT_BUS.register(new me.dawars.CraftingPillars.event.EventHandler());
 	
