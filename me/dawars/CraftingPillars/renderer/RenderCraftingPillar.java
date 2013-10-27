@@ -150,17 +150,7 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 			glPushMatrix();
 			citem.hoverStart = -workTile.rot;
 			citem.setEntityItemStack(workTile.getStackInSlot(workTile.getSizeInventory()));
-<<<<<<< HEAD
 			resultRenderer.render(citem, 0.5F, 1.5F, 0.5F, workTile.showNum ? workTile.getStackInSlot(workTile.getSizeInventory()).stackSize : 0);
-=======
-			resultRenderer.doRenderItem(citem, 0.5F, 1.5F, 0.5F, 0F, 0F);
-			if(workTile.showNum)
-			{
-				glDisable(GL_LIGHTING);
-				RenderingHelper.renderFloatingText(0.5F, 2F, 0.5F, 0.3F, ""+workTile.getStackInSlot(workTile.getSizeInventory()).stackSize, Color.white.getRGB());
-				glEnable(GL_LIGHTING);
-			}
->>>>>>> 95aa4ee70d8a98620eb6d9fd1eecb026cda7da8c
 			glPopMatrix();
 		}
 		glPopMatrix();
