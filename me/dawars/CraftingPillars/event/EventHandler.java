@@ -19,7 +19,7 @@ public class EventHandler {
 			if ((mc.theWorld.getBlockId(event.x, event.y, event.z) == CraftingPillars.blockCraftingPillar.blockID ||
 					mc.theWorld.getBlockId(event.x, event.y, event.z) == CraftingPillars.blockAnvilPillar.blockID ||
 					mc.theWorld.getBlockId(event.x, event.y, event.z) == CraftingPillars.blockFurnacePillar.blockID) && 
-					event.face == 1 && 	event.entityPlayer.isSneaking()) {
+					event.face == 1 && event.entityPlayer.isSneaking() && event.entityPlayer.inventory.getCurrentItem() != null) {
 				if (event.isCancelable()) {
 					event.setCanceled(true);
 				}

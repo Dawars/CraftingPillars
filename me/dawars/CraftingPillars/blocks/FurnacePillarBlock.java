@@ -20,6 +20,7 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.AchievementList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -156,11 +157,14 @@ public class FurnacePillarBlock extends BaseBlockContainer
 			{
 				if(pillarTile.getStackInSlot(1) == null)
 				{
-					if(!player.capabilities.isCreativeMode)
-						player.getCurrentEquippedItem().stackSize--;
-					
 					ItemStack in = new ItemStack(player.getCurrentEquippedItem().itemID, 1, player.getCurrentEquippedItem().getItemDamage());
-					pillarTile.setInventorySlotContents(1, in);
+					if(TileEntityFurnace.isItemFuel(in))
+					{
+						pillarTile.setInventorySlotContents(1, in);
+						
+						if(!player.capabilities.isCreativeMode)
+							player.getCurrentEquippedItem().stackSize--;
+					}
 				}
 				else if (pillarTile.getStackInSlot(1).isItemEqual(player.getCurrentEquippedItem()) && (pillarTile.getStackInSlot(1).stackSize < pillarTile.getStackInSlot(1).getMaxStackSize()))
 				{
@@ -175,11 +179,14 @@ public class FurnacePillarBlock extends BaseBlockContainer
 			{
 				if(pillarTile.getStackInSlot(0) == null)
 				{
-					if(!player.capabilities.isCreativeMode)
-						player.getCurrentEquippedItem().stackSize--;
-					
 					ItemStack in = new ItemStack(player.getCurrentEquippedItem().itemID, 1, player.getCurrentEquippedItem().getItemDamage());
-					pillarTile.setInventorySlotContents(0, in);
+					if(FurnaceRecipes.smelting().getSmeltingResult(in) != null)
+					{
+						pillarTile.setInventorySlotContents(0, in);
+
+						if(!player.capabilities.isCreativeMode)
+							player.getCurrentEquippedItem().stackSize--;
+					}
 				}
 				else if(pillarTile.getStackInSlot(0).isItemEqual(player.getCurrentEquippedItem()) && (pillarTile.getStackInSlot(0).stackSize < pillarTile.getStackInSlot(0).getMaxStackSize()))
 				{
