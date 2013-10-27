@@ -163,7 +163,7 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 			if(workTile.showNum)
 			{
 				glDisable(GL_LIGHTING);
-				RenderingHelper.renderFloatingText(0.5F, 1.88F, 0.5F, 0.3F, ""+workTile.getStackInSlot(workTile.getSizeInventory()).stackSize, Color.white.getRGB());
+				RenderingHelper.renderFloatingText(0.5F, 2F, 0.5F, 0.3F, ""+workTile.getStackInSlot(workTile.getSizeInventory()).stackSize, Color.white.getRGB());
 				glEnable(GL_LIGHTING);
 			}
 			glPopMatrix();
