@@ -8,6 +8,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.entity.item.EntityItem;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -23,6 +24,17 @@ public class RenderingHelper
 			this.bob = bob;
 			this.spread = spread;
 			this.setRenderManager(RenderManager.instance);
+		}
+		
+		public void render(EntityItem item, float x, float y, float z, int number)
+		{
+			if(number > 0)
+			{
+				glDisable(GL_LIGHTING);
+				renderFloatingText(x, y+(this.bob ? 0.5F : 0.3F), z, 0.4F, ""+number, Color.white.getRGB());
+				glEnable(GL_LIGHTING);
+			}
+			this.doRenderItem(item, x, y, z, 0F, 0F);
 		}
 		
 		@Override

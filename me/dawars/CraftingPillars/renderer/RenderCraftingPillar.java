@@ -50,8 +50,8 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 	private ModelRenderer top;
 	
 	private Random random;
-	private RenderItem itemRenderer;
-	private RenderItem resultRenderer;
+	private RenderingHelper.ItemRender itemRenderer;
+	private RenderingHelper.ItemRender resultRenderer;
 	
 	public RenderCraftingPillar()
 	{
@@ -135,20 +135,11 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 			{
 				if(workTile.getStackInSlot(i * 3 + k) != null)
 				{
-					
 					citem.setEntityItemStack(workTile.getStackInSlot(i * 3 + k));
 					glPushMatrix();
-					glTranslated(0.1875D + i * 0.3125D, 1D + 0.1875D / 3D, 0.1875D + k * 0.3125D);
-					
-					if(workTile.showNum)
-					{
-						glDisable(GL_LIGHTING);
-						RenderingHelper.renderFloatingText(0F, 0.15F, 0F, 0.2F, ""+workTile.getStackInSlot(i * 3 + k).stackSize, Color.white.getRGB());
-						glEnable(GL_LIGHTING);
-					}
-					
-					glScalef(0.5F, 0.5F, 0.5F);
-					itemRenderer.doRenderItem(citem, 0D, 0D, 0D, 0F, 0F);
+						glTranslated(0.1875D + i * 0.3125D, 1D + 0.1875D / 3D, 0.1875D + k * 0.3125D);
+						glScalef(0.5F, 0.5F, 0.5F);
+						itemRenderer.render(citem, 0F, 0F, 0F, workTile.showNum ? workTile.getStackInSlot(i * 3 + k).stackSize : 0);
 					glPopMatrix();
 				}
 			}
@@ -159,13 +150,7 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 			glPushMatrix();
 			citem.hoverStart = -workTile.rot;
 			citem.setEntityItemStack(workTile.getStackInSlot(workTile.getSizeInventory()));
-			resultRenderer.doRenderItem(citem, 0.5F, 1.5F, 0.5F, 0F, 0F);
-			if(workTile.showNum)
-			{
-				glDisable(GL_LIGHTING);
-				RenderingHelper.renderFloatingText(0.5F, 1.88F, 0.5F, 0.3F, ""+workTile.getStackInSlot(workTile.getSizeInventory()).stackSize, Color.white.getRGB());
-				glEnable(GL_LIGHTING);
-			}
+			resultRenderer.render(citem, 0.5F, 1.5F, 0.5F, workTile.showNum ? workTile.getStackInSlot(workTile.getSizeInventory()).stackSize : 0);
 			glPopMatrix();
 		}
 		glPopMatrix();

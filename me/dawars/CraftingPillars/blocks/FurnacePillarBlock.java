@@ -67,7 +67,7 @@ public class FurnacePillarBlock extends BaseBlockContainer
 				}
 				else
 				{
-					ItemStack itemStack = pillarTile.getStackInSlot(2);
+					ItemStack itemStack = pillarTile.getStackInSlot(2).copy();
 					itemStack.stackSize = 1;
 					onCrafting(itemStack, player);
 					pillarTile.dropItemFromSlot(2, 1);

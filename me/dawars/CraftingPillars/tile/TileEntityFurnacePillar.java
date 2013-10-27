@@ -55,24 +55,19 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 			if(this.rot >= 360F)
 				this.rot -= 360F;
 		}
-		else
-		{
-			boolean changed = true;
-			
-			if(this.burnTime > 0)
-				this.burnTime--;
-			else if(this.canBurn())
-				this.burnItem();
-			
-			if(this.canSmelt())
-				if(this.cookTime > 0)
-					this.cookTime--;
-				else
-					this.smeltItem();
-			
-			if(changed)
-				this.onInventoryChanged();
-		}
+		
+		if(this.burnTime > 0)
+			this.burnTime--;
+		else if(this.canBurn())
+			this.burnItem();
+		
+		if(this.burnTime > 0 && this.canSmelt())
+			if(this.cookTime > 0)
+				this.cookTime--;
+			else
+				this.smeltItem();
+		
+		//this.onInventoryChanged();
 		
 		super.updateEntity();
 	}
@@ -302,6 +297,10 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 	
 	public void smeltItem()
 	{
+		this.cookTime = 150;
+		if(this.worldObj.isRemote)
+			return;
+		
 		ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(this.inventory[0]);
 		this.xp += FurnaceRecipes.smelting().getExperience(this.inventory[0]);
 		
@@ -314,7 +313,6 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 		
 		if(this.inventory[0].stackSize <= 0)
 			this.inventory[0] = null;
-		this.cookTime = 150;
 		
 		this.onInventoryChanged();
 	}
@@ -330,6 +328,9 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 	
 	public void burnItem()
 	{
+		if(this.worldObj.isRemote)
+			return;
+		
 		if(this.cookTime == 0)
 			this.cookTime = 150;
 		this.burnTime = TileEntityFurnace.getItemBurnTime(this.inventory[1]);
