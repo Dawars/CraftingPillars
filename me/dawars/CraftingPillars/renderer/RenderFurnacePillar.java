@@ -100,7 +100,7 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 			@Override
 			public boolean shouldBob()
 			{
-				return true;
+				return false;
 			}
 			
 			@Override
@@ -231,7 +231,7 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 		{
 			glPushMatrix();
 			citem.setEntityItemStack(FurnaceRecipes.smelting().getSmeltingResult(pillarTile.getStackInSlot(0)));
-			resultRenderer.doRenderItem(citem, 0F, 1.6F - pillarTile.getCookProgressScaled(13), 0F, 0F, 0F);
+			resultRenderer.doRenderItem(citem, 0F, 1.5F - pillarTile.getCookProgressScaled(13) / 10F, 0F, 0F, 0F);
 			glPopMatrix();
 		}
 		
