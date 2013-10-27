@@ -210,8 +210,12 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 		if(pillarTile.getStackInSlot(0) != null)
 		{
 			glPushMatrix();
+			glTranslated(0, 1.12D, 0);
+
+			glRotatef(90F, 1F, 0F, 0F);
+
 			citem.setEntityItemStack(pillarTile.getStackInSlot(0));
-			itemRenderer.doRenderItem(citem, 0F, 1.125F, 0F, 0F, 0F);
+			itemRenderer.doRenderItem(citem, 0F, 0F, 0F, 0F, 0F);
 			glPopMatrix();
 		}
 		

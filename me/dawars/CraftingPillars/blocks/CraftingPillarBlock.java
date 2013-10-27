@@ -76,7 +76,6 @@ public class CraftingPillarBlock extends BaseBlockContainer
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
 	{
-		//numbertoggle sync to client and server
 		TileEntityCraftingPillar workTile = (TileEntityCraftingPillar) world.getBlockTileEntity(x, y, z);
 
 		if(hitY < 1F && !player.isSneaking())

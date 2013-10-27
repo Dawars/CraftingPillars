@@ -150,44 +150,17 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 		
 		if(!this.worldObj.isRemote)
 		{
-			if(this.getStackInSlot(0) == null)
-				this.cookTime = 150;
-			/*
-			 * if(this.cookTime == 0 && this.getStackInSlot(0) != null)
-			 * this.cookTime = 150;
-			 */
+//			if(this.getStackInSlot(0) == null)
+//				this.cookTime = 200;
+
 			CraftingPillars.proxy.sendToPlayers(this.getDescriptionPacket(), this.worldObj, this.xCoord, this.yCoord, this.zCoord, 64);
 		}
 	}
-	
-//	public void dropItemFromSlot(int slot, int amount, int side)
-//	{
-//		if(!this.worldObj.isRemote && this.getStackInSlot(slot) != null)
-//		{
-//			//TODO: drop out of clicked side
-//			EntityItem droppedItem = new EntityItem(this.worldObj, this.xCoord + 0.5D, this.yCoord + (slot == 1 ? 1.2D : 1.5D), this.zCoord + 0.5D);
-//			// int max = this.getStackInSlot(slot).stackSize;
-//			droppedItem.setEntityItemStack(this.decrStackSize(slot, amount));
-//			
-//			droppedItem.motionX = random.nextDouble() / 4 - 0.125D;
-//			droppedItem.motionZ = random.nextDouble() / 4 - 0.125D;
-//			droppedItem.motionY = random.nextDouble() / 4;
-//			droppedItem.setEntityItemStack(new ItemStack(droppedItem.getEntityItem().getItem(), amount));
-//			this.worldObj.spawnEntityInWorld(droppedItem);
-//			
-//			if(slot == 2 && xp > 0)
-//			{
-//				System.out.println(xp);
-//				EntityXPOrb xpEntity = new EntityXPOrb(this.worldObj, this.xCoord + 0.5D, this.yCoord + 1.5D, this.zCoord + 0.5D, xp);
-//				this.worldObj.spawnEntityInWorld(xpEntity);
-//			}
-//		}
-//	}
-	
 	public void dropItemFromSlot(int slot, int i)
 	{
 		if(this.getStackInSlot(slot) != null)
 		{
+			//TODO: drop out of clicked side
 			EntityItem droppedItem = new EntityItem(this.worldObj, this.xCoord + 0.5D, this.yCoord + 1.5D, this.zCoord + 0.5D);
 			
 			ItemStack decrStack = this.decrStackSize(slot, i);
