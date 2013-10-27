@@ -62,7 +62,7 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 	{
 		random = new Random();
 		itemRenderer = new RenderingHelper.ItemRender(false, true);
-		resultRenderer = new RenderingHelper.ItemRender(true, true);
+		resultRenderer = new RenderingHelper.ItemRender(false, false);
 		
 		model.textureWidth = 128;
 		model.textureHeight = 64;
@@ -155,10 +155,10 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 			
 			//Input
 			if(pillarTile.getStackInSlot(0) != null)
-			{
+			{//TODO: tilt
 				citem.hoverStart = CraftingPillars.floatingItems ? pillarTile.rot : 0F;
 				citem.setEntityItemStack(pillarTile.getStackInSlot(0));
-				itemRenderer.render(citem, 0F, 1.125F, 0F, pillarTile.getStackInSlot(0).stackSize);
+				resultRenderer.render(citem, 0F, 1.125F, 0F, pillarTile.getStackInSlot(0).stackSize);
 			}
 		
 			//Output
@@ -166,7 +166,7 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 			{
 				glPushMatrix();
 					glTranslatef(0F, 1.75F, 0F);
-					glScalef(1.5F, 1.5F, 1.5F);
+//					glScalef(1.5F, 1.5F, 1.5F);
 					citem.hoverStart = -pillarTile.rot;
 					citem.setEntityItemStack(pillarTile.getStackInSlot(2));
 					resultRenderer.render(citem, 0F, 0F, 0F, pillarTile.getStackInSlot(2).stackSize);
@@ -178,10 +178,10 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 			{
 				glPushMatrix();
 					glTranslatef(0F, 1.75F - pillarTile.cookTime/150F, 0F);
-					glScalef(1.5F, 1.5F, 1.5F);
+//					glScalef(1.5F, 1.5F, 1.5F);
 					citem.hoverStart = -pillarTile.rot;
 					citem.setEntityItemStack(FurnaceRecipes.smelting().getSmeltingResult(pillarTile.getStackInSlot(0)));
-					itemRenderer.render(citem, 0F, 0F, 0F, 0);
+					resultRenderer.render(citem, 0F, 0F, 0F, 0);
 				glPopMatrix();
 			}
 			

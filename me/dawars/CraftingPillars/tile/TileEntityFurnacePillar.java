@@ -33,6 +33,7 @@ import net.minecraft.stats.AchievementList;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
@@ -142,7 +143,6 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 	{
 		if(!this.worldObj.isRemote && this.getStackInSlot(slot) != null)
 		{
-			//TODO: drop out of clicked side
 			EntityItem droppedItem = new EntityItem(this.worldObj, this.xCoord + 0.5D, this.yCoord + 1.5D, this.zCoord + 0.5D);
 			
 			ItemStack decrStack = this.decrStackSize(slot, i);
@@ -249,7 +249,7 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 	public void closeChest()
 	{
 	}
-	
+	//TODO:pipe
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack)
 	{
@@ -259,19 +259,23 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side)
 	{
-		return new int[]{};
+		return new int[]{0, 1, 2};
 	}
 	
 	@Override
 	public boolean canInsertItem(int slot, ItemStack itemstack, int side)
 	{
+		if(slot == 0 && FurnaceRecipes.smelting().getSmeltingResult(itemstack) != null && (this.inventory[slot] == null || this.inventory[slot].isItemEqual(itemstack)))//Input
+			return true;
+		if(slot == 1 && TileEntityFurnace.isItemFuel(itemstack) && (this.inventory[slot] == null || this.inventory[slot].isItemEqual(itemstack)))//Fuel
+			return true;
 		return false;
 	}
 	
 	@Override
 	public boolean canExtractItem(int slot, ItemStack itemstack, int side)
 	{
-		return false;
+		return slot == 2;
 	}
 	
 	public boolean canSmelt()
