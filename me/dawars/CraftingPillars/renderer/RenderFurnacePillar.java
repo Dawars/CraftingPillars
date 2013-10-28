@@ -183,7 +183,7 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 					glTranslatef(0F, 1.75F - pillarTile.cookTime/150F, 0F);
 					citem.hoverStart = 0F;
 					citem.setEntityItemStack(FurnaceRecipes.smelting().getSmeltingResult(pillarTile.getStackInSlot(0)));
-					resultRenderer.render(citem, 0F, 0F, 0.01F, false);
+					resultRenderer.render(citem, 0.01F, 0F, 0.01F, false);
 				glPopMatrix();
 			}
 			
