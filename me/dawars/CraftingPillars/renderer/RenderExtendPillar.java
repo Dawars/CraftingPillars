@@ -24,17 +24,17 @@ public class RenderExtendPillar extends TileEntitySpecialRenderer implements ISi
 	};
 	
 	// fields
-	ModelRenderer bottom;
-	ModelRenderer bottoms;
-	ModelRenderer tops;
-	ModelRenderer top;
-	ModelRenderer pillar;
-	ModelRenderer pillarTop;
-	ModelRenderer pillarBottom;
-	ModelRenderer pillarEast;
-	ModelRenderer pillarWest;
-	ModelRenderer pillarNorth;
-	ModelRenderer pillarSouth;
+	private ModelRenderer bottom;
+	private ModelRenderer bottoms;
+	private ModelRenderer tops;
+	private ModelRenderer top;
+	private ModelRenderer pillar;
+	private ModelRenderer pillarTop;
+	private ModelRenderer pillarBottom;
+	private ModelRenderer pillarEast;
+	private ModelRenderer pillarWest;
+	private ModelRenderer pillarNorth;
+	private ModelRenderer pillarSouth;
 	
 	public RenderExtendPillar()
 	{

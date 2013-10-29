@@ -50,6 +50,8 @@ public class RenderShowOffPillar extends TileEntitySpecialRenderer implements IS
 	private ModelRenderer pillartop;
 	private ModelRenderer top;
 	
+	private ModelRenderer pillarBottom;
+	
 	private Random random;
 	private RenderingHelper.ItemRender itemRenderer;
 	private RenderingHelper.ItemRender resultRenderer;
@@ -62,6 +64,13 @@ public class RenderShowOffPillar extends TileEntitySpecialRenderer implements IS
 		
 		model.textureWidth = 128;
 		model.textureHeight = 64;
+		
+		pillarBottom = new ModelRenderer(model, 0, 33);
+		pillarBottom.addBox(0F, 0F, 0F, 12, 3, 12);
+		pillarBottom.setRotationPoint(-6F, 21F, 6F);
+		pillarBottom.setTextureSize(128, 64);
+		pillarBottom.mirror = true;
+		setRotation(pillarBottom, 0F, 1.570796F, 0F);
 		
 		bottom = new ModelRenderer(model, 0, 0);
 		bottom.addBox(-8F, -1F, -8F, 16, 2, 16);
@@ -95,10 +104,17 @@ public class RenderShowOffPillar extends TileEntitySpecialRenderer implements IS
 		setRotation(top, 0F, 0F, 0F);
 	}
 	
-	public void render(TileEntity tileentity, float f)
+	public void render(float f, boolean connected)
 	{
-		bottom.render(f);
-		pillarbottom.render(f);
+		if(connected)
+		{
+			pillarBottom.render(f);
+		}
+		else
+		{
+			bottom.render(f);
+			pillarbottom.render(f);
+		}
 		pillar.render(f);
 		pillartop.render(f);
 		top.render(f);
@@ -118,7 +134,7 @@ public class RenderShowOffPillar extends TileEntitySpecialRenderer implements IS
 		glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
 		glRotatef(180F, 1F, 0F, 0F);
 		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_SHOWOFFPILLAR);
-		render(tile, 0.0625F);
+		render(0.0625F, tile.worldObj.getBlockId(tile.xCoord, tile.yCoord-1, tile.zCoord) == CraftingPillars.blockExtendPillar.blockID);
 		glPopMatrix();
 		
 		TileEntityShowOffPillar workTile = (TileEntityShowOffPillar) tile;
@@ -146,7 +162,7 @@ public class RenderShowOffPillar extends TileEntitySpecialRenderer implements IS
 		glTranslated(0, 1.0D, 0);
 		glRotatef(180F, 1F, 0F, 0F);
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_SHOWOFFPILLAR);
-		render(null, 0.0625F);
+		render(0.0625F, false);
 		glPopMatrix();
 	}
 	

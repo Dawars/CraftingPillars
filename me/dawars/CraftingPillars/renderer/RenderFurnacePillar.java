@@ -2,8 +2,6 @@ package me.dawars.CraftingPillars.renderer;
 
 import static org.lwjgl.opengl.GL11.*;
 
-import java.util.Random;
-
 import javax.swing.Renderer;
 
 import org.lwjgl.opengl.GL11;
@@ -54,18 +52,25 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 	private ModelRenderer Pillar3;
 	private ModelRenderer Pillar4;
 	
-	private Random random;
+	private ModelRenderer pillarBottom;
+	
 	private RenderingHelper.ItemRender itemRenderer;
 	private RenderingHelper.ItemRender resultRenderer;
 	
 	public RenderFurnacePillar()
 	{
-		random = new Random();
 		itemRenderer = new RenderingHelper.ItemRender(false, true);
 		resultRenderer = new RenderingHelper.ItemRender(false, false);
 		
 		model.textureWidth = 128;
 		model.textureHeight = 64;
+		
+		pillarBottom = new ModelRenderer(model, 0, 33);
+		pillarBottom.addBox(0F, 0F, 0F, 12, 3, 12);
+		pillarBottom.setRotationPoint(-6F, 21F, 6F);
+		pillarBottom.setTextureSize(128, 64);
+		pillarBottom.mirror = true;
+		setRotation(pillarBottom, 0F, 1.570796F, 0F);
 		
 		CraftingBottom = new ModelRenderer(model, 0, 0);
 		CraftingBottom.addBox(0F, 0F, 0F, 16, 2, 16);
@@ -79,7 +84,7 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 		CraftingBotSlab.setTextureSize(128, 64);
 		CraftingBotSlab.mirror = true;
 		setRotation(CraftingBotSlab, 0F, 0F, 0F);
-		Pillar1 = new ModelRenderer(model, 0, 43);
+		Pillar1 = new ModelRenderer(model, 2, 43);
 		Pillar1.addBox(0F, 0F, 0F, 2, 10, 2);
 		Pillar1.setRotationPoint(-6F, 11F, -6F);
 		Pillar1.setTextureSize(128, 64);
@@ -97,19 +102,19 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 		WorkbenchTop.setTextureSize(128, 64);
 		WorkbenchTop.mirror = true;
 		setRotation(WorkbenchTop, 0F, 0F, 0F);
-		Pillar2 = new ModelRenderer(model, 0, 43);
+		Pillar2 = new ModelRenderer(model, 2, 43);
 		Pillar2.addBox(-2F, 0F, -2F, 2, 10, 2);
 		Pillar2.setRotationPoint(6F, 11F, -6F);
 		Pillar2.setTextureSize(128, 64);
 		Pillar2.mirror = true;
 		setRotation(Pillar2, 0F, 1.570796F, 0F);
-		Pillar3 = new ModelRenderer(model, 0, 43);
+		Pillar3 = new ModelRenderer(model, 2, 43);
 		Pillar3.addBox(0F, 0F, 0F, 2, 10, 2);
 		Pillar3.setRotationPoint(-6F, 11F, 6F);
 		Pillar3.setTextureSize(128, 64);
 		Pillar3.mirror = true;
 		setRotation(Pillar3, 0F, 1.570796F, 0F);
-		Pillar4 = new ModelRenderer(model, 0, 43);
+		Pillar4 = new ModelRenderer(model, 2, 43);
 		Pillar4.addBox(-2F, 0F, -2F, 2, 10, 2);
 		Pillar4.setRotationPoint(6F, 11F, 6F);
 		Pillar4.setTextureSize(128, 64);
@@ -117,10 +122,17 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 		setRotation(Pillar4, 0F, 0F, 0F);
 	}
 	
-	public void render(TileEntity tileentity, float f)
+	public void render(float f, boolean connected)
 	{
-		CraftingBottom.render(f);
-		CraftingBotSlab.render(f);
+		if(connected)
+		{
+			pillarBottom.render(f);
+		}
+		else
+		{
+			CraftingBottom.render(f);
+			CraftingBotSlab.render(f);
+		}
 		Pillar1.render(f);
 		WorkbenchSlab.render(f);
 		WorkbenchTop.render(f);
@@ -144,7 +156,7 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 		glRotatef(180F, 1F, 0F, 0F);
 		
 		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_FURNACEPILLAR);
-		render(tile, 0.0625F);
+		render(0.0625F, tile.worldObj.getBlockId(tile.xCoord, tile.yCoord-1, tile.zCoord) == CraftingPillars.blockExtendPillar.blockID);
 		glPopMatrix();
 		
 		TileEntityFurnacePillar pillarTile = (TileEntityFurnacePillar) tile;
@@ -205,7 +217,7 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 		glRotatef(180F, 1F, 0F, 0F);
 		glRotatef(90F, 0F, 1F, 0F);
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_FURNACEPILLAR);
-		render(null, 0.0625F);
+		render(0.0625F, false);
 		glPopMatrix();
 	}
 	
