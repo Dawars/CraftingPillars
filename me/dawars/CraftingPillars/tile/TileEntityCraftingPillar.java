@@ -165,12 +165,17 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 	{
 		if(!this.worldObj.isRemote)
 		{
+			/*
 			EntityItem itemCrafted = new EntityItem(this.worldObj, this.xCoord + 0.5D, this.yCoord + 1.5D, this.zCoord + 0.5D, this.inventory[this.getSizeInventory()]);
 			itemCrafted.motionX = random.nextDouble() / 4 - 0.125D;
 			itemCrafted.motionZ = random.nextDouble() / 4 - 0.125D;
 			itemCrafted.motionY = random.nextDouble() / 4;
 			this.worldObj.spawnEntityInWorld(itemCrafted);
+			*/
 			
+			EntityItem itemEntity = new EntityItem(this.worldObj, player.posX, player.posY, player.posZ);
+			itemEntity.setEntityItemStack(this.inventory[this.getSizeInventory()]);
+			this.worldObj.spawnEntityInWorld(itemEntity);
 			this.onCrafting(player, this.inventory[this.getSizeInventory()]);
 			
 			for(int i = 0; i < this.getSizeInventory(); i++)
@@ -199,7 +204,9 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 							}
 							else
 							{
-								player.dropPlayerItem(itemstack2);
+								itemEntity = new EntityItem(this.worldObj, player.posX, player.posY, player.posZ);
+								itemEntity.setEntityItemStack(itemstack2);
+								this.worldObj.spawnEntityInWorld(itemEntity);
 							}
 						}
 					}
@@ -251,19 +258,25 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 			player.addStat(CraftingPillars.achievementRecursion, 1);
 	}
 	
-	public void dropItemFromSlot(int slot)
+	public void dropItemFromSlot(int slot, EntityPlayer player)
 	{
-		if(this.getStackInSlot(slot) != null)
+		if(!this.worldObj.isRemote && this.getStackInSlot(slot) != null)
 		{
+			/*
 			EntityItem droppedItem = new EntityItem(this.worldObj, this.xCoord + 0.5D, this.yCoord + 1.5D, this.zCoord + 0.5D);
 			droppedItem.setEntityItemStack(this.decrStackSize(slot, 1));
-			
 			droppedItem.motionX = random.nextDouble() / 4 - 0.125D;
 			droppedItem.motionZ = random.nextDouble() / 4 - 0.125D;
 			droppedItem.motionY = random.nextDouble() / 4;
+			this.worldObj.spawnEntityInWorld(droppedItem);
+			*/
 			
-			if(!this.worldObj.isRemote)
-				this.worldObj.spawnEntityInWorld(droppedItem);
+			//player.dropPlayerItem(this.decrStackSize(slot, 1));
+			
+			EntityItem itemEntity = new EntityItem(this.worldObj, player.posX, player.posY, player.posZ);
+			itemEntity.setEntityItemStack(this.decrStackSize(slot, 1));
+			this.worldObj.spawnEntityInWorld(itemEntity);
+			this.onInventoryChanged();
 		}
 	}
 	

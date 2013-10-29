@@ -104,9 +104,7 @@ public class CraftingPillarBlock extends BaseBlockContainer
 				int i = (int) (hitX * 3 + hitZ);
 				
 				if(workTile.getStackInSlot(i) != null)
-				{
-					workTile.dropItemFromSlot(i);
-				}
+					workTile.dropItemFromSlot(i, player);
 			}
 			else if(player.getCurrentEquippedItem() != null)
 			{
@@ -137,7 +135,6 @@ public class CraftingPillarBlock extends BaseBlockContainer
 						player.getCurrentEquippedItem().stackSize--;
 					
 					workTile.decrStackSize(i, -1);
-					workTile.onInventoryChanged();
 				}
 			}
 		}

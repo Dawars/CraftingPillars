@@ -74,14 +74,14 @@ public class FurnacePillarBlock extends BaseBlockContainer
 				if(player.isSneaking())
 				{
 					onCrafting(pillarTile.getStackInSlot(2), player);
-					pillarTile.dropItemFromSlot(2, pillarTile.getStackInSlot(2).stackSize);
+					pillarTile.dropItemFromSlot(2, pillarTile.getStackInSlot(2).stackSize, player);
 				}
 				else
 				{
 					ItemStack itemStack = pillarTile.getStackInSlot(2).copy();
 					itemStack.stackSize = 1;
 					onCrafting(itemStack, player);
-					pillarTile.dropItemFromSlot(2, 1);
+					pillarTile.dropItemFromSlot(2, 1, player);
 				}
 			}
 		}
@@ -158,11 +158,11 @@ public class FurnacePillarBlock extends BaseBlockContainer
 		{
 			if(hitY < 1F)
 			{
-				pillarTile.dropItemFromSlot(1, 1);
+				pillarTile.dropItemFromSlot(1, 1, player);
 			}
 			else
 			{
-				pillarTile.dropItemFromSlot(0, 1);
+				pillarTile.dropItemFromSlot(0, 1, player);
 			}
 		}
 		else if(player.getCurrentEquippedItem() != null)

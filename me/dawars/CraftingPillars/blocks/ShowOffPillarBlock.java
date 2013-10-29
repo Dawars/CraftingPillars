@@ -44,46 +44,55 @@ public class ShowOffPillarBlock extends BaseBlockContainer
 	}
 	
 	@Override
+	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player)
+	{
+		if(!world.isRemote)
+		{
+			TileEntityShowOffPillar pillarTile = (TileEntityShowOffPillar)world.getBlockTileEntity(x, y, z);
+			if(pillarTile.getStackInSlot(0) != null)
+				pillarTile.dropItemFromSlot(0, pillarTile.getStackInSlot(0).stackSize, player);
+		}
+	}
+	
+	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
 	{
 		if(world.isRemote)
 			return true;
 		
-		TileEntityShowOffPillar workTile = (TileEntityShowOffPillar) world.getBlockTileEntity(x, y, z);
+		TileEntityShowOffPillar pillarTile = (TileEntityShowOffPillar) world.getBlockTileEntity(x, y, z);
 
 		if(hitY < 1F && !player.isSneaking())
 		{
-			workTile.showNum = !workTile.showNum;
-			workTile.onInventoryChanged();
+			pillarTile.showNum = !pillarTile.showNum;
+			pillarTile.onInventoryChanged();
 		}
 		
 		if(hitY == 1F)
 		{
 			if(player.isSneaking())//pick out
 			{
-				if(workTile.getStackInSlot(0) != null)
-				{
-					workTile.dropItemFromSlot(0);
-				}
+				pillarTile.dropItemFromSlot(0, 1, player);
 			}
 			else if(player.getCurrentEquippedItem() != null)
 			{//put in
-				player.addStat(CraftingPillars.achievementShowoff, 1);
-				if(workTile.getStackInSlot(0) == null)
+				if(player.getCurrentEquippedItem().itemID == this.blockID)
+					player.addStat(CraftingPillars.achievementShowoff, 1);
+				if(pillarTile.getStackInSlot(0) == null)
 				{//slot empty
 					if(!player.capabilities.isCreativeMode)
 						player.getCurrentEquippedItem().stackSize--;
 					
 					ItemStack in = new ItemStack(player.getCurrentEquippedItem().itemID, 1, player.getCurrentEquippedItem().getItemDamage());
-					workTile.setInventorySlotContents(0, in);
+					pillarTile.setInventorySlotContents(0, in);
 				}
-				else if((workTile.getStackInSlot(0).isItemEqual(player.getCurrentEquippedItem())) && (workTile.getStackInSlot(0).stackSize < workTile.getStackInSlot(0).getMaxStackSize()))
+				else if((pillarTile.getStackInSlot(0).isItemEqual(player.getCurrentEquippedItem())) && (pillarTile.getStackInSlot(0).stackSize < pillarTile.getStackInSlot(0).getMaxStackSize()))
 				{//slot not empty
 					if(!player.capabilities.isCreativeMode)
 						player.getCurrentEquippedItem().stackSize--;
 					
-					workTile.decrStackSize(0, -1);
-					workTile.onInventoryChanged();
+					pillarTile.decrStackSize(0, -1);
+					pillarTile.onInventoryChanged();
 				}
 			}
 		}

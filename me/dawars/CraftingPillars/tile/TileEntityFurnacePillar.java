@@ -142,20 +142,26 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 			CraftingPillars.proxy.sendToPlayers(this.getDescriptionPacket(), this.worldObj, this.xCoord, this.yCoord, this.zCoord, 64);
 	}
 	
-	public void dropItemFromSlot(int slot, int i)
+	public void dropItemFromSlot(int slot, int amount, EntityPlayer player)
 	{
 		if(!this.worldObj.isRemote && this.getStackInSlot(slot) != null)
 		{
+			EntityItem itemEntity = new EntityItem(this.worldObj, player.posX, player.posY, player.posZ);
+			itemEntity.setEntityItemStack(this.decrStackSize(slot, amount));
+			this.worldObj.spawnEntityInWorld(itemEntity);
+			
+			//player.dropPlayerItem(this.decrStackSize(slot, amount));
+			
+			/*
 			EntityItem droppedItem = new EntityItem(this.worldObj, this.xCoord + 0.5D, this.yCoord + 1.5D, this.zCoord + 0.5D);
-			
-			ItemStack decrStack = this.decrStackSize(slot, i);
-			droppedItem.setEntityItemStack(decrStack);
-			
+			droppedItem.setEntityItemStack(this.decrStackSize(slot, amount));
 			droppedItem.motionX = random.nextDouble() / 4 - 0.125D;
 			droppedItem.motionZ = random.nextDouble() / 4 - 0.125D;
 			droppedItem.motionY = random.nextDouble() / 4;
-			
 			this.worldObj.spawnEntityInWorld(droppedItem);
+			*/
+			
+			this.onInventoryChanged();
 		}
 	}
 	

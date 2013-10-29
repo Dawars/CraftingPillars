@@ -122,19 +122,28 @@ public class TileEntityShowOffPillar extends BaseTileEntity implements IInventor
 		}
 	}
 
-	public void dropItemFromSlot(int slot)
+	public void dropItemFromSlot(int slot, int amount, EntityPlayer player)
 	{
+		if(this.worldObj.isRemote)
+			return;
+		
 		if(this.getStackInSlot(slot) != null)
 		{
-			EntityItem droppedItem = new EntityItem(this.worldObj, this.xCoord + 0.5D, this.yCoord + 1.5D, this.zCoord + 0.5D);
-			droppedItem.setEntityItemStack(this.decrStackSize(slot, 1));
+			EntityItem itemEntity = new EntityItem(this.worldObj, player.posX, player.posY, player.posZ);
+			itemEntity.setEntityItemStack(this.decrStackSize(slot, amount));
+			this.worldObj.spawnEntityInWorld(itemEntity);
 			
+			//player.dropPlayerItem(this.decrStackSize(slot, amount));
+			
+			/*
+			EntityItem droppedItem = new EntityItem(this.worldObj, this.xCoord + 0.5D, this.yCoord + 1.5D, this.zCoord + 0.5D);
+			droppedItem.setEntityItemStack(this.decrStackSize(slot, amount));
 			droppedItem.motionX = random.nextDouble() / 4 - 0.125D;
 			droppedItem.motionZ = random.nextDouble() / 4 - 0.125D;
 			droppedItem.motionY = random.nextDouble() / 4;
+			this.worldObj.spawnEntityInWorld(droppedItem);*/
 			
-			if(!this.worldObj.isRemote)
-				this.worldObj.spawnEntityInWorld(droppedItem);
+			this.onInventoryChanged();
 		}
 	}
 	
