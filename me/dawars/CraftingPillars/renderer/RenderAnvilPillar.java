@@ -118,11 +118,10 @@ public class RenderAnvilPillar extends TileEntitySpecialRenderer implements ISim
 	{
 		glPushMatrix();
 			glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
-			glScaled(0.0625D, 0.0625D, 0.0625D);
 			glRotatef(180F, 1F, 0F, 0F);
 			glRotatef(90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 1), 0F, 1F, 0F);
 			Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_ANVILPILLAR);
-			render(tile, 1F);
+			render(tile, 0.0625F);
 		glPopMatrix();
 		
 		
@@ -138,11 +137,9 @@ public class RenderAnvilPillar extends TileEntitySpecialRenderer implements ISim
 	{
 		glPushMatrix();
 		glTranslated(0, 1.0D, 0);
-		glScaled(0.0625D, 0.0625D, 0.0625D);
 		glRotatef(180F, 1F, 0F, 0F);
-		glRotatef(90F, 0F, 1F, 0F);
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_ANVILPILLAR);
-		render(null, 1F);
+		render(null, 0.0625F);
 		glPopMatrix();
 	}
 

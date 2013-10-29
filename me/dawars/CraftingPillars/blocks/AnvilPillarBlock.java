@@ -163,7 +163,7 @@ public class AnvilPillarBlock extends BaseBlockContainer
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister itemIcon)
 	{
-		this.blockIcon = itemIcon.registerIcon(CraftingPillars.id + ":anvilPillar");
+		this.blockIcon = itemIcon.registerIcon(CraftingPillars.id + ":craftingPillar_side");
 	}
 	
 	@Override
