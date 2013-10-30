@@ -129,11 +129,3 @@ public class CraftingPillars
 		LanguageRegistry.addName(block, name);
 	}
 }
-
-
-
-
-
-
-
-
