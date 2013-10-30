@@ -7,12 +7,14 @@ import me.dawars.CraftingPillars.blocks.CraftingPillarBlock;
 import me.dawars.CraftingPillars.blocks.ExtendPillarBlock;
 import me.dawars.CraftingPillars.blocks.FurnacePillarBlock;
 import me.dawars.CraftingPillars.blocks.ShowOffPillarBlock;
+import me.dawars.CraftingPillars.blocks.TankPillarBlock;
 import me.dawars.CraftingPillars.proxy.CommonProxy;
 import me.dawars.CraftingPillars.tile.TileEntityAnvilPillar;
 import me.dawars.CraftingPillars.tile.TileEntityCraftingPillar;
 import me.dawars.CraftingPillars.tile.TileEntityExtendPillar;
 import me.dawars.CraftingPillars.tile.TileEntityFurnacePillar;
 import me.dawars.CraftingPillars.tile.TileEntityShowOffPillar;
+import me.dawars.CraftingPillars.tile.TileEntityTankPillar;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.material.Material;
@@ -57,13 +59,15 @@ public class CraftingPillars
 	public static int craftingPillarRenderID;
 	public static int furnacePillarRenderID;
 	public static int anvilPillarRenderID;
+	public static int tankPillarRenderID;
 	
 	public static Block blockExtendPillar;
 	public static Block blockShowOffPillar;
 	public static Block blockCraftingPillar;
 	public static Block blockFurnacePillar;
 //	public static Block blockAnvilPillar;
-	
+	public static Block blockTankPillar;
+
 	public static boolean floatingItems = true;
 	
 	public static final Achievement achievementRecursion = new Achievement(510, "recursion", -2, 0, /* blockCraftingPillar */Item.redstone, AchievementList.buildWorkBench).registerAchievement();
@@ -96,13 +100,18 @@ public class CraftingPillars
 //			Property idAnvilPillar = CraftingPillars.config.getBlock("AnvilPillar.id", BlockIds.idAnvilPillar);
 //			blockAnvilPillar = (new AnvilPillarBlock(idAnvilPillar.getInt(), Material.anvil)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("anvilPillar");
 //			registerBlock(blockAnvilPillar, "Anvil Pillar");
+
+			Property idTankPillar = CraftingPillars.config.getBlock("TankPillar.id", BlockIds.idTankPillar);
+			blockTankPillar = (new TankPillarBlock(idTankPillar.getInt(), Material.glass)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("tankPillar");
+			registerBlock(blockTankPillar, "Tank Pillar");
 			
 			GameRegistry.registerTileEntity(TileEntityExtendPillar.class, "TileEntityExtendPillar");
 			GameRegistry.registerTileEntity(TileEntityShowOffPillar.class, "TileEntityShowOffPillar");
 			GameRegistry.registerTileEntity(TileEntityCraftingPillar.class, "TileEntityCraftingPillar");
 			GameRegistry.registerTileEntity(TileEntityFurnacePillar.class, "TileEntityFurnacePillar");
 //			GameRegistry.registerTileEntity(TileEntityAnvilPillar.class, "TileEntityAnvilPillar");
-			
+			GameRegistry.registerTileEntity(TileEntityTankPillar.class, "TileEntityTankPillar");
+
 			LanguageRegistry.instance().addStringLocalization("achievement.recursion", "Recursion I");
 			LanguageRegistry.instance().addStringLocalization("achievement.recursion.desc", "Craft a CraftingPillar in a CraftingPillar");
 			

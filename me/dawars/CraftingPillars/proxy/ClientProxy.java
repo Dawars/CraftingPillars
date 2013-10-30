@@ -13,11 +13,13 @@ import me.dawars.CraftingPillars.renderer.RenderCraftingPillar;
 import me.dawars.CraftingPillars.renderer.RenderExtendPillar;
 import me.dawars.CraftingPillars.renderer.RenderFurnacePillar;
 import me.dawars.CraftingPillars.renderer.RenderShowOffPillar;
+import me.dawars.CraftingPillars.renderer.RenderTankPillar;
 import me.dawars.CraftingPillars.tile.TileEntityAnvilPillar;
 import me.dawars.CraftingPillars.tile.TileEntityCraftingPillar;
 import me.dawars.CraftingPillars.tile.TileEntityExtendPillar;
 import me.dawars.CraftingPillars.tile.TileEntityFurnacePillar;
 import me.dawars.CraftingPillars.tile.TileEntityShowOffPillar;
+import me.dawars.CraftingPillars.tile.TileEntityTankPillar;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -53,18 +55,22 @@ public class ClientProxy extends CommonProxy
 		CraftingPillars.craftingPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
 		CraftingPillars.furnacePillarRenderID = RenderingRegistry.getNextAvailableRenderId();
 //		CraftingPillars.anvilPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
-		
+		CraftingPillars.tankPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
+
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityExtendPillar.class, new RenderExtendPillar());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityShowOffPillar.class, new RenderShowOffPillar());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCraftingPillar.class, new RenderCraftingPillar());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFurnacePillar.class, new RenderFurnacePillar());
 //		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAnvilPillar.class, new RenderAnvilPillar());
-		
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTankPillar.class, new RenderTankPillar());
+
 		RenderingRegistry.registerBlockHandler(new RenderExtendPillar());
 		RenderingRegistry.registerBlockHandler(new RenderShowOffPillar());
 		RenderingRegistry.registerBlockHandler(new RenderCraftingPillar());
 		RenderingRegistry.registerBlockHandler(new RenderFurnacePillar());
 //		RenderingRegistry.registerBlockHandler(new RenderAnvilPillar());
+		RenderingRegistry.registerBlockHandler(new RenderTankPillar());
+
 	}
 	
 	/* NETWORKING */
