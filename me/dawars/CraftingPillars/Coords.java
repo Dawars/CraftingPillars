@@ -8,5 +8,6 @@ public class Coords {
 		this.y = y;
 		this.z = z;
 		this.strength = strength;
+		System.out.println("x: " + x + " y: " + y + " z: " + z);
 	}
 }

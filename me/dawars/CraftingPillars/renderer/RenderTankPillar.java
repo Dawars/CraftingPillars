@@ -1,8 +1,6 @@
 package me.dawars.CraftingPillars.renderer;
 
-import static org.lwjgl.opengl.GL11.glTranslated;
-
-import org.lwjgl.opengl.GL11;
+import static org.lwjgl.opengl.GL11.*;
 
 import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.tile.TileEntityTankPillar;
@@ -11,6 +9,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
@@ -235,69 +234,94 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements
 	}
 
 	@Override
-	public void renderInventoryBlock(Block block, int metadata, int modelID,
-			RenderBlocks renderer) {
-		GL11.glPushMatrix();
-		GL11.glTranslated(0, 1.0D, 0);
-		GL11.glScaled(0.0625D, 0.0625D, 0.0625D);
-		GL11.glRotatef(180F, 1F, 0F, 0F);
-		FMLClientHandler.instance().getClient().renderEngine
-				.bindTexture(TEXTURE_FANCY_TANK);
+	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
+		glPushMatrix();
+			glTranslated(0, 1.0D, 0);
+			glScaled(0.0625D, 0.0625D, 0.0625D);
+			glRotatef(180F, 1F, 0F, 0F);
+			
+			FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_FANCY_TANK);
+	
+			render(null, 1F);
+			Valve2.render(1.0F);
 
-		render(null, 1F);
-		Valve2.render(1.0F);
-
-		GL11.glPopMatrix();
+		glPopMatrix();
 	}
 
 	@Override
 	public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f) {
+//		glPushMatrix();
+//		glPushAttrib(GL_ENABLE_BIT);
+//	        glDisable(GL_CULL_FACE);
+//	        glDisable(GL_LIGHTING);
+//	        glEnable(GL_BLEND);
+//	        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+//
+//			glTranslated(x + 0.5D, y + 0.5D, z + 0.5D);
+//			glColor3f(1, 0, 0);
+//			
+//
+//			glBegin(GL_TRIANGLES);
+//				glVertex3f(0, 0.05F, 0);
+//				glVertex3f(0, -0.05F, 0);
+//				
+//				glVertex3f(0.05F, 0, 0);
+//				glVertex3f(-0.05F, 0, 0);
+//				
+//				glVertex3f(0, 0, 0.05F);
+//				glVertex3f(0, 0, -0.05F);
+//		
+//			glEnd();
+//			glColor3f(1, 1, 1);
+//          
+//		glPopAttrib();
+//		glPopMatrix();
 		
-		GL11.glPushMatrix();
-		GL11.glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
-		GL11.glScaled(0.0625D, 0.0625D, 0.0625D);
-		GL11.glRotatef(180F, 1F, 0F, 0F);
-		
-		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_FANCY_TANK);
-		
-		render(tile, 1F);
-		
-		GL11.glPopMatrix();
+//		glPushMatrix();
+//			glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
+//			glScaled(0.0625D, 0.0625D, 0.0625D);
+//			glRotatef(180F, 1F, 0F, 0F);
+//			
+//			Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_FANCY_TANK);
+//			
+//			render(tile, 1F);
+//		
+//		glPopMatrix();
 
 		TileEntityTankPillar tank = ((TileEntityTankPillar) tile);
-
-		FluidStack liquid = tank.tank.getFluid();
-		if (liquid == null || liquid.amount <= 0) {
-			return;
-		}
-
-		GL11.glPushMatrix();
-			GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
-			GL11.glDisable(GL11.GL_LIGHTING);
-			GL11.glEnable(GL11.GL_BLEND);
-			GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-	
-			GL11.glTranslatef((float) x + 0.125F, (float) y + 0.1875F, (float) z + 0.125F);
-			GL11.glScalef(0.75F, 0.625F, 0.75F);
-	
-			GL11.glPopAttrib();
-		GL11.glPopMatrix();
+//
+//		FluidStack liquid = tank.tank.getFluid();
+//		if (liquid == null || liquid.amount <= 0) {
+//			return;
+//		}
 		
-		for(int i = 0; i < tank.blobs.size(); i++)
-		{
-			GL11.glBegin(GL11.GL_LINE);
-				GL11.glPushMatrix();
-				
-				glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
-				GL11.glColor3f(1, 0, 0);
-				
-				GL11.glVertex3f(0, 1, 0);
-				GL11.glVertex3f(0, -1, 0);
+		glPushMatrix();
+		glPushAttrib(GL_ENABLE_BIT);
+//	        glDisable(GL_CULL_FACE);
+	        glDisable(GL_LIGHTING);
+//	        glEnable(GL_BLEND);
+//	        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-				GL11.glPopMatrix();
-			GL11.glEnd();
+			glTranslated(x + 0.5D, y + 0.5D, z + 0.5D);
+			
+			glColor3f(1, 0, 0);
+			
 
-		}
+			glBegin(GL_LINES);
+			for(int i = 0; i < tank.blobs.size(); i++)
+			{	
+				glVertex3f(tank.blobs.get(i).x/10, (tank.blobs.get(i).y)/10+.1F, tank.blobs.get(i).z/10);
+				glVertex3f(tank.blobs.get(i).x/10, (tank.blobs.get(i).y)/10-.1F, tank.blobs.get(i).z/10);
+
+				glVertex3f((tank.blobs.get(i).x)/10+.1F, tank.blobs.get(i).y/10, tank.blobs.get(i).z/10);
+				glVertex3f((tank.blobs.get(i).x)/10-.1F, tank.blobs.get(i).y/10, tank.blobs.get(i).z/10);
+			}
+		
+			glEnd();
+			glColor3f(1, 1, 1);
+          
+		glPopAttrib();
+		glPopMatrix();
 	}
 
 
@@ -308,8 +332,7 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements
 	}
 
 	@Override
-	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z,
-			Block block, int modelId, RenderBlocks renderer) {
+	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
 		return false;
 	}
 
