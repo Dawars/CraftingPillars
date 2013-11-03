@@ -45,7 +45,7 @@ public class CraftingPillars
 		return instance;
 	}
 	
-	public static final String version = "1.4.0";
+	public static final String version = "1.3.1";
 	public static final String name = "Crafting Pillars";
 	public static final String id = "craftingpillars";
 	
@@ -76,6 +76,8 @@ public class CraftingPillars
 	@EventHandler
 	public void load(FMLPreInitializationEvent evt)
 	{
+		VersionChecker.check();
+		
 		config = new Configuration(new File(evt.getModConfigurationDirectory(), "CraftingPillars.cfg"));
 		try
 		{
