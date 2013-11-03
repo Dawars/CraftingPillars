@@ -27,7 +27,7 @@ public class TileEntityTankPillar extends BaseTileEntity implements IFluidHandle
 	private static final int MAX_Fluid = FluidContainerRegistry.BUCKET_VOLUME * 10;
 	public final FluidTank tank = new FluidTank((int) MAX_Fluid);
 	
-	public static List<Coords> blobs;
+	public List<Coords> blobs;
 	
 	private Random random = new Random();
 	

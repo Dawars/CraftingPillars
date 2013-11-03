@@ -311,7 +311,10 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 		glTranslatef(0, 1, 0);
 		glRotatef(180F, 1F, 0F, 0F);
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_FANCY_TANK);
+		glPushMatrix();
+		glScalef(1F/16F, 1F/16F, 1F/16F);
 		render(null, 1F);
+		glPopMatrix();
 		Valve2.render(0.0625F);
 		glPopMatrix();
 	}
@@ -319,12 +322,13 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 	@Override
 	public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f)
 	{
-		/*glPushMatrix();
+		glPushMatrix();
 			glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
+			glScalef(0.0625F, 0.0625F, 0.0625F);
 			glRotatef(180F, 1F, 0F, 0F);
 			FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_FANCY_TANK);
-			render(tile, 0.0625F);
-		glPopMatrix();*/
+			render(tile, 1F);
+		glPopMatrix();
 		
 		TileEntityTankPillar tank = ((TileEntityTankPillar) tile);
 		
@@ -334,22 +338,6 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 		
 		glTranslated(x, y, z);
 		
-		/*glColor3f(1, 0, 0);
-		
-		glBegin(GL_LINES);
-		for(int i = 0; i < tank.blobs.size(); i++)
-		{
-			glVertex3f((float)tank.blobs.get(i).x/16F, (float)tank.blobs.get(i).y/16F + 0.1F, (float)tank.blobs.get(i).z/16F);
-			glVertex3f((float)tank.blobs.get(i).x/16F, (float)tank.blobs.get(i).y/16F - 0.1F, (float)tank.blobs.get(i).z/16F);
-			
-			glVertex3f((float)tank.blobs.get(i).x/16F + 0.1F, (float)tank.blobs.get(i).y/16F, (float)tank.blobs.get(i).z/16F);
-			glVertex3f((float)tank.blobs.get(i).x/16F - 0.1F, (float)tank.blobs.get(i).y/16F, (float)tank.blobs.get(i).z/16F);
-			
-			glVertex3f((float)tank.blobs.get(i).x/16F, (float)tank.blobs.get(i).y/16F, (float)tank.blobs.get(i).z/16F + 0.1F);
-			glVertex3f((float)tank.blobs.get(i).x/16F, (float)tank.blobs.get(i).y/16F, (float)tank.blobs.get(i).z/16F - 0.1F);
-		}
-		glEnd();*/
-		
 		glColor3f(1, 1, 1);
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_FANCY_TANK);
 		for(int i = 0; i < tank.blobs.size(); i++)
@@ -357,7 +345,8 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 			glPushMatrix();
 			glTranslatef((float)tank.blobs.get(i).x/16F, (float)tank.blobs.get(i).y/16F, (float)tank.blobs.get(i).z/16F);
 			glRotatef(180F, 1F, 0F, 0F);
-			render(tile, 0.0625F/16F);
+			glScalef(1F/256F, 1F/256F, 1F/256F);
+			render(tile, 1F);
 			glPopMatrix();
 		}
 		
