@@ -1,6 +1,7 @@
 package me.dawars.CraftingPillars.renderer;
 
 import static org.lwjgl.opengl.GL11.*;
+
 import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.tile.TileEntityTankPillar;
 import net.minecraft.block.Block;
@@ -19,7 +20,7 @@ import net.minecraftforge.fluids.IFluidTank;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
-public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler
+public class RenderTankPillar2 extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler
 {
 	private static final ResourceLocation TEXTURE_FANCY_TANK = new ResourceLocation(CraftingPillars.id + ":textures/models/tankPillar.png");
 	
@@ -48,7 +49,7 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 	
 	private ModelRenderer Valve;
 	
-	public RenderTankPillar()
+	public RenderTankPillar2()
 	{
 		model.textureWidth = 128;
 		model.textureHeight = 64;
@@ -156,20 +157,20 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 		setRotation(Valve4, 0F, -1.570796F, 0F);
 	}
 	
-	public void render(TileEntity tile, float f)
+	public void render(TileEntity tile, float f5)
 	{
-		pillarbottom.render(f);
-		pillartop.render(f);
-		Corner1.render(f);
-		Corner2.render(f);
-		Corner3.render(f);
-		Corner4.render(f);
-		BottomTank.render(f);
-		TopTank.render(f);
-		GlassPane1.render(f);
-		GlassPane2.render(f);
-		GlassPane4.render(f);
-		GlassPane3.render(f);
+		pillarbottom.render(f5);
+		pillartop.render(f5);
+		Corner1.render(f5);
+		Corner2.render(f5);
+		Corner3.render(f5);
+		Corner4.render(f5);
+		BottomTank.render(f5);
+		TopTank.render(f5);
+		GlassPane1.render(f5);
+		GlassPane2.render(f5);
+		GlassPane4.render(f5);
+		GlassPane3.render(f5);
 		
 		if(tile == null)
 			return;
@@ -310,46 +311,86 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 		glPushMatrix();
 		glTranslatef(0, 1, 0);
 		glRotatef(180F, 1F, 0F, 0F);
+		
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_FANCY_TANK);
+		
 		render(null, 1F);
 		Valve2.render(0.0625F);
+		
 		glPopMatrix();
 	}
 	
 	@Override
 	public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f)
 	{
-		/*glPushMatrix();
-			glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
-			glRotatef(180F, 1F, 0F, 0F);
-			FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_FANCY_TANK);
-			render(tile, 0.0625F);
-		glPopMatrix();*/
+		// glPushMatrix();
+		// glPushAttrib(GL_ENABLE_BIT);
+		// glDisable(GL_CULL_FACE);
+		// glDisable(GL_LIGHTING);
+		// glEnable(GL_BLEND);
+		// glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		//
+		// glTranslated(x + 0.5D, y + 0.5D, z + 0.5D);
+		// glColor3f(1, 0, 0);
+		//
+		//
+		// glBegin(GL_TRIANGLES);
+		// glVertex3f(0, 0.05F, 0);
+		// glVertex3f(0, -0.05F, 0);
+		//
+		// glVertex3f(0.05F, 0, 0);
+		// glVertex3f(-0.05F, 0, 0);
+		//
+		// glVertex3f(0, 0, 0.05F);
+		// glVertex3f(0, 0, -0.05F);
+		//
+		// glEnd();
+		// glColor3f(1, 1, 1);
+		//
+		// glPopAttrib();
+		// glPopMatrix();
+		
+		// glPushMatrix();
+		// glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
+		// glScaled(0.0625D, 0.0625D, 0.0625D);
+		// glRotatef(180F, 1F, 0F, 0F);
+		//
+		// Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_FANCY_TANK);
+		//
+		// render(tile, 1F);
+		//
+		// glPopMatrix();
 		
 		TileEntityTankPillar tank = ((TileEntityTankPillar) tile);
+		//
+		// FluidStack liquid = tank.tank.getFluid();
+		// if (liquid == null || liquid.amount <= 0) {
+		// return;
+		// }
 		
 		glPushMatrix();
 		glPushAttrib(GL_ENABLE_BIT);
+		// glDisable(GL_CULL_FACE);
 		glDisable(GL_LIGHTING);
+		// glEnable(GL_BLEND);
+		// glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		
-		glTranslated(x, y, z);
+		glTranslated(x + 0.5D, y + 0.5D, z + 0.5D);
 		
 		glColor3f(1, 0, 0);
 		
 		glBegin(GL_LINES);
 		for(int i = 0; i < tank.blobs.size(); i++)
 		{
-			glVertex3f((float)tank.blobs.get(i).x/16F, (float)tank.blobs.get(i).y/16F + 0.1F, (float)tank.blobs.get(i).z/16F);
-			glVertex3f((float)tank.blobs.get(i).x/16F, (float)tank.blobs.get(i).y/16F - 0.1F, (float)tank.blobs.get(i).z/16F);
+			glVertex3f(tank.blobs.get(i).x / 10, (tank.blobs.get(i).y) / 10 + .1F, tank.blobs.get(i).z / 10);
+			glVertex3f(tank.blobs.get(i).x / 10, (tank.blobs.get(i).y) / 10 - .1F, tank.blobs.get(i).z / 10);
 			
-			glVertex3f((float)tank.blobs.get(i).x/16F + 0.1F, (float)tank.blobs.get(i).y/16F, (float)tank.blobs.get(i).z/16F);
-			glVertex3f((float)tank.blobs.get(i).x/16F - 0.1F, (float)tank.blobs.get(i).y/16F, (float)tank.blobs.get(i).z/16F);
-			
-			glVertex3f((float)tank.blobs.get(i).x/16F, (float)tank.blobs.get(i).y/16F, (float)tank.blobs.get(i).z/16F + 0.1F);
-			glVertex3f((float)tank.blobs.get(i).x/16F, (float)tank.blobs.get(i).y/16F, (float)tank.blobs.get(i).z/16F - 0.1F);
+			glVertex3f((tank.blobs.get(i).x) / 10 + .1F, tank.blobs.get(i).y / 10, tank.blobs.get(i).z / 10);
+			glVertex3f((tank.blobs.get(i).x) / 10 - .1F, tank.blobs.get(i).y / 10, tank.blobs.get(i).z / 10);
 		}
+		
 		glEnd();
-		//glColor3f(1, 1, 1);
+		glColor3f(1, 1, 1);
 		
 		glPopAttrib();
 		glPopMatrix();
