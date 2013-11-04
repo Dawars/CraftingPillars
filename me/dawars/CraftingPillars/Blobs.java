@@ -52,7 +52,7 @@ public class Blobs
 		if(this.z > 14F || this.z < 2F)
 			this.velZ *= -1F;
 		
-		if(this.y > 12F || this.y < 3F)
+		if(this.y > 14F || this.y < 4F)
 			this.velY *= -1F;
 		
 		
