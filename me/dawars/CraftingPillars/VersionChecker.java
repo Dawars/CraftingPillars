@@ -1,12 +1,19 @@
 package me.dawars.CraftingPillars;
 
+import java.awt.Desktop;
+import java.awt.Frame;
+import java.awt.Toolkit;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Random;
+
+import javax.swing.JOptionPane;
 
 public class VersionChecker
 {
@@ -91,26 +98,30 @@ public class VersionChecker
 	
 	public static void check()
 	{
-		String updateLink = null;
 		try
 		{
 			URL url = new URL("https://dl.dropboxusercontent.com/s/pfrwfrj5m03jsrz/version.txt");
 			url.openConnection();
 			BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
-			String line = br.readLine();
+			String updateLink = null, line = br.readLine();
 			while(line != null)
 			{
-				if(line.split(" ")[0].equals("1.6.4") && new Version(CraftingPillars.version).less(new Version(line.split(" ")[1])))
+				if(line.split(" ")[0].equals("1.6.4")/* && new Version(CraftingPillars.version).less(new Version(line.split(" ")[1]))*/)
 					updateLink = line.split(" ")[2];
 				line = br.readLine();
 			}
 			br.close();
+			
+			if(updateLink != null && JOptionPane.showConfirmDialog(new Frame(), "New update available for the Crafting Pillars mod! Do you want to download it?") == JOptionPane.YES_OPTION)
+			{
+				Desktop.getDesktop().browse(new URI(updateLink));
+				if(JOptionPane.showConfirmDialog(new Frame(), "Do you want to visit the mod's forum page?") == JOptionPane.YES_OPTION)
+					Desktop.getDesktop().browse(new URI(line));
+			}
 		}
-		catch(IOException e)
+		catch(Exception e)
 		{
 			e.printStackTrace();
 		}
-		
-		
 	}
 }
