@@ -62,12 +62,18 @@ public class Blobs
 		this.z += speed * this.velZ;
 	}
 	
-	private float f(float r, int strength)
+	private static float f(float r, int strength)
 	{
+//		r = 1/r;
 		return r * r * r * (r * (r * 6 - 15) + 10) * strength;
 	}
 	
-	public int[][][] fieldStrength(List<Blobs> blobs){
+	private static float f(float r)
+	{
+		return f(r, 1);
+	}
+	
+	public static int[][][] fieldStrength(List<Blobs> blobs){
 		int result[][][] = new int[16][16][16];
 		
 		for(int x = 0; x < 16; x++)
@@ -82,7 +88,7 @@ public class Blobs
 						float r = blobs.get(i).x*blobs.get(i).x + blobs.get(i).y*blobs.get(i).y + blobs.get(i).z*blobs.get(i).z; //distance
 						if(r <= blobs.get(i).strength)
 						{
-							result[x][y][z] += f(r, blobs.get(i).strength);
+							result[y][x][z] += f(r, blobs.get(i).strength);
 						}
 					}
 					

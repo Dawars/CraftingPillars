@@ -1,6 +1,7 @@
 package me.dawars.CraftingPillars.renderer;
 
 import static org.lwjgl.opengl.GL11.*;
+import me.dawars.CraftingPillars.Blobs;
 import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.tile.TileEntityTankPillar;
 import net.minecraft.block.Block;
