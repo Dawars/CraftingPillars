@@ -340,6 +340,7 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 		
 		glColor3f(1, 1, 1);
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_FANCY_TANK);
+		
 		for(int i = 0; i < tank.blobs.size(); i++)
 		{
 			glPushMatrix();

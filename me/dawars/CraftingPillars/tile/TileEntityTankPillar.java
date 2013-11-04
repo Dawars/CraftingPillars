@@ -42,6 +42,7 @@ public class TileEntityTankPillar extends BaseTileEntity implements IFluidHandle
 	{
 		for(int i = 0; i < 16; i++)
 		{
+			// x, z: 2.5-13.5 y: 4.5-12.5
 			blobs.add(new Blobs(random.nextInt(12)+2.5F, random.nextInt(9)+4.5F, random.nextInt(12)+2.5F, 1));
 		}
 	}

@@ -1,5 +1,6 @@
 package me.dawars.CraftingPillars;
 
+import java.util.List;
 import java.util.Random;
 
 public class Blobs
@@ -59,5 +60,34 @@ public class Blobs
 		this.x += speed * this.velX;
 		this.y += speed * this.velY;
 		this.z += speed * this.velZ;
+	}
+	
+	private int f(int r, int strength)
+	{
+		//TODO:
+		
+		return 0;
+	}
+	
+	public int[][][] fieldStrength(List<Blobs> blobs){
+		int result[][][] = new int[16][16][16];
+		
+		for(int x = 0; x < 16; x++)
+		{
+			for(int y = 0; y < 16; y++)
+			{
+				for(int z = 0; z < 16; z++)
+				{
+					
+					for(int i = 0; i < blobs.size(); i++)
+					{
+						result[x][y][z] += f(1/*pitagorasz*/, blobs.get(i).strength);
+					}
+					
+				}
+			}
+		}
+		
+		return null;
 	}
 }
