@@ -89,76 +89,28 @@ public class VersionChecker
 		}
 	}*/
 	
-	public static String updateInfo = null;
-	
-	public static String encode(String text)
+	public static void check()
 	{
-		Random rand = new Random(3798);
-		
-		byte[] textBytes = text.getBytes();
-		for(int i = 0; i < text.length(); i++)
-			if(rand.nextBoolean())
-				textBytes[i] = (byte) (256-textBytes[i]);
-			else
-				textBytes[i] = (byte) ((16-textBytes[i]/16)*16+(16-textBytes[i]%16));
-		
-		return new String(textBytes);
-	}
-	
-	public static String decode(String text)
-	{
-		Random rand = new Random(3798);
-		
-		byte[] textBytes = text.getBytes();
-		for(int i = 0; i < text.length(); i++)
-			if(rand.nextBoolean())
-				textBytes[i] = (byte) (256-textBytes[i]);
-			else
-				textBytes[i] = (byte) ((16-textBytes[i]/16)*16+(16-textBytes[i]%16));
-		
-		return new String(textBytes);
-	}
-	
-	public static boolean check()
-	{
+		String updateLink = null;
 		try
 		{
-			URL url = new URL("https://dl.dropboxusercontent.com/s/qsl3eh8jws5xf7n/version.txt");
+			URL url = new URL("https://dl.dropboxusercontent.com/s/pfrwfrj5m03jsrz/version.txt");
 			url.openConnection();
 			BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
-			
 			String line = br.readLine();
-			while(line != null && !line.equals(""))
-			{
-				if(line.split(" ")[0].equals("1.6.4"))
-					if(new Version(line.split(" ")[1]).greater(new Version(CraftingPillars.version)))
-						updateInfo = line;
-				line = br.readLine();
-				if(updateInfo != null)
-					updateInfo += "###"+line;
-				line = br.readLine();
-			}
-			
 			while(line != null)
 			{
-				
+				if(line.split(" ")[0].equals("1.6.4") && new Version(CraftingPillars.version).less(new Version(line.split(" ")[1])))
+					updateLink = line.split(" ")[2];
 				line = br.readLine();
 			}
 			br.close();
-			
-			/*String a = "Ez a csodálatos kódolás mennyire, de mennyire jó! :D";
-			System.out.println(encode(a));
-			System.out.println(decode(a));
-			System.out.println(decode(encode(a)));
-			System.exit(0);*/
-			
-			return true;
 		}
-		catch(Exception e)
+		catch(IOException e)
 		{
 			e.printStackTrace();
-			System.exit(0);
-			return false;
 		}
+		
+		
 	}
 }
