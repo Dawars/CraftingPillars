@@ -11,6 +11,7 @@ import me.dawars.CraftingPillars.blocks.TankPillarBlock;
 import me.dawars.CraftingPillars.proxy.CommonProxy;
 import me.dawars.CraftingPillars.tile.TileEntityAnvilPillar;
 import me.dawars.CraftingPillars.tile.TileEntityCraftingPillar;
+import me.dawars.CraftingPillars.tile.TileEntityEnchantmentPillar;
 import me.dawars.CraftingPillars.tile.TileEntityExtendPillar;
 import me.dawars.CraftingPillars.tile.TileEntityFurnacePillar;
 import me.dawars.CraftingPillars.tile.TileEntityShowOffPillar;
@@ -113,6 +114,7 @@ public class CraftingPillars
 			GameRegistry.registerTileEntity(TileEntityFurnacePillar.class, "TileEntityFurnacePillar");
 //			GameRegistry.registerTileEntity(TileEntityAnvilPillar.class, "TileEntityAnvilPillar");
 			GameRegistry.registerTileEntity(TileEntityTankPillar.class, "TileEntityTankPillar");
+			GameRegistry.registerTileEntity(TileEntityEnchantmentPillar.class, "TileEntityEnchantmentPillar");
 
 			LanguageRegistry.instance().addStringLocalization("achievement.recursion", "Recursion I");
 			LanguageRegistry.instance().addStringLocalization("achievement.recursion.desc", "Craft a CraftingPillar in a CraftingPillar");

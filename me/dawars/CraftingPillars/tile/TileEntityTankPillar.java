@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import me.dawars.CraftingPillars.Coords;
+import me.dawars.CraftingPillars.Blobs;
 import me.dawars.CraftingPillars.CraftingPillars;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
@@ -27,24 +27,34 @@ public class TileEntityTankPillar extends BaseTileEntity implements IFluidHandle
 	private static final int MAX_Fluid = FluidContainerRegistry.BUCKET_VOLUME * 10;
 	public final FluidTank tank = new FluidTank((int) MAX_Fluid);
 	
-	public List<Coords> blobs;
+	public List<Blobs> blobs;
 	
 	private Random random = new Random();
 	
 	public TileEntityTankPillar()
 	{
-		this.blobs = new ArrayList<Coords>();
+		
+		this.blobs = new ArrayList<Blobs>();
 		generateBlobs();
 	}
 	
 	private void generateBlobs()
 	{
 		for(int i = 0; i < 16; i++)
-			blobs.add(new Coords(random.nextInt(13)+2, random.nextInt(11)+3, random.nextInt(13)+2, 1));
+		{
+			blobs.add(new Blobs(random.nextInt(13)+2, random.nextInt(11)+3, random.nextInt(13)+2, 1));
+		}
 	}
 	
 	public void updateEntity()
 	{
+		if(CraftingPillars.proxy.isRenderWorld(worldObj))
+		{
+			for(int i = 0; i < this.blobs.size(); i++)
+			{
+				this.blobs.get(i).update(0.1F);
+			}
+		}
 		if(tank.getFluid() != null && !worldObj.isRemote)
 			System.out.println(tank.getFluid().amount + " " + FluidRegistry.getFluidName(tank.getFluid()));
 	}
