@@ -62,11 +62,9 @@ public class Blobs
 		this.z += speed * this.velZ;
 	}
 	
-	private int f(int r, int strength)
+	private float f(float r, int strength)
 	{
-		//TODO:
-		
-		return 0;
+		return r * r * r * (r * (r * 6 - 15) + 10) * strength;
 	}
 	
 	public int[][][] fieldStrength(List<Blobs> blobs){
@@ -81,13 +79,17 @@ public class Blobs
 					
 					for(int i = 0; i < blobs.size(); i++)
 					{
-						result[x][y][z] += f(1/*pitagorasz*/, blobs.get(i).strength);
+						float r = blobs.get(i).x*blobs.get(i).x + blobs.get(i).y*blobs.get(i).y + blobs.get(i).z*blobs.get(i).z; //distance
+						if(r <= blobs.get(i).strength)
+						{
+							result[x][y][z] += f(r, blobs.get(i).strength);
+						}
 					}
 					
 				}
 			}
 		}
 		
-		return null;
+		return result;
 	}
 }
