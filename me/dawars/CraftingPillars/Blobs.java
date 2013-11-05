@@ -64,8 +64,8 @@ public class Blobs
 	
 	private static float f(float r, int strength)
 	{
-		r /= 16*16;
-		return r * r * r * (r * (r * 6 - 15) + 10) * strength;
+		r /= 16;
+		return r * r * r * (r * (r * 6 - 15) + 10) * strength * 16;
 	}
 	
 	private static float f(float r)
@@ -91,8 +91,8 @@ public class Blobs
 						float r = xDist*xDist + yDist*yDist + zDist*zDist; //distance square
 						if(r <= blobs.get(i).strength*blobs.get(i).strength)
 						{
-							result[y][x][z] += f(r, blobs.get(i).strength);//not working
-//							result[y][x][z] += Math.sqrt(r);
+//							result[x][y][z] += f((float) Math.sqrt(r), blobs.get(i).strength);//not working
+							result[x][y][z] += Math.sqrt(r);
 						}
 					}
 					

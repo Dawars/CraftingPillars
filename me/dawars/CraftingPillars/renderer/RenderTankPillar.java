@@ -352,6 +352,21 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 			glPopMatrix();
 		}
 		
+		
+		int[][][] field = Blobs.fieldStrength(tank.blobs);
+//		glTranslated(x, y, z);
+
+		for(int i = 0; i < 16; i++)
+		{
+			for(int j = 0; j < 16; j++)
+			{
+				for(int k = 0; k < 16; k++)
+				{
+					if(field[i][j][k] > 0)
+						RenderingHelper.renderFloatingText(i/16F, j/16F, k/16F, .08F, ""+field[i][j][k], 0xffffff);
+				}
+			}
+		}
 		glPopAttrib();
 		glPopMatrix();
 	}

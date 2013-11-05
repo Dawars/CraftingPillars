@@ -64,7 +64,7 @@ public class TileEntityTankPillar extends BaseTileEntity implements IFluidHandle
 				{
 					for(int z = 0; z < 16; z++)
 					{
-						System.out.print(field[y][x][z] + " ");
+						System.out.print(field[x][y][z] + " ");
 					}
 					System.out.println();
 
