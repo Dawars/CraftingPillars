@@ -64,13 +64,13 @@ public class Blobs
 	
 	private static float f(float r, int strength)
 	{
-//		r = 1/r;
+		r /= 16*16;
 		return r * r * r * (r * (r * 6 - 15) + 10) * strength;
 	}
 	
 	private static float f(float r)
 	{
-		return f(r, 1);
+		return f(r, 3);
 	}
 	
 	public static int[][][] fieldStrength(List<Blobs> blobs){
@@ -85,10 +85,14 @@ public class Blobs
 					
 					for(int i = 0; i < blobs.size(); i++)
 					{
-						float r = blobs.get(i).x*blobs.get(i).x + blobs.get(i).y*blobs.get(i).y + blobs.get(i).z*blobs.get(i).z; //distance
-						if(r <= blobs.get(i).strength)
+						float xDist = blobs.get(i).x - x;
+						float yDist = blobs.get(i).y - y;
+						float zDist = blobs.get(i).z - z;
+						float r = xDist*xDist + yDist*yDist + zDist*zDist; //distance square
+						if(r <= blobs.get(i).strength*blobs.get(i).strength)
 						{
-							result[y][x][z] += f(r, blobs.get(i).strength);
+							result[y][x][z] += f(r, blobs.get(i).strength);//not working
+//							result[y][x][z] += Math.sqrt(r);
 						}
 					}
 					

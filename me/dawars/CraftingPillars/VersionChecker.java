@@ -106,7 +106,7 @@ public class VersionChecker
 			String updateLink = null, line = br.readLine();
 			while(line != null)
 			{
-				if(line.split(" ")[0].equals("1.6.4")/* && new Version(CraftingPillars.version).less(new Version(line.split(" ")[1]))*/)
+				if(line.split(" ")[0].equals("1.6.4") && new Version(CraftingPillars.version).less(new Version(line.split(" ")[1])))
 					updateLink = line.split(" ")[2];
 				line = br.readLine();
 			}
