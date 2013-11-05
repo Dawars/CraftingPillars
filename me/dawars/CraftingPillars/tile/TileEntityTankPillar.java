@@ -40,10 +40,10 @@ public class TileEntityTankPillar extends BaseTileEntity implements IFluidHandle
 	
 	private void generateBlobs()
 	{
-//		for(int i = 0; i < 16; i++)
+		for(int i = 0; i < 5; i++)
 //		{
 			// x, z: 2.5-13.5 y: 4.5-12.5
-			blobs.add(new Blobs(random.nextInt(12)+2.5F, random.nextInt(9)+4.5F, random.nextInt(12)+2.5F, /*random.nextInt(3)+2*/3));
+			blobs.add(new Blobs(random.nextInt(12)+2.5F, random.nextInt(9)+4.5F, random.nextInt(12)+2.5F, /*random.nextInt(3)+5*/3));
 //		}
 	}
 	
@@ -51,28 +51,28 @@ public class TileEntityTankPillar extends BaseTileEntity implements IFluidHandle
 	{
 		if(CraftingPillars.proxy.isRenderWorld(worldObj))
 		{
-			for(int i = 0; i < this.blobs.size(); i++)
-			{
-				this.blobs.get(i).update(0.1F);
-			}
+//			for(int i = 0; i < this.blobs.size(); i++)
+//			{
+//				this.blobs.get(i).update(0.1F);
+//			}
 			
-			int[][][] field = Blobs.fieldStrength(blobs);
-
-			for(int x = 0; x < 16; x++)
-			{
-				for(int y = 0; y < 16; y++)
-				{
-					for(int z = 0; z < 16; z++)
-					{
-						System.out.print(field[x][y][z] + " ");
-					}
-					System.out.println();
-
-				}
-				System.out.println();
-				System.out.println();
-				System.out.println();
-			}
+//			int[][][] field = Blobs.fieldStrength(blobs);
+//
+//			for(int x = 0; x < 16; x++)
+//			{
+//				for(int y = 0; y < 16; y++)
+//				{
+//					for(int z = 0; z < 16; z++)
+//					{
+//						System.out.print(field[x][y][z] + " ");
+//					}
+//					System.out.println();
+//
+//				}
+//				System.out.println();
+//				System.out.println();
+//				System.out.println();
+//			}
 			
 		}
 		if(tank.getFluid() != null && !worldObj.isRemote)

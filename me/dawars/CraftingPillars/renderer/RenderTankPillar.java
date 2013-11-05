@@ -328,7 +328,7 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 			glScalef(0.0625F, 0.0625F, 0.0625F);
 			glRotatef(180F, 1F, 0F, 0F);
 			FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_FANCY_TANK);
-			render(tile, 1F);
+//			render(tile, 1F);
 		glPopMatrix();
 		
 		TileEntityTankPillar tank = ((TileEntityTankPillar) tile);
@@ -362,7 +362,7 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 			{
 				for(int k = 0; k < 16; k++)
 				{
-					if(field[i][j][k] > 0)
+					if(field[i][j][k] >= 2)
 						RenderingHelper.renderFloatingText(i/16F, j/16F, k/16F, .08F, ""+field[i][j][k], 0xffffff);
 				}
 			}

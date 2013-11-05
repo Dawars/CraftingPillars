@@ -91,8 +91,8 @@ public class Blobs
 						float r = xDist*xDist + yDist*yDist + zDist*zDist; //distance square
 						if(r <= blobs.get(i).strength*blobs.get(i).strength)
 						{
-//							result[x][y][z] += f((float) Math.sqrt(r), blobs.get(i).strength);//not working
-							result[x][y][z] += Math.sqrt(r);
+							result[x][y][z] += f((float) Math.sqrt(r), blobs.get(i).strength);//not working
+//							result[x][y][z] += r);
 						}
 					}
 					
