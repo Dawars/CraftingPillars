@@ -30,7 +30,16 @@ public class Blobs
 	
 	public void setVelocity()
 	{
-		this.velX = this.velY = this.velZ = 1F;
+		if(this.strength > 4)
+		{
+			this.velX = (random.nextInt(20)+1)/10;
+			this.velY = (random.nextInt(20)+1)/10;
+			this.velZ = (random.nextInt(20)+1)/10;
+		} else {
+			this.velX = (random.nextInt(50)+1)/10;
+			this.velY = (random.nextInt(50)+1)/10;
+			this.velZ = (random.nextInt(50)+1)/10;
+		}
 		
 		if(random.nextBoolean())
 			this.velX *= -1F;

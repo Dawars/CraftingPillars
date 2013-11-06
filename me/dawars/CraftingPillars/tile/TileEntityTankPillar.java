@@ -40,11 +40,18 @@ public class TileEntityTankPillar extends BaseTileEntity implements IFluidHandle
 	
 	private void generateBlobs()
 	{
-		for(int i = 0; i < 5; i++)
-//		{
+		//Big
+		for(int i = 0; i < 3; i++)
+		{
 			// x, z: 2.5-13.5 y: 4.5-12.5
-			blobs.add(new Blobs(random.nextInt(12)+2.5F, random.nextInt(9)+4.5F, random.nextInt(12)+2.5F, /*random.nextInt(3)+5*/3));
-//		}
+			blobs.add(new Blobs(random.nextInt(12)+2.5F, random.nextInt(9)+4.5F, random.nextInt(12)+2.5F, random.nextInt(3)+4));
+		}
+		//Small
+		for(int i = 0; i < 10; i++)
+		{
+			// x, z: 2.5-13.5 y: 4.5-12.5
+			blobs.add(new Blobs(random.nextInt(12)+2.5F, random.nextInt(9)+4.5F, random.nextInt(12)+2.5F, (random.nextInt(20)+5)/10));
+		}
 	}
 	
 	public void updateEntity()
