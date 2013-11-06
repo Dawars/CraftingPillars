@@ -8,6 +8,8 @@ public class Blobs
 	public float x, y, z, velX, velY, velZ;
 	public int strength;
 
+	public static int scale = 2;//~vertex density
+	
 	private Random random = new Random();
 	
 	public Blobs(float x, float y, float z, int strength)
@@ -64,8 +66,9 @@ public class Blobs
 	
 	private static float f(float r, int strength)
 	{
-		r /= 16;
-		return r * r * r * (r * (r * 6 - 15) + 10) * strength * 16;
+//		r /= 16;
+//		return 1/(r * r * r * (r * (r * 6 - 15) + 10));
+		return strength/(r * r);
 	}
 	
 	private static float f(float r)
@@ -73,8 +76,8 @@ public class Blobs
 		return f(r, 3);
 	}
 	
-	public static int[][][] fieldStrength(List<Blobs> blobs){
-		int result[][][] = new int[16][16][16];
+	public static float[][][] fieldStrength(List<Blobs> blobs){
+		float result[][][] = new float[16*scale][16*scale][16*scale];
 		
 		for(int x = 0; x < 16; x++)
 		{
@@ -89,11 +92,11 @@ public class Blobs
 						float yDist = blobs.get(i).y - y;
 						float zDist = blobs.get(i).z - z;
 						float r = xDist*xDist + yDist*yDist + zDist*zDist; //distance square
-						if(r <= blobs.get(i).strength*blobs.get(i).strength)
-						{
-							result[x][y][z] += f((float) Math.sqrt(r), blobs.get(i).strength);//not working
+//						if(r <= blobs.get(i).strength*blobs.get(i).strength)
+//						{
+							result[x][y][z] += f((float) Math.sqrt(r), blobs.get(i).strength);
 //							result[x][y][z] += r);
-						}
+//						}
 					}
 					
 				}

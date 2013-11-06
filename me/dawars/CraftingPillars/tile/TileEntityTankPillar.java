@@ -51,10 +51,10 @@ public class TileEntityTankPillar extends BaseTileEntity implements IFluidHandle
 	{
 		if(CraftingPillars.proxy.isRenderWorld(worldObj))
 		{
-//			for(int i = 0; i < this.blobs.size(); i++)
-//			{
-//				this.blobs.get(i).update(0.1F);
-//			}
+			for(int i = 0; i < this.blobs.size(); i++)
+			{
+				this.blobs.get(i).update(0.1F);
+			}
 			
 //			int[][][] field = Blobs.fieldStrength(blobs);
 //

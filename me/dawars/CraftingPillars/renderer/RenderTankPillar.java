@@ -342,18 +342,18 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 		glColor3f(1, 1, 1);
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_FANCY_TANK);
 		
-		for(int i = 0; i < tank.blobs.size(); i++)
-		{
-			glPushMatrix();
-			glTranslatef((float)tank.blobs.get(i).x/16F, (float)tank.blobs.get(i).y/16F, (float)tank.blobs.get(i).z/16F);
-			glRotatef(180F, 1F, 0F, 0F);
-			glScalef(1F/256F, 1F/256F, 1F/256F);
-			render(tile, 1F);
-			glPopMatrix();
-		}
+//		for(int i = 0; i < tank.blobs.size(); i++)
+//		{
+//			glPushMatrix();
+//			glTranslatef((float)tank.blobs.get(i).x/16F, (float)tank.blobs.get(i).y/16F, (float)tank.blobs.get(i).z/16F);
+//			glRotatef(180F, 1F, 0F, 0F);
+//			glScalef(1F/256F, 1F/256F, 1F/256F);
+//			render(tile, 1F);
+//			glPopMatrix();
+//		}
 		
 		
-		int[][][] field = Blobs.fieldStrength(tank.blobs);
+		float[][][] field = Blobs.fieldStrength(tank.blobs);
 //		glTranslated(x, y, z);
 
 		for(int i = 0; i < 16; i++)
@@ -362,8 +362,8 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 			{
 				for(int k = 0; k < 16; k++)
 				{
-					if(field[i][j][k] >= 2)
-						RenderingHelper.renderFloatingText(i/16F, j/16F, k/16F, .08F, ""+field[i][j][k], 0xffffff);
+					if((int)field[i][j][k] == 1)
+						RenderingHelper.renderFloatingText(i/16F, j/16F, k/16F, .08F, ""+(int)field[i][j][k], 0xffffff);
 				}
 			}
 		}
