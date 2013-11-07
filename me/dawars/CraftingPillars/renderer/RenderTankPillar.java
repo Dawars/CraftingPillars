@@ -1,6 +1,9 @@
 package me.dawars.CraftingPillars.renderer;
 
 import static org.lwjgl.opengl.GL11.*;
+
+import java.awt.Color;
+
 import me.dawars.CraftingPillars.Blobs;
 import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.tile.TileEntityTankPillar;
@@ -354,19 +357,64 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 		
 		
 		float[][][] field = Blobs.fieldStrength(tank.blobs);
+		float[][][] nfield = new float[16][16][16];
 //		glTranslated(x, y, z);
-
+		
+		float max = 0F;
+		
 		for(int i = 0; i < 16; i++)
 		{
 			for(int j = 0; j < 16; j++)
 			{
 				for(int k = 0; k < 16; k++)
 				{
-					if((int)field[i][j][k] >= 1)
-						RenderingHelper.renderFloatingText(i/16F, j/16F, k/16F, .08F, ""+(int)field[i][j][k], 0xffffff);
+					if((int)field[i][j][k] > 0)
+					{
+						if(i == 0 || (int)field[i-1][j][k] == 0
+						|| i == 15 || (int)field[i+1][j][k] == 0
+						|| j == 0 || (int)field[i][j-1][k] == 0
+						|| j == 15 || (int)field[i][j+1][k] == 0
+						|| k == 0 || (int)field[i][j][k-1] == 0
+						|| k == 15 || (int)field[i][j][k+1] == 0)
+						{
+							if(field[i][j][k] > max)
+								max = field[i][j][k];
+							nfield[i][j][k] = field[i][j][k];
+						}
+						else
+						{
+							nfield[i][j][k] = 0F;
+						}
+					}
+					else
+					{
+						nfield[i][j][k] = 0F;
+					}
 				}
 			}
 		}
+		
+		glBegin(GL_TRIANGLES);
+		for(int i = 0; i < 16; i++)
+			for(int j = 0; j < 16; j++)
+				for(int k = 0; k < 16; k++)
+				{
+					if((int)nfield[i][j][k] > 0)
+					{
+						glColor3f(nfield[i][j][k]/max, 0F, 1F-nfield[i][j][k]/max);
+						glVertex3f(i/16F, j/16F, k/16F);
+						//System.out.println(i+" "+j+" "+k);
+					}
+				}
+		glEnd();
+		
+		for(int i = 0; i < 16; i++)
+			for(int j = 0; j < 16; j++)
+				for(int k = 0; k < 16; k++)
+					if((int)nfield[i][j][k] >= 1)
+						//RenderingHelper.renderFloatingText(i/16F, j/16F, k/16F, .08F, ""+(int)nfield[i][j][k], 0xffffff);
+						RenderingHelper.renderFloatingRect(i/16F, j/16F, k/16F, 1F/4F, 1F/4F, new Color(nfield[i][j][k]/max/2F+0.25F, 0F, 0.75F-nfield[i][j][k]/max/2F));
+		
 		glPopAttrib();
 		glPopMatrix();
 	}

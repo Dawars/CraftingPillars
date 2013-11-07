@@ -72,6 +72,26 @@ public class RenderingHelper
 		glPopMatrix();
 	}
 	
+	public static void renderFloatingRect(float x, float y, float z, float w, float h, Color c)
+	{
+		FontRenderer fontRenderer = RenderManager.instance.getFontRenderer();
+		glPushMatrix();
+			glTranslatef(x, y, z);
+			applyFloatingRotations();
+			glScalef(0.05F, 0.05F, 1F);
+			
+			glColor4f((float)c.getRed()/256F, (float)c.getGreen()/256F, (float)c.getBlue()/256F, (float)c.getAlpha()/256F);
+			glBindTexture(GL_TEXTURE_2D, 0);
+			glBegin(GL_QUADS);
+				glVertex3f(-w-1, -h-1, 0.001F);
+				glVertex3f(-w-1, h, 0.001F);
+				glVertex3f(w, h, 0.001F);
+				glVertex3f(w, -h-1, 0.001F);
+			glEnd();
+			glDisable(GL_BLEND);
+		glPopMatrix();
+	}
+	
 	public static void renderFloatingTextWithBackground(float x, float y, float z, float scale, String text, int color, Color bgColor)
 	{
 		FontRenderer fontRenderer = RenderManager.instance.getFontRenderer();

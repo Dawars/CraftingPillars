@@ -30,7 +30,7 @@ public class Blobs
 	
 	public void setVelocity()
 	{
-		if(this.strength > 4)
+		if(Math.abs(this.strength) > 4)
 		{
 			this.velX = (random.nextInt(20)+1)/10;
 			this.velY = (random.nextInt(20)+1)/10;
@@ -67,7 +67,6 @@ public class Blobs
 		if(this.y > 14F || this.y < 4F)
 			this.velY *= -1F;
 		
-		
 		this.x += speed * this.velX;
 		this.y += speed * this.velY;
 		this.z += speed * this.velZ;
@@ -77,7 +76,7 @@ public class Blobs
 	{
 //		r /= 16;
 //		return 1/(r * r * r * (r * (r * 6 - 15) + 10));
-		return strength/(r * r);
+		return strength/r;
 	}
 	
 	private static float f(float r)
@@ -85,7 +84,8 @@ public class Blobs
 		return f(r, 3);
 	}
 	
-	public static float[][][] fieldStrength(List<Blobs> blobs){
+	public static float[][][] fieldStrength(List<Blobs> blobs)
+	{
 		float result[][][] = new float[16*scale][16*scale][16*scale];
 		
 		for(int x = 0; x < 16; x++)
@@ -94,7 +94,6 @@ public class Blobs
 			{
 				for(int z = 0; z < 16; z++)
 				{
-					
 					for(int i = 0; i < blobs.size(); i++)
 					{
 						float xDist = blobs.get(i).x - x;
@@ -103,7 +102,7 @@ public class Blobs
 						float r = xDist*xDist + yDist*yDist + zDist*zDist; //distance square
 //						if(r <= blobs.get(i).strength*blobs.get(i).strength)
 //						{
-							result[x][y][z] += f((float) Math.sqrt(r), blobs.get(i).strength);
+							result[x][y][z] += f(r, blobs.get(i).strength);
 //							result[x][y][z] += r);
 //						}
 					}
