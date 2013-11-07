@@ -94,7 +94,7 @@ public class Blobs
 			{
 				for(int z = 0; z < 16; z++)
 				{
-					if(x>1 && x<14 && y>3 && y<13 && z>1 && z<14)
+					if(x>1 && x<14 && y>2 && y<13 && z>1 && z<14)
 					{
 						for(int i = 0; i < blobs.size(); i++)
 						{
