@@ -343,6 +343,8 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 		glPushMatrix();
 		glPushAttrib(GL_ENABLE_BIT);
 		glDisable(GL_LIGHTING);
+		glTranslatef(0.005F, 0.005F, 0.005F);
+		glScalef(0.99F, 0.99F, 0.99F);
 		
 		float max = 0F;
 		float[][][] field = Blobs.fieldStrength(tank.blobs);
