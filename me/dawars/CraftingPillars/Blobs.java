@@ -94,19 +94,21 @@ public class Blobs
 			{
 				for(int z = 0; z < 16; z++)
 				{
-					for(int i = 0; i < blobs.size(); i++)
+					if(x>1 && x<14 && y>3 && y<13 && z>1 && z<14)
 					{
-						float xDist = blobs.get(i).x - x;
-						float yDist = blobs.get(i).y - y;
-						float zDist = blobs.get(i).z - z;
-						float r = xDist*xDist + yDist*yDist + zDist*zDist; //distance square
-//						if(r <= blobs.get(i).strength*blobs.get(i).strength)
-//						{
-							result[x][y][z] += f(r, blobs.get(i).strength);
-//							result[x][y][z] += r);
-//						}
+						for(int i = 0; i < blobs.size(); i++)
+						{
+							float xDist = blobs.get(i).x - x;
+							float yDist = blobs.get(i).y - y;
+							float zDist = blobs.get(i).z - z;
+							float r = xDist*xDist + yDist*yDist + zDist*zDist; //distance square
+	//						if(r <= blobs.get(i).strength*blobs.get(i).strength)
+	//						{
+								result[x][y][z] += f(r, blobs.get(i).strength);
+	//							result[x][y][z] += r);
+	//						}
+						}
 					}
-					
 				}
 			}
 		}
