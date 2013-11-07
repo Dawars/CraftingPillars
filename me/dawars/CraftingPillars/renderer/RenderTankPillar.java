@@ -362,7 +362,7 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 			{
 				for(int k = 0; k < 16; k++)
 				{
-					if((int)field[i][j][k] == 1)
+					if((int)field[i][j][k] >= 1)
 						RenderingHelper.renderFloatingText(i/16F, j/16F, k/16F, .08F, ""+(int)field[i][j][k], 0xffffff);
 				}
 			}
