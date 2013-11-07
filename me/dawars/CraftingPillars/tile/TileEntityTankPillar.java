@@ -29,13 +29,17 @@ public class TileEntityTankPillar extends BaseTileEntity implements IFluidHandle
 	
 	public List<Blobs> blobs;
 	
-	private Random random = new Random();
+	private Random random;
 	
 	public TileEntityTankPillar()
 	{
-		
+		this.random = new Random(System.currentTimeMillis());
 		this.blobs = new ArrayList<Blobs>();
 		generateBlobs();
+		for(int i = 0; i < 16; i++)
+			for(int j = 0; j < 16; j++)
+				for(int k = 0; k < 16; k++)
+					this.texIndieces[i][j][k] = random.nextInt(256);
 	}
 	
 	private void generateBlobs()
@@ -57,11 +61,27 @@ public class TileEntityTankPillar extends BaseTileEntity implements IFluidHandle
 		}
 	}
 	
+	public int[][][] texIndieces = new int[16][16][16];
+	
 	public void updateEntity()
 	{
 		if(CraftingPillars.proxy.isRenderWorld(worldObj))
 		{
-			for(int i = 0; i < this.blobs.size(); i++)
+			int i = random.nextInt(16);
+			int j = random.nextInt(16);
+			int k = random.nextInt(16);
+			this.texIndieces[i][j][k]++;
+			this.texIndieces[i][j][k] %= 256;
+			/*for(int i = 0; i < 16; i++)
+				for(int j = 0; j < 16; j++)
+					for(int k = 0; k < 16; k++)
+						if(random.nextInt(16*16*16) == 0)
+						{
+							this.texIndieces[i][j][k]++;
+							this.texIndieces[i][j][k] %= 256;
+						}*/
+			
+			for(i = 0; i < this.blobs.size(); i++)
 			{
 				this.blobs.get(i).update(0.1F);
 			}

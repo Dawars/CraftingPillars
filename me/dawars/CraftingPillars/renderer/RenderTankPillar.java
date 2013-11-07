@@ -3,6 +3,7 @@ package me.dawars.CraftingPillars.renderer;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Color;
+import java.util.Random;
 
 import me.dawars.CraftingPillars.Blobs;
 import me.dawars.CraftingPillars.CraftingPillars;
@@ -26,6 +27,7 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler
 {
 	private static final ResourceLocation TEXTURE_FANCY_TANK = new ResourceLocation(CraftingPillars.id + ":textures/models/tankPillar.png");
+	private static final ResourceLocation TEXTURE_LAVA = new ResourceLocation("textures/blocks/lava_flow.png");
 	
 	public static ModelBase model = new ModelBase()
 	{
@@ -327,7 +329,9 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 	public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f)
 	{
 		glPushMatrix();
-			glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
+		glTranslated(x, y, z);
+		glPushMatrix();
+			glTranslatef(0.5F, 1.5F, 0.5F);
 			glScalef(0.0625F, 0.0625F, 0.0625F);
 			glRotatef(180F, 1F, 0F, 0F);
 			FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_FANCY_TANK);
@@ -340,27 +344,8 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 		glPushAttrib(GL_ENABLE_BIT);
 		glDisable(GL_LIGHTING);
 		
-		glTranslated(x, y, z);
-		
-		glColor3f(1, 1, 1);
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_FANCY_TANK);
-		
-//		for(int i = 0; i < tank.blobs.size(); i++)
-//		{
-//			glPushMatrix();
-//			glTranslatef((float)tank.blobs.get(i).x/16F, (float)tank.blobs.get(i).y/16F, (float)tank.blobs.get(i).z/16F);
-//			glRotatef(180F, 1F, 0F, 0F);
-//			glScalef(1F/256F, 1F/256F, 1F/256F);
-//			render(tile, 1F);
-//			glPopMatrix();
-//		}
-		
-		
-		float[][][] field = Blobs.fieldStrength(tank.blobs);
-		float[][][] nfield = new float[16][16][16];
-//		glTranslated(x, y, z);
-		
 		float max = 0F;
+		float[][][] field = Blobs.fieldStrength(tank.blobs);
 		
 		for(int i = 0; i < 16; i++)
 		{
@@ -368,54 +353,116 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 			{
 				for(int k = 0; k < 16; k++)
 				{
-					if((int)field[i][j][k] > 0)
-					{
-						if(i == 0 || (int)field[i-1][j][k] == 0
+					if((int)field[i][j][k] > 0 &&
+						(i == 0 || (int)field[i-1][j][k] == 0
 						|| i == 15 || (int)field[i+1][j][k] == 0
 						|| j == 0 || (int)field[i][j-1][k] == 0
 						|| j == 15 || (int)field[i][j+1][k] == 0
 						|| k == 0 || (int)field[i][j][k-1] == 0
-						|| k == 15 || (int)field[i][j][k+1] == 0)
-						{
-							if(field[i][j][k] > max)
-								max = field[i][j][k];
-							nfield[i][j][k] = field[i][j][k];
-						}
-						else
-						{
-							nfield[i][j][k] = 0F;
-						}
+						|| k == 15 || (int)field[i][j][k+1] == 0))
+					{
+						if(field[i][j][k] > max)
+							max = field[i][j][k];
 					}
 					else
 					{
-						nfield[i][j][k] = 0F;
+						field[i][j][k] = 0F;
 					}
 				}
 			}
 		}
 		
-		glBegin(GL_TRIANGLES);
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_LAVA);
 		for(int i = 0; i < 16; i++)
 			for(int j = 0; j < 16; j++)
 				for(int k = 0; k < 16; k++)
-				{
-					if((int)nfield[i][j][k] > 0)
+					if((int)field[i][j][k] > 0)
 					{
-						glColor3f(nfield[i][j][k]/max, 0F, 1F-nfield[i][j][k]/max);
-						glVertex3f(i/16F, j/16F, k/16F);
-						//System.out.println(i+" "+j+" "+k);
-					}
-				}
-		glEnd();
-		
-		for(int i = 0; i < 16; i++)
-			for(int j = 0; j < 16; j++)
-				for(int k = 0; k < 16; k++)
-					if((int)nfield[i][j][k] >= 1)
 						//RenderingHelper.renderFloatingText(i/16F, j/16F, k/16F, .08F, ""+(int)nfield[i][j][k], 0xffffff);
-						RenderingHelper.renderFloatingRect(i/16F, j/16F, k/16F, 1F/4F, 1F/4F, new Color(nfield[i][j][k]/max/2F+0.25F, 0F, 0.75F-nfield[i][j][k]/max/2F));
+						//RenderingHelper.renderFloatingRect(i/16F, j/16F, k/16F, 1F/4F, 1F/4F, new Color(field[i][j][k]/max/2F+0.25F, 0F, 0.75F-field[i][j][k]/max/2F));
+						glBegin(GL_QUADS);
+						
+						int tx = tank.texIndieces[i][j][k]%16;
+						int ty = tank.texIndieces[i][j][k]/16;
+						//System.out.println(tx+" "+ty);
+						
+						if(j == 15 || (int)field[i][j+1][k] == 0)
+						{
+							glTexCoord2f((tx)/16F, (ty)/256F);
+							glVertex3f((i)/16F, (j+1)/16F, (k)/16F);
+							glTexCoord2f((tx)/16F, (ty+1)/256F);
+							glVertex3f((i)/16F, (j+1)/16F, (k+1)/16F);
+							glTexCoord2f((tx+1)/16F, (ty+1)/256F);
+							glVertex3f((i+1)/16F, (j+1)/16F, (k+1)/16F);
+							glTexCoord2f((tx+1)/16F, (ty)/256F);
+							glVertex3f((i+1)/16F, (j+1)/16F, (k)/16F);
+						}
+						
+						if(j == 0 || (int)field[i][j-1][k] == 0)
+						{
+							glTexCoord2f((tx)/16F, (ty)/256F);
+							glVertex3f((i)/16F, (j)/16F, (k+1)/16F);
+							glTexCoord2f((tx)/16F, (ty+1)/256F);
+							glVertex3f((i)/16F, (j)/16F, (k)/16F);
+							glTexCoord2f((tx+1)/16F, (ty+1)/256F);
+							glVertex3f((i+1)/16F, (j)/16F, (k)/16F);
+							glTexCoord2f((tx+1)/16F, (ty)/256F);
+							glVertex3f((i+1)/16F, (j)/16F, (k+1)/16F);
+						}
+						
+						if(k == 15 || (int)field[i][j][k+1] == 0)
+						{
+							glTexCoord2f((tx)/16F, (ty)/256F);
+							glVertex3f((i)/16F, (j+1)/16F, (k+1)/16F);
+							glTexCoord2f((tx)/16F, (ty+1)/256F);
+							glVertex3f((i)/16F, (j)/16F, (k+1)/16F);
+							glTexCoord2f((tx+1)/16F, (ty+1)/256F);
+							glVertex3f((i+1)/16F, (j)/16F, (k+1)/16F);
+							glTexCoord2f((tx+1)/16F, (ty)/256F);
+							glVertex3f((i+1)/16F, (j+1)/16F, (k+1)/16F);
+						}
+						
+						if(k == 0 || (int)field[i][j][k-1] == 0)
+						{
+							glTexCoord2f((tx)/16F, (ty)/256F);
+							glVertex3f((i+1)/16F, (j+1)/16F, (k)/16F);
+							glTexCoord2f((tx)/16F, (ty+1)/256F);
+							glVertex3f((i+1)/16F, (j)/16F, (k)/16F);
+							glTexCoord2f((tx+1)/16F, (ty+1)/256F);
+							glVertex3f((i)/16F, (j)/16F, (k)/16F);
+							glTexCoord2f((tx+1)/16F, (ty)/256F);
+							glVertex3f((i)/16F, (j+1)/16F, (k)/16F);
+						}
+						
+						if(i == 15 || (int)field[i+1][j][k] == 0)
+						{
+							glTexCoord2f((tx)/16F, (ty)/256F);
+							glVertex3f((i+1)/16F, (j+1)/16F, (k+1)/16F);
+							glTexCoord2f((tx)/16F, (ty+1)/256F);
+							glVertex3f((i+1)/16F, (j)/16F, (k+1)/16F);
+							glTexCoord2f((tx+1)/16F, (ty+1)/256F);
+							glVertex3f((i+1)/16F, (j)/16F, (k)/16F);
+							glTexCoord2f((tx+1)/16F, (ty)/256F);
+							glVertex3f((i+1)/16F, (j+1)/16F, (k)/16F);
+						}
+						
+						if(i == 0 || (int)field[i-1][j][k] == 0)
+						{
+							glTexCoord2f((tx)/16F, (ty)/256F);
+							glVertex3f((i)/16F, (j)/16F, (k+1)/16F);
+							glTexCoord2f((tx)/16F, (ty+1)/256F);
+							glVertex3f((i)/16F, (j+1)/16F, (k+1)/16F);
+							glTexCoord2f((tx+1)/16F, (ty+1)/256F);
+							glVertex3f((i)/16F, (j+1)/16F, (k)/16F);
+							glTexCoord2f((tx+1)/16F, (ty)/256F);
+							glVertex3f((i)/16F, (j)/16F, (k)/16F);
+						}
+						
+						glEnd();
+					}
 		
 		glPopAttrib();
+		glPopMatrix();
 		glPopMatrix();
 	}
 	
