@@ -58,13 +58,13 @@ public class Blobs
 	
 	public void update(float speed)
 	{
-		if(this.x > 14F || this.x < 2F)
+		if(this.x > 13F || this.x < 1F)
 			this.velX *= -1F;
 		
-		if(this.z > 14F || this.z < 2F)
+		if(this.z > 13F || this.z < 1F)
 			this.velZ *= -1F;
 		
-		if(this.y > 14F || this.y < 4F)
+		if(this.y > 13F || this.y < 3F)
 			this.velY *= -1F;
 		
 		this.x += speed * this.velX;
