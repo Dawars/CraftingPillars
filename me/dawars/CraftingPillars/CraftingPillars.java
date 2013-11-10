@@ -77,7 +77,8 @@ public class CraftingPillars
 	@EventHandler
 	public void load(FMLPreInitializationEvent evt)
 	{
-		VersionChecker.check();
+		if(proxy.isRendering())
+			VersionChecker.check();
 		
 		config = new Configuration(new File(evt.getModConfigurationDirectory(), "CraftingPillars.cfg"));
 		try
@@ -122,18 +123,19 @@ public class CraftingPillars
 			LanguageRegistry.instance().addStringLocalization("achievement.showoff", "Recursion II");
 			LanguageRegistry.instance().addStringLocalization("achievement.showoff.desc", "Show off your Show-Off Pillar!");
 			
-			proxy.registerRenderers();
+			proxy.init();
+			
+			GameRegistry.addRecipe(new ItemStack(blockExtendPillar), new Object[] { "SSS", " S ", "SSS", Character.valueOf('S'), Block.cobblestone });
+			GameRegistry.addRecipe(new ItemStack(blockShowOffPillar), new Object[] { "F", "P", Character.valueOf('F'), Item.itemFrame, Character.valueOf('P'), blockExtendPillar});
+			GameRegistry.addRecipe(new ItemStack(blockCraftingPillar), new Object[] { "SSS", " C ", "SSS", Character.valueOf('S'), Block.cobblestone, Character.valueOf('C'), Block.workbench });
+			GameRegistry.addRecipe(new ItemStack(blockFurnacePillar), new Object[] { "SSS", " F ", "SSS", Character.valueOf('S'), Block.cobblestone, Character.valueOf('F'), Block.furnaceIdle });
+			
+			MinecraftForge.EVENT_BUS.register(new me.dawars.CraftingPillars.event.EventHandler());
 		}
 		finally
 		{
 			config.save();
 		}
-		GameRegistry.addRecipe(new ItemStack(blockExtendPillar), new Object[] { "SSS", " S ", "SSS", Character.valueOf('S'), Block.cobblestone });
-		GameRegistry.addRecipe(new ItemStack(blockShowOffPillar), new Object[] { "F", "P", Character.valueOf('F'), Item.itemFrame, Character.valueOf('P'), blockExtendPillar});
-		GameRegistry.addRecipe(new ItemStack(blockCraftingPillar), new Object[] { "SSS", " C ", "SSS", Character.valueOf('S'), Block.cobblestone, Character.valueOf('C'), Block.workbench });
-		GameRegistry.addRecipe(new ItemStack(blockFurnacePillar), new Object[] { "SSS", " F ", "SSS", Character.valueOf('S'), Block.cobblestone, Character.valueOf('F'), Block.furnaceIdle });
-		
-		MinecraftForge.EVENT_BUS.register(new me.dawars.CraftingPillars.event.EventHandler());
 	}
 	
 	public static void registerBlock(Block block, String name)

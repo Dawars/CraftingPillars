@@ -50,8 +50,7 @@ public class TankPillarBlock extends BaseBlockContainer
 	@Override
 	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int side, float hitX, float hitY, float hitZ)
 	{
-		
-		if(CraftingPillars.proxy.isRenderWorld(world))
+		if(CraftingPillars.proxy.isRendering())
 		{
 			for(int e = 0; e < ((TileEntityTankPillar) world.getBlockTileEntity(i, j, k)).blobs.size(); e++)
 			{

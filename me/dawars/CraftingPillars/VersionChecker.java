@@ -107,7 +107,7 @@ public class VersionChecker
 			String pline = "", line = br.readLine();
 			while(line != null)
 			{
-				if(line.split(" ")[0].equals("1.6.4") && new Version(CraftingPillars.version).less(new Version(line.split(" ")[1])))
+				if(line.split(" ")[0].equals(CraftingPillars.proxy.getMinecraftVersion()) && new Version(CraftingPillars.version).less(new Version(line.split(" ")[1])))
 					update = true;
 				pline = line;
 				line = br.readLine();

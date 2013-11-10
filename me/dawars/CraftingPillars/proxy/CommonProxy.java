@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.SidedProxy;
@@ -13,15 +14,11 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.server.FMLServerHandler;
 
 public class CommonProxy
 {
-	public void registerRenderers()
-	{
-		
-	}
-	
-	public void installSounds()
+	public void init()
 	{
 		
 	}
@@ -31,7 +28,6 @@ public class CommonProxy
 		return Loader.instance().getMinecraftModContainer().getVersion();
 	}
 	
-	/* INSTANCES */
 	public Object getClient()
 	{
 		return null;
@@ -42,34 +38,32 @@ public class CommonProxy
 		return null;
 	}
 	
-	/* SIMULATION */
-	public boolean isSimulating(World world)
+	public boolean isRendering()
 	{
-		return !world.isRemote;
+		return false;
 	}
 	
-	public boolean isRenderWorld(World world)
+	public void sendToPlayer(EntityPlayerMP player, Packet packet)
 	{
-		return world.isRemote;
+		player.playerNetServerHandler.sendPacketToPlayer(packet);
 	}
-	
-	// public void sendToPlayer(EntityPlayer entityplayer, ElysiumPacket packet)
-	// {
-	// EntityPlayerMP player = (EntityPlayerMP) entityplayer;
-	// player.playerNetServerHandler.sendPacketToPlayer(packet.getPacket());
-	// }
 	
 	public void sendToPlayers(Packet packet, World world, int x, int y, int z, int maxDistance)
 	{
-		if(packet != null)
+		if(world == null)
 		{
-			for(int j = 0; j < world.playerEntities.size(); j++)
+			WorldServer worlds[] = FMLServerHandler.instance().getServer().worldServers;
+			for(int i = 0; i < worlds.length; i++)
+				for(int j = 0; j < worlds[i].playerEntities.size(); j++)
+					this.sendToPlayer((EntityPlayerMP)worlds[i].playerEntities.get(j), packet);
+		}
+		else
+		{
+			for(int i = 0; i < world.playerEntities.size(); i++)
 			{
-				EntityPlayerMP player = (EntityPlayerMP) world.playerEntities.get(j);
-				if((player.posX - x) * (player.posX - x) + (player.posY - y) * (player.posY - y) + (player.posZ - z) * (player.posZ - z) <= maxDistance * maxDistance)
-				{
-					player.playerNetServerHandler.sendPacketToPlayer(packet);
-				}
+				EntityPlayerMP player = (EntityPlayerMP)world.playerEntities.get(i);
+				if(((int)player.posX-x)*((int)player.posX-x) + ((int)player.posY-y)*((int)player.posY-y) + ((int)player.posY-y)*((int)player.posY-y) <= maxDistance*maxDistance)
+					this.sendToPlayer(player, packet);
 			}
 		}
 	}
