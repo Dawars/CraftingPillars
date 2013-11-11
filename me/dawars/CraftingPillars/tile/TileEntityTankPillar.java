@@ -65,7 +65,7 @@ public class TileEntityTankPillar extends BaseTileEntity implements IFluidHandle
 	
 	public void updateEntity()
 	{
-		if(CraftingPillars.proxy.isRendering())
+		if(this.worldObj.isRemote)
 		{
 			int i = random.nextInt(16);
 			int j = random.nextInt(16);

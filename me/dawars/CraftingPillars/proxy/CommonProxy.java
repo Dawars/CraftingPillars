@@ -38,11 +38,6 @@ public class CommonProxy
 		return null;
 	}
 	
-	public boolean isRendering()
-	{
-		return false;
-	}
-	
 	public void sendToPlayer(EntityPlayerMP player, Packet packet)
 	{
 		player.playerNetServerHandler.sendPacketToPlayer(packet);
