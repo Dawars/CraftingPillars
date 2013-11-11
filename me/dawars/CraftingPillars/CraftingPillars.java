@@ -3,6 +3,7 @@ package me.dawars.CraftingPillars;
 import java.io.File;
 
 import me.dawars.CraftingPillars.blocks.AnvilPillarBlock;
+import me.dawars.CraftingPillars.blocks.BrewingPillarBlock;
 import me.dawars.CraftingPillars.blocks.CraftingPillarBlock;
 import me.dawars.CraftingPillars.blocks.ExtendPillarBlock;
 import me.dawars.CraftingPillars.blocks.FurnacePillarBlock;
@@ -10,6 +11,7 @@ import me.dawars.CraftingPillars.blocks.ShowOffPillarBlock;
 import me.dawars.CraftingPillars.blocks.TankPillarBlock;
 import me.dawars.CraftingPillars.proxy.CommonProxy;
 import me.dawars.CraftingPillars.tile.TileEntityAnvilPillar;
+import me.dawars.CraftingPillars.tile.TileEntityBrewingPillar;
 import me.dawars.CraftingPillars.tile.TileEntityCraftingPillar;
 import me.dawars.CraftingPillars.tile.TileEntityEnchantmentPillar;
 import me.dawars.CraftingPillars.tile.TileEntityExtendPillar;
@@ -46,7 +48,7 @@ public class CraftingPillars
 		return instance;
 	}
 	
-	public static final String version = "1.3.1";
+	public static final String version = "1.3.2";
 	public static final String name = "Crafting Pillars";
 	public static final String id = "craftingpillars";
 	
@@ -61,13 +63,15 @@ public class CraftingPillars
 	public static int furnacePillarRenderID;
 	public static int anvilPillarRenderID;
 	public static int tankPillarRenderID;
+	public static int brewingillarRenderID;
 	
 	public static Block blockExtendPillar;
 	public static Block blockShowOffPillar;
 	public static Block blockCraftingPillar;
 	public static Block blockFurnacePillar;
-//	public static Block blockAnvilPillar;
+	public static Block blockAnvilPillar;
 	public static Block blockTankPillar;
+	public static Block blockBrewingPillar;
 
 	public static boolean floatingItems = true;
 	
@@ -101,21 +105,26 @@ public class CraftingPillars
 			blockFurnacePillar = (new FurnacePillarBlock(idFurnacePillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("furnacePillar");
 			registerBlock(blockFurnacePillar, "Furnace Pillar");
 			
-//			Property idAnvilPillar = CraftingPillars.config.getBlock("AnvilPillar.id", BlockIds.idAnvilPillar);
-//			blockAnvilPillar = (new AnvilPillarBlock(idAnvilPillar.getInt(), Material.anvil)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("anvilPillar");
-//			registerBlock(blockAnvilPillar, "Anvil Pillar");
+			Property idAnvilPillar = CraftingPillars.config.getBlock("AnvilPillar.id", BlockIds.idAnvilPillar, "Coming soon...");
+			blockAnvilPillar = (new AnvilPillarBlock(idAnvilPillar.getInt(), Material.anvil)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("anvilPillar");
+			registerBlock(blockAnvilPillar, "Anvil Pillar");
 
-			Property idTankPillar = CraftingPillars.config.getBlock("TankPillar.id", BlockIds.idTankPillar);
+			Property idTankPillar = CraftingPillars.config.getBlock("TankPillar.id", BlockIds.idTankPillar, "Coming soon...");
 			blockTankPillar = (new TankPillarBlock(idTankPillar.getInt(), Material.glass)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("tankPillar");
+			registerBlock(blockTankPillar, "Tank Pillar");
+			
+			Property idBrewingPillar = CraftingPillars.config.getBlock("BrewingPillar.id", BlockIds.idBrewingPillar);
+			blockTankPillar = (new BrewingPillarBlock(idBrewingPillar.getInt(), Material.iron)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("brewingPillar");
 			registerBlock(blockTankPillar, "Tank Pillar");
 			
 			GameRegistry.registerTileEntity(TileEntityExtendPillar.class, "TileEntityExtendPillar");
 			GameRegistry.registerTileEntity(TileEntityShowOffPillar.class, "TileEntityShowOffPillar");
 			GameRegistry.registerTileEntity(TileEntityCraftingPillar.class, "TileEntityCraftingPillar");
 			GameRegistry.registerTileEntity(TileEntityFurnacePillar.class, "TileEntityFurnacePillar");
-//			GameRegistry.registerTileEntity(TileEntityAnvilPillar.class, "TileEntityAnvilPillar");
+			GameRegistry.registerTileEntity(TileEntityAnvilPillar.class, "TileEntityAnvilPillar");
 			GameRegistry.registerTileEntity(TileEntityTankPillar.class, "TileEntityTankPillar");
 			GameRegistry.registerTileEntity(TileEntityEnchantmentPillar.class, "TileEntityEnchantmentPillar");
+			GameRegistry.registerTileEntity(TileEntityBrewingPillar.class, "TileEntityBrewingPillar");
 
 			LanguageRegistry.instance().addStringLocalization("achievement.recursion", "Recursion I");
 			LanguageRegistry.instance().addStringLocalization("achievement.recursion.desc", "Craft a CraftingPillar in a CraftingPillar");

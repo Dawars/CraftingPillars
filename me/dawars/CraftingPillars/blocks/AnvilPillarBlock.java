@@ -24,6 +24,7 @@ public class AnvilPillarBlock extends BaseBlockContainer
 	public AnvilPillarBlock(int id, Material mat)
 	{
 		super(id, mat);
+		this.setCreativeTab(null);
 	}
 	
 	@Override

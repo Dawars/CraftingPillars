@@ -9,12 +9,14 @@ import java.io.InputStream;
 
 import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.renderer.RenderAnvilPillar;
+import me.dawars.CraftingPillars.renderer.RenderBrewingPillar;
 import me.dawars.CraftingPillars.renderer.RenderCraftingPillar;
 import me.dawars.CraftingPillars.renderer.RenderExtendPillar;
 import me.dawars.CraftingPillars.renderer.RenderFurnacePillar;
 import me.dawars.CraftingPillars.renderer.RenderShowOffPillar;
 import me.dawars.CraftingPillars.renderer.RenderTankPillar;
 import me.dawars.CraftingPillars.tile.TileEntityAnvilPillar;
+import me.dawars.CraftingPillars.tile.TileEntityBrewingPillar;
 import me.dawars.CraftingPillars.tile.TileEntityCraftingPillar;
 import me.dawars.CraftingPillars.tile.TileEntityExtendPillar;
 import me.dawars.CraftingPillars.tile.TileEntityFurnacePillar;
@@ -57,6 +59,7 @@ public class ClientProxy extends CommonProxy
 		CraftingPillars.furnacePillarRenderID = RenderingRegistry.getNextAvailableRenderId();
 //		CraftingPillars.anvilPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
 		CraftingPillars.tankPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
+		CraftingPillars.brewingillarRenderID = RenderingRegistry.getNextAvailableRenderId();
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityExtendPillar.class, new RenderExtendPillar());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityShowOffPillar.class, new RenderShowOffPillar());
@@ -64,6 +67,7 @@ public class ClientProxy extends CommonProxy
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFurnacePillar.class, new RenderFurnacePillar());
 //		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAnvilPillar.class, new RenderAnvilPillar());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTankPillar.class, new RenderTankPillar());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBrewingPillar.class, new RenderBrewingPillar());
 
 		RenderingRegistry.registerBlockHandler(new RenderExtendPillar());
 		RenderingRegistry.registerBlockHandler(new RenderShowOffPillar());
@@ -71,6 +75,7 @@ public class ClientProxy extends CommonProxy
 		RenderingRegistry.registerBlockHandler(new RenderFurnacePillar());
 //		RenderingRegistry.registerBlockHandler(new RenderAnvilPillar());
 		RenderingRegistry.registerBlockHandler(new RenderTankPillar());
+		RenderingRegistry.registerBlockHandler(new RenderBrewingPillar());
 
 	}
 	

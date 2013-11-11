@@ -27,6 +27,7 @@ public class TankPillarBlock extends BaseBlockContainer
 	public TankPillarBlock(int id, Material mat)
 	{
 		super(id, mat);
+		this.setCreativeTab(null);
 	}
 	
 	@Override
