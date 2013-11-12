@@ -61,8 +61,8 @@ public class RenderBrewingPillar extends TileEntitySpecialRenderer implements IS
 	
 	public RenderBrewingPillar()
 	{
-		itemRenderer = new RenderingHelper.ItemRender(false, true);
-		resultRenderer = new RenderingHelper.ItemRender(false, false);
+		itemRenderer = new RenderingHelper.ItemRender(false, false);
+		resultRenderer = new RenderingHelper.ItemRender(true, true);
 		
 		model.textureWidth = 128;
 		model.textureHeight = 64;
@@ -175,47 +175,55 @@ public class RenderBrewingPillar extends TileEntitySpecialRenderer implements IS
 		glPushMatrix();
 		
 			glTranslated(x+0.5D, y, z+0.5D);
-//			glRotatef(90F * tile.blockMetadata, 0F, 1F, 0F);
 
-			//Input
-			if(pillarTile.getStackInSlot(0) != null)
-			{//TODO: tilt
-				glPushMatrix();
-					citem.hoverStart = 0F;
-					citem.setEntityItemStack(pillarTile.getStackInSlot(0));
-					resultRenderer.render(citem, 0F, 1.125F, 0F, pillarTile.showNum);
-				glPopMatrix();
-			}
+			
 		
-			//Output
-			if(pillarTile.getStackInSlot(2) != null)
+			//Input
+			if(pillarTile.getStackInSlot(4) != null)
 			{
 				glPushMatrix();
-					glTranslatef(0F, 1.75F, 0F);
-					citem.hoverStart = 0F;
-					citem.setEntityItemStack(pillarTile.getStackInSlot(2));
-					resultRenderer.render(citem, 0F, 0F, 0F, pillarTile.showNum);
+					glScalef(1.2F,  1.2F,  1.2F);
+					citem.hoverStart = -pillarTile.rot;
+					citem.setEntityItemStack(pillarTile.getStackInSlot(4));
+					resultRenderer.render(citem, 0F, 1.2F, 0F, pillarTile.showNum);
 				glPopMatrix();
+			}
+			
+			//Bottles
+			for(int i = 0; i < 4; i++)
+			{
+				if(pillarTile.getStackInSlot(i) != null)
+				{//TODO: tilt
+					glPushMatrix();
+						//rotate i * pi / 2 rad (i * 90 degree)
+						glRotatef(-i*90, 0, 1, 0);//FIXME: wrong sorrend
+						glTranslatef(0.4F, 0F, 0F);
+						
+						citem.hoverStart = 0F;
+						citem.setEntityItemStack(pillarTile.getStackInSlot(i));
+						itemRenderer.render(citem, 0, 0.45F, 0, false);
+					glPopMatrix();
+				}
 			}
 			
 			//processed item
-			if(pillarTile.canSmelt() && pillarTile.burnTime > 0)
-			{
-				glPushMatrix();
-					glTranslatef(0F, 1.75F - pillarTile.cookTime/150F, 0F);
-					citem.hoverStart = 0F;
-					citem.setEntityItemStack(FurnaceRecipes.smelting().getSmeltingResult(pillarTile.getStackInSlot(0)));
-					resultRenderer.render(citem, 0.01F, 0F, 0.01F, false);
-				glPopMatrix();
-			}
+//			if(pillarTile.canSmelt() && pillarTile.burnTime > 0)
+//			{
+//				glPushMatrix();
+//					glTranslatef(0F, 1.75F - pillarTile.cookTime/150F, 0F);
+//					citem.hoverStart = 0F;
+//					citem.setEntityItemStack(FurnaceRecipes.smelting().getSmeltingResult(pillarTile.getStackInSlot(0)));
+//					resultRenderer.render(citem, 0.01F, 0F, 0.01F, false);
+//				glPopMatrix();
+//			}
 			
 			//Fuel
-			if(pillarTile.getStackInSlot(1) != null)
-			{
-				citem.hoverStart = 0F;
-				citem.setEntityItemStack(pillarTile.getStackInSlot(1));
-				itemRenderer.render(citem, 0F, 0.3F, 0F, pillarTile.showNum);
-			}
+//			if(pillarTile.getStackInSlot(1) != null)
+//			{
+//				citem.hoverStart = 0F;
+//				citem.setEntityItemStack(pillarTile.getStackInSlot(1));
+//				itemRenderer.render(citem, 0F, 0.3F, 0F, pillarTile.showNum);
+//			}
 		glPopMatrix();
 	}
 	

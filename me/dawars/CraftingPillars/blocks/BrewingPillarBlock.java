@@ -17,6 +17,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,6 +30,7 @@ import net.minecraft.world.World;
 
 public class BrewingPillarBlock extends BaseBlockContainer
 {
+
 	public BrewingPillarBlock(int id, Material mat)
 	{
 		super(id, mat);
@@ -129,7 +131,7 @@ public class BrewingPillarBlock extends BaseBlockContainer
 		    }
 		}
 	}
-	
+
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
 	{
@@ -137,6 +139,10 @@ public class BrewingPillarBlock extends BaseBlockContainer
 			return true;
 		
 		TileEntityBrewingPillar pillarTile = (TileEntityBrewingPillar) world.getBlockTileEntity(x, y, z);
+		int topSlot = 4;
+		int sideSlot = side-2;
+		
+		System.out.println(side);
 		
 		if(!player.isSneaking() && player.inventory.getCurrentItem() == null)
 		{
@@ -146,57 +152,51 @@ public class BrewingPillarBlock extends BaseBlockContainer
 		
 		if(player.isSneaking())
 		{
-			if(hitY < 1F)
+			if(side == 1)
 			{
-				pillarTile.dropItemFromSlot(1, 1, player);
+				pillarTile.dropItemFromSlot(topSlot, 1, player);
 			}
 			else
 			{
-				pillarTile.dropItemFromSlot(0, 1, player);
+				if(side > 1)
+					pillarTile.dropItemFromSlot(sideSlot, 1, player);
 			}
 		}
 		else if(player.getCurrentEquippedItem() != null)
 		{
-			if(hitY < 1F)
+			if(side > 1)
 			{
-				if(pillarTile.getStackInSlot(1) == null)
+				if(pillarTile.getStackInSlot(sideSlot) == null)
 				{
 					ItemStack in = new ItemStack(player.getCurrentEquippedItem().itemID, 1, player.getCurrentEquippedItem().getItemDamage());
-					if(TileEntityFurnace.isItemFuel(in))
+					if(in.getItem() instanceof ItemPotion || in.itemID == Item.glassBottle.itemID)
 					{
-						pillarTile.setInventorySlotContents(1, in);
+						pillarTile.setInventorySlotContents(sideSlot, in);
 						
 						if(!player.capabilities.isCreativeMode)
 							player.getCurrentEquippedItem().stackSize--;
 					}
 				}
-				else if (pillarTile.getStackInSlot(1).isItemEqual(player.getCurrentEquippedItem()) && (pillarTile.getStackInSlot(1).stackSize < pillarTile.getStackInSlot(1).getMaxStackSize()))
-				{
-					if(!player.capabilities.isCreativeMode)
-						player.getCurrentEquippedItem().stackSize--;
-					
-					pillarTile.decrStackSize(1, -1);
-				}
 			}
-			else
+			else if(side == 1)
 			{
-				if(pillarTile.getStackInSlot(0) == null)
+				if(pillarTile.getStackInSlot(topSlot) == null)
 				{
 					ItemStack in = new ItemStack(player.getCurrentEquippedItem().itemID, 1, player.getCurrentEquippedItem().getItemDamage());
-					if(FurnaceRecipes.smelting().getSmeltingResult(in) != null)
+					if(Item.itemsList[in.itemID].isPotionIngredient())
 					{
-						pillarTile.setInventorySlotContents(0, in);
+						pillarTile.setInventorySlotContents(topSlot, in);
 
 						if(!player.capabilities.isCreativeMode)
 							player.getCurrentEquippedItem().stackSize--;
 					}
 				}
-				else if(pillarTile.getStackInSlot(0).isItemEqual(player.getCurrentEquippedItem()) && (pillarTile.getStackInSlot(0).stackSize < pillarTile.getStackInSlot(0).getMaxStackSize()))
+				else if(pillarTile.getStackInSlot(topSlot).isItemEqual(player.getCurrentEquippedItem()) && (pillarTile.getStackInSlot(topSlot).stackSize < pillarTile.getStackInSlot(topSlot).getMaxStackSize()))
 				{
 					if(!player.capabilities.isCreativeMode)
 						player.getCurrentEquippedItem().stackSize--;
 					
-					pillarTile.decrStackSize(0, -1);
+					pillarTile.decrStackSize(topSlot, -1);
 				}
 			}
 		}
@@ -243,15 +243,15 @@ public class BrewingPillarBlock extends BaseBlockContainer
 	 */
 	public void randomDisplayTick(World world, int x, int y, int z, Random rand)
 	{
-		if(((TileEntityBrewingPillar) world.getBlockTileEntity(x, y, z)).burnTime > 0)
-		{
-			double rx = x + rand.nextDouble() / 2 + 0.25D;
-			double ry = y + rand.nextDouble() / 2 + 0.25D;
-			double rz = z + rand.nextDouble() / 2 + 0.25D;
-			
-			world.spawnParticle("smoke", rx, ry, rz, 0D, 0D, 0D);
-			world.spawnParticle("flame", rx, ry, rz, 0D, 0D, 0D);
-		}
+//		if(((TileEntityBrewingPillar) world.getBlockTileEntity(x, y, z)).burnTime > 0)
+//		{
+//			double rx = x + rand.nextDouble() / 2 + 0.25D;
+//			double ry = y + rand.nextDouble() / 2 + 0.25D;
+//			double rz = z + rand.nextDouble() / 2 + 0.25D;
+//			
+//			world.spawnParticle("smoke", rx, ry, rz, 0D, 0D, 0D);
+//			world.spawnParticle("flame", rx, ry, rz, 0D, 0D, 0D);
+//		}
 	}
 	
 	@Override
