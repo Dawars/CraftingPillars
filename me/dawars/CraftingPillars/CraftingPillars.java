@@ -92,7 +92,7 @@ public class CraftingPillars
 			// Block Registering
 			Property idExtendPillar = CraftingPillars.config.getBlock("ExtendPillar.id", BlockIds.idExtendPillar);
 			blockExtendPillar = (new ExtendPillarBlock(idExtendPillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("extendPillar");
-			registerBlock(blockExtendPillar, "Extend Pillar");
+			registerBlock(blockExtendPillar, "Basic Pillar");
 			
 			Property idShowOffPillar = CraftingPillars.config.getBlock("ShowOffPillar.id", BlockIds.idShowOffPillar);
 			blockShowOffPillar = (new ShowOffPillarBlock(idShowOffPillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("showOffPillar");
@@ -115,8 +115,8 @@ public class CraftingPillars
 			registerBlock(blockTankPillar, "Tank Pillar");
 			
 			Property idBrewingPillar = CraftingPillars.config.getBlock("BrewingPillar.id", BlockIds.idBrewingPillar);
-			blockTankPillar = (new BrewingPillarBlock(idBrewingPillar.getInt(), Material.iron)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("brewingPillar");
-			registerBlock(blockTankPillar, "Tank Pillar");
+			blockBrewingPillar = (new BrewingPillarBlock(idBrewingPillar.getInt(), Material.iron)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("brewingPillar");
+			registerBlock(blockBrewingPillar, "Brewing Pillar");
 			
 			GameRegistry.registerTileEntity(TileEntityExtendPillar.class, "TileEntityExtendPillar");
 			GameRegistry.registerTileEntity(TileEntityShowOffPillar.class, "TileEntityShowOffPillar");
