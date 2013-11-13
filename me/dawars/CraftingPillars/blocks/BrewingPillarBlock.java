@@ -142,8 +142,6 @@ public class BrewingPillarBlock extends BaseBlockContainer
 		int topSlot = 4;
 		int sideSlot = side-2;
 		
-		System.out.println(side);
-		
 		if(!player.isSneaking() && player.inventory.getCurrentItem() == null)
 		{
 			pillarTile.showNum = !pillarTile.showNum;

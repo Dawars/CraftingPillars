@@ -78,21 +78,20 @@ public class TileEntityBrewingPillar extends BaseTileEntity implements
 				} else if (!this.canBrew()) {
 					this.brewTime = 0;
 					this.onInventoryChanged();
-				} else if (this.ingredientID != this.inventory[3].itemID) {
+				} else if (this.ingredientID != this.inventory[4].itemID) {
 					this.brewTime = 0;
 					this.onInventoryChanged();
 				}
 			} else if (this.canBrew()) {
-				this.brewTime = 400;
-				this.ingredientID = this.inventory[3].itemID;
+				this.brewTime = 350;
+				this.ingredientID = this.inventory[4].itemID;
 			}
 
 			int i = this.getFilledSlots();
 
 			if (i != this.filledSlots) {
 				this.filledSlots = i;
-				this.worldObj.setBlockMetadataWithNotify(this.xCoord,
-						this.yCoord, this.zCoord, i, 2);
+				this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, i, 2);
 			}
 		}
 
@@ -104,15 +103,15 @@ public class TileEntityBrewingPillar extends BaseTileEntity implements
 	}
 
 	private boolean canBrew() {
-		if (this.inventory[3] != null && this.inventory[3].stackSize > 0) {
-			ItemStack itemstack = this.inventory[3];
+		if (this.inventory[4] != null && this.inventory[4].stackSize > 0) {
+			ItemStack itemstack = this.inventory[4];
 
 			if (!Item.itemsList[itemstack.itemID].isPotionIngredient()) {
 				return false;
 			} else {
 				boolean flag = false;
 
-				for (int i = 0; i < 3; ++i) {
+				for (int i = 0; i < 4; ++i) {
 					if (this.inventory[i] != null
 							&& this.inventory[i].getItem() instanceof ItemPotion) {
 						int j = this.inventory[i].getItemDamage();
@@ -142,45 +141,52 @@ public class TileEntityBrewingPillar extends BaseTileEntity implements
 		}
 	}
 
-	private void brewPotions() {
-		if (this.canBrew()) {
-			ItemStack itemstack = this.inventory[4];
+	private void brewPotions()
+    {
+        if (this.canBrew())
+        {
+            ItemStack itemstack = this.inventory[4];
 
-			for (int i = 0; i < 4; ++i) {
-				if (this.inventory[i] != null
-						&& this.inventory[i].getItem() instanceof ItemPotion) {
-					int j = this.inventory[i].getItemDamage();
-					int k = this.getPotionResult(j, itemstack);
-					List list = Item.potion.getEffects(j);
-					List list1 = Item.potion.getEffects(k);
+            for (int i = 0; i < 4; ++i)
+            {
+                if (this.inventory[i] != null && this.inventory[i].getItem() instanceof ItemPotion)
+                {
+                    int j = this.inventory[i].getItemDamage();
+                    int k = this.getPotionResult(j, itemstack);
+                    List list = Item.potion.getEffects(j);
+                    List list1 = Item.potion.getEffects(k);
 
-					if ((j <= 0 || list != list1)
-							&& (list == null || !list.equals(list1)
-									&& list1 != null)) {
-						if (j != k) {
-							this.inventory[i].setItemDamage(k);
-						}
-					} else if (!ItemPotion.isSplash(j)
-							&& ItemPotion.isSplash(k)) {
-						this.inventory[i].setItemDamage(k);
-					}
-				}
-			}
+                    if ((j <= 0 || list != list1) && (list == null || !list.equals(list1) && list1 != null))
+                    {
+                        if (j != k)
+                        {
+                            this.inventory[i].setItemDamage(k);
+                        }
+                    }
+                    else if (!ItemPotion.isSplash(j) && ItemPotion.isSplash(k))
+                    {
+                        this.inventory[i].setItemDamage(k);
+                    }
+                }
+            }
 
-			if (Item.itemsList[itemstack.itemID].hasContainerItem()) {
-				this.inventory[5] = Item.itemsList[itemstack.itemID]
-						.getContainerItemStack(inventory[3]);
-			} else {
-				--this.inventory[4].stackSize;
+            if (Item.itemsList[itemstack.itemID].hasContainerItem())
+            {
+                this.inventory[4] = Item.itemsList[itemstack.itemID].getContainerItemStack(inventory[4]);
+            }
+            else
+            {
+                --this.inventory[4].stackSize;
 
-				if (this.inventory[4].stackSize <= 0) {
-					this.inventory[4] = null;
-				}
-			}
-
-			MinecraftForge.EVENT_BUS.post(new PotionBrewedEvent(inventory));
-		}
-	}
+                if (this.inventory[4].stackSize <= 0)
+                {
+                    this.inventory[4] = null;
+                }
+            }
+            
+            MinecraftForge.EVENT_BUS.post(new PotionBrewedEvent(inventory));
+        }
+    }
 
 	/**
 	 * The result of brewing a potion of the specified damage value with an
@@ -263,19 +269,6 @@ public class TileEntityBrewingPillar extends BaseTileEntity implements
 					player.posY, player.posZ);
 			itemEntity.setEntityItemStack(this.decrStackSize(slot, amount));
 			this.worldObj.spawnEntityInWorld(itemEntity);
-
-			// player.dropPlayerItem(this.decrStackSize(slot, amount));
-
-			/*
-			 * EntityItem droppedItem = new EntityItem(this.worldObj,
-			 * this.xCoord + 0.5D, this.yCoord + 1.5D, this.zCoord + 0.5D);
-			 * droppedItem.setEntityItemStack(this.decrStackSize(slot, amount));
-			 * droppedItem.motionX = random.nextDouble() / 4 - 0.125D;
-			 * droppedItem.motionZ = random.nextDouble() / 4 - 0.125D;
-			 * droppedItem.motionY = random.nextDouble() / 4;
-			 * this.worldObj.spawnEntityInWorld(droppedItem);
-			 */
-
 			this.onInventoryChanged();
 		}
 	}
@@ -408,6 +401,6 @@ public class TileEntityBrewingPillar extends BaseTileEntity implements
 	 */
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-		return i == 3 ? Item.itemsList[itemstack.itemID] .isPotionIngredient() : itemstack.getItem() instanceof ItemPotion || itemstack.itemID == Item.glassBottle.itemID;
+		return Item.itemsList[itemstack.itemID].isPotionIngredient() || itemstack.getItem() instanceof ItemPotion || itemstack.itemID == Item.glassBottle.itemID;
 	}
 }

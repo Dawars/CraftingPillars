@@ -57,12 +57,12 @@ public class RenderBrewingPillar extends TileEntitySpecialRenderer implements IS
 	private ModelRenderer pillarBottom;
     
 	private RenderingHelper.ItemRender itemRenderer;
-	private RenderingHelper.ItemRender resultRenderer;
+//	private RenderingHelper.ItemRender resultRenderer;
 	
 	public RenderBrewingPillar()
 	{
 		itemRenderer = new RenderingHelper.ItemRender(false, false);
-		resultRenderer = new RenderingHelper.ItemRender(true, true);
+//		resultRenderer = new RenderingHelper.ItemRender(false, false);
 		
 		model.textureWidth = 128;
 		model.textureHeight = 64;
@@ -182,10 +182,10 @@ public class RenderBrewingPillar extends TileEntitySpecialRenderer implements IS
 			if(pillarTile.getStackInSlot(4) != null)
 			{
 				glPushMatrix();
-					glScalef(1.2F,  1.2F,  1.2F);
+					glScalef(1.1F,  1.1F,  1.1F);
 					citem.hoverStart = -pillarTile.rot;
 					citem.setEntityItemStack(pillarTile.getStackInSlot(4));
-					resultRenderer.render(citem, 0F, 1.2F, 0F, pillarTile.showNum);
+					itemRenderer.render(citem, 0F, 1F, 0F, pillarTile.showNum);
 				glPopMatrix();
 			}
 			
@@ -194,9 +194,12 @@ public class RenderBrewingPillar extends TileEntitySpecialRenderer implements IS
 			{
 				if(pillarTile.getStackInSlot(i) != null)
 				{//TODO: tilt
+					int rotI = i;
+					if(i == 3) rotI = 0;
+					if(i == 0) rotI = 3;
 					glPushMatrix();
 						//rotate i * pi / 2 rad (i * 90 degree)
-						glRotatef(-i*90, 0, 1, 0);//FIXME: wrong sorrend
+						glRotatef(-rotI*90, 0, 1, 0);
 						glTranslatef(0.4F, 0F, 0F);
 						
 						citem.hoverStart = 0F;
