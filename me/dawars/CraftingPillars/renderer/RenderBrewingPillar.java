@@ -237,9 +237,7 @@ public class RenderBrewingPillar extends TileEntitySpecialRenderer implements IS
 					}
 				
 					//processed item
-					
-					//for(4)
-					//if(not null)
+					//TODO: check if potion is under brewing
 					if (pillarTile.canBrew() && pillarTile.getBrewTime() > 0) {
 					glPushMatrix();
 						glTranslatef(subX, pillarTile.getBrewTime() / 350F, subZ);
