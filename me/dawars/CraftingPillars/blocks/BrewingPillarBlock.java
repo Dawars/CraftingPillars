@@ -1,5 +1,6 @@
 package me.dawars.CraftingPillars.blocks;
 
+import java.util.List;
 import java.util.Random;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -12,6 +13,7 @@ import me.dawars.CraftingPillars.tile.TileEntityBrewingPillar;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
@@ -24,6 +26,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.stats.AchievementList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -34,8 +37,10 @@ public class BrewingPillarBlock extends BaseBlockContainer
 	public BrewingPillarBlock(int id, Material mat)
 	{
 		super(id, mat);
+		float f = 3*1/16F;
+		this.setBlockBounds(f, 0.0F, f, 1.0F - f, 1.0F, 1.0F - f);
+//		this.setBlockBounds      (0.0F, 0.0F, 0.0F, 1.0F, 2.0F, 2.0F);
 	}
-	
 	@Override
 	public int getRenderType()
 	{

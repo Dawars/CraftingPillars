@@ -86,13 +86,6 @@ public class TileEntityBrewingPillar extends BaseTileEntity implements
 				this.brewTime = 350;
 				this.ingredientID = this.inventory[4].itemID;
 			}
-
-			int i = this.getFilledSlots();
-
-			if (i != this.filledSlots) {
-				this.filledSlots = i;
-				this.worldObj.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, i, 2);
-			}
 		}
 
 		super.updateEntity();
@@ -276,22 +269,6 @@ public class TileEntityBrewingPillar extends BaseTileEntity implements
 	@SideOnly(Side.CLIENT)
 	public void setBrewTime(int par1) {
 		this.brewTime = par1;
-	}
-
-	/**
-	 * returns an integer with each bit specifying wether that slot of the stand
-	 * contains a potion
-	 */
-	public int getFilledSlots() {
-		int i = 0;
-
-		for (int j = 0; j < 4; ++j) {
-			if (this.inventory[j] != null) {
-				i |= 1 << j;
-			}
-		}
-
-		return i;
 	}
 
 	@Override

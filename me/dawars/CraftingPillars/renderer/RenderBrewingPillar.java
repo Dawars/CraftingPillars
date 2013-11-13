@@ -2,6 +2,8 @@ package me.dawars.CraftingPillars.renderer;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import java.awt.Color;
+
 import javax.swing.Renderer;
 
 import org.lwjgl.opengl.GL11;
@@ -206,6 +208,31 @@ public class RenderBrewingPillar extends TileEntitySpecialRenderer implements IS
 						citem.setEntityItemStack(pillarTile.getStackInSlot(i));
 						itemRenderer.render(citem, 0, 0.45F, 0, false);
 					glPopMatrix();
+					
+					if(pillarTile.showNum)
+					{
+						glPushMatrix();
+							float subX = 0;
+							float subZ = 0;
+
+							if(rotI == 0)
+								subX = 0.4F;
+							if(rotI == 2)
+								subX = -0.4F;
+							if(rotI == 1)
+								subZ = 0.4F;
+							if(rotI == 3)
+								subZ = -0.4F;
+							
+							glTranslatef(subX, 0F, subZ);
+							
+							glDisable(GL_LIGHTING);
+							RenderingHelper.renderFloatingTextWithBackground(0, 0.8F, 0, 0.1F, pillarTile.getStackInSlot(i).getDisplayName(), Color.WHITE.getRGB(), new Color(0F, 0F, 0F, 0.5F));
+							glEnable(GL_LIGHTING);
+
+						glPopMatrix();
+
+					}
 				}
 			}
 			
