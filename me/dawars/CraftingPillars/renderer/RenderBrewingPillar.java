@@ -209,20 +209,22 @@ public class RenderBrewingPillar extends TileEntitySpecialRenderer implements IS
 						itemRenderer.render(citem, 0, 0.45F, 0, false);
 					glPopMatrix();
 					
+					float subX = 0;
+						float subZ = 0;
+
+						if(rotI == 0)
+							subX = 0.4F;
+						if(rotI == 2)
+							subX = -0.4F;
+						if(rotI == 1)
+							subZ = 0.4F;
+						if(rotI == 3)
+							subZ = -0.4F;
+						
 					if(pillarTile.showNum)
 					{
 						glPushMatrix();
-							float subX = 0;
-							float subZ = 0;
-
-							if(rotI == 0)
-								subX = 0.4F;
-							if(rotI == 2)
-								subX = -0.4F;
-							if(rotI == 1)
-								subZ = 0.4F;
-							if(rotI == 3)
-								subZ = -0.4F;
+							
 							
 							glTranslatef(subX, 0F, subZ);
 							
@@ -233,19 +235,23 @@ public class RenderBrewingPillar extends TileEntitySpecialRenderer implements IS
 						glPopMatrix();
 
 					}
+				
+					//processed item
+					
+					//for(4)
+					//if(not null)
+					if (pillarTile.canBrew() && pillarTile.getBrewTime() > 0) {
+					glPushMatrix();
+						glTranslatef(subX, pillarTile.getBrewTime() / 350F, subZ);
+						citem.hoverStart = 0F;
+						citem.setEntityItemStack(pillarTile.getStackInSlot(4));
+						itemRenderer.render(citem, 0.01F, 0F, 0.01F, false);
+					glPopMatrix();
+				}
 				}
 			}
 			
-			//processed item
-//			if(pillarTile.canSmelt() && pillarTile.burnTime > 0)
-//			{
-//				glPushMatrix();
-//					glTranslatef(0F, 1.75F - pillarTile.cookTime/150F, 0F);
-//					citem.hoverStart = 0F;
-//					citem.setEntityItemStack(FurnaceRecipes.smelting().getSmeltingResult(pillarTile.getStackInSlot(0)));
-//					resultRenderer.render(citem, 0.01F, 0F, 0.01F, false);
-//				glPopMatrix();
-//			}
+			
 			
 			//Fuel
 //			if(pillarTile.getStackInSlot(1) != null)

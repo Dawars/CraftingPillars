@@ -66,7 +66,14 @@ public class TileEntityBrewingPillar extends BaseTileEntity implements
 			this.rot += 0.1F;
 			if (this.rot >= 360F)
 				this.rot -= 360F;
+			
+			if (this.brewTime > 0) {
+				--this.brewTime;
+			} else {
+				this.brewTime = 350;
+			}
 		}
+		
 
 		if (!worldObj.isRemote) {
 			if (this.brewTime > 0) {
@@ -95,7 +102,7 @@ public class TileEntityBrewingPillar extends BaseTileEntity implements
 		return this.brewTime;
 	}
 
-	private boolean canBrew() {
+	public boolean canBrew() {
 		if (this.inventory[4] != null && this.inventory[4].stackSize > 0) {
 			ItemStack itemstack = this.inventory[4];
 

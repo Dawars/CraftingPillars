@@ -19,6 +19,7 @@ public class EventHandler {
 				if ((event.entityPlayer.worldObj.getBlockId(event.x, event.y, event.z) == CraftingPillars.blockCraftingPillar.blockID ||
 	//					event.entityPlayer.worldObj.getBlockId(event.x, event.y, event.z) == CraftingPillars.blockAnvilPillar.blockID ||
 						event.entityPlayer.worldObj.getBlockId(event.x, event.y, event.z) == CraftingPillars.blockShowOffPillar.blockID ||
+						event.entityPlayer.worldObj.getBlockId(event.x, event.y, event.z) == CraftingPillars.blockBrewingPillar.blockID ||
 						event.entityPlayer.worldObj.getBlockId(event.x, event.y, event.z) == CraftingPillars.blockFurnacePillar.blockID) && 
 						event.face == 1 && event.entityPlayer.isSneaking() && event.entityPlayer.inventory.getCurrentItem() != null) {
 					if (event.isCancelable()) {
