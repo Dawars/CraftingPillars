@@ -66,6 +66,7 @@ public class DiskPlayerPillarBlock extends BaseBlockContainer
     {
         if (world.getBlockMetadata(x, y, z) == 0)
         {
+        	//FIXME: check instanceof itemdisk
         	insertRecord(world, x, y, z, player.getCurrentEquippedItem());
             world.playAuxSFXAtEntity((EntityPlayer)null, 1005, x, y, z, player.getCurrentEquippedItem().itemID);
             if(!player.capabilities.isCreativeMode)

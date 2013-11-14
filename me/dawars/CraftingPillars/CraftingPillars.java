@@ -10,6 +10,7 @@ import me.dawars.CraftingPillars.blocks.ExtendPillarBlock;
 import me.dawars.CraftingPillars.blocks.FurnacePillarBlock;
 import me.dawars.CraftingPillars.blocks.ShowOffPillarBlock;
 import me.dawars.CraftingPillars.blocks.TankPillarBlock;
+import me.dawars.CraftingPillars.event.CraftingHandler;
 import me.dawars.CraftingPillars.proxy.CommonProxy;
 import me.dawars.CraftingPillars.tile.TileEntityAnvilPillar;
 import me.dawars.CraftingPillars.tile.TileEntityBrewingPillar;
@@ -80,8 +81,9 @@ public class CraftingPillars
 
 	public static boolean floatingItems = true;
 	
-	public static final Achievement achievementRecursion = new Achievement(510, "recursion", -2, 0, /* blockCraftingPillar */Item.redstone, AchievementList.buildWorkBench).registerAchievement();
-	public static final Achievement achievementShowoff = new Achievement(511, "showoff", -3, -2, /* blockCraftingPillar */Item.diamond, achievementRecursion).registerAchievement();
+	public static final Achievement achievementGettingStarted = new Achievement(509, "gettingstarted", -2, 0, /* blockCraftingPillar */Block.stoneBrick, AchievementList.openInventory).registerAchievement();
+	public static final Achievement achievementRecursion = new Achievement(510, "recursion", -3, -2, /* blockCraftingPillar */Item.redstone, achievementGettingStarted).registerAchievement();
+	public static final Achievement achievementShowoff = new Achievement(511, "showoff", -4, -2, /* blockCraftingPillar */Item.diamond, achievementRecursion).registerAchievement();
 	
 	@EventHandler
 	public void load(FMLPreInitializationEvent evt)
@@ -155,6 +157,7 @@ public class CraftingPillars
 			GameRegistry.addShapelessRecipe(new ItemStack(blockBrewingPillar), new ItemStack(Item.brewingStand), new ItemStack(blockExtendPillar));
 			
 			MinecraftForge.EVENT_BUS.register(new me.dawars.CraftingPillars.event.EventHandler());
+			GameRegistry.registerCraftingHandler(new CraftingHandler());
 		}
 		finally
 		{
