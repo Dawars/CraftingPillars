@@ -3,6 +3,7 @@ package me.dawars.CraftingPillars.renderer;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Color;
+import java.util.List;
 
 import javax.swing.Renderer;
 
@@ -34,6 +35,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 
@@ -195,7 +197,7 @@ public class RenderBrewingPillar extends TileEntitySpecialRenderer implements IS
 			for(int i = 0; i < 4; i++)
 			{
 				if(pillarTile.getStackInSlot(i) != null)
-				{//TODO: tilt
+				{
 					int rotI = i;
 					if(i == 3) rotI = 0;
 					if(i == 0) rotI = 3;
@@ -207,6 +209,26 @@ public class RenderBrewingPillar extends TileEntitySpecialRenderer implements IS
 						citem.hoverStart = 0F;
 						citem.setEntityItemStack(pillarTile.getStackInSlot(i));
 						itemRenderer.render(citem, 0, 0.45F, 0, false);
+						
+						//processed item
+						if (pillarTile.canBrew() && pillarTile.getBrewTime() > 0) {
+		                    int j = pillarTile.getStackInSlot(i).getItemDamage();
+		                    int k = TileEntityBrewingPillar.getPotionResult(j, pillarTile.getStackInSlot(4));
+		                    List list = Item.potion.getEffects(j);
+		                    List list1 = Item.potion.getEffects(k);
+		                    if (((j <= 0 || list != list1) && (list == null || !list.equals(list1) && list1 != null)) || !ItemPotion.isSplash(j) && ItemPotion.isSplash(k))
+		                    {
+	                        	glPushMatrix();
+//									glTranslatef(-(float) (pillarTile.getBrewTime()/ 350F), 0.2F + (float) Math.sqrt(pillarTile.getBrewTime()/ 350F), 0);
+									glTranslatef(-.4F, 0, 0);
+									glScalef(0.5F, 0.5F, 0.5F);
+
+									citem.hoverStart = 0F;
+									citem.setEntityItemStack(pillarTile.getStackInSlot(4));
+									itemRenderer.render(citem, -.1F + (float)Math.sqrt((1.3F-(pillarTile.getBrewTime()/ 350F))/* *0.8F*/)*.8F, 1.5F + pillarTile.getBrewTime()/ 350F, 0.01F, false);
+								glPopMatrix();
+		                    }
+		                }
 					glPopMatrix();
 					
 					float subX = 0;
@@ -224,8 +246,6 @@ public class RenderBrewingPillar extends TileEntitySpecialRenderer implements IS
 					if(pillarTile.showNum)
 					{
 						glPushMatrix();
-							
-							
 							glTranslatef(subX, 0F, subZ);
 							
 							glDisable(GL_LIGHTING);
@@ -235,29 +255,9 @@ public class RenderBrewingPillar extends TileEntitySpecialRenderer implements IS
 						glPopMatrix();
 
 					}
-				
-					//processed item
-					//TODO: check if potion is under brewing
-					if (pillarTile.canBrew() && pillarTile.getBrewTime() > 0) {
-					glPushMatrix();
-						glTranslatef(subX, pillarTile.getBrewTime() / 350F, subZ);
-						citem.hoverStart = 0F;
-						citem.setEntityItemStack(pillarTile.getStackInSlot(4));
-						itemRenderer.render(citem, 0.01F, 0F, 0.01F, false);
-					glPopMatrix();
-				}
 				}
 			}
 			
-			
-			
-			//Fuel
-//			if(pillarTile.getStackInSlot(1) != null)
-//			{
-//				citem.hoverStart = 0F;
-//				citem.setEntityItemStack(pillarTile.getStackInSlot(1));
-//				itemRenderer.render(citem, 0F, 0.3F, 0F, pillarTile.showNum);
-//			}
 		glPopMatrix();
 	}
 	

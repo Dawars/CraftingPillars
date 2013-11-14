@@ -192,12 +192,9 @@ public class TileEntityBrewingPillar extends BaseTileEntity implements
 	 * The result of brewing a potion of the specified damage value with an
 	 * ingredient itemstack.
 	 */
-	private int getPotionResult(int par1, ItemStack par2ItemStack) {
-		return par2ItemStack == null ? par1
-				: (Item.itemsList[par2ItemStack.itemID].isPotionIngredient() ? PotionHelper
-						.applyIngredient(par1,
-								Item.itemsList[par2ItemStack.itemID]
-										.getPotionEffect()) : par1);
+	public static int getPotionResult(int par1, ItemStack par2ItemStack) {
+		return par2ItemStack == null ? par1 : (Item.itemsList[par2ItemStack.itemID].isPotionIngredient() ?
+				PotionHelper.applyIngredient(par1, Item.itemsList[par2ItemStack.itemID].getPotionEffect()) : par1);
 	}
 
 	@Override

@@ -246,15 +246,40 @@ public class BrewingPillarBlock extends BaseBlockContainer
 	 */
 	public void randomDisplayTick(World world, int x, int y, int z, Random rand)
 	{
-//		if(((TileEntityBrewingPillar) world.getBlockTileEntity(x, y, z)).burnTime > 0)
-//		{
-//			double rx = x + rand.nextDouble() / 2 + 0.25D;
-//			double ry = y + rand.nextDouble() / 2 + 0.25D;
-//			double rz = z + rand.nextDouble() / 2 + 0.25D;
-//			
-//			world.spawnParticle("smoke", rx, ry, rz, 0D, 0D, 0D);
-//			world.spawnParticle("flame", rx, ry, rz, 0D, 0D, 0D);
-//		}
+		TileEntityBrewingPillar tile = ((TileEntityBrewingPillar) world.getBlockTileEntity(x, y, z));
+		if(tile.canBrew() && tile.getBrewTime() > 0)
+		{
+			for(int i = 0; i < 4; i++)
+			{
+				if(rand.nextInt(4) <= 1){
+					if(tile.getStackInSlot(i) != null)
+					{
+						int rotI = i;
+						if(i == 3) rotI = 0;
+						if(i == 0) rotI = 3;
+						float subX = 0;
+						float subZ = 0;
+			
+						if(rotI == 0)
+							subX = 0.4F;
+						if(rotI == 2)
+							subX = -0.4F;
+						if(rotI == 1)
+							subZ = 0.4F;
+						if(rotI == 3)
+							subZ = -0.4F;
+						int j = tile.getStackInSlot(i).getItemDamage();
+	                    int k = TileEntityBrewingPillar.getPotionResult(j, tile.getStackInSlot(4));
+	                    List list = Item.potion.getEffects(j);
+	                    List list1 = Item.potion.getEffects(k);
+	                    if (((j <= 0 || list != list1) && (list == null || !list.equals(list1) && list1 != null)) || !ItemPotion.isSplash(j) && ItemPotion.isSplash(k))
+	                    {
+	                    	world.spawnParticle("smoke", x+0.5F + subX, y + 0.7F, z +0.5F + subZ, 0D, 0D, 0D);
+	                    }
+					}
+				}
+			}
+		}
 	}
 	
 	@Override
