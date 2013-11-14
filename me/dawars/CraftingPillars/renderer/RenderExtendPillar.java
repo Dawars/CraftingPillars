@@ -196,24 +196,16 @@ public class RenderExtendPillar extends TileEntitySpecialRenderer implements ISi
 				|| (idBottom == CraftingPillars.blockBrewingPillar.blockID);
 		boolean east = (idEast == CraftingPillars.blockExtendPillar.blockID)
 				|| (idEast == CraftingPillars.blockShowOffPillar.blockID)
-				|| (idEast == CraftingPillars.blockCraftingPillar.blockID)
-				|| (idEast == CraftingPillars.blockFurnacePillar.blockID)
-				|| (idEast == CraftingPillars.blockBrewingPillar.blockID);
+				|| (idEast == CraftingPillars.blockCraftingPillar.blockID);
 		boolean west = (idWest == CraftingPillars.blockExtendPillar.blockID)
 				|| (idWest == CraftingPillars.blockShowOffPillar.blockID)
-				|| (idWest == CraftingPillars.blockCraftingPillar.blockID)
-				|| (idWest == CraftingPillars.blockFurnacePillar.blockID)
-				|| (idWest == CraftingPillars.blockBrewingPillar.blockID);
+				|| (idWest == CraftingPillars.blockCraftingPillar.blockID);
 		boolean north = (idNorth == CraftingPillars.blockExtendPillar.blockID)
 				|| (idNorth == CraftingPillars.blockShowOffPillar.blockID)
-				|| (idNorth == CraftingPillars.blockCraftingPillar.blockID)
-				|| (idNorth == CraftingPillars.blockFurnacePillar.blockID)
-				|| (idNorth == CraftingPillars.blockBrewingPillar.blockID);
+				|| (idNorth == CraftingPillars.blockCraftingPillar.blockID);
 		boolean south = (idSouth == CraftingPillars.blockExtendPillar.blockID)
 				|| (idSouth == CraftingPillars.blockShowOffPillar.blockID)
-				|| (idSouth == CraftingPillars.blockCraftingPillar.blockID)
-				|| (idSouth == CraftingPillars.blockFurnacePillar.blockID)
-				|| (idSouth == CraftingPillars.blockBrewingPillar.blockID);
+				|| (idSouth == CraftingPillars.blockCraftingPillar.blockID);
 		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_WORKPILLAR);
 		glTranslatef(0.0F, 1.0F, 0.0F);
 		glRotatef(180F, 1F, 0F, 0F);

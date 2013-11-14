@@ -5,6 +5,7 @@ import java.io.File;
 import me.dawars.CraftingPillars.blocks.AnvilPillarBlock;
 import me.dawars.CraftingPillars.blocks.BrewingPillarBlock;
 import me.dawars.CraftingPillars.blocks.CraftingPillarBlock;
+import me.dawars.CraftingPillars.blocks.DiskPlayerPillarBlock;
 import me.dawars.CraftingPillars.blocks.ExtendPillarBlock;
 import me.dawars.CraftingPillars.blocks.FurnacePillarBlock;
 import me.dawars.CraftingPillars.blocks.ShowOffPillarBlock;
@@ -13,6 +14,7 @@ import me.dawars.CraftingPillars.proxy.CommonProxy;
 import me.dawars.CraftingPillars.tile.TileEntityAnvilPillar;
 import me.dawars.CraftingPillars.tile.TileEntityBrewingPillar;
 import me.dawars.CraftingPillars.tile.TileEntityCraftingPillar;
+import me.dawars.CraftingPillars.tile.TileEntityDiskPlayerPillar;
 import me.dawars.CraftingPillars.tile.TileEntityEnchantmentPillar;
 import me.dawars.CraftingPillars.tile.TileEntityExtendPillar;
 import me.dawars.CraftingPillars.tile.TileEntityFurnacePillar;
@@ -65,7 +67,8 @@ public class CraftingPillars
 	public static int anvilPillarRenderID;
 	public static int tankPillarRenderID;
 	public static int brewingillarRenderID;
-	
+	public static int diskPlayerRenderID;
+
 	public static Block blockExtendPillar;
 	public static Block blockShowOffPillar;
 	public static Block blockCraftingPillar;
@@ -73,6 +76,7 @@ public class CraftingPillars
 	public static Block blockAnvilPillar;
 	public static Block blockTankPillar;
 	public static Block blockBrewingPillar;
+	public static Block blockDiskPlayerPillar;
 
 	public static boolean floatingItems = true;
 	
@@ -118,6 +122,11 @@ public class CraftingPillars
 			blockBrewingPillar = (new BrewingPillarBlock(idBrewingPillar.getInt(), Material.iron)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("brewingPillar");
 			registerBlock(blockBrewingPillar, "Brewing Pillar");
 			
+			//add time check for visiblity
+			Property idDiskPlayerPillar = CraftingPillars.config.getBlock("DiskPlayerPillar.id", BlockIds.idDiskPillar);
+			blockDiskPlayerPillar = (new DiskPlayerPillarBlock(idDiskPlayerPillar.getInt(), Material.iron)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("diskPillar");
+			registerBlock(blockDiskPlayerPillar, "JukePillar");
+			
 			GameRegistry.registerTileEntity(TileEntityExtendPillar.class, "TileEntityExtendPillar");
 			GameRegistry.registerTileEntity(TileEntityShowOffPillar.class, "TileEntityShowOffPillar");
 			GameRegistry.registerTileEntity(TileEntityCraftingPillar.class, "TileEntityCraftingPillar");
@@ -126,6 +135,10 @@ public class CraftingPillars
 			GameRegistry.registerTileEntity(TileEntityTankPillar.class, "TileEntityTankPillar");
 			GameRegistry.registerTileEntity(TileEntityEnchantmentPillar.class, "TileEntityEnchantmentPillar");
 			GameRegistry.registerTileEntity(TileEntityBrewingPillar.class, "TileEntityBrewingPillar");
+			GameRegistry.registerTileEntity(TileEntityDiskPlayerPillar.class, "TileEntityDiskPlayerPillar");
+
+			LanguageRegistry.instance().addStringLocalization("achievement.gettingstarted", "Getting Started");
+			LanguageRegistry.instance().addStringLocalization("achievement.gettingstarted.desc", "Craft a BasicPillar");
 
 			LanguageRegistry.instance().addStringLocalization("achievement.recursion", "Recursion I");
 			LanguageRegistry.instance().addStringLocalization("achievement.recursion.desc", "Craft a CraftingPillar in a CraftingPillar");

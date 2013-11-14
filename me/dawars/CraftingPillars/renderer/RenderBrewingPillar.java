@@ -224,7 +224,9 @@ public class RenderBrewingPillar extends TileEntitySpecialRenderer implements IS
 									glScalef(0.5F, 0.5F, 0.5F);
 
 									citem.hoverStart = 0F;
-									citem.setEntityItemStack(pillarTile.getStackInSlot(4));
+									ItemStack processedItem = pillarTile.getStackInSlot(4).copy();
+									processedItem.stackSize = 1;
+									citem.setEntityItemStack(processedItem);
 									itemRenderer.render(citem, -.1F + (float)Math.sqrt((1.3F-(pillarTile.getBrewTime()/ 350F))/* *0.8F*/)*.8F, 1.5F + pillarTile.getBrewTime()/ 350F, 0.01F, false);
 								glPopMatrix();
 		                    }

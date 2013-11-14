@@ -341,15 +341,24 @@ public class TileEntityBrewingPillar extends BaseTileEntity implements
 	 * Returns true if automation can insert the given item in the given slot
 	 * from the given side. Args: Slot, item, side
 	 */
-	public boolean canInsertItem(int par1, ItemStack par2ItemStack, int par3) {
-		return this.isItemValidForSlot(par1, par2ItemStack);
+	@Override
+	public boolean canInsertItem(int slot, ItemStack itemstack, int side)
+	{
+		if(slot == 4 && Item.itemsList[itemstack.itemID].isPotionIngredient())//Input
+			return true;
+		if(slot != 4 && itemstack.getItem() instanceof ItemPotion || itemstack.itemID == Item.glassBottle.itemID)//Potion
+			return true;
+		return false;
 	}
-
 	/**
 	 * Returns true if automation can extract the given item in the given slot
 	 * from the given side. Args: Slot, item, side
 	 */
-	public boolean canExtractItem(int par1, ItemStack par2ItemStack, int par3) {
+	public boolean canExtractItem(int slot, ItemStack item, int side) {
+		if(slot == 4 && (side == 0 || side == 1)/*DOWN*/)
+			return true;
+		if(slot == 4)
+			return false;
 		return true;
 	}
 
@@ -382,6 +391,6 @@ public class TileEntityBrewingPillar extends BaseTileEntity implements
 	 */
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-		return Item.itemsList[itemstack.itemID].isPotionIngredient() || itemstack.getItem() instanceof ItemPotion || itemstack.itemID == Item.glassBottle.itemID;
+		return true;
 	}
 }
