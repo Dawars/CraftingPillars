@@ -135,10 +135,11 @@ public class CraftingPillars
 			
 			proxy.init();
 			
-			GameRegistry.addRecipe(new ItemStack(blockExtendPillar), new Object[] { "SSS", " S ", "SSS", Character.valueOf('S'), Block.cobblestone });
-			GameRegistry.addRecipe(new ItemStack(blockShowOffPillar), new Object[] { "F", "P", Character.valueOf('F'), Item.itemFrame, Character.valueOf('P'), blockExtendPillar});
-			GameRegistry.addRecipe(new ItemStack(blockCraftingPillar), new Object[] { "SSS", " C ", "SSS", Character.valueOf('S'), Block.cobblestone, Character.valueOf('C'), Block.workbench });
-			GameRegistry.addRecipe(new ItemStack(blockFurnacePillar), new Object[] { "SSS", " F ", "SSS", Character.valueOf('S'), Block.cobblestone, Character.valueOf('F'), Block.furnaceIdle });
+			GameRegistry.addRecipe(new ItemStack(blockExtendPillar), new Object[] { "SSS", " S ", "SSS", Character.valueOf('S'), Block.stone });
+			GameRegistry.addShapelessRecipe(new ItemStack(blockShowOffPillar), new ItemStack(Item.itemFrame), new ItemStack(blockExtendPillar));
+			GameRegistry.addShapelessRecipe(new ItemStack(blockCraftingPillar), new ItemStack(Block.workbench), new ItemStack(blockExtendPillar));
+			GameRegistry.addShapelessRecipe(new ItemStack(blockFurnacePillar), new ItemStack(Block.furnaceIdle), new ItemStack(blockExtendPillar));
+			GameRegistry.addShapelessRecipe(new ItemStack(blockBrewingPillar), new ItemStack(Item.brewingStand), new ItemStack(blockExtendPillar));
 			
 			MinecraftForge.EVENT_BUS.register(new me.dawars.CraftingPillars.event.EventHandler());
 		}
