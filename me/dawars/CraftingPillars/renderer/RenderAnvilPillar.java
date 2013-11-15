@@ -130,7 +130,14 @@ public class RenderAnvilPillar extends TileEntitySpecialRenderer implements ISim
 			glColor3f(0.75F, 0.75F, 0.75F);
 			glTranslated(x, y, z);
 			for(CollisionBox box : ((BasePillar)CraftingPillars.blockAnvilPillar).buttons)
+			{
+				glPushMatrix();
+				glTranslatef(0.5F, 0F, 0.5F);
+				glRotatef(90F * tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord), 0F, 1F, 0F);
+				glTranslatef(-0.5F, 0F, -0.5F);
 				box.render();
+				glPopMatrix();
+			}
 		glPopMatrix();
 	}
 
