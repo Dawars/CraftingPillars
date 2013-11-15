@@ -83,7 +83,7 @@ public class CraftingPillars
 	
 	public static final Achievement achievementGettingStarted = new Achievement(509, "gettingstarted", -2, 0, /* blockCraftingPillar */Block.stoneBrick, AchievementList.openInventory).registerAchievement();
 	public static final Achievement achievementRecursion = new Achievement(510, "recursion", -3, -2, /* blockCraftingPillar */Item.redstone, achievementGettingStarted).registerAchievement();
-	public static final Achievement achievementShowoff = new Achievement(511, "showoff", -4, -2, /* blockCraftingPillar */Item.diamond, achievementRecursion).registerAchievement();
+	public static final Achievement achievementShowoff = new Achievement(511, "showoff", -5, -2, /* blockCraftingPillar */Item.diamond, achievementRecursion).registerAchievement();
 	
 	@EventHandler
 	public void load(FMLPreInitializationEvent evt)

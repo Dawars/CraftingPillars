@@ -22,6 +22,7 @@ import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPotion;
+import net.minecraft.item.ItemRecord;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
@@ -66,18 +67,22 @@ public class DiskPlayerPillarBlock extends BaseBlockContainer
     {
         if (world.getBlockMetadata(x, y, z) == 0)
         {
-        	//FIXME: check instanceof itemdisk
-        	insertRecord(world, x, y, z, player.getCurrentEquippedItem());
-            world.playAuxSFXAtEntity((EntityPlayer)null, 1005, x, y, z, player.getCurrentEquippedItem().itemID);
-            if(!player.capabilities.isCreativeMode)
-            	--player.getCurrentEquippedItem().stackSize;
-            return true;
+        	ItemStack disk = player.getCurrentEquippedItem();
+        	if(disk.getItem() instanceof ItemRecord && disk != null)
+        	{
+	        	insertRecord(world, x, y, z, player.getCurrentEquippedItem());
+	            world.playAuxSFXAtEntity((EntityPlayer)null, 1005, x, y, z, disk.itemID);
+	            if(!player.capabilities.isCreativeMode)
+	            	--player.getCurrentEquippedItem().stackSize;
+	            return true;
+        	}
         }
         else
         {
             this.ejectRecord(world, x, y, z);
             return true;
         }
+		return true;
     }
 
     /**
