@@ -26,6 +26,22 @@ public class AnvilPillarBlock extends BasePillar
 	public AnvilPillarBlock(int id, Material mat)
 	{
 		super(id, mat);
+		this.buttons.add(new CollisionBox(1F, 16F, 1F, 15F, 17F, 15F)
+						{
+							@Override
+							public void onClick(World world, int x, int y, int z, int button, EntityPlayer player)
+							{
+								System.out.println("Panel clicked: "+button);
+							}
+						});
+		this.buttons.add(new CollisionBox(0F, 15F, 0F, 1F, 16F, 1F)
+						{
+							@Override
+							public void onClick(World world, int x, int y, int z, int button, EntityPlayer player)
+							{
+								System.out.println("Corner clicked: "+button);
+							}
+						});
 	}
 	
 	@Override
@@ -46,10 +62,10 @@ public class AnvilPillarBlock extends BasePillar
 	}
 	
 	@Override
-	public boolean handleClick(int button, World world, int x, int y, int z, EntityPlayer player, float hitX, float hitY, float hitZ)
+	public boolean handleClick(World world, int x, int y, int z, float hitX, float hitY, float hitZ, int button, EntityPlayer player)
 	{
 		TileEntityAnvilPillar pillarTile = (TileEntityAnvilPillar) world.getBlockTileEntity(x, y, z);
-		System.out.println("Anvil!!!");
+		
 		return false;
 	}
 	

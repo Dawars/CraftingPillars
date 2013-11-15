@@ -25,13 +25,13 @@ public class EventHandler
 							{
 								if(x == event.x && y == event.y && z == event.z)
 								{
-									if(((BasePillar)Block.blocksList[event.entityPlayer.worldObj.getBlockId(x, y, z)]).handleClickEvent(0, x, y, z, event.entityPlayer)
+									if(((BasePillar)Block.blocksList[event.entityPlayer.worldObj.getBlockId(x, y, z)]).handleClickEvent(x, y, z, 0, event.entityPlayer)
 										&& event.isCancelable())
 											event.setCanceled(true);
 								}
 								else
 								{
-									((BasePillar)Block.blocksList[event.entityPlayer.worldObj.getBlockId(x, y, z)]).handleClickEvent(0, x, y, z, event.entityPlayer);
+									((BasePillar)Block.blocksList[event.entityPlayer.worldObj.getBlockId(x, y, z)]).handleClickEvent(x, y, z, 0, event.entityPlayer);
 								}
 							}
 		}
@@ -45,13 +45,13 @@ public class EventHandler
 							{
 								if(x == event.x && y == event.y && z == event.z)
 								{
-									if(((BasePillar)Block.blocksList[event.entityPlayer.worldObj.getBlockId(x, y, z)]).handleClickEvent(2, x, y, z, event.entityPlayer)
+									if(((BasePillar)Block.blocksList[event.entityPlayer.worldObj.getBlockId(x, y, z)]).handleClickEvent(x, y, z, 2, event.entityPlayer)
 										&& event.isCancelable())
 											event.setCanceled(true);
 								}
 								else
 								{
-									((BasePillar)Block.blocksList[event.entityPlayer.worldObj.getBlockId(x, y, z)]).handleClickEvent(2, x, y, z, event.entityPlayer);
+									((BasePillar)Block.blocksList[event.entityPlayer.worldObj.getBlockId(x, y, z)]).handleClickEvent(x, y, z, 2, event.entityPlayer);
 								}
 							}
 		}

@@ -24,7 +24,7 @@ public class PacketHandler implements IPacketHandler
 				for(int y = (int)entity.posY-5; y <= (int)entity.posY+5; y++)
 					for(int z = (int)entity.posZ-5; z <= (int)entity.posZ+5; z++)
 						if(Block.blocksList[entity.worldObj.getBlockId(x, y, z)] instanceof BasePillar)
-							((BasePillar)Block.blocksList[entity.worldObj.getBlockId(x, y, z)]).handleClickEvent(click.button, x, y, z, entity);
+							((BasePillar)Block.blocksList[entity.worldObj.getBlockId(x, y, z)]).handleClickEvent(x, y, z, click.button, entity);
 		}
 	}
 }

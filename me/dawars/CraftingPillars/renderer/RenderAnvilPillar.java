@@ -1,10 +1,6 @@
 package me.dawars.CraftingPillars.renderer;
 
-import static org.lwjgl.opengl.GL11.glPopMatrix;
-import static org.lwjgl.opengl.GL11.glPushMatrix;
-import static org.lwjgl.opengl.GL11.glRotatef;
-import static org.lwjgl.opengl.GL11.glScaled;
-import static org.lwjgl.opengl.GL11.glTranslated;
+import static org.lwjgl.opengl.GL11.*;
 
 import java.util.Random;
 
@@ -12,6 +8,9 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 import me.dawars.CraftingPillars.CraftingPillars;
+import me.dawars.CraftingPillars.blocks.BasePillar;
+import me.dawars.CraftingPillars.blocks.BasePillar.CollisionBox;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
@@ -127,8 +126,11 @@ public class RenderAnvilPillar extends TileEntitySpecialRenderer implements ISim
 		
 		
 		glPushMatrix();
+			glBindTexture(GL_TEXTURE_2D, 0);
+			glColor3f(0.75F, 0.75F, 0.75F);
 			glTranslated(x, y, z);
-			
+			for(CollisionBox box : ((BasePillar)CraftingPillars.blockAnvilPillar).buttons)
+				box.render();
 		glPopMatrix();
 	}
 
