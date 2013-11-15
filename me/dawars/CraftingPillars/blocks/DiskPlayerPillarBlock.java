@@ -67,7 +67,7 @@ public class DiskPlayerPillarBlock extends BaseBlockContainer
         if (world.getBlockMetadata(x, y, z) == 0)
         {
         	ItemStack disk = player.getCurrentEquippedItem();
-        	if(disk.getItem() instanceof ItemRecord && disk != null)
+        	if(disk != null && disk.getItem() instanceof ItemRecord)
         	{
 	        	insertRecord(world, x, y, z, player.getCurrentEquippedItem());
 	            world.playAuxSFXAtEntity((EntityPlayer)null, 1005, x, y, z, disk.itemID);
