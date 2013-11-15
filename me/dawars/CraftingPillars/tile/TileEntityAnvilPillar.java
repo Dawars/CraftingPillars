@@ -36,10 +36,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
-public class TileEntityAnvilPillar extends BaseTileEntity implements IInventory, ISidedInventory
+public class TileEntityAnvilPillar extends TileEntityPillarBase
 {
-	private ItemStack[] inventory = new ItemStack[this.getSizeInventory()];
-	
 	// @SideOnly(Side.CLIENT)
 	public float rot = 0F;
 	
@@ -53,60 +51,7 @@ public class TileEntityAnvilPillar extends BaseTileEntity implements IInventory,
 				this.rot -= 360F;
 		}
 		
-		
-		
 		super.updateEntity();
-	}
-	
-	@Override
-	public void readFromNBT(NBTTagCompound nbt)
-	{
-		super.readFromNBT(nbt);
-		
-		this.inventory = new ItemStack[this.getSizeInventory()];
-		NBTTagList nbtlist = nbt.getTagList("Items");
-		for(int i = 0; i < nbtlist.tagCount(); i++)
-		{
-			NBTTagCompound nbtslot = (NBTTagCompound) nbtlist.tagAt(i);
-			int j = nbtslot.getByte("Slot") & 255;
-			
-			if((j >= 0) && (j < this.getSizeInventory()))
-				this.inventory[j] = ItemStack.loadItemStackFromNBT(nbtslot);
-		}
-	}
-	
-	@Override
-	public void writeToNBT(NBTTagCompound nbt)
-	{
-		super.writeToNBT(nbt);
-		
-		NBTTagList nbtlist = new NBTTagList();
-		for(int i = 0; i < this.getSizeInventory(); i++)
-		{
-			if(this.inventory[i] != null)
-			{
-				NBTTagCompound nbtslot = new NBTTagCompound();
-				nbtslot.setByte("Slot", (byte) i);
-				this.inventory[i].writeToNBT(nbtslot);
-				nbtlist.appendTag(nbtslot);
-			}
-		}
-		nbt.setTag("Items", nbtlist);
-	}
-	
-	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
-	{
-		NBTTagCompound nbt = pkt.data;
-		this.readFromNBT(nbt);
-	}
-	
-	@Override
-	public Packet getDescriptionPacket()
-	{
-		NBTTagCompound nbt = new NBTTagCompound();
-		this.writeToNBT(nbt);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, nbt);
 	}
 	
 	@Override
