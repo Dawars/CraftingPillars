@@ -26,15 +26,15 @@ public class AnvilPillarBlock extends BasePillar
 	public AnvilPillarBlock(int id, Material mat)
 	{
 		super(id, mat);
-		this.buttons.add(new CollisionBox(1F, 16F, 1F, 15F, 17F, 15F)
+		this.buttons.add(new CollisionBox(5F, 20F, 5F, 11F, 24F, 11F)
 						{
 							@Override
 							public void onClick(World world, int x, int y, int z, int button, EntityPlayer player)
 							{
-								System.out.println("Panel clicked: "+button);
+								System.out.println("Floating clicked: "+button);
 							}
 						});
-		this.buttons.add(new CollisionBox(0F, 15F, 0F, 1F, 16F, 1F)
+		this.buttons.add(new CollisionBox(0F, 14F, 0F, 2F, 16F, 2F)
 						{
 							@Override
 							public void onClick(World world, int x, int y, int z, int button, EntityPlayer player)
@@ -50,7 +50,7 @@ public class AnvilPillarBlock extends BasePillar
 		return CraftingPillars.anvilPillarRenderID;
 	}
 	
-	@Override
+	/*@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
 	{
 		int l = par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 3;
@@ -59,7 +59,7 @@ public class AnvilPillarBlock extends BasePillar
 			this.setBlockBounds(0.125F, 0.0F, 0.0F, 0.875F, 1.0F, 1.0F);
 		else
 			this.setBlockBounds(0.0F, 0.0F, 0.125F, 1.0F, 1.0F, 0.875F);
-	}
+	}*/
 	
 	@Override
 	public boolean handleClick(World world, int x, int y, int z, float hitX, float hitY, float hitZ, int button, EntityPlayer player)

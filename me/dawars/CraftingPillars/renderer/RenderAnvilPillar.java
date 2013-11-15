@@ -6,11 +6,10 @@ import java.util.Random;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-
 import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.blocks.BasePillar;
 import me.dawars.CraftingPillars.blocks.BasePillar.CollisionBox;
-
+import me.dawars.CraftingPillars.tiles.TileEntityAnvilPillar;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
@@ -123,17 +122,15 @@ public class RenderAnvilPillar extends TileEntitySpecialRenderer implements ISim
 			render(tile, 0.0625F);
 		glPopMatrix();
 		
-		
-		
 		glPushMatrix();
 			glBindTexture(GL_TEXTURE_2D, 0);
-			glColor3f(0.75F, 0.75F, 0.75F);
 			glTranslated(x, y, z);
+			glColor3f(0.75F, 0.75F, 0.75F);
 			for(CollisionBox box : ((BasePillar)CraftingPillars.blockAnvilPillar).buttons)
 			{
 				glPushMatrix();
 				glTranslatef(0.5F, 0F, 0.5F);
-				glRotatef(90F * tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord), 0F, 1F, 0F);
+				glRotatef(-90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord)+2), 0F, 1F, 0F);
 				glTranslatef(-0.5F, 0F, -0.5F);
 				box.render();
 				glPopMatrix();

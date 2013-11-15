@@ -6,6 +6,8 @@ import java.util.List;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import me.dawars.CraftingPillars.CraftingPillars;
+import me.dawars.CraftingPillars.tiles.TileEntityAnvilPillar;
+import me.dawars.CraftingPillars.tiles.TileEntityPillarBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -15,7 +17,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-
 import static org.lwjgl.opengl.GL11.*;
 
 public abstract class BasePillar extends BaseBlockContainer
@@ -44,7 +45,7 @@ public abstract class BasePillar extends BaseBlockContainer
 			if(meta == 0)
 			{
 				x = 1F-x;
-				y = 1F-y;
+				z = 1F-z;
 			}
 			else if(meta == 1)
 			{
@@ -52,10 +53,11 @@ public abstract class BasePillar extends BaseBlockContainer
 				x = 1F-z;
 				z = s;
 			}
-			else if(meta == 2)
+			/*else if(meta == 2)
 			{
-				
-			}
+				x = x;
+				z = z;
+			}*/
 			else if(meta == 3)
 			{
 				float s = x;
@@ -124,7 +126,9 @@ public abstract class BasePillar extends BaseBlockContainer
 	
 	public boolean handleClickEvent(int x, int y, int z, int button, EntityPlayer player)
 	{
-		float hitX = (float)player.posX, hitY = (float)player.posY, hitZ = (float)player.posZ;
+		TileEntityPillarBase tile = (TileEntityPillarBase)player.worldObj.getBlockTileEntity(x, y, z);
+		float hitX = (float)player.posX, hitY = (float)player.posY+(float)player.eyeHeight, hitZ = (float)player.posZ;
+		
 		float dx = MathHelper.sin((float)Math.toRadians(-player.rotationYaw))*MathHelper.cos((float)Math.toRadians(-player.rotationPitch))/16F;
 		float dy = MathHelper.sin((float)Math.toRadians(-player.rotationPitch))/16F;
 		float dz = MathHelper.cos((float)Math.toRadians(-player.rotationYaw))*MathHelper.cos((float)Math.toRadians(-player.rotationPitch))/16F;
@@ -135,7 +139,7 @@ public abstract class BasePillar extends BaseBlockContainer
 			hitX += dx;
 			hitY += dy;
 			hitZ += dz;
-			if(x < hitX && hitX < x+1 && y < hitY && hitY < y+1 && y < hitY && hitY < y+1)
+			if(x-1 <= hitX && hitX < x+2 && y-1 <= hitY && hitY < y+2 && y-1 <= hitY && hitY < y+2)
 				for(CollisionBox box : this.buttons)
 					if(box.inBounds(hitX-x, hitY-y, hitZ-z, meta))
 					{
@@ -143,8 +147,6 @@ public abstract class BasePillar extends BaseBlockContainer
 						box.onClick(player.worldObj, x, y, z, button, player);
 					}
 		}
-		
-		System.out.println("Click event: "+(flag ? (hitX+" "+hitY+" "+hitZ) : ""));
 		
 		return flag || this.handleClick(player.worldObj, x, y, z, hitX, hitY, hitZ, button, player);
 	}
