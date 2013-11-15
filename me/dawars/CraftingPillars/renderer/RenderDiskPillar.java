@@ -34,6 +34,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.model.AdvancedModelLoader;
+import net.minecraftforge.client.model.IModelCustom;
+import net.minecraftforge.client.model.obj.ObjModelLoader;
 
 public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler
 {
@@ -57,8 +60,12 @@ public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimp
 	private RenderingHelper.ItemRender itemRenderer;
 	private RenderingHelper.ItemRender resultRenderer;
 	
+	public IModelCustom disk;
+
 	public RenderDiskPillar()
 	{
+		disk = AdvancedModelLoader.loadModel("/assets/" + CraftingPillars.id + "/textures/models/Disk.obj");
+		
 		random = new Random();
 		itemRenderer = new RenderingHelper.ItemRender(false, true);
 		resultRenderer = new RenderingHelper.ItemRender(true, true);
@@ -127,6 +134,7 @@ public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimp
 		pillartop.render(f);
 		top.render(f);
 		Nail.render(f);
+		
 	}
 	
 	private void setRotation(ModelRenderer model, float x, float y, float z)
@@ -147,11 +155,19 @@ public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimp
 		glPopMatrix();
 		
 		TileEntityDiskPlayerPillar workTile = (TileEntityDiskPlayerPillar) tile;
+
+		
 		
 		glPushMatrix();
-		glTranslated(x, y, z);
+			glTranslated(x + 0.5F, y + 1.02F, z + 0.5F);
+			glRotatef(workTile.rot, 0, 1, 0);
+			glScalef(0.025F, 0.025F, 0.025F);
+			
+			FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(CraftingPillars.id + ":textures/models/disk_13.png"));
+			disk.renderAll();
+			
 			//TODO: add title text
-		
+
 		glPopMatrix();
 	}
 	

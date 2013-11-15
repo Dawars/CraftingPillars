@@ -12,6 +12,20 @@ public class TileEntityDiskPlayerPillar extends BaseTileEntity
     /** ID of record which is in Jukebox */
     private ItemStack record;
 
+    
+    public float rot = 0F;
+
+	@Override
+	public void updateEntity()
+	{
+		if(this.worldObj.isRemote)
+		{
+			this.rot += 5F;
+			if(this.rot >= 360F)
+				this.rot -= 360F;
+		}
+	}
+		
     /**
      * Reads a tile entity from NBT.
      */

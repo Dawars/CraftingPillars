@@ -62,23 +62,30 @@ public class DiskPlayerPillarBlock extends BaseBlockContainer
 	/**
      * Called upon block activation (right click on the block.)
      */
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int par6, float par7, float par8, float par9)
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
     {
-        if (world.getBlockMetadata(x, y, z) == 0)
+    	TileEntityDiskPlayerPillar tile = ((TileEntityDiskPlayerPillar)world.getBlockTileEntity(x, y, z));
+        if (tile.getDisk() == null)
         {
-        	ItemStack disk = player.getCurrentEquippedItem();
-        	if(disk != null && disk.getItem() instanceof ItemRecord)
+        	if(side == 1)
         	{
-	        	insertRecord(world, x, y, z, player.getCurrentEquippedItem());
-	            world.playAuxSFXAtEntity((EntityPlayer)null, 1005, x, y, z, disk.itemID);
-	            if(!player.capabilities.isCreativeMode)
-	            	--player.getCurrentEquippedItem().stackSize;
-	            return true;
+	        	ItemStack disk = player.getCurrentEquippedItem();
+	        	if(disk != null && disk.getItem() instanceof ItemRecord)
+	        	{
+		        	insertRecord(world, x, y, z, player.getCurrentEquippedItem());
+		            world.playAuxSFXAtEntity((EntityPlayer)null, 1005, x, y, z, disk.itemID);
+		            if(!player.capabilities.isCreativeMode)
+		            	--player.getCurrentEquippedItem().stackSize;
+		            return true;
+	        	}
+        	} else {
+        		//pause
+        		//tile.isPlaying();
         	}
         }
         else
         {
-            this.ejectRecord(world, x, y, z);
+        	if(side == 1) this.ejectRecord(world, x, y, z);
             return true;
         }
 		return true;
@@ -96,7 +103,6 @@ public class DiskPlayerPillarBlock extends BaseBlockContainer
             if (tileentityrecordplayer != null)
             {
                 tileentityrecordplayer.setDisk(item.copy());
-                world.setBlockMetadataWithNotify(x, y, z, 1, 2);
             }
         }
     }
@@ -119,7 +125,6 @@ public class DiskPlayerPillarBlock extends BaseBlockContainer
                     world.playAuxSFX(1005, x, y, z, 0);
                     world.playRecord((String)null, x, y, z);
                     tileentityrecordplayer.setDisk((ItemStack)null);
-                    world.setBlockMetadataWithNotify(x, y, z, 0, 2);
                     float f = 0.7F;
                     double d0 = (double)(world.rand.nextFloat() * f) + (double)(1.0F - f) * 0.5D;
                     double d1 = (double)(world.rand.nextFloat() * f) + (double)(1.0F - f) * 0.2D + 0.6D;
