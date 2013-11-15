@@ -5,7 +5,7 @@ import java.util.Random;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import me.dawars.CraftingPillars.CraftingPillars;
-import me.dawars.CraftingPillars.tile.TileEntityAnvilPillar;
+import me.dawars.CraftingPillars.tiles.TileEntityAnvilPillar;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -19,6 +19,7 @@ import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
 public class AnvilPillarBlock extends BasePillar
 {
@@ -45,11 +46,11 @@ public class AnvilPillarBlock extends BasePillar
 	}
 	
 	@Override
-	public void handleClick(int button, World world, int x, int y, int z, EntityPlayer player, float hitX, float hitY, float hitZ)
+	public boolean handleClick(int button, World world, int x, int y, int z, EntityPlayer player, float hitX, float hitY, float hitZ)
 	{
 		TileEntityAnvilPillar pillarTile = (TileEntityAnvilPillar) world.getBlockTileEntity(x, y, z);
-		
-		
+		System.out.println("Anvil!!!");
+		return false;
 	}
 	
 	@Override

@@ -1,4 +1,4 @@
-package me.dawars.CraftingPillars.tile;
+package me.dawars.CraftingPillars.tiles;
 
 import me.dawars.CraftingPillars.CraftingPillars;
 import net.minecraft.inventory.IInventory;

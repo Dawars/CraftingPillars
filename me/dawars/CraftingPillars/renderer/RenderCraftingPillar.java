@@ -13,9 +13,8 @@ import com.google.common.primitives.SignedBytes;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-
 import me.dawars.CraftingPillars.CraftingPillars;
-import me.dawars.CraftingPillars.tile.TileEntityCraftingPillar;
+import me.dawars.CraftingPillars.tiles.TileEntityCraftingPillar;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;

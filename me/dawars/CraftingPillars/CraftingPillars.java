@@ -2,25 +2,11 @@ package me.dawars.CraftingPillars;
 
 import java.io.File;
 
-import me.dawars.CraftingPillars.blocks.AnvilPillarBlock;
-import me.dawars.CraftingPillars.blocks.BrewingPillarBlock;
-import me.dawars.CraftingPillars.blocks.CraftingPillarBlock;
-import me.dawars.CraftingPillars.blocks.DiskPlayerPillarBlock;
-import me.dawars.CraftingPillars.blocks.ExtendPillarBlock;
-import me.dawars.CraftingPillars.blocks.FurnacePillarBlock;
-import me.dawars.CraftingPillars.blocks.ShowOffPillarBlock;
-import me.dawars.CraftingPillars.blocks.TankPillarBlock;
-import me.dawars.CraftingPillars.event.CraftingHandler;
+import me.dawars.CraftingPillars.blocks.*;
+import me.dawars.CraftingPillars.handlers.*;
+import me.dawars.CraftingPillars.tiles.*;
 import me.dawars.CraftingPillars.proxy.CommonProxy;
-import me.dawars.CraftingPillars.tile.TileEntityAnvilPillar;
-import me.dawars.CraftingPillars.tile.TileEntityBrewingPillar;
-import me.dawars.CraftingPillars.tile.TileEntityCraftingPillar;
-import me.dawars.CraftingPillars.tile.TileEntityDiskPlayerPillar;
-import me.dawars.CraftingPillars.tile.TileEntityEnchantmentPillar;
-import me.dawars.CraftingPillars.tile.TileEntityExtendPillar;
-import me.dawars.CraftingPillars.tile.TileEntityFurnacePillar;
-import me.dawars.CraftingPillars.tile.TileEntityShowOffPillar;
-import me.dawars.CraftingPillars.tile.TileEntityTankPillar;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.material.Material;
@@ -37,11 +23,12 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(name = CraftingPillars.name, version = CraftingPillars.version, useMetadata = false, modid = CraftingPillars.id, dependencies = "required-after:Forge@[8.9.0,)")
+@NetworkMod(clientSideRequired = true, serverSideRequired = false, channels = {CraftingPillars.packetChannel}, packetHandler = PacketHandler.class)
 public class CraftingPillars
 {
 	@Instance(CraftingPillars.id)
@@ -55,6 +42,7 @@ public class CraftingPillars
 	public static final String version = "1.3.2";
 	public static final String name = "Crafting Pillars";
 	public static final String id = "craftingpillars";
+	public static final String packetChannel = "PillarChannel";
 	
 	@SidedProxy(clientSide = "me.dawars.CraftingPillars.proxy.ClientProxy", serverSide = "me.dawars.CraftingPillars.proxy.CommonProxy")
 	public static CommonProxy proxy;
@@ -156,7 +144,7 @@ public class CraftingPillars
 			GameRegistry.addShapelessRecipe(new ItemStack(blockFurnacePillar), new ItemStack(Block.furnaceIdle), new ItemStack(blockExtendPillar));
 			GameRegistry.addShapelessRecipe(new ItemStack(blockBrewingPillar), new ItemStack(Item.brewingStand), new ItemStack(blockExtendPillar));
 			
-			MinecraftForge.EVENT_BUS.register(new me.dawars.CraftingPillars.event.EventHandler());
+			MinecraftForge.EVENT_BUS.register(new me.dawars.CraftingPillars.handlers.EventHandler());
 			GameRegistry.registerCraftingHandler(new CraftingHandler());
 		}
 		finally

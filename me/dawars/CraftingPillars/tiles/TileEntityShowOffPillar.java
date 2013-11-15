@@ -1,4 +1,4 @@
-package me.dawars.CraftingPillars.tile;
+package me.dawars.CraftingPillars.tiles;
 
 import java.util.Random;
 
@@ -6,11 +6,10 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
 import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.client.CustomParticle;
 import me.dawars.CraftingPillars.container.ContainerCraftingPillar;
-import me.dawars.CraftingPillars.tile.BaseTileEntity;
+import me.dawars.CraftingPillars.tiles.BaseTileEntity;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;

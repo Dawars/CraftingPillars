@@ -3,7 +3,7 @@ package me.dawars.CraftingPillars.blocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import me.dawars.CraftingPillars.CraftingPillars;
-import me.dawars.CraftingPillars.tile.TileEntityCraftingPillar;
+import me.dawars.CraftingPillars.tiles.TileEntityCraftingPillar;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLivingBase;

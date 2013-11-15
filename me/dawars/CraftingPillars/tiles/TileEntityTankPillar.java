@@ -1,4 +1,4 @@
-package me.dawars.CraftingPillars.tile;
+package me.dawars.CraftingPillars.tiles;
 
 import java.util.ArrayList;
 import java.util.List;

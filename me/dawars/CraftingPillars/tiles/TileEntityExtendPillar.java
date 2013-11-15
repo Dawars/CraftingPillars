@@ -1,4 +1,4 @@
-package me.dawars.CraftingPillars.tile;
+package me.dawars.CraftingPillars.tiles;
 
 import net.minecraft.tileentity.TileEntity;
 

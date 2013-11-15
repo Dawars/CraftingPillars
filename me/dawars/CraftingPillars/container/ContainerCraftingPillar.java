@@ -1,6 +1,6 @@
 package me.dawars.CraftingPillars.container;
 
-import me.dawars.CraftingPillars.tile.TileEntityCraftingPillar;
+import me.dawars.CraftingPillars.tiles.TileEntityCraftingPillar;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;

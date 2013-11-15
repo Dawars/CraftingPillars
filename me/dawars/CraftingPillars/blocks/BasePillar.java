@@ -11,8 +11,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
-public class BasePillar extends BaseBlockContainer
+public abstract class BasePillar extends BaseBlockContainer
 {
 	public BasePillar(int id, Material mat)
 	{
@@ -20,14 +21,20 @@ public class BasePillar extends BaseBlockContainer
 		this.setCreativeTab(CreativeTabs.tabDecorations);
 	}
 	
-	public void handleClick(int button, World world, int x, int y, int z, EntityPlayer player, float hitX, float hitY, float hitZ)
+	public abstract boolean handleClick(int button, World world, int x, int y, int z, EntityPlayer player, float hitX, float hitY, float hitZ);
+	
+	public boolean handleClickEvent(int button, int x, int y, int z, EntityPlayer player)
 	{
-		
+		System.out.println("Handling event at: "+x+" "+y+" "+z);
+		return this.handleClick(button, player.worldObj, x, y, z, player, 0F, 0F, 0F);
 	}
 	
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
 	{
+		if(world.isRemote)
+			return true;
+		
 		hitX *= 16F;
 		hitY *= 16F;
 		hitZ *= 16F;
@@ -52,7 +59,7 @@ public class BasePillar extends BaseBlockContainer
 			hitZ = 16F - s;
 		}
 		
-		this.handleClick(0, world, x, y, z, player, hitX, hitY, hitZ);
+		this.handleClick(2, world, x, y, z, player, hitX, hitY, hitZ);
 		
 		return true;
 	}
@@ -60,7 +67,8 @@ public class BasePillar extends BaseBlockContainer
 	@Override
 	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player)
 	{
-		this.handleClick(2, world, x, y, z, player, 0F, 0F, 0F);
+		if(!world.isRemote)
+			this.handleClick(0, world, x, y, z, player, 0F, 0F, 0F);
 	}
 	
 	@Override

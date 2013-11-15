@@ -4,7 +4,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import me.dawars.CraftingPillars.BlockIds;
 import me.dawars.CraftingPillars.CraftingPillars;
-import me.dawars.CraftingPillars.tile.TileEntityTankPillar;
+import me.dawars.CraftingPillars.tiles.TileEntityTankPillar;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLiving;

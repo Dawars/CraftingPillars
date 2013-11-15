@@ -7,7 +7,7 @@ import java.util.Random;
 
 import me.dawars.CraftingPillars.Blobs;
 import me.dawars.CraftingPillars.CraftingPillars;
-import me.dawars.CraftingPillars.tile.TileEntityTankPillar;
+import me.dawars.CraftingPillars.tiles.TileEntityTankPillar;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
