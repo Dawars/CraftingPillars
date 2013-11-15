@@ -57,13 +57,7 @@ public class EventHandler
 		}
 		else if(event.action == Action.RIGHT_CLICK_AIR)
 		{
-			//System.out.print("Sending...");
-			for(int x = event.x-5; x <= event.x+5; x++)
-				for(int y = event.y-5; y <= event.y+5; y++)
-					for(int z = event.z-5; z <= event.z+5; z++)
-						if(Block.blocksList[event.entityPlayer.worldObj.getBlockId(x, y, z)] instanceof BasePillar)
-							CraftingPillars.proxy.sendToServer(new PacketClick(2, x, y, z).send());
-			//System.out.println("Sent!");
+			CraftingPillars.proxy.sendToServer(new PacketClick(2).send());
 		}
 	}
 }

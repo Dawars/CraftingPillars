@@ -16,19 +16,15 @@ public class PacketHandler implements IPacketHandler
 	@Override
 	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player)
 	{
-		//System.out.println("received packet");
 		if(packet.channel.equals(CraftingPillars.packetChannel))
 		{
 			PacketClick click = new PacketClick(packet);
 			EntityPlayer entity = (EntityPlayer)player;
-			
-			System.out.println("Player: "+(player == null));
-			System.out.println("Entity: "+(entity == null));
-			System.out.println("World: "+(entity.worldObj == null));
-			System.out.println("BlockId: "+entity.worldObj.getBlockId(click.x, click.y, click.z));
-			System.out.println("Block: "+(Block.blocksList[entity.worldObj.getBlockId(click.x, click.y, click.z)] == null));
-			System.out.println("Instance: "+(Block.blocksList[entity.worldObj.getBlockId(click.x, click.y, click.z)] instanceof BasePillar));
-			//((BasePillar)Block.blocksList[entity.worldObj.getBlockId(click.x, click.y, click.z)]).handleClickEvent(click.button, click.x, click.y, click.z, entity);
+			for(int x = (int)entity.posX-5; x <= (int)entity.posX+5; x++)
+				for(int y = (int)entity.posY-5; y <= (int)entity.posY+5; y++)
+					for(int z = (int)entity.posZ-5; z <= (int)entity.posZ+5; z++)
+						if(Block.blocksList[entity.worldObj.getBlockId(x, y, z)] instanceof BasePillar)
+							((BasePillar)Block.blocksList[entity.worldObj.getBlockId(x, y, z)]).handleClickEvent(click.button, x, y, z, entity);
 		}
 	}
 }
