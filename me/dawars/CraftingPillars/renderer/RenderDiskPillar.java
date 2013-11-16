@@ -63,8 +63,6 @@ public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimp
 	
 	public IModelCustom disk;
 
-	private float rot = 0F;
-
 	public RenderDiskPillar()
 	{
 		disk = AdvancedModelLoader.loadModel("/assets/" + CraftingPillars.id + "/textures/models/Disk.obj");
@@ -150,9 +148,6 @@ public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimp
 	@Override
 	public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f)
 	{
-		this.rot  += 5F;
-		if(this.rot >= 360F)
-			this.rot -= 360F;
 		
 		glPushMatrix();
 			glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
@@ -167,7 +162,7 @@ public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimp
 		{
 			glPushMatrix();
 				glTranslated(x + 0.5F, y + 1.02F, z + 0.5F);
-				glRotatef(this.rot, 0, 1, 0);
+				glRotatef(workTile.rot, 0, 1, 0);
 				glScalef(0.025F, 0.025F, 0.025F);
 				
 				FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(CraftingPillarAPI.getDiskTexture(workTile.getDisk().itemID)));

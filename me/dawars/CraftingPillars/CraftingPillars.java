@@ -204,15 +204,16 @@ public class CraftingPillars
 	{
 		CraftingPillarAPI.addDiskTexture(Item.record13.itemID, CraftingPillars.id + ":textures/models/disk_13.png");
 		CraftingPillarAPI.addDiskTexture(Item.recordCat.itemID, CraftingPillars.id + ":textures/models/disk_cat.png");
-		CraftingPillarAPI.addDiskTexture(Item.recordBlocks.itemID, CraftingPillars.id + ":textures/models/disk_13.png");
-		CraftingPillarAPI.addDiskTexture(Item.recordChirp.itemID, CraftingPillars.id + ":textures/models/disk_13.png");
-		CraftingPillarAPI.addDiskTexture(Item.recordFar.itemID, CraftingPillars.id + ":textures/models/disk_13.png");
-		CraftingPillarAPI.addDiskTexture(Item.recordMall.itemID, CraftingPillars.id + ":textures/models/disk_13.png");
-		CraftingPillarAPI.addDiskTexture(Item.recordStal.itemID, CraftingPillars.id + ":textures/models/disk_13.png");
-		CraftingPillarAPI.addDiskTexture(Item.recordStrad.itemID, CraftingPillars.id + ":textures/models/disk_13.png");
-		CraftingPillarAPI.addDiskTexture(Item.recordWard.itemID, CraftingPillars.id + ":textures/models/disk_13.png");
-		CraftingPillarAPI.addDiskTexture(Item.record11.itemID, CraftingPillars.id + ":textures/models/disk_13.png");
-		CraftingPillarAPI.addDiskTexture(Item.recordWait.itemID, CraftingPillars.id + ":textures/models/disk_13.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordBlocks.itemID, CraftingPillars.id + ":textures/models/disk_blocks.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordChirp.itemID, CraftingPillars.id + ":textures/models/disk_chirp.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordFar.itemID, CraftingPillars.id + ":textures/models/disk_far.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordMall.itemID, CraftingPillars.id + ":textures/models/disk_mall.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordMellohi.itemID, CraftingPillars.id + ":textures/models/disk_mellohi.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordStal.itemID, CraftingPillars.id + ":textures/models/disk_stal.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordStrad.itemID, CraftingPillars.id + ":textures/models/disk_strad.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordWard.itemID, CraftingPillars.id + ":textures/models/disk_ward.png");
+		CraftingPillarAPI.addDiskTexture(Item.record11.itemID, CraftingPillars.id + ":textures/models/disk_11.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordWait.itemID, CraftingPillars.id + ":textures/models/disk_wait.png");
 	
 		if(FMLCommonHandler.instance().getEffectiveSide().isClient())
 		{

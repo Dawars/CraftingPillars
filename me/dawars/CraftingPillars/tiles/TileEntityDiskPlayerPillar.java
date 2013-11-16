@@ -14,6 +14,19 @@ public class TileEntityDiskPlayerPillar extends BaseTileEntity
 	public boolean showNum = false;
 	public boolean isEmpty = true;
 
+	public float rot = 0F;
+	@Override
+	public void updateEntity()
+	{
+		if(worldObj.isRemote)
+		{
+			this.rot  += 4F;
+			if(this.rot >= 360F)
+				this.rot -= 360F;
+		}
+	}
+	
+	
     /**
      * Reads a tile entity from NBT.
      */
@@ -82,7 +95,9 @@ public class TileEntityDiskPlayerPillar extends BaseTileEntity
     		this.isEmpty = true;
     	else
     		this.isEmpty = false;
-		this.record = item;
+		try{
+			this.record = item;
+		} catch(Exception e){}
 
     	this.onInventoryChanged();
     }
