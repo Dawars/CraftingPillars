@@ -136,6 +136,8 @@ public class RenderAnvilPillar extends TileEntitySpecialRenderer implements ISim
 				this.itemRenderer.render(citem, 0.75F-1F/16F, 1.25F, 0.5F, true);
 			}
 			
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glBindTexture(GL_TEXTURE_2D, 0);
 			glColor4f(1F, 1F, 1F, 0.5F);
 			for(CollisionBox box : ((BasePillar)CraftingPillars.blockAnvilPillar).buttons)

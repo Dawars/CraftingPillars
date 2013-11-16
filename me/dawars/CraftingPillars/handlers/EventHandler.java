@@ -10,14 +10,14 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
 public class EventHandler
 {
-	public boolean doClick(int button, PlayerInteractEvent event)
+	/*public boolean doClick(int button, PlayerInteractEvent event)
 	{
 		for(int x = event.x-5; x <= event.x+5; x++)
 			for(int y = event.y-5; y <= event.y+5; y++)
 				for(int z = event.z-5; z <= event.z+5; z++)
 					if(Block.blocksList[event.entityPlayer.worldObj.getBlockId(x, y, z)] instanceof BasePillar)
 					{
-						int id = ((BasePillar)Block.blocksList[event.entityPlayer.worldObj.getBlockId(x, y, z)]).getClickedButtonId(x, y, z, button, event.entityPlayer);
+						int id = ((BasePillar)Block.blocksList[event.entityPlayer.worldObj.getBlockId(x, y, z)]).getClickedButtonId(event.entityPlayer.worldObj, x, y, z, button, event.entityPlayer);
 						if(id > -1)
 						{
 							System.out.println("Packet sent! "+button+" "+id+" "+x+" "+y+" "+z);
@@ -26,12 +26,12 @@ public class EventHandler
 						}
 					}
 		return false;
-	}
+	}*/
 	
 	@ForgeSubscribe
 	public void onClick(PlayerInteractEvent event)
 	{
-		if(event.entityPlayer.worldObj.isRemote)
+		/*if(event.entityPlayer.worldObj.isRemote)
 		{
 			if(event.action == Action.LEFT_CLICK_BLOCK)
 			{
@@ -49,6 +49,6 @@ public class EventHandler
 				if(doClick(2, event))
 					event.setCanceled(true);
 			}
-		}
+		}*/
 	}
 }

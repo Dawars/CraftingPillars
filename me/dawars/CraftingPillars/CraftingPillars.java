@@ -4,12 +4,14 @@ import java.io.File;
 
 import me.dawars.CraftingPillars.blocks.*;
 import me.dawars.CraftingPillars.handlers.*;
-import me.dawars.CraftingPillars.items.PillarRecord;
+import me.dawars.CraftingPillars.items.*;
 import me.dawars.CraftingPillars.tiles.*;
 import me.dawars.CraftingPillars.proxy.CommonProxy;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemRecord;
@@ -19,6 +21,8 @@ import net.minecraft.stats.AchievementList;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Property;
+
+import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -92,7 +96,10 @@ public class CraftingPillars
 	public void load(FMLPreInitializationEvent evt)
 	{
 		if(FMLCommonHandler.instance().getSide().isClient())
+		{
 			VersionChecker.check();
+			KeyBindingRegistry.registerKeyBinding(new ClickHandler());
+		}
 		
 		config = new Configuration(new File(evt.getModConfigurationDirectory(), "CraftingPillars.cfg"));
 		try

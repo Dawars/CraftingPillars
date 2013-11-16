@@ -26,7 +26,7 @@ public class AnvilPillar extends BasePillar
 	public AnvilPillar(int id, Material mat)
 	{
 		super(id, mat);
-		new CollisionBox(0, 3F, 16F, 6F, 7F, 17F, 10F);
+		new CollisionBox(0, 3F, 18F, 6F, 7F, 22F, 10F);
 		new CollisionBox(1, 9F, 16F, 6F, 13F, 17F, 10F);
 	}
 	

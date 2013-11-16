@@ -177,7 +177,7 @@ public abstract class BasePillar extends BaseBlockContainer
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public int getClickedButtonId(int x, int y, int z, int button, EntityPlayer player)
+	public int getClickedButtonId(World world, int x, int y, int z, int button, EntityPlayer player)
 	{
 		float hitX = (float)player.posX, hitY = (float)player.posY+(float)player.eyeHeight-2F/16F, hitZ = (float)player.posZ;
 		float dx = MathHelper.sin((float)Math.toRadians(-player.rotationYaw))*MathHelper.cos((float)Math.toRadians(-player.rotationPitch))/16F;
@@ -185,7 +185,7 @@ public abstract class BasePillar extends BaseBlockContainer
 		float dz = MathHelper.cos((float)Math.toRadians(-player.rotationYaw))*MathHelper.cos((float)Math.toRadians(-player.rotationPitch))/16F;
 		
 		boolean flag = false;
-		int meta = player.worldObj.getBlockMetadata(x, y, z);
+		int meta = world.getBlockMetadata(x, y, z);
 		
 		while(((hitX-player.posX)*(hitX-player.posX) + (hitY-player.posY)*(hitY-player.posY) + (hitZ-player.posZ)*(hitZ-player.posZ) < 25F) && !flag)
 		{
@@ -194,7 +194,7 @@ public abstract class BasePillar extends BaseBlockContainer
 			hitZ += dz;
 			for(CollisionBox box : this.buttons)
 				if(box.inBounds(hitX-x, hitY-y, hitZ-z, meta))
-					if((box.slot > -1 && this.canSlotClicked(player.worldObj, x, y, z, box.slot, button, player)) || this.canActionPerformed(player.worldObj, x, y, z, box.id, button, player))
+					if((box.slot > -1 && this.canSlotClicked(world, x, y, z, box.slot, button, player)) || this.canActionPerformed(world, x, y, z, box.id, button, player))
 						return box.id;
 		}
 		return -1;
