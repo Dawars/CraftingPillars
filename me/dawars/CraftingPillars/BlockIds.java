@@ -10,4 +10,7 @@ public class BlockIds
 	public static int idTankPillar = 2010;
 	public static int idBrewingPillar = 2011;
 	public static int idDiskPillar = 2012;
+	
+	
+	public static int idDiscElysium = 5000;
 }

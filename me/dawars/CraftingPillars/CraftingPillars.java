@@ -4,12 +4,14 @@ import java.io.File;
 
 import me.dawars.CraftingPillars.blocks.*;
 import me.dawars.CraftingPillars.handlers.*;
+import me.dawars.CraftingPillars.items.PillarRecord;
 import me.dawars.CraftingPillars.tiles.*;
 import me.dawars.CraftingPillars.proxy.CommonProxy;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemRecord;
 import net.minecraft.item.ItemStack;
@@ -48,6 +50,8 @@ public class CraftingPillars
 	@SidedProxy(clientSide = "me.dawars.CraftingPillars.proxy.ClientProxy", serverSide = "me.dawars.CraftingPillars.proxy.CommonProxy")
 	public static CommonProxy proxy;
 	
+	public static CreativeTabs tabPillar = new CraftingPillarTab(13, "CraftingPillars");
+
 	public static Configuration config;
 	
 	public static int extendPillarRenderID;
@@ -120,8 +124,10 @@ public class CraftingPillars
 			blockDiskPlayerPillar = (new DiskPlayerPillarBlock(idDiskPlayerPillar.getInt(), Material.iron)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("diskPillar");
 			registerBlock(blockDiskPlayerPillar, "JukePillar");
 			
-//			discElysium = new ItemRecord(2004, "Elysium").setItemName("Elysium");
-			
+			Property idDiscElysium = config.getItem("idDiscElysium.id", BlockIds.idDiscElysium);
+			discElysium = new PillarRecord(idDiscElysium.getInt(), "Elysium").setUnlocalizedName("ElysiumDisk");
+            LanguageRegistry.addName(discElysium, "ItemDisk");
+
 			GameRegistry.registerTileEntity(TileEntityExtendPillar.class, "TileEntityExtendPillar");
 			GameRegistry.registerTileEntity(TileEntityShowOffPillar.class, "TileEntityShowOffPillar");
 			GameRegistry.registerTileEntity(TileEntityCraftingPillar.class, "TileEntityCraftingPillar");

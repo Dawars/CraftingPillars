@@ -14,6 +14,7 @@ public class BaseBlock extends Block
 	{
 		super(id, mat);
 		this.setCreativeTab(CreativeTabs.tabDecorations);
+//		this.setCreativeTab(CraftingPillars.tabPillar);
 	}
 	
 	@Override
