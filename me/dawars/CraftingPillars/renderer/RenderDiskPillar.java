@@ -162,7 +162,7 @@ public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimp
 		
 		TileEntityDiskPlayerPillar workTile = (TileEntityDiskPlayerPillar) tile;
 
-		if(workTile.getDisk() != null)
+		if(workTile.getDisk() != null && !workTile.isEmpty)
 		{
 			glPushMatrix();
 				glTranslated(x + 0.5F, y + 1.02F, z + 0.5F);
@@ -172,12 +172,19 @@ public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimp
 				FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(CraftingPillars.id + ":textures/models/disk_13.png"));//TODO: API getTexture
 				disk.renderAll();
 				
-				//TODO: add title text
-				glDisable(GL_LIGHTING);
-				RenderingHelper.renderFloatingTextWithBackground(0, 0.3F, 0, 1F, "title: "+workTile.getDisk().getAttributeModifiers().toString(), Color.WHITE.getRGB(), new Color(0F, 0F, 0F, 0.5F));
-				glEnable(GL_LIGHTING);
-				
 			glPopMatrix();
+			if(workTile.showNum)
+			{
+				glPushMatrix();
+					glTranslated(x + 0.5F, y + 1.02F, z + 0.5F);
+	
+					//TODO: add title text
+					glDisable(GL_LIGHTING);
+					RenderingHelper.renderFloatingTextWithBackground(0, 0.6F, 0, 0.4F, workTile.getDisk().getTooltip(FMLClientHandler.instance().getClient().thePlayer, true).get(1).toString(), Color.WHITE.getRGB(), new Color(0F, 0F, 0F, 0.5F));
+					glEnable(GL_LIGHTING);
+					
+				glPopMatrix();
+			}
 		}
 	}
 	

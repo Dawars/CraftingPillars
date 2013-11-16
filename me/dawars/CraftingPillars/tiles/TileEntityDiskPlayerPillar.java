@@ -12,6 +12,7 @@ public class TileEntityDiskPlayerPillar extends BaseTileEntity
     /** ID of record which is in Jukebox */
     private ItemStack record;
 	public boolean showNum = false;
+	public boolean isEmpty = true;
 
     /**
      * Reads a tile entity from NBT.
@@ -28,6 +29,7 @@ public class TileEntityDiskPlayerPillar extends BaseTileEntity
         {
             this.setDisk(new ItemStack(nbt.getInteger("Record"), 1, 0));
         }
+		this.isEmpty = nbt.getBoolean("isEmpty");
 		this.showNum = nbt.getBoolean("showNum");
 
     }
@@ -44,6 +46,7 @@ public class TileEntityDiskPlayerPillar extends BaseTileEntity
         	nbt.setCompoundTag("RecordItem", this.getDisk().writeToNBT(new NBTTagCompound()));
         	nbt.setInteger("Record", this.getDisk().itemID);
         }
+		nbt.setBoolean("isEmpty", this.isEmpty);
 		nbt.setBoolean("showNum", this.showNum);
 
     }
@@ -75,7 +78,12 @@ public class TileEntityDiskPlayerPillar extends BaseTileEntity
 
     public void setDisk(ItemStack item)
     {
+    	if(item == null)
+    		this.isEmpty = true;
+    	else
+    		this.isEmpty = false;
 		this.record = item;
+
     	this.onInventoryChanged();
     }
 }
