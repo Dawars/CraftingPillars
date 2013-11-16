@@ -1,6 +1,8 @@
 package me.dawars.CraftingPillars.tiles;
 
 import me.dawars.CraftingPillars.CraftingPillars;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -10,9 +12,28 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 
-public abstract class TileEntityPillarBase extends BaseTileEntity implements IInventory, ISidedInventory
+public abstract class BaseTileEntityPillar extends BaseTileEntity implements IInventory, ISidedInventory
 {
 	protected ItemStack[] inventory = new ItemStack[this.getSizeInventory()];
+	
+	public abstract boolean isOnlyDisplaySlot(int i);
+	
+	@Override
+	public abstract int getSizeInventory();
+	
+	@Override
+	public abstract String getInvName();
+	
+	public void dropItemFromSlot(int slot, int amount, EntityPlayer player)
+	{
+		if(!this.worldObj.isRemote && this.getStackInSlot(slot) != null)
+		{
+			EntityItem itemEntity = new EntityItem(this.worldObj, player.posX, player.posY, player.posZ);
+			itemEntity.setEntityItemStack(this.decrStackSize(slot, amount));
+			this.worldObj.spawnEntityInWorld(itemEntity);
+			this.onInventoryChanged();
+		}
+	}
 	
 	@Override
 	public void onInventoryChanged()
@@ -78,59 +99,31 @@ public abstract class TileEntityPillarBase extends BaseTileEntity implements IIn
 	{
 		return null;
 	}
-
+	
 	@Override
-	public boolean canInsertItem(int i, ItemStack itemstack, int j)
+	public boolean isItemValidForSlot(int i, ItemStack itemstack)
 	{
-		return false;
+		return !this.isOnlyDisplaySlot(i) && (this.inventory[i] == null || this.inventory[i].isItemEqual(itemstack));
 	}
 
 	@Override
-	public boolean canExtractItem(int i, ItemStack itemstack, int j)
+	public boolean canInsertItem(int i, ItemStack itemstack, int side)
 	{
-		return false;
+		return this.isItemValidForSlot(i, itemstack) && (this.inventory[i] == null ? itemstack.stackSize : itemstack.stackSize+this.inventory[i].stackSize) <= Math.min(this.getInventoryStackLimit(), itemstack.getMaxStackSize());
 	}
 
 	@Override
-	public abstract int getSizeInventory();
+	public boolean canExtractItem(int i, ItemStack itemstack, int side)
+	{
+		return false;
+	}
 
 	@Override
 	public ItemStack getStackInSlot(int i)
 	{
 		return this.inventory[i];
 	}
-
-	@Override
-	public ItemStack decrStackSize(int i, int amount)
-	{
-		ItemStack stack = null;
-		
-		if(this.inventory[i] != null)
-		{
-			if(this.inventory[i].stackSize <= amount)
-			{
-				stack = this.inventory[i];
-				this.inventory[i] = null;
-				this.onInventoryChanged();
-			}
-			else
-			{
-				stack = this.inventory[i].splitStack(amount);
-				if(this.inventory[i].stackSize == 0)
-					this.inventory[i] = null;
-				this.onInventoryChanged();
-			}
-		}
-		
-		return stack;
-	}
-
-	@Override
-	public ItemStack getStackInSlotOnClosing(int i)
-	{
-		return this.getStackInSlot(i);
-	}
-
+	
 	@Override
 	public void setInventorySlotContents(int i, ItemStack stack)
 	{
@@ -140,8 +133,62 @@ public abstract class TileEntityPillarBase extends BaseTileEntity implements IIn
 		this.onInventoryChanged();
 	}
 
+	public ItemStack incrStackSize(int i, int amount)
+	{
+		if(this.inventory[i] != null)
+		{
+			int j;
+			if(this.inventory[i].stackSize+amount <= Math.min(this.getInventoryStackLimit(), this.inventory[i].getMaxStackSize()))
+				j = amount;
+			else
+				j = Math.min(this.getInventoryStackLimit(), this.inventory[i].getMaxStackSize())-this.inventory[i].stackSize;
+			this.inventory[i].stackSize += j;
+			this.onInventoryChanged();
+			return new ItemStack(this.inventory[i].getItem(), j);
+		}
+		return null;
+	}
+	
 	@Override
-	public abstract String getInvName();
+	public ItemStack decrStackSize(int i, int amount)
+	{
+		ItemStack stack = null;
+		if(this.inventory[i] != null)
+		{
+			if(this.inventory[i].stackSize <= amount)
+			{
+				stack = this.inventory[i];
+				this.inventory[i] = null;
+			}
+			else
+			{
+				stack = this.inventory[i].splitStack(amount);
+				if(this.inventory[i].stackSize == 0)
+					this.inventory[i] = null;
+			}
+			this.onInventoryChanged();
+		}
+		return stack;
+	}
+	
+	public boolean insertStack(int i, ItemStack stack, int side)
+	{
+		if(this.canInsertItem(i, stack, side))
+		{
+			if(this.inventory[i] == null)
+				this.setInventorySlotContents(i, stack);
+			else
+				this.incrStackSize(i, stack.stackSize);
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public ItemStack getStackInSlotOnClosing(int i)
+	{
+		return this.getStackInSlot(i);
+	}
 
 	@Override
 	public boolean isInvNameLocalized()
@@ -165,11 +212,5 @@ public abstract class TileEntityPillarBase extends BaseTileEntity implements IIn
 	public void closeChest()
 	{
 		
-	}
-
-	@Override
-	public boolean isItemValidForSlot(int i, ItemStack itemstack)
-	{
-		return true;
 	}
 }

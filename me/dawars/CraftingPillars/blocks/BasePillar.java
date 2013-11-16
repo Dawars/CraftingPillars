@@ -7,7 +7,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.tiles.TileEntityAnvilPillar;
-import me.dawars.CraftingPillars.tiles.TileEntityPillarBase;
+import me.dawars.CraftingPillars.tiles.BaseTileEntityPillar;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -21,12 +21,14 @@ import static org.lwjgl.opengl.GL11.*;
 
 public abstract class BasePillar extends BaseBlockContainer
 {
-	public static abstract class CollisionBox
+	public static class CollisionBox
 	{
+		public int id;
 		public float minX, minY, minZ, maxX, maxY, maxZ;
 		
-		public CollisionBox(float minX, float minY, float minZ, float maxX, float maxY, float maxZ)
+		public CollisionBox(int id, float minX, float minY, float minZ, float maxX, float maxY, float maxZ)
 		{
+			this.id = id;
 			this.minX = minX/16F;
 			this.minY = minY/16F;
 			this.minZ = minZ/16F;
@@ -37,7 +39,7 @@ public abstract class BasePillar extends BaseBlockContainer
 		
 		public boolean inBounds(float x, float y, float z)
 		{
-			return this.minX<x && x<this.maxX && this.minY<y && y<this.maxY && this.minZ<z && z<this.maxZ;
+			return this.minX<=x && x<=this.maxX && this.minY<=y && y<=this.maxY && this.minZ<=z && z<=this.maxZ;
 		}
 		
 		public boolean inBounds(float x, float y, float z, int meta)
@@ -67,8 +69,6 @@ public abstract class BasePillar extends BaseBlockContainer
 			
 			return this.inBounds(x, y, z);
 		}
-		
-		public abstract void onClick(World world, int x, int y, int z, int button, EntityPlayer player);
 		
 		public void render()
 		{
@@ -122,33 +122,33 @@ public abstract class BasePillar extends BaseBlockContainer
 		this.setCreativeTab(CreativeTabs.tabDecorations);
 	}
 	
-	public abstract boolean handleClick(World world, int x, int y, int z, float hitX, float hitY, float hitZ, int button, EntityPlayer player);
+	public abstract void onActionPerformed(World world, int x, int y, int z, int id, int button, EntityPlayer player);
 	
-	public boolean handleClickEvent(int x, int y, int z, int button, EntityPlayer player)
+	@SideOnly(Side.CLIENT)
+	public abstract boolean canPerformAction(World world, int x, int y, int z, int id, int button, EntityPlayer player);
+	
+	@SideOnly(Side.CLIENT)
+	public int getClickedButtonId(int x, int y, int z, int button, EntityPlayer player)
 	{
-		TileEntityPillarBase tile = (TileEntityPillarBase)player.worldObj.getBlockTileEntity(x, y, z);
 		float hitX = (float)player.posX, hitY = (float)player.posY+(float)player.eyeHeight, hitZ = (float)player.posZ;
-		
 		float dx = MathHelper.sin((float)Math.toRadians(-player.rotationYaw))*MathHelper.cos((float)Math.toRadians(-player.rotationPitch))/16F;
 		float dy = MathHelper.sin((float)Math.toRadians(-player.rotationPitch))/16F;
 		float dz = MathHelper.cos((float)Math.toRadians(-player.rotationYaw))*MathHelper.cos((float)Math.toRadians(-player.rotationPitch))/16F;
-		int meta = player.worldObj.getBlockMetadata(x, y, z);
+		
 		boolean flag = false;
+		int meta = player.worldObj.getBlockMetadata(x, y, z);
+		
 		while(((hitX-player.posX)*(hitX-player.posX) + (hitY-player.posY)*(hitY-player.posY) + (hitZ-player.posZ)*(hitZ-player.posZ) < 25F) && !flag)
 		{
 			hitX += dx;
 			hitY += dy;
 			hitZ += dz;
-			if(x-1 <= hitX && hitX < x+2 && y-1 <= hitY && hitY < y+2 && y-1 <= hitY && hitY < y+2)
-				for(CollisionBox box : this.buttons)
-					if(box.inBounds(hitX-x, hitY-y, hitZ-z, meta))
-					{
-						flag = true;
-						box.onClick(player.worldObj, x, y, z, button, player);
-					}
+			for(CollisionBox box : this.buttons)
+				if(box.inBounds(hitX-x, hitY-y, hitZ-z, meta) && this.canPerformAction(player.worldObj, x, y, z, box.id, button, player))
+					return box.id;
 		}
 		
-		return flag || this.handleClick(player.worldObj, x, y, z, hitX, hitY, hitZ, button, player);
+		return -1;
 	}
 	
 	@Override

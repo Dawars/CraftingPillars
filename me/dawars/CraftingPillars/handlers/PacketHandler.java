@@ -20,11 +20,8 @@ public class PacketHandler implements IPacketHandler
 		{
 			PacketClick click = new PacketClick(packet);
 			EntityPlayer entity = (EntityPlayer)player;
-			for(int x = (int)entity.posX-5; x <= (int)entity.posX+5; x++)
-				for(int y = (int)entity.posY-5; y <= (int)entity.posY+5; y++)
-					for(int z = (int)entity.posZ-5; z <= (int)entity.posZ+5; z++)
-						if(Block.blocksList[entity.worldObj.getBlockId(x, y, z)] instanceof BasePillar)
-							((BasePillar)Block.blocksList[entity.worldObj.getBlockId(x, y, z)]).handleClickEvent(x, y, z, click.button, entity);
+			System.out.println("Packet received! "+click.mouseButton+" "+click.btnId+" "+click.x+" "+click.y+" "+click.z);
+			((BasePillar)Block.blocksList[entity.worldObj.getBlockId(click.x, click.y, click.z)]).onActionPerformed(entity.worldObj, click.x, click.y, click.z, click.btnId, click.mouseButton, entity);
 		}
 	}
 }

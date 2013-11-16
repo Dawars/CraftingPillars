@@ -21,27 +21,13 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
-public class AnvilPillarBlock extends BasePillar
+public class AnvilPillar extends BasePillar
 {
-	public AnvilPillarBlock(int id, Material mat)
+	public AnvilPillar(int id, Material mat)
 	{
 		super(id, mat);
-		this.buttons.add(new CollisionBox(5F, 20F, 5F, 11F, 24F, 11F)
-						{
-							@Override
-							public void onClick(World world, int x, int y, int z, int button, EntityPlayer player)
-							{
-								System.out.println("Floating clicked: "+button);
-							}
-						});
-		this.buttons.add(new CollisionBox(0F, 14F, 0F, 2F, 16F, 2F)
-						{
-							@Override
-							public void onClick(World world, int x, int y, int z, int button, EntityPlayer player)
-							{
-								System.out.println("Corner clicked: "+button);
-							}
-						});
+		this.buttons.add(new CollisionBox(0, 3F, 16F, 6F, 7F, 17F, 10F));
+		this.buttons.add(new CollisionBox(1, 9F, 16F, 6F, 13F, 17F, 10F));
 	}
 	
 	@Override
@@ -50,7 +36,7 @@ public class AnvilPillarBlock extends BasePillar
 		return CraftingPillars.anvilPillarRenderID;
 	}
 	
-	/*@Override
+	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
 	{
 		int l = par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 3;
@@ -59,14 +45,46 @@ public class AnvilPillarBlock extends BasePillar
 			this.setBlockBounds(0.125F, 0.0F, 0.0F, 0.875F, 1.0F, 1.0F);
 		else
 			this.setBlockBounds(0.0F, 0.0F, 0.125F, 1.0F, 1.0F, 0.875F);
-	}*/
+	}
 	
 	@Override
-	public boolean handleClick(World world, int x, int y, int z, float hitX, float hitY, float hitZ, int button, EntityPlayer player)
+	@SideOnly(Side.CLIENT)
+	public boolean canPerformAction(World world, int x, int y, int z, int id, int button, EntityPlayer player)
 	{
-		TileEntityAnvilPillar pillarTile = (TileEntityAnvilPillar) world.getBlockTileEntity(x, y, z);
+		return true;
+	}
+	
+	@Override
+	public void onActionPerformed(World world, int x, int y, int z, int id, int button, EntityPlayer player)
+	{
+		TileEntityAnvilPillar anvil = (TileEntityAnvilPillar)world.getBlockTileEntity(x, y, z);
 		
-		return false;
+		if(id == 0 || id == 1)
+		{
+			if(button == 0 && anvil.getStackInSlot(id) != null)
+			{
+				if(player.isSneaking())
+					anvil.dropItemFromSlot(id, 64, player);
+				else
+					anvil.dropItemFromSlot(id, 1, player);
+			}
+			else if(button == 2 && player.getCurrentEquippedItem() != null && anvil.canInsertItem(id, new ItemStack(player.getCurrentEquippedItem().getItem(), 1), 0))
+			{
+				if(player.isSneaking())
+				{
+					int i;
+					for(i = player.getCurrentEquippedItem().stackSize; !anvil.insertStack(id, new ItemStack(player.getCurrentEquippedItem().getItem(), i), 0); i--);
+					if(!player.capabilities.isCreativeMode)
+						player.getCurrentEquippedItem().stackSize -= i;
+				}
+				else
+				{
+					if(!player.capabilities.isCreativeMode)
+						player.getCurrentEquippedItem().stackSize--;
+					anvil.insertStack(id, new ItemStack(player.getCurrentEquippedItem().getItem(), 1), 0);
+				}
+			}
+		}
 	}
 	
 	@Override

@@ -19,6 +19,7 @@ import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
@@ -39,26 +40,12 @@ public class RenderAnvilPillar extends TileEntitySpecialRenderer implements ISim
 	};
 	
 	private Random random;
-	private RenderItem itemRenderer;
+	private RenderingHelper.ItemRender itemRenderer;
 	
 	public RenderAnvilPillar()
 	{
 		random = new Random();
-		itemRenderer = new RenderItem()
-		{
-			@Override
-			public boolean shouldBob()
-			{
-				return true;
-			}
-			
-			@Override
-			public boolean shouldSpreadItems()
-			{
-				return false;
-			}
-		};
-		itemRenderer.setRenderManager(RenderManager.instance);
+		itemRenderer = new RenderingHelper.ItemRender(false, true);
 		
 		model.textureWidth = 128;
 		model.textureHeight = 64;
@@ -122,10 +109,26 @@ public class RenderAnvilPillar extends TileEntitySpecialRenderer implements ISim
 			render(tile, 0.0625F);
 		glPopMatrix();
 		
+		TileEntityAnvilPillar anvil = (TileEntityAnvilPillar)tile;
+		EntityItem citem = new EntityItem(tile.worldObj);
+		citem.hoverStart = anvil.rot;
+		
 		glPushMatrix();
-			glBindTexture(GL_TEXTURE_2D, 0);
 			glTranslated(x, y, z);
-			glColor3f(0.75F, 0.75F, 0.75F);
+			
+			if(anvil.getStackInSlot(0) != null)
+			{
+				citem.setEntityItemStack(anvil.getStackInSlot(0));
+				this.itemRenderer.render(citem, 0.25F+1F/16F, 1.25F, 0.5F, true);
+			}
+			if(anvil.getStackInSlot(1) != null)
+			{
+				citem.setEntityItemStack(anvil.getStackInSlot(1));
+				this.itemRenderer.render(citem, 0.75F-1F/16F, 1.25F, 0.5F, true);
+			}
+			
+			glBindTexture(GL_TEXTURE_2D, 0);
+			glColor4f(1F, 1F, 1F, 0.5F);
 			for(CollisionBox box : ((BasePillar)CraftingPillars.blockAnvilPillar).buttons)
 			{
 				glPushMatrix();

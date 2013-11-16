@@ -11,7 +11,7 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 
 public abstract class PillarPacket
 {
-	public Packet250CustomPayload send()
+	public Packet250CustomPayload pack()
 	{
 		try
 		{
