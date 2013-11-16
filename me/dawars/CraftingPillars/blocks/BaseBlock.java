@@ -13,8 +13,7 @@ public class BaseBlock extends Block
 	public BaseBlock(int id, Material mat)
 	{
 		super(id, mat);
-		this.setCreativeTab(CreativeTabs.tabDecorations);
-//		this.setCreativeTab(CraftingPillars.tabPillar);
+		this.setCreativeTab(CraftingPillars.tabPillar);
 	}
 	
 	@Override

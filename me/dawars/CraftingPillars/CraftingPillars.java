@@ -50,10 +50,10 @@ public class CraftingPillars
 	@SidedProxy(clientSide = "me.dawars.CraftingPillars.proxy.ClientProxy", serverSide = "me.dawars.CraftingPillars.proxy.CommonProxy")
 	public static CommonProxy proxy;
 	
-	public static CreativeTabs tabPillar = new CraftingPillarTab(13, "CraftingPillars");
-
 	public static Configuration config;
 	
+	public static final CreativeTabs tabPillar = new CraftingPillarTab(12, "CraftingPillars");
+
 	public static int extendPillarRenderID;
 	public static int showOffPillarRenderID;
 	public static int craftingPillarRenderID;
@@ -125,8 +125,8 @@ public class CraftingPillars
 			registerBlock(blockDiskPlayerPillar, "JukePillar");
 			
 			Property idDiscElysium = config.getItem("idDiscElysium.id", BlockIds.idDiscElysium);
-			discElysium = new PillarRecord(idDiscElysium.getInt(), "Elysium").setUnlocalizedName("ElysiumDisk");
-            LanguageRegistry.addName(discElysium, "ItemDisk");
+			discElysium = new PillarRecord(idDiscElysium.getInt(), "UranusParadiseShort").setUnlocalizedName("ElysiumDisk");
+            LanguageRegistry.addName(discElysium, "Music Disc");
 
 			GameRegistry.registerTileEntity(TileEntityExtendPillar.class, "TileEntityExtendPillar");
 			GameRegistry.registerTileEntity(TileEntityShowOffPillar.class, "TileEntityShowOffPillar");
@@ -157,15 +157,21 @@ public class CraftingPillars
 			
 			MinecraftForge.EVENT_BUS.register(new me.dawars.CraftingPillars.handlers.EventHandler());
 			GameRegistry.registerCraftingHandler(new CraftingHandler());
-			if(FMLCommonHandler.instance().getEffectiveSide().isClient())
-			{
-				MinecraftForge.EVENT_BUS.register(new SoundHandler());
-			}
 		}
 		finally
 		{
 			config.save();
 		}
+	}
+	
+	@EventHandler
+	public void preInit(FMLPreInitializationEvent event)
+	{
+		if(FMLCommonHandler.instance().getEffectiveSide().isClient())
+		{
+			MinecraftForge.EVENT_BUS.register(new SoundHandler());
+		}
+		MinecraftForge.EVENT_BUS.register(this);
 	}
 	
 	public static void registerBlock(Block block, String name)

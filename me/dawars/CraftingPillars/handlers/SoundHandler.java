@@ -5,7 +5,7 @@ import net.minecraftforge.client.event.sound.SoundLoadEvent;
 import net.minecraftforge.event.ForgeSubscribe;
 
 public class SoundHandler {
-	private static final String SOUND_RESOURCE_LOCATION = CraftingPillars.id.toLowerCase() + ":sounds/";
+	private static final String SOUND_RESOURCE_LOCATION = CraftingPillars.id.toLowerCase() + ":";
 
 	public static String[] soundFiles = { SOUND_RESOURCE_LOCATION + "UranusParadiseShort.ogg" };
 
