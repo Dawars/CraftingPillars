@@ -11,6 +11,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemRecord;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraft.stats.AchievementList;
@@ -66,6 +67,8 @@ public class CraftingPillars
 	public static Block blockTankPillar;
 	public static Block blockBrewingPillar;
 	public static Block blockDiskPlayerPillar;
+	
+	public static Item discElysium;
 
 	public static boolean floatingItems = true;
 	
@@ -117,6 +120,8 @@ public class CraftingPillars
 			blockDiskPlayerPillar = (new DiskPlayerPillarBlock(idDiskPlayerPillar.getInt(), Material.iron)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("diskPillar");
 			registerBlock(blockDiskPlayerPillar, "JukePillar");
 			
+//			discElysium = new ItemRecord(2004, "Elysium").setItemName("Elysium");
+			
 			GameRegistry.registerTileEntity(TileEntityExtendPillar.class, "TileEntityExtendPillar");
 			GameRegistry.registerTileEntity(TileEntityShowOffPillar.class, "TileEntityShowOffPillar");
 			GameRegistry.registerTileEntity(TileEntityCraftingPillar.class, "TileEntityCraftingPillar");
@@ -146,6 +151,10 @@ public class CraftingPillars
 			
 			MinecraftForge.EVENT_BUS.register(new me.dawars.CraftingPillars.handlers.EventHandler());
 			GameRegistry.registerCraftingHandler(new CraftingHandler());
+			if(FMLCommonHandler.instance().getEffectiveSide().isClient())
+			{
+				MinecraftForge.EVENT_BUS.register(new SoundHandler());
+			}
 		}
 		finally
 		{
