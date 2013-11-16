@@ -79,8 +79,8 @@ public class DiskPlayerPillarBlock extends BaseBlockContainer
 		            return true;
 	        	}
         	} else {
-        		//pause
-        		//tile.isPlaying();
+        		//pause or show
+        		tile.showNum = !tile.showNum;
         	}
         }
         else
