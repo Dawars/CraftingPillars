@@ -7,14 +7,14 @@ import net.minecraftforge.event.ForgeSubscribe;
 public class SoundHandler {
 	private static final String SOUND_RESOURCE_LOCATION = CraftingPillars.id.toLowerCase() + ":";
 
-	public static String[] soundFiles = { SOUND_RESOURCE_LOCATION + "UranusParadiseShort.ogg" };
+	public static String[] soundFiles = {"UranusParadiseShort.ogg"};
 
     @ForgeSubscribe
     public void onSoundLoad(SoundLoadEvent event) {
 
         for (String soundFile : soundFiles) {
             try {
-                event.manager.soundPoolStreaming.addSound(soundFile);
+                event.manager.soundPoolStreaming.addSound(SOUND_RESOURCE_LOCATION + soundFile);
                 System.out.println("Sound file loaded: " + soundFile);
 
             }
@@ -23,4 +23,8 @@ public class SoundHandler {
             }
         }
     }
+
+	public static String getRecordTitle(String unlocalised) {
+		return null;
+	}
 }

@@ -3,6 +3,8 @@ package me.dawars.CraftingPillars.items;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import me.dawars.CraftingPillars.CraftingPillars;
+import me.dawars.CraftingPillars.handlers.SoundHandler;
+import net.minecraft.client.audio.SoundManager;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemRecord;
@@ -26,6 +28,7 @@ public class PillarRecord extends ItemRecord
 	
 	public String getRecordTitle()
 	{
-		return this.recordName == CraftingPillars.id.toLowerCase() + ":UranusParadiseShort" ? "Elysium Theme" : this.recordName;
+		if(this.recordName == CraftingPillars.id + ":UranusParadiseShort") return "Elysium Theme";
+		return this.recordName;
 	}
 }
