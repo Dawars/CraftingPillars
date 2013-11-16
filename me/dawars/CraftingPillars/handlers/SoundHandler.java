@@ -14,7 +14,7 @@ public class SoundHandler {
 
         for (String soundFile : soundFiles) {
             try {
-                event.manager.addSound(soundFile);
+                event.manager.soundPoolStreaming.addSound(soundFile);
                 System.out.println("Sound file loaded: " + soundFile);
 
             }

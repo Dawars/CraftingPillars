@@ -125,7 +125,7 @@ public class CraftingPillars
 			registerBlock(blockDiskPlayerPillar, "JukePillar");
 			
 			Property idDiscElysium = config.getItem("idDiscElysium.id", BlockIds.idDiscElysium);
-			discElysium = new PillarRecord(idDiscElysium.getInt(), "UranusParadiseShort").setUnlocalizedName("ElysiumDisk");
+			discElysium = new PillarRecord(idDiscElysium.getInt(), id.toLowerCase() + ":UranusParadiseShort").setUnlocalizedName("ElysiumDisk");
             LanguageRegistry.addName(discElysium, "Music Disc");
 
 			GameRegistry.registerTileEntity(TileEntityExtendPillar.class, "TileEntityExtendPillar");

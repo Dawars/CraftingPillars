@@ -24,8 +24,8 @@ public class PillarRecord extends ItemRecord
         this.itemIcon = itemIcon.registerIcon(CraftingPillars.id + ":" + getUnlocalizedName().substring(5));
     }
 	
-//	public String getRecordTitle()
-//	{
-//		return this.recordName == "UranusParadiseShort" ? "Elysium Theme" : this.recordName;
-//	}
+	public String getRecordTitle()
+	{
+		return this.recordName == CraftingPillars.id.toLowerCase() + ":UranusParadiseShort" ? "Elysium Theme" : this.recordName;
+	}
 }
