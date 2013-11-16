@@ -18,7 +18,7 @@ public class EventHandler
 					if(Block.blocksList[event.entityPlayer.worldObj.getBlockId(x, y, z)] instanceof BasePillar)
 					{
 						int id = ((BasePillar)Block.blocksList[event.entityPlayer.worldObj.getBlockId(x, y, z)]).getClickedButtonId(x, y, z, button, event.entityPlayer);
-						if(id != -1)
+						if(id > -1)
 						{
 							System.out.println("Packet sent! "+button+" "+id+" "+x+" "+y+" "+z);
 							CraftingPillars.proxy.sendToServer(new PacketClick(button, id, x, y, z).pack());
@@ -40,6 +40,7 @@ public class EventHandler
 			}
 			else if(event.action == Action.RIGHT_CLICK_BLOCK)
 			{
+				System.out.println("RIGHT_CLICK_BLOCK");
 				if(doClick(2, event))
 					event.setCanceled(true);
 			}

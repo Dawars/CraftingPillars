@@ -7,7 +7,6 @@ import me.dawars.CraftingPillars.handlers.*;
 import me.dawars.CraftingPillars.items.PillarRecord;
 import me.dawars.CraftingPillars.tiles.*;
 import me.dawars.CraftingPillars.proxy.CommonProxy;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.material.Material;
@@ -29,6 +28,8 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @Mod(name = CraftingPillars.name, version = CraftingPillars.version, useMetadata = false, modid = CraftingPillars.id, dependencies = "required-after:Forge@[8.9.0,)")
 @NetworkMod(clientSideRequired = true, serverSideRequired = false, channels = {CraftingPillars.packetChannel}, packetHandler = PacketHandler.class)
@@ -52,7 +53,14 @@ public class CraftingPillars
 	
 	public static Configuration config;
 	
-	public static final CreativeTabs tabPillar = new CraftingPillarTab(12, "CraftingPillars");
+	public static final CreativeTabs tabPillar = new CreativeTabs("CraftingPillars")
+	{
+		@SideOnly(Side.CLIENT)
+		public int getTabIconItemIndex()
+		{
+			return CraftingPillars.blockCraftingPillar.blockID;
+		}
+	};
 
 	public static int extendPillarRenderID;
 	public static int showOffPillarRenderID;
@@ -93,41 +101,57 @@ public class CraftingPillars
 			// Block Registering
 			Property idExtendPillar = CraftingPillars.config.getBlock("ExtendPillar.id", BlockIds.idExtendPillar);
 			blockExtendPillar = (new ExtendPillarBlock(idExtendPillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("extendPillar");
-			registerBlock(blockExtendPillar, "Basic Pillar");
+			registerBlock(blockExtendPillar);
+			LanguageRegistry.instance().addStringLocalization(blockExtendPillar.getUnlocalizedName()+".name", "en_US", "Base Pillar");
+			LanguageRegistry.instance().addStringLocalization(blockExtendPillar.getUnlocalizedName()+".name", "hu_HU", "Oszlop");
 			
 			Property idShowOffPillar = CraftingPillars.config.getBlock("ShowOffPillar.id", BlockIds.idShowOffPillar);
 			blockShowOffPillar = (new ShowOffPillarBlock(idShowOffPillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("showOffPillar");
-			registerBlock(blockShowOffPillar, "Show-Off Pillar");
+			registerBlock(blockShowOffPillar);
+			LanguageRegistry.instance().addStringLocalization(blockShowOffPillar.getUnlocalizedName()+".name", "en_US", "Show-Off Pillar");
+			LanguageRegistry.instance().addStringLocalization(blockShowOffPillar.getUnlocalizedName()+".name", "hu_HU", "Kegyhely Oszlop");
 			
 			Property idCraftingPillar = CraftingPillars.config.getBlock("CraftingPillar.id", BlockIds.idCraftingPillar);
 			blockCraftingPillar = (new CraftingPillarBlock(idCraftingPillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("craftingPillar");
-			registerBlock(blockCraftingPillar, "Crafting Pillar");
+			registerBlock(blockCraftingPillar);
+			LanguageRegistry.instance().addStringLocalization(blockCraftingPillar.getUnlocalizedName()+".name", "en_US", "Crafting Pillar");
+			LanguageRegistry.instance().addStringLocalization(blockCraftingPillar.getUnlocalizedName()+".name", "hu_HU", "Barkács Oszlop");
 			
 			Property idFurnacePillar = CraftingPillars.config.getBlock("FurnacePillar.id", BlockIds.idFurnacePillar);
 			blockFurnacePillar = (new FurnacePillarBlock(idFurnacePillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("furnacePillar");
-			registerBlock(blockFurnacePillar, "Furnace Pillar");
+			registerBlock(blockFurnacePillar);
+			LanguageRegistry.instance().addStringLocalization(blockFurnacePillar.getUnlocalizedName()+".name", "en_US", "Furnace Pillar");
+			LanguageRegistry.instance().addStringLocalization(blockFurnacePillar.getUnlocalizedName()+".name", "hu_HU", "Kemence Oszlop");
 			
 			Property idAnvilPillar = CraftingPillars.config.getBlock("AnvilPillar.id", BlockIds.idAnvilPillar, "Coming soon...");
 			blockAnvilPillar = (new AnvilPillar(idAnvilPillar.getInt(), Material.anvil)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("anvilPillar");
-			registerBlock(blockAnvilPillar, "Anvil Pillar");
-
+			registerBlock(blockAnvilPillar);
+			LanguageRegistry.instance().addStringLocalization(blockAnvilPillar.getUnlocalizedName()+".name", "en_US", "Anvil Pillar");
+			LanguageRegistry.instance().addStringLocalization(blockAnvilPillar.getUnlocalizedName()+".name", "hu_HU", "Üllõ Oszlop");
+			
 			Property idTankPillar = CraftingPillars.config.getBlock("TankPillar.id", BlockIds.idTankPillar, "Coming soon...");
 			blockTankPillar = (new TankPillarBlock(idTankPillar.getInt(), Material.glass)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("tankPillar");
-			registerBlock(blockTankPillar, "Tank Pillar");
+			registerBlock(blockTankPillar);
+			LanguageRegistry.instance().addStringLocalization(blockTankPillar.getUnlocalizedName()+".name", "en_US", "Tank Pillar");
+			LanguageRegistry.instance().addStringLocalization(blockTankPillar.getUnlocalizedName()+".name", "hu_HU", "Tartály Oszlop");
 			
 			Property idBrewingPillar = CraftingPillars.config.getBlock("BrewingPillar.id", BlockIds.idBrewingPillar);
 			blockBrewingPillar = (new BrewingPillarBlock(idBrewingPillar.getInt(), Material.iron)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("brewingPillar");
-			registerBlock(blockBrewingPillar, "Brewing Pillar");
+			registerBlock(blockBrewingPillar);
+			LanguageRegistry.instance().addStringLocalization(blockBrewingPillar.getUnlocalizedName()+".name", "en_US", "Brewing Pillar");
+			LanguageRegistry.instance().addStringLocalization(blockBrewingPillar.getUnlocalizedName()+".name", "hu_HU", "Kotyvasztó Oszlop");
 			
 			//add time check for visiblity
 			Property idDiskPlayerPillar = CraftingPillars.config.getBlock("DiskPlayerPillar.id", BlockIds.idDiskPillar);
 			blockDiskPlayerPillar = (new DiskPlayerPillarBlock(idDiskPlayerPillar.getInt(), Material.iron)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("diskPillar");
-			registerBlock(blockDiskPlayerPillar, "JukePillar");
+			registerBlock(blockDiskPlayerPillar);
+			LanguageRegistry.instance().addStringLocalization(blockDiskPlayerPillar.getUnlocalizedName()+".name", "en_US", "Juke Pillar");
+			LanguageRegistry.instance().addStringLocalization(blockDiskPlayerPillar.getUnlocalizedName()+".name", "hu_HU", "Zenelejátszó Oszlop");
 			
-			Property idDiscElysium = config.getItem("idDiscElysium.id", BlockIds.idDiscElysium);
-			discElysium = new PillarRecord(idDiscElysium.getInt(), id.toLowerCase() + ":UranusParadiseShort").setUnlocalizedName("ElysiumDisk");
-            LanguageRegistry.addName(discElysium, "Music Disc");
-
+			Property idDiscElysium = CraftingPillars.config.getItem("idDiscElysium.id", BlockIds.idDiscElysium);
+			discElysium = new PillarRecord(idDiscElysium.getInt(), CraftingPillars.id + ":UranusParadiseShort").setUnlocalizedName("record");
+            LanguageRegistry.instance().addStringLocalization(CraftingPillars.id + ":UranusParadiseShort", "en_US", "Elysium - Uranus Paradise Short");
+            
 			GameRegistry.registerTileEntity(TileEntityExtendPillar.class, "TileEntityExtendPillar");
 			GameRegistry.registerTileEntity(TileEntityShowOffPillar.class, "TileEntityShowOffPillar");
 			GameRegistry.registerTileEntity(TileEntityCraftingPillar.class, "TileEntityCraftingPillar");
@@ -137,15 +161,18 @@ public class CraftingPillars
 			GameRegistry.registerTileEntity(TileEntityEnchantmentPillar.class, "TileEntityEnchantmentPillar");
 			GameRegistry.registerTileEntity(TileEntityBrewingPillar.class, "TileEntityBrewingPillar");
 			GameRegistry.registerTileEntity(TileEntityDiskPlayerPillar.class, "TileEntityDiskPlayerPillar");
-
-			LanguageRegistry.instance().addStringLocalization("achievement.gettingstarted", "Getting Started");
-			LanguageRegistry.instance().addStringLocalization("achievement.gettingstarted.desc", "Craft a BasicPillar");
-
-			LanguageRegistry.instance().addStringLocalization("achievement.recursion", "Recursion I");
-			LanguageRegistry.instance().addStringLocalization("achievement.recursion.desc", "Craft a CraftingPillar in a CraftingPillar");
 			
-			LanguageRegistry.instance().addStringLocalization("achievement.showoff", "Recursion II");
-			LanguageRegistry.instance().addStringLocalization("achievement.showoff.desc", "Show off your Show-Off Pillar!");
+			LanguageRegistry.instance().addStringLocalization("itemGroup.CraftingPillars", "en_US", "Crafting Pillars");
+			LanguageRegistry.instance().addStringLocalization("itemGroup.CraftingPillars", "hu_HU", "Barkácsoszlopok");
+			
+			LanguageRegistry.instance().addStringLocalization("achievement.gettingstarted", "en_US", "Getting Started");
+			LanguageRegistry.instance().addStringLocalization("achievement.gettingstarted.desc", "en_US", "Craft a BasicPillar");
+
+			LanguageRegistry.instance().addStringLocalization("achievement.recursion", "en_US", "Recursion I");
+			LanguageRegistry.instance().addStringLocalization("achievement.recursion.desc", "en_US", "Craft a CraftingPillar in a CraftingPillar");
+			
+			LanguageRegistry.instance().addStringLocalization("achievement.showoff", "en_US", "Recursion II");
+			LanguageRegistry.instance().addStringLocalization("achievement.showoff.desc", "en_US", "Show off your Show-Off Pillar!");
 			
 			proxy.init();
 			
@@ -174,9 +201,8 @@ public class CraftingPillars
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 	
-	public static void registerBlock(Block block, String name)
+	public static void registerBlock(Block block)
 	{
 		GameRegistry.registerBlock(block, CraftingPillars.id + ":" + block.getUnlocalizedName().substring(5));
-		LanguageRegistry.addName(block, name);
 	}
 }

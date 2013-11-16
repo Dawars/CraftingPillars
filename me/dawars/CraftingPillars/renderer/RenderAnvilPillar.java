@@ -116,6 +116,15 @@ public class RenderAnvilPillar extends TileEntitySpecialRenderer implements ISim
 		glPushMatrix();
 			glTranslated(x, y, z);
 			
+			/*glDisable(GL_LIGHTING);
+			glBindTexture(GL_TEXTURE_2D, 0);
+			glColor3f(1F, 0F, 0F);
+			glBegin(GL_LINES);
+			glVertex3f(BasePillar.x1-tile.xCoord, BasePillar.y1-tile.yCoord, BasePillar.z1-tile.zCoord);
+			glVertex3f(BasePillar.x2-tile.xCoord, BasePillar.y2-tile.yCoord, BasePillar.z2-tile.zCoord);
+			glEnd();
+			glEnable(GL_LIGHTING);*/
+			
 			if(anvil.getStackInSlot(0) != null)
 			{
 				citem.setEntityItemStack(anvil.getStackInSlot(0));

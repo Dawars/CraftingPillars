@@ -21,14 +21,16 @@ import static org.lwjgl.opengl.GL11.*;
 
 public abstract class BasePillar extends BaseBlockContainer
 {
-	public static class CollisionBox
+	public class CollisionBox
 	{
-		public int id;
+		public int id, slot;
 		public float minX, minY, minZ, maxX, maxY, maxZ;
 		
-		public CollisionBox(int id, float minX, float minY, float minZ, float maxX, float maxY, float maxZ)
+		public CollisionBox(int slot, float minX, float minY, float minZ, float maxX, float maxY, float maxZ)
 		{
-			this.id = id;
+			this.id = buttons.size();
+			buttons.add(this);
+			this.slot = slot;
 			this.minX = minX/16F;
 			this.minY = minY/16F;
 			this.minZ = minZ/16F;
@@ -125,12 +127,59 @@ public abstract class BasePillar extends BaseBlockContainer
 	public abstract void onActionPerformed(World world, int x, int y, int z, int id, int button, EntityPlayer player);
 	
 	@SideOnly(Side.CLIENT)
-	public abstract boolean canPerformAction(World world, int x, int y, int z, int id, int button, EntityPlayer player);
+	public abstract boolean canActionPerformed(World world, int x, int y, int z, int id, int button, EntityPlayer player);
+	
+	public void onSlotClicked(World world, int x, int y, int z, int slot, int button, EntityPlayer player)
+	{
+		BaseTileEntityPillar tile = (BaseTileEntityPillar)world.getBlockTileEntity(x, y, z);
+		if(button == 0)
+		{
+			if(player.isSneaking())
+				tile.dropItemFromSlot(slot, tile.getInventoryStackLimit(), player);
+			else
+				tile.dropItemFromSlot(slot, 1, player);
+		}
+		else if(button == 2)
+		{
+			if(player.isSneaking())
+			{
+				int i;
+				for(i = player.getCurrentEquippedItem().stackSize; !tile.insertStack(slot, new ItemStack(player.getCurrentEquippedItem().getItem(), i), 0); i--);
+				if(!player.capabilities.isCreativeMode)
+					player.getCurrentEquippedItem().stackSize -= i;
+			}
+			else
+			{
+				if(!player.capabilities.isCreativeMode)
+					player.getCurrentEquippedItem().stackSize--;
+				tile.insertStack(slot, new ItemStack(player.getCurrentEquippedItem().getItem(), 1), 0);
+			}
+		}
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public boolean canSlotClicked(World world, int x, int y, int z, int slot, int button, EntityPlayer player)
+	{
+		BaseTileEntityPillar tile = (BaseTileEntityPillar)world.getBlockTileEntity(x, y, z);
+		if(button == 0)
+		{
+			return tile.getStackInSlot(slot) != null;
+		}
+		else if(button == 2 && player.getCurrentEquippedItem() != null)
+		{
+			if(player.isSneaking())
+				return tile.canInsertItem(slot, player.getCurrentEquippedItem(), 0);
+			else
+				return tile.canInsertItem(slot, new ItemStack(player.getCurrentEquippedItem().getItem(), 1), 0);
+		}
+		
+		return false;
+	}
 	
 	@SideOnly(Side.CLIENT)
 	public int getClickedButtonId(int x, int y, int z, int button, EntityPlayer player)
 	{
-		float hitX = (float)player.posX, hitY = (float)player.posY+(float)player.eyeHeight, hitZ = (float)player.posZ;
+		float hitX = (float)player.posX, hitY = (float)player.posY+(float)player.eyeHeight-2F/16F, hitZ = (float)player.posZ;
 		float dx = MathHelper.sin((float)Math.toRadians(-player.rotationYaw))*MathHelper.cos((float)Math.toRadians(-player.rotationPitch))/16F;
 		float dy = MathHelper.sin((float)Math.toRadians(-player.rotationPitch))/16F;
 		float dz = MathHelper.cos((float)Math.toRadians(-player.rotationYaw))*MathHelper.cos((float)Math.toRadians(-player.rotationPitch))/16F;
@@ -144,10 +193,10 @@ public abstract class BasePillar extends BaseBlockContainer
 			hitY += dy;
 			hitZ += dz;
 			for(CollisionBox box : this.buttons)
-				if(box.inBounds(hitX-x, hitY-y, hitZ-z, meta) && this.canPerformAction(player.worldObj, x, y, z, box.id, button, player))
-					return box.id;
+				if(box.inBounds(hitX-x, hitY-y, hitZ-z, meta))
+					if((box.slot > -1 && this.canSlotClicked(player.worldObj, x, y, z, box.slot, button, player)) || this.canActionPerformed(player.worldObj, x, y, z, box.id, button, player))
+						return box.id;
 		}
-		
 		return -1;
 	}
 	

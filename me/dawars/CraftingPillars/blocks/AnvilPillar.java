@@ -26,8 +26,8 @@ public class AnvilPillar extends BasePillar
 	public AnvilPillar(int id, Material mat)
 	{
 		super(id, mat);
-		this.buttons.add(new CollisionBox(0, 3F, 16F, 6F, 7F, 17F, 10F));
-		this.buttons.add(new CollisionBox(1, 9F, 16F, 6F, 13F, 17F, 10F));
+		new CollisionBox(0, 3F, 16F, 6F, 7F, 17F, 10F);
+		new CollisionBox(1, 9F, 16F, 6F, 13F, 17F, 10F);
 	}
 	
 	@Override
@@ -49,42 +49,15 @@ public class AnvilPillar extends BasePillar
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public boolean canPerformAction(World world, int x, int y, int z, int id, int button, EntityPlayer player)
+	public boolean canActionPerformed(World world, int x, int y, int z, int id, int button, EntityPlayer player)
 	{
-		return true;
+		return false;
 	}
 	
 	@Override
 	public void onActionPerformed(World world, int x, int y, int z, int id, int button, EntityPlayer player)
 	{
-		TileEntityAnvilPillar anvil = (TileEntityAnvilPillar)world.getBlockTileEntity(x, y, z);
 		
-		if(id == 0 || id == 1)
-		{
-			if(button == 0 && anvil.getStackInSlot(id) != null)
-			{
-				if(player.isSneaking())
-					anvil.dropItemFromSlot(id, 64, player);
-				else
-					anvil.dropItemFromSlot(id, 1, player);
-			}
-			else if(button == 2 && player.getCurrentEquippedItem() != null && anvil.canInsertItem(id, new ItemStack(player.getCurrentEquippedItem().getItem(), 1), 0))
-			{
-				if(player.isSneaking())
-				{
-					int i;
-					for(i = player.getCurrentEquippedItem().stackSize; !anvil.insertStack(id, new ItemStack(player.getCurrentEquippedItem().getItem(), i), 0); i--);
-					if(!player.capabilities.isCreativeMode)
-						player.getCurrentEquippedItem().stackSize -= i;
-				}
-				else
-				{
-					if(!player.capabilities.isCreativeMode)
-						player.getCurrentEquippedItem().stackSize--;
-					anvil.insertStack(id, new ItemStack(player.getCurrentEquippedItem().getItem(), 1), 0);
-				}
-			}
-		}
 	}
 	
 	@Override
