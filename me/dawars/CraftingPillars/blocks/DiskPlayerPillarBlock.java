@@ -78,16 +78,17 @@ public class DiskPlayerPillarBlock extends BaseBlockContainer
 		            	--player.getCurrentEquippedItem().stackSize;
 		            return true;
 	        	}
-        	} else {
-        		//pause
-        		//tile.isPlaying();
         	}
         }
         else
         {
-        	if(side == 1) this.ejectRecord(world, x, y, z);
-            return true;
+        	if(side == 1)
+    		{
+    			this.ejectRecord(world, x, y, z);
+    			return true;
+    		}
         }
+        if(side != 1) tile.showNum = !tile.showNum;
 		return true;
     }
 

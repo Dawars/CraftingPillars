@@ -62,6 +62,8 @@ public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimp
 	
 	public IModelCustom disk;
 
+	private float rot = 0F;
+
 	public RenderDiskPillar()
 	{
 		disk = AdvancedModelLoader.loadModel("/assets/" + CraftingPillars.id + "/textures/models/Disk.obj");
@@ -147,28 +149,43 @@ public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimp
 	@Override
 	public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f)
 	{
+		this.rot  += 5F;
+		if(this.rot >= 360F)
+			this.rot -= 360F;
+		
 		glPushMatrix();
-		glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
-		glRotatef(180F, 1F, 0F, 0F);
-		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_DISKPILLAR);
-		render(0.0625F, tile.worldObj.getBlockId(tile.xCoord, tile.yCoord-1, tile.zCoord) == CraftingPillars.blockExtendPillar.blockID);
+			glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
+			glRotatef(180F, 1F, 0F, 0F);
+			Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_DISKPILLAR);
+			render(0.0625F, tile.worldObj.getBlockId(tile.xCoord, tile.yCoord-1, tile.zCoord) == CraftingPillars.blockExtendPillar.blockID);
 		glPopMatrix();
 		
 		TileEntityDiskPlayerPillar workTile = (TileEntityDiskPlayerPillar) tile;
 
-		
-		
-		glPushMatrix();
-			glTranslated(x + 0.5F, y + 1.02F, z + 0.5F);
-			glRotatef(workTile.rot, 0, 1, 0);
-			glScalef(0.025F, 0.025F, 0.025F);
-			
-			FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(CraftingPillars.id + ":textures/models/disk_13.png"));
-			disk.renderAll();
-			
-			//TODO: add title text
-
-		glPopMatrix();
+		if(workTile.getDisk() != null && !workTile.isEmpty)
+		{
+			glPushMatrix();
+				glTranslated(x + 0.5F, y + 1.02F, z + 0.5F);
+				glRotatef(this.rot, 0, 1, 0);
+				glScalef(0.025F, 0.025F, 0.025F);
+				
+				FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(CraftingPillars.id + ":textures/models/disk_13.png"));//TODO: API getTexture
+				disk.renderAll();
+				
+			glPopMatrix();
+			if(workTile.showNum)
+			{
+				glPushMatrix();
+					glTranslated(x + 0.5F, y + 1.02F, z + 0.5F);
+	
+					//TODO: add title text
+					glDisable(GL_LIGHTING);
+					RenderingHelper.renderFloatingTextWithBackground(0, 0.6F, 0, 0.4F, workTile.getDisk().getTooltip(FMLClientHandler.instance().getClient().thePlayer, true).get(1).toString(), Color.WHITE.getRGB(), new Color(0F, 0F, 0F, 0.5F));
+					glEnable(GL_LIGHTING);
+					
+				glPopMatrix();
+			}
+		}
 	}
 	
 	@Override

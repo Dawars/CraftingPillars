@@ -11,50 +11,44 @@ public class TileEntityDiskPlayerPillar extends BaseTileEntity
 {
     /** ID of record which is in Jukebox */
     private ItemStack record;
+	public boolean showNum = false;
+	public boolean isEmpty = true;
 
-    
-    public float rot = 0F;
-
-	@Override
-	public void updateEntity()
-	{
-		if(this.worldObj.isRemote)
-		{
-			this.rot += 5F;
-			if(this.rot >= 360F)
-				this.rot -= 360F;
-		}
-	}
-		
     /**
      * Reads a tile entity from NBT.
      */
-    public void readFromNBT(NBTTagCompound par1NBTTagCompound)
+    public void readFromNBT(NBTTagCompound nbt)
     {
-        super.readFromNBT(par1NBTTagCompound);
+    	super.readFromNBT(nbt);
 
-        if (par1NBTTagCompound.hasKey("RecordItem"))
+        if (nbt.hasKey("RecordItem"))
         {
-            this.setDisk(ItemStack.loadItemStackFromNBT(par1NBTTagCompound.getCompoundTag("RecordItem")));
+            this.setDisk(ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("RecordItem")));
         }
-        else if (par1NBTTagCompound.getInteger("Record") > 0)
+        else if (nbt.getInteger("Record") > 0)
         {
-            this.setDisk(new ItemStack(par1NBTTagCompound.getInteger("Record"), 1, 0));
+            this.setDisk(new ItemStack(nbt.getInteger("Record"), 1, 0));
         }
+		this.isEmpty = nbt.getBoolean("isEmpty");
+		this.showNum = nbt.getBoolean("showNum");
+
     }
 
     /**
      * Writes a tile entity to NBT.
      */
-    public void writeToNBT(NBTTagCompound par1NBTTagCompound)
+    public void writeToNBT(NBTTagCompound nbt)
     {
-        super.writeToNBT(par1NBTTagCompound);
+        super.writeToNBT(nbt);
 
         if (this.getDisk() != null)
         {
-            par1NBTTagCompound.setCompoundTag("RecordItem", this.getDisk().writeToNBT(new NBTTagCompound()));
-            par1NBTTagCompound.setInteger("Record", this.getDisk().itemID);
+        	nbt.setCompoundTag("RecordItem", this.getDisk().writeToNBT(new NBTTagCompound()));
+        	nbt.setInteger("Record", this.getDisk().itemID);
         }
+		nbt.setBoolean("isEmpty", this.isEmpty);
+		nbt.setBoolean("showNum", this.showNum);
+
     }
     @Override
 	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt) {
@@ -84,7 +78,12 @@ public class TileEntityDiskPlayerPillar extends BaseTileEntity
 
     public void setDisk(ItemStack item)
     {
-        this.record = item;
-        this.onInventoryChanged();
+    	if(item == null)
+    		this.isEmpty = true;
+    	else
+    		this.isEmpty = false;
+		this.record = item;
+
+    	this.onInventoryChanged();
     }
 }
