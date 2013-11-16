@@ -17,6 +17,6 @@ public class CraftingPillarAPI {
 	
 	public static String getDiskTexture(int id)
 	{
-		return diskTextures[id] != null ? diskTextures[id] : "placeholder";
+		return diskTextures[id] != null ? diskTextures[id] : CraftingPillars.id + ":textures/models/disk_unknown.png";
 	}
 }

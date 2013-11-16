@@ -190,6 +190,9 @@ public class CraftingPillars
 			GameRegistry.addShapelessRecipe(new ItemStack(blockFurnacePillar), new ItemStack(Block.furnaceIdle), new ItemStack(blockExtendPillar));
 			GameRegistry.addShapelessRecipe(new ItemStack(blockBrewingPillar), new ItemStack(Item.brewingStand), new ItemStack(blockExtendPillar));
 			
+			CraftingPillarAPI.addDiskTexture(discElysium.itemID, CraftingPillars.id + ":textures/models/disk_elysium.png");
+
+			
 			MinecraftForge.EVENT_BUS.register(new me.dawars.CraftingPillars.handlers.EventHandler());
 			GameRegistry.registerCraftingHandler(new CraftingHandler());
 		}
