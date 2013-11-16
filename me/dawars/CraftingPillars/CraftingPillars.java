@@ -2,6 +2,7 @@ package me.dawars.CraftingPillars;
 
 import java.io.File;
 
+import me.dawars.CraftingPillars.api.CraftingPillarAPI;
 import me.dawars.CraftingPillars.blocks.*;
 import me.dawars.CraftingPillars.handlers.*;
 import me.dawars.CraftingPillars.items.*;
@@ -201,6 +202,18 @@ public class CraftingPillars
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
+		CraftingPillarAPI.addDiskTexture(Item.record13.itemID, CraftingPillars.id + ":textures/models/disk_13.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordCat.itemID, CraftingPillars.id + ":textures/models/disk_cat.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordBlocks.itemID, CraftingPillars.id + ":textures/models/disk_13.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordChirp.itemID, CraftingPillars.id + ":textures/models/disk_13.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordFar.itemID, CraftingPillars.id + ":textures/models/disk_13.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordMall.itemID, CraftingPillars.id + ":textures/models/disk_13.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordStal.itemID, CraftingPillars.id + ":textures/models/disk_13.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordStrad.itemID, CraftingPillars.id + ":textures/models/disk_13.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordWard.itemID, CraftingPillars.id + ":textures/models/disk_13.png");
+		CraftingPillarAPI.addDiskTexture(Item.record11.itemID, CraftingPillars.id + ":textures/models/disk_13.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordWait.itemID, CraftingPillars.id + ":textures/models/disk_13.png");
+	
 		if(FMLCommonHandler.instance().getEffectiveSide().isClient())
 		{
 			MinecraftForge.EVENT_BUS.register(new SoundHandler());

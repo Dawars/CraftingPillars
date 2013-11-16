@@ -14,6 +14,7 @@ import com.google.common.primitives.SignedBytes;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import me.dawars.CraftingPillars.CraftingPillars;
+import me.dawars.CraftingPillars.api.CraftingPillarAPI;
 import me.dawars.CraftingPillars.tiles.TileEntityCraftingPillar;
 import me.dawars.CraftingPillars.tiles.TileEntityDiskPlayerPillar;
 import me.dawars.CraftingPillars.tiles.TileEntityShowOffPillar;
@@ -169,7 +170,7 @@ public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimp
 				glRotatef(this.rot, 0, 1, 0);
 				glScalef(0.025F, 0.025F, 0.025F);
 				
-				FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(CraftingPillars.id + ":textures/models/disk_13.png"));//TODO: API getTexture
+				FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(CraftingPillarAPI.getDiskTexture(workTile.getDisk().itemID)));
 				disk.renderAll();
 				
 			glPopMatrix();
