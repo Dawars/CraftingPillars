@@ -38,7 +38,6 @@ public class BrewingPillarBlock extends BaseBlockContainer
 		super(id, mat);
 		float f = 3*1/16F;
 		this.setBlockBounds(f, 0.0F, f, 1.0F - f, 1.0F, 1.0F - f);
-		if(!CraftingPillars.update) this.setCreativeTab(null);
 	}
 	@Override
 	public int getRenderType()

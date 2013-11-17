@@ -77,13 +77,10 @@ public class ClientProxy extends CommonProxy
 		RenderingRegistry.registerBlockHandler(new RenderCraftingPillar());
 		RenderingRegistry.registerBlockHandler(new RenderFurnacePillar());
 		
-		if(CraftingPillars.update)
-		{
-			RenderingRegistry.registerBlockHandler(new RenderAnvilPillar());
-			RenderingRegistry.registerBlockHandler(new RenderTankPillar());
-			RenderingRegistry.registerBlockHandler(new RenderBrewingPillar());
-			RenderingRegistry.registerBlockHandler(new RenderDiskPillar());
-		}
+		RenderingRegistry.registerBlockHandler(new RenderAnvilPillar());
+		RenderingRegistry.registerBlockHandler(new RenderTankPillar());
+		RenderingRegistry.registerBlockHandler(new RenderBrewingPillar());
+		RenderingRegistry.registerBlockHandler(new RenderDiskPillar());
 	}
 	
 	@Override

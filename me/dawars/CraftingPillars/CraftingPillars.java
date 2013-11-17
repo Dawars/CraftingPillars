@@ -90,7 +90,7 @@ public class CraftingPillars
 	public static Item discElysium;
 
 	public static boolean floatingItems = true;
-	public static boolean christmas, update;
+	public static boolean christmas;
 	
 	public static final Achievement achievementGettingStarted = new Achievement(509, "gettingstarted", -2, 0, /* blockCraftingPillar */Block.stoneBrick, AchievementList.openInventory).registerAchievement();
 	public static final Achievement achievementRecursion = new Achievement(510, "recursion", -3, -2, /* blockCraftingPillar */Item.redstone, achievementGettingStarted).registerAchievement();
@@ -100,7 +100,6 @@ public class CraftingPillars
 	public void load(FMLPreInitializationEvent evt)
 	{
 		christmas = /*isChristmasTime()*/true;
-		update = isAfter("2013-11-16");
 		
 		if(FMLCommonHandler.instance().getSide().isClient())
 		{
@@ -196,11 +195,8 @@ public class CraftingPillars
 			GameRegistry.addShapelessRecipe(new ItemStack(blockCraftingPillar), new ItemStack(Block.workbench), new ItemStack(blockExtendPillar));
 			GameRegistry.addShapelessRecipe(new ItemStack(blockFurnacePillar), new ItemStack(Block.furnaceIdle), new ItemStack(blockExtendPillar));
 			
-			if(update)
-			{
-				GameRegistry.addShapelessRecipe(new ItemStack(blockBrewingPillar), new ItemStack(Item.brewingStand), new ItemStack(blockExtendPillar));
-				CraftingPillarAPI.addDiskTexture(discElysium.itemID, CraftingPillars.id + ":textures/models/disk_elysium.png");
-			}
+			GameRegistry.addShapelessRecipe(new ItemStack(blockBrewingPillar), new ItemStack(Item.brewingStand), new ItemStack(blockExtendPillar));
+			CraftingPillarAPI.addDiskTexture(discElysium.itemID, CraftingPillars.id + ":textures/models/disk_elysium.png");
 			
 			MinecraftForge.EVENT_BUS.register(new me.dawars.CraftingPillars.handlers.EventHandler());
 			GameRegistry.registerCraftingHandler(new CraftingHandler());
@@ -258,12 +254,12 @@ public class CraftingPillars
 		return false;
 	}
 	
-	public static boolean isChristmasTime()
+	public static boolean isWinterTime()
 	{
 		Calendar c = Calendar.getInstance();
 		Calendar b = Calendar.getInstance();
 		b.set(Calendar.MONTH, Calendar.DECEMBER);
-		b.set(Calendar.DAY_OF_MONTH, 23);
+		b.set(Calendar.DAY_OF_MONTH, 1);
 		b.set(Calendar.HOUR_OF_DAY, 0);
 		b.set(Calendar.MINUTE, 0);
 		b.set(Calendar.MILLISECOND, 0);
