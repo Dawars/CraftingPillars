@@ -145,13 +145,21 @@ public abstract class BasePillar extends BaseBlockContainer
 				int i;
 				for(i = player.getCurrentEquippedItem().stackSize; !tile.insertStack(slot, new ItemStack(player.getCurrentEquippedItem().getItem(), i), 0); i--);
 				if(!player.capabilities.isCreativeMode)
-					player.getCurrentEquippedItem().stackSize -= i;
+				{
+					player.getCurrentEquippedItem().splitStack(i);
+					if(player.getCurrentEquippedItem().stackSize == 0)
+						player.inventory.mainInventory[player.inventory.currentItem] = null;
+				}
 			}
 			else
 			{
-				if(!player.capabilities.isCreativeMode)
-					player.getCurrentEquippedItem().stackSize--;
 				tile.insertStack(slot, new ItemStack(player.getCurrentEquippedItem().getItem(), 1), 0);
+				if(!player.capabilities.isCreativeMode)
+				{
+					player.getCurrentEquippedItem().splitStack(1);
+					if(player.getCurrentEquippedItem().stackSize == 0)
+						player.inventory.mainInventory[player.inventory.currentItem] = null;
+				}
 			}
 		}
 	}

@@ -39,7 +39,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @Mod(name = CraftingPillars.name, version = CraftingPillars.version, useMetadata = false, modid = CraftingPillars.id, dependencies = "required-after:Forge@[8.9.0,)")
-@NetworkMod(clientSideRequired = true, serverSideRequired = false, channels = {CraftingPillars.packetChannel}, packetHandler = PacketHandler.class)
+@NetworkMod(clientSideRequired = true, serverSideRequired = false, channels = {CraftingPillars.packetChannel}, packetHandler = PillarPacketHandler.class)
 public class CraftingPillars
 {
 	@Instance(CraftingPillars.id)
@@ -90,7 +90,7 @@ public class CraftingPillars
 	public static Item discElysium;
 
 	public static boolean floatingItems = true;
-	public static boolean christmas;
+	public static boolean winter;
 	
 	public static final Achievement achievementGettingStarted = new Achievement(509, "gettingstarted", -2, 0, /* blockCraftingPillar */Block.stoneBrick, AchievementList.openInventory).registerAchievement();
 	public static final Achievement achievementRecursion = new Achievement(510, "recursion", -3, -2, /* blockCraftingPillar */Item.redstone, achievementGettingStarted).registerAchievement();
@@ -99,12 +99,12 @@ public class CraftingPillars
 	@EventHandler
 	public void load(FMLPreInitializationEvent evt)
 	{
-		christmas = /*isChristmasTime()*/true;
+		winter = /*isChristmasTime()*/true;
 		
 		if(FMLCommonHandler.instance().getSide().isClient())
 		{
 			VersionChecker.check();
-			TickRegistry.registerTickHandler(new TickHandler(), Side.CLIENT);
+			TickRegistry.registerTickHandler(new PillarTickHandler(), Side.CLIENT);
 		}
 		
 		config = new Configuration(new File(evt.getModConfigurationDirectory(), "CraftingPillars.cfg"));
@@ -198,8 +198,8 @@ public class CraftingPillars
 			GameRegistry.addShapelessRecipe(new ItemStack(blockBrewingPillar), new ItemStack(Item.brewingStand), new ItemStack(blockExtendPillar));
 			CraftingPillarAPI.addDiskTexture(discElysium.itemID, CraftingPillars.id + ":textures/models/disk_elysium.png");
 			
-			MinecraftForge.EVENT_BUS.register(new me.dawars.CraftingPillars.handlers.EventHandler());
-			GameRegistry.registerCraftingHandler(new CraftingHandler());
+			MinecraftForge.EVENT_BUS.register(new PillarEventHandler());
+			GameRegistry.registerCraftingHandler(new PillarCraftingHandler());
 		}
 		finally
 		{
@@ -226,7 +226,7 @@ public class CraftingPillars
 	
 		if(FMLCommonHandler.instance().getEffectiveSide().isClient())
 		{
-			MinecraftForge.EVENT_BUS.register(new SoundHandler());
+			MinecraftForge.EVENT_BUS.register(new PillarSoundHandler());
 		}
 		MinecraftForge.EVENT_BUS.register(this);
 	}

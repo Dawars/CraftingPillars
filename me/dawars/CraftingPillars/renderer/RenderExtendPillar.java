@@ -72,7 +72,7 @@ public class RenderExtendPillar extends TileEntitySpecialRenderer implements ISi
 	public RenderExtendPillar()
 	{
 		
-		if(CraftingPillars.christmas)
+		if(CraftingPillars.winter)
 			TEXTURE_WORKPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/extendPillarFrozen.png");
 		else
 			TEXTURE_WORKPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/extendPillar.png");
@@ -355,7 +355,7 @@ public class RenderExtendPillar extends TileEntitySpecialRenderer implements ISi
 			top.render(f);
 			tops.render(f);
 			
-			if(CraftingPillars.christmas)
+			if(CraftingPillars.winter)
 			{
 				//Icicles
 				Icicle1A.render(f);

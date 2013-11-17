@@ -72,7 +72,7 @@ public class RenderAnvilPillar extends TileEntitySpecialRenderer implements ISim
 		random = new Random();
 		itemRenderer = new RenderingHelper.ItemRender(false, true);
 		
-		if(CraftingPillars.christmas)
+		if(CraftingPillars.winter)
 			TEXTURE_ANVILPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/anvilPillarFrozen.png");
 		else
 			TEXTURE_ANVILPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/anvilPillar.png");
@@ -260,7 +260,7 @@ public class RenderAnvilPillar extends TileEntitySpecialRenderer implements ISim
 		WorkbenchSlab.render(f);
 		WorkbenchTop.render(f);
 		Pillar2.render(f);
-		if(CraftingPillars.christmas)
+		if(CraftingPillars.winter)
 		{
 			Icicle1A.render(f);
 		    Icicle1B.render(f);

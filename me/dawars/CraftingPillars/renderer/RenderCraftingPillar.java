@@ -91,7 +91,7 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 	
 	public RenderCraftingPillar()
 	{
-		if(CraftingPillars.christmas)
+		if(CraftingPillars.winter)
 			TEXTURE_WORKPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/craftingPillarFrozen.png");
 		else
 			TEXTURE_WORKPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/craftingPillar.png");
@@ -362,7 +362,7 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 		pillartop.render(f);
 		top.render(f);
 		
-		if(CraftingPillars.christmas)
+		if(CraftingPillars.winter)
 		{
 			Icicle1A.render(f);
 		    Icicle1B.render(f);

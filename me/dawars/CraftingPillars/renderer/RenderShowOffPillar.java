@@ -91,7 +91,7 @@ public class RenderShowOffPillar extends TileEntitySpecialRenderer implements IS
 	
 	public RenderShowOffPillar()
 	{
-		if(CraftingPillars.christmas)
+		if(CraftingPillars.winter)
 			TEXTURE_SHOWOFFPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/showoffPillarFrozen.png");
 		else
 			TEXTURE_SHOWOFFPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/showoffPillar.png");
@@ -347,7 +347,7 @@ public class RenderShowOffPillar extends TileEntitySpecialRenderer implements IS
 		pillartop.render(f);
 		top.render(f);
 		
-		if(CraftingPillars.christmas)
+		if(CraftingPillars.winter)
 		{
 			Icicle1A.render(f);
 		    Icicle1B.render(f);

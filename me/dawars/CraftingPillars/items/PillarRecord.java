@@ -3,7 +3,7 @@ package me.dawars.CraftingPillars.items;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import me.dawars.CraftingPillars.CraftingPillars;
-import me.dawars.CraftingPillars.handlers.SoundHandler;
+import me.dawars.CraftingPillars.handlers.PillarSoundHandler;
 import net.minecraft.client.audio.SoundManager;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;

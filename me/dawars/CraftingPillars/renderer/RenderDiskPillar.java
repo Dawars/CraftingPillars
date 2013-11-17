@@ -96,7 +96,7 @@ public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimp
 
 	public RenderDiskPillar()
 	{
-		if(CraftingPillars.christmas)
+		if(CraftingPillars.winter)
 			TEXTURE_DISKPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/diskPillarFrozen.png");
 		else
 			TEXTURE_DISKPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/diskPillar.png");
@@ -355,7 +355,7 @@ public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimp
 		top.render(f);
 		Nail.render(f);
 		
-		if(CraftingPillars.christmas)
+		if(CraftingPillars.winter)
 		{
 			Icicle1A.render(f);
 		    Icicle1B.render(f);

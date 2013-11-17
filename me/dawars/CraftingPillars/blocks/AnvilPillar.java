@@ -41,9 +41,9 @@ public class AnvilPillar extends BasePillar
 	{
 		int l = par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 3;
 		if(l != 0 && l != 2)
-			this.setBlockBounds(0.25F, 0.0F, 0.0F, 0.75F, 1.0F, 1.0F);
+			this.setBlockBounds(3F/16F, 0F, 0.0F, 13F/16F, 1F, 1F);
 		else
-			this.setBlockBounds(0.0F, 0.0F, 0.25F, 1.0F, 1.0F, 0.75F);
+			this.setBlockBounds(0F, 0F, 3F/16F, 1.0F, 1F, 13F/16F);
 	}
 	
 	@Override
