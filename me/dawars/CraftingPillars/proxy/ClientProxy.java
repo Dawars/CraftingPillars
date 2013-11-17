@@ -58,27 +58,19 @@ public class ClientProxy extends CommonProxy
 		CraftingPillars.showOffPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
 		CraftingPillars.craftingPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
 		CraftingPillars.furnacePillarRenderID = RenderingRegistry.getNextAvailableRenderId();
-		
-		if(CraftingPillars.update)
-		{
-			CraftingPillars.anvilPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
-			CraftingPillars.tankPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
-			CraftingPillars.brewingillarRenderID = RenderingRegistry.getNextAvailableRenderId();
-			CraftingPillars.diskPlayerRenderID = RenderingRegistry.getNextAvailableRenderId();
-		}
+		CraftingPillars.anvilPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
+		CraftingPillars.tankPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
+		CraftingPillars.brewingillarRenderID = RenderingRegistry.getNextAvailableRenderId();
+		CraftingPillars.diskPlayerRenderID = RenderingRegistry.getNextAvailableRenderId();
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityExtendPillar.class, new RenderExtendPillar());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityShowOffPillar.class, new RenderShowOffPillar());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCraftingPillar.class, new RenderCraftingPillar());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFurnacePillar.class, new RenderFurnacePillar());
-		
-		if(CraftingPillars.update)
-		{
-			ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAnvilPillar.class, new RenderAnvilPillar());
-			ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTankPillar.class, new RenderTankPillar());
-			ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBrewingPillar.class, new RenderBrewingPillar());
-			ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDiskPlayerPillar.class, new RenderDiskPillar());
-		}
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAnvilPillar.class, new RenderAnvilPillar());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTankPillar.class, new RenderTankPillar());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBrewingPillar.class, new RenderBrewingPillar());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDiskPlayerPillar.class, new RenderDiskPillar());
 
 		RenderingRegistry.registerBlockHandler(new RenderExtendPillar());
 		RenderingRegistry.registerBlockHandler(new RenderShowOffPillar());

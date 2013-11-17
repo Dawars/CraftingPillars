@@ -41,7 +41,7 @@ import net.minecraftforge.client.model.obj.ObjModelLoader;
 
 public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler
 {
-	private static final ResourceLocation TEXTURE_DISKPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/diskPillar.png");
+	private ResourceLocation TEXTURE_DISKPILLAR;
 	
 	public static ModelBase model = new ModelBase()
 	{
@@ -54,9 +54,40 @@ public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimp
 	private ModelRenderer pillartop;
 	private ModelRenderer top;
     private ModelRenderer Nail;
-
-	private ModelRenderer pillarBottom;
-	
+    
+    private ModelRenderer Icicle1A;
+	private ModelRenderer Icicle1B;
+    private ModelRenderer Icicle1C;
+    private ModelRenderer Icicle2A;
+    private ModelRenderer Icicle2B;
+    private ModelRenderer Icicle2C;
+    private ModelRenderer Icicle3A;
+    private ModelRenderer Icicle3B;
+    private ModelRenderer Icicle4A;
+    private ModelRenderer Icicle4B;
+    private ModelRenderer Icicle5A;
+    private ModelRenderer Icicle5B;
+    private ModelRenderer Icicle5C;
+    private ModelRenderer Icicle6A;
+    private ModelRenderer Icicle6B;
+    private ModelRenderer Icicle6C;
+    private ModelRenderer Icicle7A;
+    private ModelRenderer Icicle7B;
+    private ModelRenderer Icicle7C;
+    private ModelRenderer Icicle8A;
+    private ModelRenderer Icicle8B;
+    private ModelRenderer Icicle8C;
+    private ModelRenderer Icicle8D;
+    
+    private ModelRenderer Icicle9A;
+    private ModelRenderer Icicle9B;
+    private ModelRenderer Icicle10A;
+    private ModelRenderer Icicle10B;
+    private ModelRenderer Icicle10C;
+    private ModelRenderer Icicle11A;
+    private ModelRenderer Icicle11B;
+    private ModelRenderer Icicle11C;
+    
 	private Random random;
 	private RenderingHelper.ItemRender itemRenderer;
 	private RenderingHelper.ItemRender resultRenderer;
@@ -65,6 +96,11 @@ public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimp
 
 	public RenderDiskPillar()
 	{
+		if(CraftingPillars.christmas)
+			TEXTURE_DISKPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/diskPillarFrozen.png");
+		else
+			TEXTURE_DISKPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/diskPillar.png");
+		
 		disk = AdvancedModelLoader.loadModel("/assets/" + CraftingPillars.id + "/textures/models/Disk.obj");
 		
 		random = new Random();
@@ -73,13 +109,6 @@ public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimp
 		
 		model.textureWidth = 128;
 		model.textureHeight = 64;
-		
-		pillarBottom = new ModelRenderer(model, 0, 33);
-		pillarBottom.addBox(0F, 0F, 0F, 12, 3, 12);
-		pillarBottom.setRotationPoint(-6F, 21F, 6F);
-		pillarBottom.setTextureSize(128, 64);
-		pillarBottom.mirror = true;
-		setRotation(pillarBottom, 0F, 1.570796F, 0F);
 		
 		bottom = new ModelRenderer(model, 0, 0);
 		bottom.addBox(-8F, -1F, -8F, 16, 2, 16);
@@ -118,24 +147,249 @@ public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimp
 		Nail.setTextureSize(128, 64);
 		Nail.mirror = true;
 		setRotation(Nail, 0F, 0F, 0F);
+		
+		//Winter
+		Icicle1A = new ModelRenderer(model, 122, 60);
+		Icicle1A.addBox(0F, 0F, 0F, 1, 2, 2);
+		Icicle1A.setRotationPoint(6F, 11F, -5F);
+		Icicle1A.setTextureSize(128, 64);
+		Icicle1A.mirror = true;
+		setRotation(Icicle1A, 0F, 0F, 0F);
+		Icicle1B = new ModelRenderer(model, 124, 58);
+		Icicle1B.addBox(0F, 0F, 0F, 1, 1, 1);
+		Icicle1B.setRotationPoint(6F, 11F, -3F);
+		Icicle1B.setTextureSize(128, 64);
+		Icicle1B.mirror = true;
+		setRotation(Icicle1B, 0F, 0F, 0F);
+		Icicle1C = new ModelRenderer(model, 124, 56);
+		Icicle1C.addBox(0F, 0F, 0F, 1, 1, 1);
+		Icicle1C.setRotationPoint(6F, 13F, -4F);
+		Icicle1C.setTextureSize(128, 64);
+		Icicle1C.mirror = true;
+		setRotation(Icicle1C, 0F, 0F, 0F);
+		Icicle2A = new ModelRenderer(model, 122, 50);
+		Icicle2A.addBox(0F, 0F, 0F, 1, 2, 2);
+		Icicle2A.setRotationPoint(6F, 11F, 0F);
+		Icicle2A.setTextureSize(128, 64);
+		Icicle2A.mirror = true;
+		setRotation(Icicle2A, 0F, 0F, 0F);
+		Icicle2B = new ModelRenderer(model, 124, 47);
+		Icicle2B.addBox(0F, 0F, 0F, 1, 2, 1);
+		Icicle2B.setRotationPoint(6F, 13F, 0F);
+		Icicle2B.setTextureSize(128, 64);
+		Icicle2B.mirror = true;
+		setRotation(Icicle2B, 0F, 0F, 0F);
+		Icicle2C = new ModelRenderer(model, 124, 54);
+		Icicle2C.addBox(0F, 0F, 0F, 1, 1, 1);
+		Icicle2C.setRotationPoint(6F, 11F, -1F);
+		Icicle2C.setTextureSize(128, 64);
+		Icicle2C.mirror = true;
+		setRotation(Icicle2C, 0F, 0F, 0F);
+		Icicle3A = new ModelRenderer(model, 120, 43);
+		Icicle3A.addBox(0F, 0F, 0F, 1, 1, 3);
+		Icicle3A.setRotationPoint(6F, 11F, 3F);
+		Icicle3A.setTextureSize(128, 64);
+		Icicle3A.mirror = true;
+		setRotation(Icicle3A, 0F, 0F, 0F);
+		Icicle3B = new ModelRenderer(model, 124, 40);
+		Icicle3B.addBox(0F, 0F, 0F, 1, 2, 1);
+		Icicle3B.setRotationPoint(6F, 12F, 4F);
+		Icicle3B.setTextureSize(128, 64);
+		Icicle3B.mirror = true;
+		setRotation(Icicle3B, 0F, 0F, 0F);
+		Icicle4A = new ModelRenderer(model, 122, 38);
+		Icicle4A.addBox(0F, 0F, 0F, 2, 1, 1);
+		Icicle4A.setRotationPoint(3F, 11F, 6F);
+		Icicle4A.setTextureSize(128, 64);
+		Icicle4A.mirror = true;
+		setRotation(Icicle4A, 0F, 0F, 0F);
+		Icicle4B = new ModelRenderer(model, 124, 36);
+		Icicle4B.addBox(0F, 0F, 0F, 1, 1, 1);
+		Icicle4B.setRotationPoint(4F, 12F, 6F);
+		Icicle4B.setTextureSize(128, 64);
+		Icicle4B.mirror = true;
+		setRotation(Icicle4B, 0F, 0F, 0F);
+		Icicle5A = new ModelRenderer(model, 114, 61);
+		Icicle5A.addBox(0F, 0F, 0F, 3, 2, 1);
+		Icicle5A.setRotationPoint(-1F, 11F, 6F);
+		Icicle5A.setTextureSize(128, 64);
+		Icicle5A.mirror = true;
+		setRotation(Icicle5A, 0F, 0F, 0F);
+		Icicle5B = new ModelRenderer(model, 116, 59);
+		Icicle5B.addBox(0F, 0F, 0F, 2, 1, 1);
+		Icicle5B.setRotationPoint(-1F, 13F, 6F);
+		Icicle5B.setTextureSize(128, 64);
+		Icicle5B.mirror = true;
+		setRotation(Icicle5B, 0F, 0F, 0F);
+		Icicle5C = new ModelRenderer(model, 120, 56);
+		Icicle5C.addBox(0F, 0F, 0F, 1, 2, 1);
+		Icicle5C.setRotationPoint(0F, 14F, 6F);
+		Icicle5C.setTextureSize(128, 64);
+		Icicle5C.mirror = true;
+		setRotation(Icicle5C, 0F, 0F, 0F);
+		Icicle6A = new ModelRenderer(model, 114, 54);
+		Icicle6A.addBox(0F, 0F, 0F, 4, 1, 1);
+		Icicle6A.setRotationPoint(-5F, 11F, 6F);
+		Icicle6A.setTextureSize(128, 64);
+		Icicle6A.mirror = true;
+		setRotation(Icicle6A, 0F, 0F, 0F);
+		Icicle6B = new ModelRenderer(model, 116, 52);
+		Icicle6B.addBox(0F, 0F, 0F, 2, 1, 1);
+		Icicle6B.setRotationPoint(-4F, 12F, 6F);
+		Icicle6B.setTextureSize(128, 64);
+		Icicle6B.mirror = true;
+		setRotation(Icicle6B, 0F, 0F, 0F);
+		Icicle6C = new ModelRenderer(model, 118, 50);
+		Icicle6C.addBox(0F, 0F, 0F, 1, 1, 1);
+		Icicle6C.setRotationPoint(-4F, 13F, 6F);
+		Icicle6C.setTextureSize(128, 64);
+		Icicle6C.mirror = true;
+		setRotation(Icicle6C, 0F, 0F, 0F);
+		Icicle7A = new ModelRenderer(model, 104, 59);
+		Icicle7A.addBox(0F, 0F, 0F, 1, 1, 4);
+		Icicle7A.setRotationPoint(-7F, 11F, 1F);
+		Icicle7A.setTextureSize(128, 64);
+		Icicle7A.mirror = true;
+		setRotation(Icicle7A, 0F, 0F, 0F);
+		Icicle7B = new ModelRenderer(model, 114, 46);
+		Icicle7B.addBox(0F, 0F, 0F, 1, 2, 2);
+		Icicle7B.setRotationPoint(-7F, 12F, 2F);
+		Icicle7B.setTextureSize(128, 64);
+		Icicle7B.mirror = true;
+		setRotation(Icicle7B, 0F, 0F, 0F);
+		Icicle7C = new ModelRenderer(model, 116, 44);
+		Icicle7C.addBox(0F, 0F, 0F, 1, 1, 1);
+		Icicle7C.setRotationPoint(-7F, 14F, 2F);
+		Icicle7C.setTextureSize(128, 64);
+		Icicle7C.mirror = true;
+		setRotation(Icicle7C, 0F, 0F, 0F);
+		Icicle8A = new ModelRenderer(model, 104, 54);
+		Icicle8A.addBox(0F, 0F, 0F, 1, 1, 4);
+		Icicle8A.setRotationPoint(-7F, 11F, -5F);
+		Icicle8A.setTextureSize(128, 64);
+		Icicle8A.mirror = true;
+		setRotation(Icicle8A, 0F, 0F, 0F);
+		Icicle8B = new ModelRenderer(model, 106, 50);
+		Icicle8B.addBox(0F, 0F, 0F, 1, 1, 3);
+		Icicle8B.setRotationPoint(-7F, 12F, -4F);
+		Icicle8B.setTextureSize(128, 64);
+		Icicle8B.mirror = true;
+		setRotation(Icicle8B, 0F, 0F, 0F);
+		Icicle8C = new ModelRenderer(model, 108, 46);
+		Icicle8C.addBox(0F, 0F, 0F, 1, 2, 2);
+		Icicle8C.setRotationPoint(-7F, 13F, -4F);
+		Icicle8C.setTextureSize(128, 64);
+		Icicle8C.mirror = true;
+		setRotation(Icicle8C, 0F, 0F, 0F);
+		Icicle8D = new ModelRenderer(model, 112, 44);
+		Icicle8D.addBox(0F, 0F, 0F, 1, 1, 1);
+		Icicle8D.setRotationPoint(-7F, 15F, -3F);
+		Icicle8D.setTextureSize(128, 64);
+		Icicle8D.mirror = true;
+		setRotation(Icicle8D, 0F, 0F, 0F);
+		
+		
+		Icicle9A = new ModelRenderer(model, 122, 38);
+		Icicle9A.addBox(0F, 0F, 0F, 2, 1, 1);
+		Icicle9A.setRotationPoint(3F, 11F, -7F);
+		Icicle9A.setTextureSize(128, 64);
+		Icicle9A.mirror = true;
+		setRotation(Icicle9A, 0F, 0F, 0F);
+		Icicle9B = new ModelRenderer(model, 124, 36);
+		Icicle9B.addBox(0F, 0F, 0F, 1, 1, 1);
+		Icicle9B.setRotationPoint(4F, 12F, -7F);
+		Icicle9B.setTextureSize(128, 64);
+		Icicle9B.mirror = true;
+		setRotation(Icicle9B, 0F, 0F, 0F);
+		Icicle10A = new ModelRenderer(model, 114, 61);
+		Icicle10A.addBox(0F, 0F, 0F, 3, 2, 1);
+		Icicle10A.setRotationPoint(-1F, 11F, -7F);
+		Icicle10A.setTextureSize(128, 64);
+		Icicle10A.mirror = true;
+		setRotation(Icicle10A, 0F, 0F, 0F);
+		Icicle10B = new ModelRenderer(model, 116, 59);
+		Icicle10B.addBox(0F, 0F, 0F, 2, 1, 1);
+		Icicle10B.setRotationPoint(-1F, 13F, -7F);
+		Icicle10B.setTextureSize(128, 64);
+		Icicle10B.mirror = true;
+		setRotation(Icicle10B, 0F, 0F, 0F);
+		Icicle10C = new ModelRenderer(model, 120, 56);
+		Icicle10C.addBox(0F, 0F, 0F, 1, 2, 1);
+		Icicle10C.setRotationPoint(0F, 14F, -7F);
+		Icicle10C.setTextureSize(128, 64);
+		Icicle10C.mirror = true;
+		setRotation(Icicle10C, 0F, 0F, 0F);
+		Icicle11A = new ModelRenderer(model, 114, 54);
+		Icicle11A.addBox(0F, 0F, 0F, 4, 1, 1);
+		Icicle11A.setRotationPoint(-5F, 11F, -7F);
+		Icicle11A.setTextureSize(128, 64);
+		Icicle11A.mirror = true;
+		setRotation(Icicle11A, 0F, 0F, 0F);
+		Icicle11B = new ModelRenderer(model, 116, 52);
+		Icicle11B.addBox(0F, 0F, 0F, 2, 1, 1);
+		Icicle11B.setRotationPoint(-4F, 12F, -7F);
+		Icicle11B.setTextureSize(128, 64);
+		Icicle11B.mirror = true;
+		setRotation(Icicle11B, 0F, 0F, 0F);
+		Icicle11C = new ModelRenderer(model, 118, 50);
+		Icicle11C.addBox(0F, 0F, 0F, 1, 1, 1);
+		Icicle11C.setRotationPoint(-4F, 13F, -7F);
+		Icicle11C.setTextureSize(128, 64);
+		Icicle11C.mirror = true;
+		setRotation(Icicle11C, 0F, 0F, 0F);
 	}
 	
 	public void render(float f, boolean connected)
 	{
-		if(connected)
-		{
-			pillarBottom.render(f);
-		}
-		else
-		{
+//		if(connected)
+//		{
+//			pillarBottom.render(f);
+//		}
+//		else
+//		{
 			bottom.render(f);
 			pillarbottom.render(f);
-		}
+//		}
 		pillar.render(f);
 		pillartop.render(f);
 		top.render(f);
 		Nail.render(f);
 		
+		if(CraftingPillars.christmas)
+		{
+			Icicle1A.render(f);
+		    Icicle1B.render(f);
+		    Icicle1C.render(f);
+		    Icicle2A.render(f);
+		    Icicle2B.render(f);
+		    Icicle2C.render(f);
+		    Icicle3A.render(f);
+		    Icicle3B.render(f);
+		    Icicle4A.render(f);
+		    Icicle4B.render(f);
+		    Icicle5A.render(f);
+		    Icicle5B.render(f);
+		    Icicle5C.render(f);
+		    Icicle6A.render(f);
+		    Icicle6B.render(f);
+		    Icicle6C.render(f);
+		    Icicle7A.render(f);
+		    Icicle7B.render(f);
+		    Icicle7C.render(f);
+		    Icicle8A.render(f);
+		    Icicle8B.render(f);
+		    Icicle8C.render(f);
+		    Icicle8D.render(f);
+		    
+		    Icicle9A.render(f);
+		    Icicle9B.render(f);
+		    Icicle10A.render(f);
+		    Icicle10B.render(f);
+		    Icicle10C.render(f);
+		    Icicle11A.render(f);
+		    Icicle11B.render(f);
+		    Icicle11C.render(f);
+		}
 	}
 	
 	private void setRotation(ModelRenderer model, float x, float y, float z)
