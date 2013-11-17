@@ -20,7 +20,7 @@ public class PacketHandler implements IPacketHandler
 		{
 			PacketClick click = new PacketClick(packet);
 			EntityPlayer entity = (EntityPlayer)player;
-			System.out.println("Packet received! "+click.mouseButton+" "+click.btnId+" "+click.x+" "+click.y+" "+click.z);
+			//System.out.println("Packet received! "+click.mouseButton+" "+click.btnId+" "+click.x+" "+click.y+" "+click.z);
 			BasePillar block = ((BasePillar)Block.blocksList[entity.worldObj.getBlockId(click.x, click.y, click.z)]);
 			if(block.buttons.get(click.btnId).slot > -1)
 				block.onSlotClicked(entity.worldObj, click.x, click.y, click.z, block.buttons.get(click.btnId).slot, click.mouseButton, entity);
