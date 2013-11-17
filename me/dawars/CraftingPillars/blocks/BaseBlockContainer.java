@@ -5,17 +5,11 @@ import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-public class BaseBlockContainer extends BaseBlock implements ITileEntityProvider
+public abstract class BaseBlockContainer extends BaseBlock implements ITileEntityProvider
 {
 	public BaseBlockContainer(int id, Material mat)
 	{
 		super(id, mat);
-	}
-	
-	@Override
-	public TileEntity createNewTileEntity(World world)
-	{
-		return null;
 	}
 	
 	@Override

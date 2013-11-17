@@ -4,18 +4,17 @@ import java.util.EnumSet;
 
 import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.blocks.BasePillar;
+import me.dawars.CraftingPillars.client.KeyBindingInterceptor;
 import me.dawars.CraftingPillars.network.packets.PacketClick;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.client.settings.GameSettings;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
+import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 
-public class ClickHandler extends KeyHandler
+public class TickHandler implements ITickHandler
 {
 	public boolean doClick(int button)
 	{
@@ -37,38 +36,40 @@ public class ClickHandler extends KeyHandler
 		return false;
 	}
 	
-	public ClickHandler()
+	KeyBindingInterceptor attackInterceptor = new KeyBindingInterceptor(Minecraft.getMinecraft().gameSettings.keyBindAttack);
+	KeyBindingInterceptor useInterceptor = new KeyBindingInterceptor(Minecraft.getMinecraft().gameSettings.keyBindUseItem);
+	
+	public TickHandler()
 	{
-		super(new KeyBinding[]{Minecraft.getMinecraft().gameSettings.keyBindAttack, Minecraft.getMinecraft().gameSettings.keyBindUseItem}, new boolean[]{false, false});
+		this.attackInterceptor.setInterceptionActive(true);
+		this.useInterceptor.setInterceptionActive(true);
 	}
-
+	
+	boolean pleft, pright;
+	
 	@Override
-	public String getLabel()
+	public void tickStart(EnumSet<TickType> type, Object... tickData)
 	{
-		return CraftingPillars.name+" KeyHandler";
-	}
-
-	@Override
-	public void keyDown(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd, boolean isRepeat)
-	{
-		Minecraft mc = Minecraft.getMinecraft();
-		if(mc.theWorld != null && mc.inGameHasFocus && !tickEnd)
+		if(this.attackInterceptor.isKeyDown())
 		{
-			if(kb.keyCode == mc.gameSettings.keyBindAttack.keyCode)
-			{
-				if(this.doClick(0))
-					KeyBinding.setKeyBindState(mc.gameSettings.keyBindAttack.keyCode, false);
-			}
-			else if(kb.keyCode == mc.gameSettings.keyBindUseItem.keyCode)
-			{
-				if(this.doClick(2))
-					KeyBinding.setKeyBindState(mc.gameSettings.keyBindUseItem.keyCode, false);
-			}
+			if(!pleft && doClick(0))
+				this.attackInterceptor.retrieveClick();
+			pleft = true;
 		}
+		else
+			pleft = false;
+		if(this.useInterceptor.isKeyDown())
+		{
+			if(!pright && doClick(2))
+				this.useInterceptor.retrieveClick();
+			pright = true;
+		}
+		else
+			pright = false;
 	}
 
 	@Override
-	public void keyUp(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd)
+	public void tickEnd(EnumSet<TickType> type, Object... tickData)
 	{
 		
 	}
@@ -77,5 +78,11 @@ public class ClickHandler extends KeyHandler
 	public EnumSet<TickType> ticks()
 	{
 		return EnumSet.of(TickType.CLIENT);
+	}
+
+	@Override
+	public String getLabel()
+	{
+		return CraftingPillars.name+" TickHandler";
 	}
 }

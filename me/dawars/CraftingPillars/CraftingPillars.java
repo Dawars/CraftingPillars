@@ -8,7 +8,6 @@ import me.dawars.CraftingPillars.handlers.*;
 import me.dawars.CraftingPillars.items.*;
 import me.dawars.CraftingPillars.tiles.*;
 import me.dawars.CraftingPillars.proxy.CommonProxy;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.material.Material;
@@ -22,8 +21,6 @@ import net.minecraft.stats.AchievementList;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Property;
-
-import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -33,6 +30,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
+import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -99,7 +97,7 @@ public class CraftingPillars
 		if(FMLCommonHandler.instance().getSide().isClient())
 		{
 			VersionChecker.check();
-			KeyBindingRegistry.registerKeyBinding(new ClickHandler());
+			TickRegistry.registerTickHandler(new TickHandler(), Side.CLIENT);
 		}
 		
 		config = new Configuration(new File(evt.getModConfigurationDirectory(), "CraftingPillars.cfg"));

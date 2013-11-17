@@ -121,7 +121,6 @@ public abstract class BasePillar extends BaseBlockContainer
 	public BasePillar(int id, Material mat)
 	{
 		super(id, mat);
-		this.setCreativeTab(CreativeTabs.tabDecorations);
 	}
 	
 	public abstract void onActionPerformed(World world, int x, int y, int z, int id, int button, EntityPlayer player);
