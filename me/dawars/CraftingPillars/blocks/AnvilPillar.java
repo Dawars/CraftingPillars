@@ -26,8 +26,9 @@ public class AnvilPillar extends BasePillar
 	public AnvilPillar(int id, Material mat)
 	{
 		super(id, mat);
-		new CollisionBox(0, 3F, 18F, 6F, 7F, 22F, 10F);
-		new CollisionBox(1, 9F, 16F, 6F, 13F, 17F, 10F);
+		new CollisionBox(0, 0F, 16F, 4F, 8F, 24F, 12F);
+		new CollisionBox(1, 8F, 16F, 4F, 16F, 24F, 12F);
+		new CollisionBox(-1, 2F, 24F, 2F, 14F, 36F, 14F);
 	}
 	
 	@Override
@@ -50,13 +51,17 @@ public class AnvilPillar extends BasePillar
 	@SideOnly(Side.CLIENT)
 	public boolean canActionPerformed(World world, int x, int y, int z, int id, int button, EntityPlayer player)
 	{
-		return false;
+		return id == 2 && button == 0 && ((TileEntityAnvilPillar)world.getBlockTileEntity(x, y, z)).getStackInSlot(2) != null;
 	}
 	
 	@Override
 	public void onActionPerformed(World world, int x, int y, int z, int id, int button, EntityPlayer player)
 	{
-		
+		if(id == 2 && button == 0)
+		{
+			TileEntityAnvilPillar tile = (TileEntityAnvilPillar)world.getBlockTileEntity(x, y, z);
+			tile.buildItem(player);
+		}
 	}
 	
 	@Override

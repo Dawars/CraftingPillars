@@ -324,14 +324,20 @@ public class RenderAnvilPillar extends TileEntitySpecialRenderer implements ISim
 			if(anvil.getStackInSlot(0) != null)
 			{
 				citem.setEntityItemStack(anvil.getStackInSlot(0));
-				this.itemRenderer.render(citem, 0.25F+1F/16F, 1.25F, 0.5F, true);
+				this.itemRenderer.render(citem, 4F/16F, 1.25F, 0.5F, false);
 			}
 			if(anvil.getStackInSlot(1) != null)
 			{
 				citem.setEntityItemStack(anvil.getStackInSlot(1));
-				this.itemRenderer.render(citem, 0.75F-1F/16F, 1.25F, 0.5F, true);
+				this.itemRenderer.render(citem, 12F/16F, 1.25F, 0.5F, false);
+			}
+			if(anvil.getStackInSlot(2) != null)
+			{
+				citem.setEntityItemStack(anvil.getStackInSlot(2));
+				this.itemRenderer.render(citem, 0.5F, 1.75F, 0.5F, false);
 			}
 			
+			// Render hitboxes
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glBindTexture(GL_TEXTURE_2D, 0);

@@ -1,16 +1,17 @@
 package me.dawars.CraftingPillars.tiles;
 
+import java.util.Map;
 import java.util.Random;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
 import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.container.ContainerCraftingPillar;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.material.Material;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
@@ -54,10 +55,46 @@ public class TileEntityAnvilPillar extends BaseTileEntityPillar
 		super.updateEntity();
 	}
 	
+	public void buildItem(EntityPlayer player)
+	{
+		this.inventory[0] = null;
+		this.inventory[1] = null;
+		this.dropItemFromSlot(2, 64, player);
+	}
+	
+	@Override
+	public void onInventoryChanged()
+	{
+		this.updateOutput();
+		super.onInventoryChanged();
+	}
+	
+	public void updateOutput()
+	{
+		if(this.inventory[0] == null)
+		{
+			this.inventory[2] = this.inventory[1];
+			return;
+		}
+		if(this.inventory[1] == null)
+		{
+			this.inventory[2] = this.inventory[0];
+			return;
+		}
+		
+		// TODO update
+	}
+	
 	@Override
 	public boolean isOnlyDisplaySlot(int i)
 	{
 		return i == 2;
+	}
+	
+	@Override
+	public int getInventoryStackLimit()
+	{
+		return 1;
 	}
 	
 	@Override
