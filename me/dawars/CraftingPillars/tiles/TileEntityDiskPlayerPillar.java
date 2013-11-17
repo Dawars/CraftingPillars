@@ -9,8 +9,8 @@ import net.minecraft.network.packet.Packet132TileEntityData;
 
 public class TileEntityDiskPlayerPillar extends BaseTileEntity
 {
-    /** ID of record which is in Jukebox */
-    private ItemStack record;
+	/** ID of record which is in Jukebox */
+	private ItemStack record;
 	public boolean showNum = false;
 	public boolean isEmpty = true;
 
@@ -18,7 +18,7 @@ public class TileEntityDiskPlayerPillar extends BaseTileEntity
 	@Override
 	public void updateEntity()
 	{
-		if(worldObj.isRemote)
+		if(this.worldObj.isRemote)
 		{
 			this.rot  += 4F;
 			if(this.rot >= 360F)
@@ -26,79 +26,75 @@ public class TileEntityDiskPlayerPillar extends BaseTileEntity
 		}
 	}
 	
-	
-    /**
-     * Reads a tile entity from NBT.
-     */
-    public void readFromNBT(NBTTagCompound nbt)
-    {
-    	super.readFromNBT(nbt);
-
-        if (nbt.hasKey("RecordItem"))
-        {
-            this.setDisk(ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("RecordItem")));
-        }
-        else if (nbt.getInteger("Record") > 0)
-        {
-            this.setDisk(new ItemStack(nbt.getInteger("Record"), 1, 0));
-        }
+	/**
+	 * Reads a tile entity from NBT.
+	 */
+	public void readFromNBT(NBTTagCompound nbt)
+	{
+		super.readFromNBT(nbt);
+		if(nbt.hasKey("RecordItem"))
+		{
+			this.setDisk(ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("RecordItem")));
+		}
+		else if(nbt.getInteger("Record") > 0)
+		{
+			this.setDisk(new ItemStack(nbt.getInteger("Record"), 1, 0));
+		}
 		this.isEmpty = nbt.getBoolean("isEmpty");
 		this.showNum = nbt.getBoolean("showNum");
+	}
 
-    }
-
-    /**
-     * Writes a tile entity to NBT.
-     */
-    public void writeToNBT(NBTTagCompound nbt)
-    {
-        super.writeToNBT(nbt);
-
-        if (this.getDisk() != null)
-        {
-        	nbt.setCompoundTag("RecordItem", this.getDisk().writeToNBT(new NBTTagCompound()));
-        	nbt.setInteger("Record", this.getDisk().itemID);
-        }
+	/**
+	 * Writes a tile entity to NBT.
+	 */
+	public void writeToNBT(NBTTagCompound nbt)
+	{
+		super.writeToNBT(nbt);
+		if(this.getDisk() != null)
+		{
+			nbt.setCompoundTag("RecordItem", this.getDisk().writeToNBT(new NBTTagCompound()));
+			nbt.setInteger("Record", this.getDisk().itemID);
+		}
 		nbt.setBoolean("isEmpty", this.isEmpty);
 		nbt.setBoolean("showNum", this.showNum);
-
-    }
-    @Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt) {
+	}
+	@Override
+	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
+	{
 		NBTTagCompound nbt = pkt.data;
 		this.readFromNBT(nbt);
 	}
 
 	@Override
-	public Packet getDescriptionPacket() {
+	public Packet getDescriptionPacket()
+	{
 		NBTTagCompound nbt = new NBTTagCompound();
 		this.writeToNBT(nbt);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, nbt);
+		return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 0, nbt);
 	}
 
 	@Override
-	public void onInventoryChanged() {
+	public void onInventoryChanged()
+	{
 		super.onInventoryChanged();
-
-		if (!this.worldObj.isRemote)
+		if(this.worldObj != null && !this.worldObj.isRemote)
 			CraftingPillars.proxy.sendToPlayers(this.getDescriptionPacket(),
 					this.worldObj, this.xCoord, this.yCoord, this.zCoord, 64);
 	}
-    public ItemStack getDisk()
-    {
-        return this.record;
-    }
+	
+	public ItemStack getDisk()
+	{
+		return this.record;
+	}
 
-    public void setDisk(ItemStack item)
-    {
-    	if(item == null)
-    		this.isEmpty = true;
-    	else
-    		this.isEmpty = false;
-		try{
-			this.record = item;
-		} catch(Exception e){}
+	public void setDisk(ItemStack item)
+	{
+		if(item == null)
+			this.isEmpty = true;
+		else
+			this.isEmpty = false;
+		this.record = item;
 
-    	this.onInventoryChanged();
-    }
+		this.onInventoryChanged();
+	}
 }
