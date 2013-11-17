@@ -36,8 +36,7 @@ import net.minecraft.item.ItemStack;
 
 public class RenderShowOffPillar extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler
 {
-	private static final ResourceLocation TEXTURE_SHOWOFFPILLAR_FROZEN = new ResourceLocation(CraftingPillars.id + ":textures/models/showoffPillarFrozen.png");
-	private static final ResourceLocation TEXTURE_SHOWOFFPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/showoffPillar.png");
+	private ResourceLocation TEXTURE_SHOWOFFPILLAR;
 	
 	public static ModelBase model = new ModelBase()
 	{
@@ -92,6 +91,11 @@ public class RenderShowOffPillar extends TileEntitySpecialRenderer implements IS
 	
 	public RenderShowOffPillar()
 	{
+		if(CraftingPillars.christmas)
+			TEXTURE_SHOWOFFPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/showoffPillarFrozen.png");
+		else
+			TEXTURE_SHOWOFFPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/showoffPillar.png");
+		
 		random = new Random();
 		itemRenderer = new RenderingHelper.ItemRender(false, true);
 		resultRenderer = new RenderingHelper.ItemRender(true, true);
@@ -381,7 +385,7 @@ public class RenderShowOffPillar extends TileEntitySpecialRenderer implements IS
 		glPushMatrix();
 		glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
 		glRotatef(180F, 1F, 0F, 0F);
-		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_SHOWOFFPILLAR_FROZEN);
+		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_SHOWOFFPILLAR);
 		render(0.0625F, tile.worldObj.getBlockId(tile.xCoord, tile.yCoord-1, tile.zCoord) == CraftingPillars.blockExtendPillar.blockID);
 		glPopMatrix();
 		
@@ -409,7 +413,7 @@ public class RenderShowOffPillar extends TileEntitySpecialRenderer implements IS
 		glPushMatrix();
 		glTranslated(0, 1.0D, 0);
 		glRotatef(180F, 1F, 0F, 0F);
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_SHOWOFFPILLAR_FROZEN);
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_SHOWOFFPILLAR);
 		render(0.0625F, false);
 		glPopMatrix();
 	}

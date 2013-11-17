@@ -1,6 +1,7 @@
 package me.dawars.CraftingPillars;
 
 import java.io.File;
+import java.util.Calendar;
 
 import me.dawars.CraftingPillars.api.CraftingPillarAPI;
 import me.dawars.CraftingPillars.blocks.*;
@@ -86,6 +87,7 @@ public class CraftingPillars
 	public static Item discElysium;
 
 	public static boolean floatingItems = true;
+	public static boolean christmas;
 	
 	public static final Achievement achievementGettingStarted = new Achievement(509, "gettingstarted", -2, 0, /* blockCraftingPillar */Block.stoneBrick, AchievementList.openInventory).registerAchievement();
 	public static final Achievement achievementRecursion = new Achievement(510, "recursion", -3, -2, /* blockCraftingPillar */Item.redstone, achievementGettingStarted).registerAchievement();
@@ -94,6 +96,7 @@ public class CraftingPillars
 	@EventHandler
 	public void load(FMLPreInitializationEvent evt)
 	{
+		christmas = /*isChristmasTime()*/true;
 		if(FMLCommonHandler.instance().getSide().isClient())
 		{
 			VersionChecker.check();
@@ -226,5 +229,27 @@ public class CraftingPillars
 	public static void registerBlock(Block block)
 	{
 		GameRegistry.registerBlock(block, CraftingPillars.id + ":" + block.getUnlocalizedName().substring(5));
+	}
+	
+	public static boolean isChristmasTime()
+	{
+		Calendar c = Calendar.getInstance();
+		Calendar b = Calendar.getInstance();
+		b.set(Calendar.MONTH, Calendar.DECEMBER);
+		b.set(Calendar.DAY_OF_MONTH, 23);
+		b.set(Calendar.HOUR_OF_DAY, 0);
+		b.set(Calendar.MINUTE, 0);
+		b.set(Calendar.MILLISECOND, 0);
+		Calendar e = Calendar.getInstance();
+		e.set(Calendar.YEAR, c.get(Calendar.YEAR)+1);
+		e.set(Calendar.MONTH, Calendar.JANUARY);
+		e.set(Calendar.DAY_OF_MONTH, 1);
+		e.set(Calendar.HOUR_OF_DAY, 0);
+		e.set(Calendar.MINUTE, 0);
+		e.set(Calendar.MILLISECOND, 0);
+		System.out.println(b.getTime());
+		System.out.println(c.getTime());
+		System.out.println(e.getTime());
+		return c.after(b) && c.before(e);
 	}
 }

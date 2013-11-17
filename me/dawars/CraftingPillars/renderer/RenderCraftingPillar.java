@@ -35,8 +35,7 @@ import net.minecraft.item.ItemStack;
 
 public class RenderCraftingPillar extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler
 {
-	private static final ResourceLocation TEXTURE_WORKPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/craftingPillar.png");
-	private static final ResourceLocation TEXTURE_WORKPILLAR_FROZEN = new ResourceLocation(CraftingPillars.id + ":textures/models/craftingPillarFrozen.png");
+	private ResourceLocation TEXTURE_WORKPILLAR;
 	
 	public static ModelBase model = new ModelBase()
 	{
@@ -92,6 +91,10 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 	
 	public RenderCraftingPillar()
 	{
+		if(CraftingPillars.christmas)
+			TEXTURE_WORKPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/craftingPillarFrozen.png");
+		else
+			TEXTURE_WORKPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/craftingPillar.png");
 		random = new Random();
 		itemRenderer = new RenderingHelper.ItemRender(false, true);
 		resultRenderer = new RenderingHelper.ItemRender(true, true);
@@ -411,8 +414,7 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 		glRotatef(180F, 1F, 0F, 0F);
 		glRotatef(90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
 		
-		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_WORKPILLAR_FROZEN);//TODO:
-//		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_WORKPILLAR);
+		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_WORKPILLAR);
 		render(0.0625F, tile.worldObj.getBlockId(tile.xCoord, tile.yCoord-1, tile.zCoord) == CraftingPillars.blockExtendPillar.blockID);
 		glPopMatrix();
 		
@@ -455,8 +457,7 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 		glPushMatrix();
 		glTranslated(0, 1.0D, 0);
 		glRotatef(180F, 1F, 0F, 0F);
-		glRotatef(90F, 0F, 1F, 0F);
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_WORKPILLAR_FROZEN);//TODO
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_WORKPILLAR);
 		render(0.0625F, false);
 		glPopMatrix();
 	}
