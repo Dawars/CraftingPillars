@@ -58,29 +58,40 @@ public class ClientProxy extends CommonProxy
 		CraftingPillars.showOffPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
 		CraftingPillars.craftingPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
 		CraftingPillars.furnacePillarRenderID = RenderingRegistry.getNextAvailableRenderId();
-		CraftingPillars.anvilPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
-		CraftingPillars.tankPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
-		CraftingPillars.brewingillarRenderID = RenderingRegistry.getNextAvailableRenderId();
-		CraftingPillars.diskPlayerRenderID = RenderingRegistry.getNextAvailableRenderId();
+		
+		if(CraftingPillars.update)
+		{
+			CraftingPillars.anvilPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
+			CraftingPillars.tankPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
+			CraftingPillars.brewingillarRenderID = RenderingRegistry.getNextAvailableRenderId();
+			CraftingPillars.diskPlayerRenderID = RenderingRegistry.getNextAvailableRenderId();
+		}
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityExtendPillar.class, new RenderExtendPillar());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityShowOffPillar.class, new RenderShowOffPillar());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCraftingPillar.class, new RenderCraftingPillar());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFurnacePillar.class, new RenderFurnacePillar());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAnvilPillar.class, new RenderAnvilPillar());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTankPillar.class, new RenderTankPillar());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBrewingPillar.class, new RenderBrewingPillar());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDiskPlayerPillar.class, new RenderDiskPillar());
+		
+		if(CraftingPillars.update)
+		{
+			ClientRegistry.bindTileEntitySpecialRenderer(TileEntityAnvilPillar.class, new RenderAnvilPillar());
+			ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTankPillar.class, new RenderTankPillar());
+			ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBrewingPillar.class, new RenderBrewingPillar());
+			ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDiskPlayerPillar.class, new RenderDiskPillar());
+		}
 
 		RenderingRegistry.registerBlockHandler(new RenderExtendPillar());
 		RenderingRegistry.registerBlockHandler(new RenderShowOffPillar());
 		RenderingRegistry.registerBlockHandler(new RenderCraftingPillar());
 		RenderingRegistry.registerBlockHandler(new RenderFurnacePillar());
-		RenderingRegistry.registerBlockHandler(new RenderAnvilPillar());
-		RenderingRegistry.registerBlockHandler(new RenderTankPillar());
-		RenderingRegistry.registerBlockHandler(new RenderBrewingPillar());
-		RenderingRegistry.registerBlockHandler(new RenderDiskPillar());
 		
+		if(CraftingPillars.update)
+		{
+			RenderingRegistry.registerBlockHandler(new RenderAnvilPillar());
+			RenderingRegistry.registerBlockHandler(new RenderTankPillar());
+			RenderingRegistry.registerBlockHandler(new RenderBrewingPillar());
+			RenderingRegistry.registerBlockHandler(new RenderDiskPillar());
+		}
 	}
 	
 	@Override
