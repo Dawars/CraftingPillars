@@ -25,7 +25,6 @@ import net.minecraft.stats.AchievementList;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Property;
-import cpw.mods.fml.client.registry.KeyBindingRegistry;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -105,8 +104,7 @@ public class CraftingPillars
 		if(FMLCommonHandler.instance().getSide().isClient())
 		{
 			VersionChecker.check();
-			KeyBindingRegistry.registerKeyBinding(new ClickHandler());
-			//TickRegistry.registerTickHandler(new TickHandler(), Side.CLIENT);
+			TickRegistry.registerTickHandler(new TickHandler(), Side.CLIENT);
 		}
 		
 		config = new Configuration(new File(evt.getModConfigurationDirectory(), "CraftingPillars.cfg"));

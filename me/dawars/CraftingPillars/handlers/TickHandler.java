@@ -2,6 +2,9 @@ package me.dawars.CraftingPillars.handlers;
 
 import java.util.EnumSet;
 
+import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
+
 import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.blocks.BasePillar;
 import me.dawars.CraftingPillars.client.KeyBindingInterceptor;
@@ -9,6 +12,7 @@ import me.dawars.CraftingPillars.network.packets.PacketClick;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import cpw.mods.fml.common.ITickHandler;
@@ -28,7 +32,7 @@ public class TickHandler implements ITickHandler
 						int id = ((BasePillar)Block.blocksList[world.getBlockId(x, y, z)]).getClickedButtonId(world, x, y, z, button, player);
 						if(id > -1)
 						{
-							System.out.println("Packet sent! "+button+" "+id+" "+x+" "+y+" "+z);
+							//System.out.println("Packet sent! "+button+" "+id+" "+x+" "+y+" "+z);
 							CraftingPillars.proxy.sendToServer(new PacketClick(button, id, x, y, z).pack());
 							return true;
 						}
@@ -36,36 +40,78 @@ public class TickHandler implements ITickHandler
 		return false;
 	}
 	
-	KeyBindingInterceptor attackInterceptor = new KeyBindingInterceptor(Minecraft.getMinecraft().gameSettings.keyBindAttack);
-	KeyBindingInterceptor useInterceptor = new KeyBindingInterceptor(Minecraft.getMinecraft().gameSettings.keyBindUseItem);
+	boolean pleft, pright;
+	GameSettings gs;
+	KeyBindingInterceptor intLeft, intRight;
 	
 	public TickHandler()
 	{
-		this.attackInterceptor.setInterceptionActive(true);
-		this.useInterceptor.setInterceptionActive(true);
+		gs = Minecraft.getMinecraft().gameSettings;
+		intLeft = new KeyBindingInterceptor(gs.keyBindAttack);
+		intRight = new KeyBindingInterceptor(gs.keyBindUseItem);
+		intLeft.setInterceptionActive(true);
+		intRight.setInterceptionActive(true);
 	}
-	
-	boolean pleft, pright;
 	
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData)
 	{
-		if(this.attackInterceptor.isKeyDown())
+		// This code doesn't clear any presses
+		if(intLeft.isKeyDown())
 		{
-			if(!pleft && doClick(0))
-				this.attackInterceptor.retrieveClick();
-			pleft = true;
+			if(!pleft)
+			{
+				if(doClick(0))
+					pleft = true;
+			}
+			
+			if(pleft)
+				intLeft.retrieveClick();
 		}
 		else
 			pleft = false;
-		if(this.useInterceptor.isKeyDown())
+		
+		if(intRight.isKeyDown())
 		{
-			if(!pright && doClick(2))
-				this.useInterceptor.retrieveClick();
-			pright = true;
+			if(!pright)
+			{
+				if(doClick(2))
+					pright = true;
+			}
+			
+			if(pright)
+				intRight.retrieveClick();
 		}
 		else
 			pright = false;
+		
+		// This is my code, it works fine expect the first tick of click
+		/*if(gs.keyBindAttack.pressed)
+		{
+			if(!pleft && doClick(0))
+			{
+				pleft = true;
+				gs.keyBindAttack.pressed = false;
+			}
+		}
+		else
+		{
+			pleft = false;
+		}
+		
+		if(gs.keyBindUseItem.pressed)
+		{
+			System.out.println("right");
+			if(!pright && doClick(2))
+			{
+				pright = true;
+				gs.keyBindUseItem.pressed = false;
+			}
+		}
+		else
+		{
+			pright = false;
+		}*/
 	}
 
 	@Override
