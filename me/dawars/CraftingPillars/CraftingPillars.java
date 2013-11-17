@@ -100,8 +100,6 @@ public class CraftingPillars
 	@EventHandler
 	public void load(FMLPreInitializationEvent evt)
 	{
-		christmas = /*isChristmasTime()*/true;
-		update = isAfter("2013-11-16");
 		if(FMLCommonHandler.instance().getSide().isClient())
 		{
 			VersionChecker.check();
@@ -221,6 +219,9 @@ public class CraftingPillars
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
+		christmas = /*isChristmasTime()*/true;
+		update = isAfter("2013-11-16");
+		
 		if(update)
 		{
 			CraftingPillarAPI.addDiskTexture(Item.record13.itemID, CraftingPillars.id + ":textures/models/disk_13.png");

@@ -362,41 +362,43 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 		pillartop.render(f);
 		top.render(f);
 		
-		//if (winter && winterEnabled)
-		Icicle1A.render(f);
-	    Icicle1B.render(f);
-	    Icicle1C.render(f);
-	    Icicle2A.render(f);
-	    Icicle2B.render(f);
-	    Icicle2C.render(f);
-	    Icicle3A.render(f);
-	    Icicle3B.render(f);
-	    Icicle4A.render(f);
-	    Icicle4B.render(f);
-	    Icicle5A.render(f);
-	    Icicle5B.render(f);
-	    Icicle5C.render(f);
-	    Icicle6A.render(f);
-	    Icicle6B.render(f);
-	    Icicle6C.render(f);
-	    Icicle7A.render(f);
-	    Icicle7B.render(f);
-	    Icicle7C.render(f);
-	    Icicle8A.render(f);
-	    Icicle8B.render(f);
-	    Icicle8C.render(f);
-	    Icicle8D.render(f);
-	    WreathA.render(f);
-	    WreathB.render(f);
-	    WreathC.render(f);
-	    WreathD.render(f);
-	    WreathE.render(f);
-	    WreathF.render(f);
-	    WreathG.render(f);
-	    WreathH.render(f);
-	    WreathI.render(f);
-	    WreathJ.render(f);
-	    Bow.render(f);
+		if(CraftingPillars.christmas)
+		{
+			Icicle1A.render(f);
+		    Icicle1B.render(f);
+		    Icicle1C.render(f);
+		    Icicle2A.render(f);
+		    Icicle2B.render(f);
+		    Icicle2C.render(f);
+		    Icicle3A.render(f);
+		    Icicle3B.render(f);
+		    Icicle4A.render(f);
+		    Icicle4B.render(f);
+		    Icicle5A.render(f);
+		    Icicle5B.render(f);
+		    Icicle5C.render(f);
+		    Icicle6A.render(f);
+		    Icicle6B.render(f);
+		    Icicle6C.render(f);
+		    Icicle7A.render(f);
+		    Icicle7B.render(f);
+		    Icicle7C.render(f);
+		    Icicle8A.render(f);
+		    Icicle8B.render(f);
+		    Icicle8C.render(f);
+		    Icicle8D.render(f);
+		    WreathA.render(f);
+		    WreathB.render(f);
+		    WreathC.render(f);
+		    WreathD.render(f);
+		    WreathE.render(f);
+		    WreathF.render(f);
+		    WreathG.render(f);
+		    WreathH.render(f);
+		    WreathI.render(f);
+		    WreathJ.render(f);
+		    Bow.render(f);
+		}
 	}
 	
 	private void setRotation(ModelRenderer model, float x, float y, float z)
