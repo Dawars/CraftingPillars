@@ -76,7 +76,7 @@ public class ClientProxy extends CommonProxy
 		RenderingRegistry.registerBlockHandler(new RenderShowOffPillar());
 		RenderingRegistry.registerBlockHandler(new RenderCraftingPillar());
 		RenderingRegistry.registerBlockHandler(new RenderFurnacePillar());
-//		RenderingRegistry.registerBlockHandler(new RenderAnvilPillar());
+		RenderingRegistry.registerBlockHandler(new RenderAnvilPillar());
 		RenderingRegistry.registerBlockHandler(new RenderTankPillar());
 		RenderingRegistry.registerBlockHandler(new RenderBrewingPillar());
 		RenderingRegistry.registerBlockHandler(new RenderDiskPillar());
