@@ -51,7 +51,7 @@ public class CraftingPillars
 		return instance;
 	}
 	
-	public static final String version = "1.3.2";
+	public static final String version = "1.4";
 	public static final String name = "Crafting Pillars";
 	public static final String id = "craftingpillars";
 	public static final String packetChannel = "PillarChannel";
@@ -100,6 +100,9 @@ public class CraftingPillars
 	@EventHandler
 	public void load(FMLPreInitializationEvent evt)
 	{
+		christmas = /*isChristmasTime()*/true;
+		update = isAfter("2013-11-16");
+		
 		if(FMLCommonHandler.instance().getSide().isClient())
 		{
 			VersionChecker.check();
@@ -136,51 +139,45 @@ public class CraftingPillars
 			LanguageRegistry.instance().addStringLocalization(blockFurnacePillar.getUnlocalizedName()+".name", "en_US", "Furnace Pillar");
 			LanguageRegistry.instance().addStringLocalization(blockFurnacePillar.getUnlocalizedName()+".name", "hu_HU", "Kemence Oszlop");
 			
-			if(update)
-			{
-				Property idAnvilPillar = CraftingPillars.config.getBlock("AnvilPillar.id", BlockIds.idAnvilPillar, "Coming soon...");
-				blockAnvilPillar = (new AnvilPillar(idAnvilPillar.getInt(), Material.anvil)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("anvilPillar");
-				registerBlock(blockAnvilPillar);
-				LanguageRegistry.instance().addStringLocalization(blockAnvilPillar.getUnlocalizedName()+".name", "en_US", "Anvil Pillar");
-				LanguageRegistry.instance().addStringLocalization(blockAnvilPillar.getUnlocalizedName()+".name", "hu_HU", "Üllõ Oszlop");
+			Property idAnvilPillar = CraftingPillars.config.getBlock("AnvilPillar.id", BlockIds.idAnvilPillar, "Coming soon...");
+			blockAnvilPillar = (new AnvilPillar(idAnvilPillar.getInt(), Material.anvil)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("anvilPillar");
+			registerBlock(blockAnvilPillar);
+			LanguageRegistry.instance().addStringLocalization(blockAnvilPillar.getUnlocalizedName()+".name", "en_US", "Anvil Pillar");
+			LanguageRegistry.instance().addStringLocalization(blockAnvilPillar.getUnlocalizedName()+".name", "hu_HU", "Üllõ Oszlop");
+		
+			Property idTankPillar = CraftingPillars.config.getBlock("TankPillar.id", BlockIds.idTankPillar, "Coming soon...");
+			blockTankPillar = (new TankPillarBlock(idTankPillar.getInt(), Material.glass)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("tankPillar");
+			registerBlock(blockTankPillar);
+			LanguageRegistry.instance().addStringLocalization(blockTankPillar.getUnlocalizedName()+".name", "en_US", "Tank Pillar");
+			LanguageRegistry.instance().addStringLocalization(blockTankPillar.getUnlocalizedName()+".name", "hu_HU", "Tartály Oszlop");
 			
-				Property idTankPillar = CraftingPillars.config.getBlock("TankPillar.id", BlockIds.idTankPillar, "Coming soon...");
-				blockTankPillar = (new TankPillarBlock(idTankPillar.getInt(), Material.glass)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("tankPillar");
-				registerBlock(blockTankPillar);
-				LanguageRegistry.instance().addStringLocalization(blockTankPillar.getUnlocalizedName()+".name", "en_US", "Tank Pillar");
-				LanguageRegistry.instance().addStringLocalization(blockTankPillar.getUnlocalizedName()+".name", "hu_HU", "Tartály Oszlop");
-				
-				Property idBrewingPillar = CraftingPillars.config.getBlock("BrewingPillar.id", BlockIds.idBrewingPillar);
-				blockBrewingPillar = (new BrewingPillarBlock(idBrewingPillar.getInt(), Material.iron)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("brewingPillar");
-				registerBlock(blockBrewingPillar);
-				LanguageRegistry.instance().addStringLocalization(blockBrewingPillar.getUnlocalizedName()+".name", "en_US", "Brewing Pillar");
-				LanguageRegistry.instance().addStringLocalization(blockBrewingPillar.getUnlocalizedName()+".name", "hu_HU", "Kotyvasztó Oszlop");
-				
-				//add time check for visiblity
-				Property idDiskPlayerPillar = CraftingPillars.config.getBlock("DiskPlayerPillar.id", BlockIds.idDiskPillar);
-				blockDiskPlayerPillar = (new DiskPlayerPillarBlock(idDiskPlayerPillar.getInt(), Material.iron)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("diskPillar");
-				registerBlock(blockDiskPlayerPillar);
-				LanguageRegistry.instance().addStringLocalization(blockDiskPlayerPillar.getUnlocalizedName()+".name", "en_US", "Juke Pillar");
-				LanguageRegistry.instance().addStringLocalization(blockDiskPlayerPillar.getUnlocalizedName()+".name", "hu_HU", "Zenelejátszó Oszlop");
-				
-				Property idDiscElysium = CraftingPillars.config.getItem("idDiscElysium.id", BlockIds.idDiscElysium);
-				discElysium = new PillarRecord(idDiscElysium.getInt(), CraftingPillars.id + ":UranusParadiseShort").setUnlocalizedName("record");
-	            LanguageRegistry.instance().addStringLocalization(CraftingPillars.id + ":UranusParadiseShort", "en_US", "Elysium - Uranus Paradise Short");
-			}
+			Property idBrewingPillar = CraftingPillars.config.getBlock("BrewingPillar.id", BlockIds.idBrewingPillar);
+			blockBrewingPillar = (new BrewingPillarBlock(idBrewingPillar.getInt(), Material.iron)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("brewingPillar");
+			registerBlock(blockBrewingPillar);
+			LanguageRegistry.instance().addStringLocalization(blockBrewingPillar.getUnlocalizedName()+".name", "en_US", "Brewing Pillar");
+			LanguageRegistry.instance().addStringLocalization(blockBrewingPillar.getUnlocalizedName()+".name", "hu_HU", "Kotyvasztó Oszlop");
+			
+			//add time check for visiblity
+			Property idDiskPlayerPillar = CraftingPillars.config.getBlock("DiskPlayerPillar.id", BlockIds.idDiskPillar);
+			blockDiskPlayerPillar = (new DiskPlayerPillarBlock(idDiskPlayerPillar.getInt(), Material.iron)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("diskPillar");
+			registerBlock(blockDiskPlayerPillar);
+			LanguageRegistry.instance().addStringLocalization(blockDiskPlayerPillar.getUnlocalizedName()+".name", "en_US", "Juke Pillar");
+			LanguageRegistry.instance().addStringLocalization(blockDiskPlayerPillar.getUnlocalizedName()+".name", "hu_HU", "Zenelejátszó Oszlop");
+			
+			Property idDiscElysium = CraftingPillars.config.getItem("idDiscElysium.id", BlockIds.idDiscElysium);
+			discElysium = new PillarRecord(idDiscElysium.getInt(), CraftingPillars.id + ":UranusParadiseShort").setUnlocalizedName("record");
+            LanguageRegistry.instance().addStringLocalization(CraftingPillars.id + ":UranusParadiseShort", "en_US", "Elysium - Uranus Paradise Short");
             
 			GameRegistry.registerTileEntity(TileEntityExtendPillar.class, "TileEntityExtendPillar");
 			GameRegistry.registerTileEntity(TileEntityShowOffPillar.class, "TileEntityShowOffPillar");
 			GameRegistry.registerTileEntity(TileEntityCraftingPillar.class, "TileEntityCraftingPillar");
 			GameRegistry.registerTileEntity(TileEntityFurnacePillar.class, "TileEntityFurnacePillar");
 			
-			if(update)
-			{
-				GameRegistry.registerTileEntity(TileEntityAnvilPillar.class, "TileEntityAnvilPillar");
-				GameRegistry.registerTileEntity(TileEntityTankPillar.class, "TileEntityTankPillar");
-				GameRegistry.registerTileEntity(TileEntityEnchantmentPillar.class, "TileEntityEnchantmentPillar");
-				GameRegistry.registerTileEntity(TileEntityBrewingPillar.class, "TileEntityBrewingPillar");
-				GameRegistry.registerTileEntity(TileEntityDiskPlayerPillar.class, "TileEntityDiskPlayerPillar");
-			}
+			GameRegistry.registerTileEntity(TileEntityAnvilPillar.class, "TileEntityAnvilPillar");
+			GameRegistry.registerTileEntity(TileEntityTankPillar.class, "TileEntityTankPillar");
+			GameRegistry.registerTileEntity(TileEntityEnchantmentPillar.class, "TileEntityEnchantmentPillar");
+			GameRegistry.registerTileEntity(TileEntityBrewingPillar.class, "TileEntityBrewingPillar");
+			GameRegistry.registerTileEntity(TileEntityDiskPlayerPillar.class, "TileEntityDiskPlayerPillar");
 			
 			LanguageRegistry.instance().addStringLocalization("itemGroup.CraftingPillars", "en_US", "Crafting Pillars");
 			LanguageRegistry.instance().addStringLocalization("itemGroup.CraftingPillars", "hu_HU", "Barkácsoszlopok");
@@ -219,24 +216,19 @@ public class CraftingPillars
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		christmas = /*isChristmasTime()*/true;
-		update = isAfter("2013-11-16");
 		
-		if(update)
-		{
-			CraftingPillarAPI.addDiskTexture(Item.record13.itemID, CraftingPillars.id + ":textures/models/disk_13.png");
-			CraftingPillarAPI.addDiskTexture(Item.recordCat.itemID, CraftingPillars.id + ":textures/models/disk_cat.png");
-			CraftingPillarAPI.addDiskTexture(Item.recordBlocks.itemID, CraftingPillars.id + ":textures/models/disk_blocks.png");
-			CraftingPillarAPI.addDiskTexture(Item.recordChirp.itemID, CraftingPillars.id + ":textures/models/disk_chirp.png");
-			CraftingPillarAPI.addDiskTexture(Item.recordFar.itemID, CraftingPillars.id + ":textures/models/disk_far.png");
-			CraftingPillarAPI.addDiskTexture(Item.recordMall.itemID, CraftingPillars.id + ":textures/models/disk_mall.png");
-			CraftingPillarAPI.addDiskTexture(Item.recordMellohi.itemID, CraftingPillars.id + ":textures/models/disk_mellohi.png");
-			CraftingPillarAPI.addDiskTexture(Item.recordStal.itemID, CraftingPillars.id + ":textures/models/disk_stal.png");
-			CraftingPillarAPI.addDiskTexture(Item.recordStrad.itemID, CraftingPillars.id + ":textures/models/disk_strad.png");
-			CraftingPillarAPI.addDiskTexture(Item.recordWard.itemID, CraftingPillars.id + ":textures/models/disk_ward.png");
-			CraftingPillarAPI.addDiskTexture(Item.record11.itemID, CraftingPillars.id + ":textures/models/disk_11.png");
-			CraftingPillarAPI.addDiskTexture(Item.recordWait.itemID, CraftingPillars.id + ":textures/models/disk_wait.png");
-		}
+		CraftingPillarAPI.addDiskTexture(Item.record13.itemID, CraftingPillars.id + ":textures/models/disk_13.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordCat.itemID, CraftingPillars.id + ":textures/models/disk_cat.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordBlocks.itemID, CraftingPillars.id + ":textures/models/disk_blocks.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordChirp.itemID, CraftingPillars.id + ":textures/models/disk_chirp.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordFar.itemID, CraftingPillars.id + ":textures/models/disk_far.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordMall.itemID, CraftingPillars.id + ":textures/models/disk_mall.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordMellohi.itemID, CraftingPillars.id + ":textures/models/disk_mellohi.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordStal.itemID, CraftingPillars.id + ":textures/models/disk_stal.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordStrad.itemID, CraftingPillars.id + ":textures/models/disk_strad.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordWard.itemID, CraftingPillars.id + ":textures/models/disk_ward.png");
+		CraftingPillarAPI.addDiskTexture(Item.record11.itemID, CraftingPillars.id + ":textures/models/disk_11.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordWait.itemID, CraftingPillars.id + ":textures/models/disk_wait.png");
 	
 		if(FMLCommonHandler.instance().getEffectiveSide().isClient())
 		{
