@@ -88,9 +88,8 @@ public class CraftingPillars
 	public static Block blockDiskPlayerPillar;
 	
 	public static Item discElysium;
-
-	public static boolean floatingItems = true;
-	public static boolean winter;
+	
+	public static boolean floatingItems = true, rayTrace = false, renderHitBoxes = true, winter;
 	
 	public static final Achievement achievementGettingStarted = new Achievement(509, "gettingstarted", -2, 0, /* blockCraftingPillar */Block.stoneBrick, AchievementList.openInventory).registerAchievement();
 	public static final Achievement achievementRecursion = new Achievement(510, "recursion", -3, -2, /* blockCraftingPillar */Item.redstone, achievementGettingStarted).registerAchievement();
@@ -99,13 +98,7 @@ public class CraftingPillars
 	@EventHandler
 	public void load(FMLPreInitializationEvent evt)
 	{
-		winter = /*isChristmasTime()*/true;
-		
-		if(FMLCommonHandler.instance().getSide().isClient())
-		{
-			VersionChecker.check();
-			TickRegistry.registerTickHandler(new PillarTickHandler(), Side.CLIENT);
-		}
+		winter = /*isWinterTime()*/true;
 		
 		config = new Configuration(new File(evt.getModConfigurationDirectory(), "CraftingPillars.cfg"));
 		try
@@ -198,7 +191,6 @@ public class CraftingPillars
 			GameRegistry.addShapelessRecipe(new ItemStack(blockBrewingPillar), new ItemStack(Item.brewingStand), new ItemStack(blockExtendPillar));
 			CraftingPillarAPI.addDiskTexture(discElysium.itemID, CraftingPillars.id + ":textures/models/disk_elysium.png");
 			
-			MinecraftForge.EVENT_BUS.register(new PillarEventHandler());
 			GameRegistry.registerCraftingHandler(new PillarCraftingHandler());
 		}
 		finally
@@ -210,7 +202,6 @@ public class CraftingPillars
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event)
 	{
-		
 		CraftingPillarAPI.addDiskTexture(Item.record13.itemID, CraftingPillars.id + ":textures/models/disk_13.png");
 		CraftingPillarAPI.addDiskTexture(Item.recordCat.itemID, CraftingPillars.id + ":textures/models/disk_cat.png");
 		CraftingPillarAPI.addDiskTexture(Item.recordBlocks.itemID, CraftingPillars.id + ":textures/models/disk_blocks.png");

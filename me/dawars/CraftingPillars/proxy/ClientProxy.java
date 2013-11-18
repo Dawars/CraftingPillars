@@ -8,23 +8,11 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import me.dawars.CraftingPillars.CraftingPillars;
-import me.dawars.CraftingPillars.renderer.RenderAnvilPillar;
-import me.dawars.CraftingPillars.renderer.RenderBrewingPillar;
-import me.dawars.CraftingPillars.renderer.RenderCraftingPillar;
-import me.dawars.CraftingPillars.renderer.RenderDiskPillar;
-import me.dawars.CraftingPillars.renderer.RenderExtendPillar;
-import me.dawars.CraftingPillars.renderer.RenderFurnacePillar;
-import me.dawars.CraftingPillars.renderer.RenderShowOffPillar;
-import me.dawars.CraftingPillars.renderer.RenderTankPillar;
-import me.dawars.CraftingPillars.tiles.TileEntityAnvilPillar;
-import me.dawars.CraftingPillars.tiles.TileEntityBrewingPillar;
-import me.dawars.CraftingPillars.tiles.TileEntityCraftingPillar;
-import me.dawars.CraftingPillars.tiles.TileEntityDiskPlayerPillar;
-import me.dawars.CraftingPillars.tiles.TileEntityExtendPillar;
-import me.dawars.CraftingPillars.tiles.TileEntityFurnacePillar;
-import me.dawars.CraftingPillars.tiles.TileEntityShowOffPillar;
-import me.dawars.CraftingPillars.tiles.TileEntityTankPillar;
+import me.dawars.CraftingPillars.client.*;
+import me.dawars.CraftingPillars.renderer.*;
+import me.dawars.CraftingPillars.tiles.*;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.packet.Packet;
@@ -54,6 +42,10 @@ public class ClientProxy extends CommonProxy
 	@Override
 	public void init()
 	{
+		VersionChecker.check();
+		Minecraft.getMinecraft().gameSettings.keyBindAttack = new KeyBindingReplaceAttack();
+		Minecraft.getMinecraft().gameSettings.keyBindUseItem = new KeyBindingReplaceUse();
+		
 		CraftingPillars.extendPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
 		CraftingPillars.showOffPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
 		CraftingPillars.craftingPillarRenderID = RenderingRegistry.getNextAvailableRenderId();

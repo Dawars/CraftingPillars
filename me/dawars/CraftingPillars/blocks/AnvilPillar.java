@@ -26,9 +26,18 @@ public class AnvilPillar extends BasePillar
 	public AnvilPillar(int id, Material mat)
 	{
 		super(id, mat);
-		new CollisionBox(0, 0F, 16F, 4F, 8F, 24F, 12F);
-		new CollisionBox(1, 8F, 16F, 4F, 16F, 24F, 12F);
-		new CollisionBox(-1, 2F, 24F, 2F, 14F, 36F, 14F);
+		if(CraftingPillars.rayTrace)
+		{
+			new CollisionBox(0, 0F, 16F, 4F, 8F, 24F, 12F);
+			new CollisionBox(1, 8F, 16F, 4F, 16F, 24F, 12F);
+			new CollisionBox(-1, 4F, 26F, 4F, 12F, 34F, 12F);
+		}
+		else
+		{
+			new CollisionBox(0, 0F, 15F, 4F, 8F, 16F, 12F);
+			new CollisionBox(1, 8F, 15F, 4F, 16F, 16F, 12F);
+			new CollisionBox(-1, 0F, 0F, 3F, 16F, 16F, 13F);
+		}
 	}
 	
 	@Override
@@ -42,9 +51,9 @@ public class AnvilPillar extends BasePillar
 	{
 		int l = par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 3;
 		if(l != 0 && l != 2)
-			this.setBlockBounds(3F/16F, 0F, 0.0F, 13F/16F, 1F, 1F);
+			this.setBlockBounds(3F/16F, 0F, 0F, 13F/16F, 1F, 1F);
 		else
-			this.setBlockBounds(0F, 0F, 3F/16F, 1.0F, 1F, 13F/16F);
+			this.setBlockBounds(0F, 0F, 3F/16F, 1F, 1F, 13F/16F);
 	}
 	
 	@Override

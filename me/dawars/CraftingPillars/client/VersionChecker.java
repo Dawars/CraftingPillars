@@ -1,4 +1,4 @@
-package me.dawars.CraftingPillars;
+package me.dawars.CraftingPillars.client;
 
 import java.awt.Desktop;
 import java.awt.Frame;
@@ -14,6 +14,8 @@ import java.net.URL;
 import java.util.Random;
 
 import javax.swing.JOptionPane;
+
+import me.dawars.CraftingPillars.CraftingPillars;
 
 public class VersionChecker
 {

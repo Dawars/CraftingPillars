@@ -6,9 +6,13 @@ import java.util.List;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import me.dawars.CraftingPillars.CraftingPillars;
+import me.dawars.CraftingPillars.network.packets.PacketClick;
 import me.dawars.CraftingPillars.tiles.TileEntityAnvilPillar;
 import me.dawars.CraftingPillars.tiles.BaseTileEntityPillar;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,6 +25,26 @@ import static org.lwjgl.opengl.GL11.*;
 
 public abstract class BasePillar extends BaseBlockContainer
 {
+	public static boolean doClick(int button)
+	{
+		World world = Minecraft.getMinecraft().theWorld;
+		EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
+		for(int x = (int)player.posX-5; x <= (int)player.posX+5; x++)
+			for(int y = (int)player.posY-5; y <= (int)player.posY+5; y++)
+				for(int z = (int)player.posZ-5; z <= (int)player.posZ+5; z++)
+					if(Block.blocksList[world.getBlockId(x, y, z)] instanceof BasePillar)
+					{
+						int id = ((BasePillar)Block.blocksList[world.getBlockId(x, y, z)]).getClickedButtonId(world, x, y, z, button, player);
+						if(id > -1)
+						{
+							//System.out.println("Packet sent! "+button+" "+id+" "+x+" "+y+" "+z);
+							CraftingPillars.proxy.sendToServer(new PacketClick(button, id, x, y, z).pack());
+							return true;
+						}
+					}
+		return false;
+	}
+	
 	public class CollisionBox
 	{
 		public int id, slot;
@@ -203,6 +227,14 @@ public abstract class BasePillar extends BaseBlockContainer
 				if(box.inBounds(hitX-x, hitY-y, hitZ-z, meta))
 					if((box.slot > -1 && this.canSlotClicked(world, x, y, z, box.slot, button, player)) || this.canActionPerformed(world, x, y, z, box.id, button, player))
 						return box.id;
+			if(world.getBlockId((int)Math.floor(hitX), (int)Math.floor(hitY), (int)Math.floor(hitZ)) != 0)
+			{
+				Block b = Block.blocksList[world.getBlockId((int)Math.floor(hitX), (int)Math.floor(hitY), (int)Math.floor(hitZ))];
+				if(b.getBlockBoundsMinX() < hitX && hitX < b.getBlockBoundsMaxX()
+					&& b.getBlockBoundsMinY() < hitY && hitY < b.getBlockBoundsMaxY()
+					&& b.getBlockBoundsMinZ() < hitZ && hitZ < b.getBlockBoundsMaxZ())
+					return -1;
+			}
 		}
 		return -1;
 	}
@@ -211,7 +243,6 @@ public abstract class BasePillar extends BaseBlockContainer
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack)
 	{
 		int meta = (int)Math.floor(entity.rotationYaw/90F + 0.5F) & 3;
-		System.out.println("Placed pillar with orientation: "+meta);
 		world.setBlockMetadataWithNotify(x, y, z, meta, 0);
 	}
 	
