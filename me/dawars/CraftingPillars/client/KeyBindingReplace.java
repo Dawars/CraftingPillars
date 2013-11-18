@@ -20,7 +20,7 @@ public abstract class KeyBindingReplace extends KeyBinding
 		if(!b)
 		{
 			this.pressTime = 0;
-	        this.pressed = false;
+			this.pressed = false;
 		}
 		return b;
 	}

@@ -94,7 +94,7 @@ public class TileEntityAnvilPillar extends BaseTileEntityPillar
 	@Override
 	public int getInventoryStackLimit()
 	{
-		return 1;
+		return 64;
 	}
 	
 	@Override

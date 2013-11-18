@@ -311,7 +311,9 @@ public class RenderAnvilPillar extends TileEntitySpecialRenderer implements ISim
 		
 		glPushMatrix();
 			glTranslated(x, y, z);
-			
+			glTranslatef(0.5F, 0F, 0.5F);
+			glRotatef(-90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord)+2), 0F, 1F, 0F);
+			glTranslatef(-0.5F, 0F, -0.5F);
 			if(anvil.getStackInSlot(0) != null)
 			{
 				citem.setEntityItemStack(anvil.getStackInSlot(0));
@@ -341,14 +343,7 @@ public class RenderAnvilPillar extends TileEntitySpecialRenderer implements ISim
 				glBindTexture(GL_TEXTURE_2D, 0);
 				glColor4f(1F, 1F, 1F, 0.5F);
 				for(CollisionBox box : ((BasePillar)CraftingPillars.blockAnvilPillar).buttons)
-				{
-					glPushMatrix();
-					glTranslatef(0.5F, 0F, 0.5F);
-					glRotatef(-90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord)+2), 0F, 1F, 0F);
-					glTranslatef(-0.5F, 0F, -0.5F);
 					box.render();
-					glPopMatrix();
-				}
 				glEnable(GL_LIGHTING);
 				glDisable(GL_BLEND);
 			}
