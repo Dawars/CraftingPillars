@@ -39,6 +39,18 @@ public class BrewingPillarBlock extends BaseBlockContainer
 		float f = 3*1/16F;
 		this.setBlockBounds(f, 0.0F, f, 1.0F - f, 1.0F, 1.0F - f);
 	}
+	
+	@Override
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack)
+	{
+		world.setBlockMetadataWithNotify(x, y, z, determineOrientation(world, x, y, z, entity), 0);
+	}
+	
+	public static int determineOrientation(World world, int x, int y, int z, EntityLivingBase entity)
+	{
+		return MathHelper.floor_double((double) (entity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3;
+	}
+	
 	@Override
 	public int getRenderType()
 	{
