@@ -34,7 +34,7 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 
 public class RenderFurnacePillar extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler
 {
-	private static final ResourceLocation TEXTURE_FURNACEPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/furnacePillar.png");
+	private ResourceLocation TEXTURE_FURNACEPILLAR;
 	
 	public static ModelBase model = new ModelBase()
 	{
@@ -49,26 +49,36 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 	private ModelRenderer Pillar2;
 	private ModelRenderer Pillar3;
 	private ModelRenderer Pillar4;
+	private ModelRenderer Icicle1A;
+	private ModelRenderer Icicle1B;
+	private ModelRenderer Icicle1C;
+	private ModelRenderer Icicle2A;
+	private ModelRenderer Icicle2C;
+	private ModelRenderer Icicle2B;
+	private ModelRenderer Icicle3A;
+	private ModelRenderer Icicle3B;
+	private ModelRenderer Icicle3C;
+	private ModelRenderer Icicle3D;
+	private ModelRenderer Icicle4A;
+	private ModelRenderer Icicle4B;
 	
-	private ModelRenderer pillarBottom;
 	
 	private RenderingHelper.ItemRender itemRenderer;
 	private RenderingHelper.ItemRender resultRenderer;
 	
 	public RenderFurnacePillar()
 	{
+		if(CraftingPillars.winter)
+			TEXTURE_FURNACEPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/furnacePillarFrozen.png");
+		else
+			TEXTURE_FURNACEPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/furnacePillar.png");
+		
+		
 		itemRenderer = new RenderingHelper.ItemRender(false, true);
 		resultRenderer = new RenderingHelper.ItemRender(false, false);
 		
 		model.textureWidth = 128;
 		model.textureHeight = 64;
-		
-		pillarBottom = new ModelRenderer(model, 0, 33);
-		pillarBottom.addBox(0F, 0F, 0F, 12, 3, 12);
-		pillarBottom.setRotationPoint(-6F, 21F, 6F);
-		pillarBottom.setTextureSize(128, 64);
-		pillarBottom.mirror = true;
-		setRotation(pillarBottom, 0F, 1.570796F, 0F);
 		
 		CraftingBottom = new ModelRenderer(model, 0, 0);
 		CraftingBottom.addBox(0F, 0F, 0F, 16, 2, 16);
@@ -118,25 +128,108 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 		Pillar4.setTextureSize(128, 64);
 		Pillar4.mirror = true;
 		setRotation(Pillar4, 0F, 0F, 0F);
+		
+		Icicle1A = new ModelRenderer(model, 122, 38);
+		Icicle1A.addBox(0F, 0F, 0F, 2, 1, 1);
+		Icicle1A.setRotationPoint(5F, 11F, 6F);
+		Icicle1A.setTextureSize(128, 64);
+		Icicle1A.mirror = true;
+		setRotation(Icicle1A, 0F, 0F, 0F);
+		Icicle1B = new ModelRenderer(model, 122, 40);
+		Icicle1B.addBox(0F, 0F, 0F, 1, 2, 1);
+		Icicle1B.setRotationPoint(6F, 12F, 6F);
+		Icicle1B.setTextureSize(128, 64);
+		Icicle1B.mirror = true;
+		setRotation(Icicle1B, 0F, 0F, 0F);
+		Icicle1C = new ModelRenderer(model, 116, 52);
+		Icicle1C.addBox(0F, 0F, 0F, 1, 1, 2);
+		Icicle1C.setRotationPoint(6F, 11F, 4F);
+		Icicle1C.setTextureSize(128, 64);
+		Icicle1C.mirror = true;
+		setRotation(Icicle1C, 0F, 0F, 0F);
+		Icicle2A = new ModelRenderer(model, 122, 60);
+		Icicle2A.addBox(0F, 0F, 0F, 1, 2, 2);
+		Icicle2A.setRotationPoint(6F, 11F, -6F);
+		Icicle2A.setTextureSize(128, 64);
+		Icicle2A.mirror = true;
+		setRotation(Icicle2A, 0F, 0F, 0F);
+		Icicle2B = new ModelRenderer(model, 122, 38);
+		Icicle2B.addBox(0F, 0F, 0F, 2, 1, 1);
+		Icicle2B.setRotationPoint(5F, 11F, -7F);
+		Icicle2B.setTextureSize(128, 64);
+		Icicle2B.mirror = true;
+		setRotation(Icicle2B, 0F, 0F, 0F);
+		Icicle2C = new ModelRenderer(model, 122, 44);
+		Icicle2C.addBox(0F, 0F, 0F, 1, 1, 1);
+		Icicle2C.setRotationPoint(6F, 13F, -6F);
+		Icicle2C.setTextureSize(128, 64);
+		Icicle2C.mirror = true;
+		setRotation(Icicle2C, 0F, 0F, 0F);
+		Icicle3A = new ModelRenderer(model, 106, 50);
+		Icicle3A.addBox(0F, 0F, 0F, 1, 1, 3);
+		Icicle3A.setRotationPoint(-7F, 11F, -7F);
+		Icicle3A.setTextureSize(128, 64);
+		Icicle3A.mirror = true;
+		setRotation(Icicle3A, 0F, 0F, 0F);
+		Icicle3B = new ModelRenderer(model, 101, 50);
+		Icicle3B.addBox(0F, 0F, 0F, 1, 1, 2);
+		Icicle3B.setRotationPoint(-7F, 12F, -7F);
+		Icicle3B.setTextureSize(128, 64);
+		Icicle3B.mirror = true;
+		setRotation(Icicle3B, 0F, 0F, 0F);
+		Icicle3C = new ModelRenderer(model, 106, 50);
+		Icicle3C.addBox(0F, 0F, 0F, 1, 1, 1);
+		Icicle3C.setRotationPoint(-6F, 11F, -7F);
+		Icicle3C.setTextureSize(128, 64);
+		Icicle3C.mirror = true;
+		setRotation(Icicle3C, 0F, 0F, 0F);
+		Icicle3D = new ModelRenderer(model, 106, 46);
+		Icicle3D.addBox(0F, 0F, 0F, 1, 1, 1);
+		Icicle3D.setRotationPoint(-7F, 13F, -7F);
+		Icicle3D.setTextureSize(128, 64);
+		Icicle3D.mirror = true;
+		setRotation(Icicle3D, 0F, 0F, 0F);
+		Icicle4A = new ModelRenderer(model, 122, 35);
+		Icicle4A.addBox(0F, 0F, 0F, 1, 1, 1);
+		Icicle4A.setRotationPoint(-7F, 11F, 6F);
+		Icicle4A.setTextureSize(128, 64);
+		Icicle4A.mirror = true;
+		setRotation(Icicle4A, 0F, 0F, 0F);
+		Icicle4B = new ModelRenderer(model, 117, 43);
+		Icicle4B.addBox(0F, 0F, 0F, 1, 2, 1);
+		Icicle4B.setRotationPoint(-6F, 11F, 6F);
+		Icicle4B.setTextureSize(128, 64);
+		Icicle4B.mirror = true;
+		setRotation(Icicle4B, 0F, 0F, 0F);
 	}
 	
-	public void render(float f, boolean connected)
+	public void render(float f)
 	{
-		if(connected)
-		{
-			pillarBottom.render(f);
-		}
-		else
-		{
-			CraftingBottom.render(f);
-			CraftingBotSlab.render(f);
-		}
+		CraftingBottom.render(f);
+		CraftingBotSlab.render(f);
 		Pillar1.render(f);
 		WorkbenchSlab.render(f);
 		WorkbenchTop.render(f);
 		Pillar2.render(f);
 		Pillar3.render(f);
 		Pillar4.render(f);
+		
+		if(CraftingPillars.winter)
+		{
+
+		    Icicle1A.render(f);
+		    Icicle1B.render(f);
+		    Icicle1C.render(f);
+		    Icicle2A.render(f);
+		    Icicle2C.render(f);
+		    Icicle2B.render(f);
+		    Icicle3A.render(f);
+		    Icicle3B.render(f);
+		    Icicle3C.render(f);
+		    Icicle3D.render(f);
+		    Icicle4A.render(f);
+		    Icicle4B.render(f);
+		}
 	}
 	
 	private void setRotation(ModelRenderer model, float x, float y, float z)
@@ -154,7 +247,7 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 		glRotatef(180F, 1F, 0F, 0F);
 		
 		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_FURNACEPILLAR);
-		render(0.0625F, tile.worldObj.getBlockId(tile.xCoord, tile.yCoord-1, tile.zCoord) == CraftingPillars.blockExtendPillar.blockID);
+		render(0.0625F);
 		glPopMatrix();
 		
 		TileEntityFurnacePillar pillarTile = (TileEntityFurnacePillar) tile;
@@ -163,11 +256,10 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 		glPushMatrix();
 		
 			glTranslated(x+0.5D, y, z+0.5D);
-//			glRotatef(90F * tile.blockMetadata, 0F, 1F, 0F);
 
 			//Input
 			if(pillarTile.getStackInSlot(0) != null)
-			{//TODO: tilt
+			{
 				glPushMatrix();
 					citem.hoverStart = 0F;
 					citem.setEntityItemStack(pillarTile.getStackInSlot(0));
@@ -215,7 +307,7 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 		glRotatef(180F, 1F, 0F, 0F);
 		glRotatef(90F, 0F, 1F, 0F);
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_FURNACEPILLAR);
-		render(0.0625F, false);
+		render(0.0625F);
 		glPopMatrix();
 	}
 	
