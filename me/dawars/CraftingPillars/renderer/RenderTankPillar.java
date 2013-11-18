@@ -346,47 +346,31 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 		glTranslatef(0.005F, 0.005F, 0.005F);
 		glScalef(0.99F, 0.99F, 0.99F);
 		
-		float max = 0F;
 		float[][][] field = Blobs.fieldStrength(tank.blobs);
-		
 		for(int i = 0; i < 16; i++)
-		{
 			for(int j = 0; j < 16; j++)
-			{
 				for(int k = 0; k < 16; k++)
-				{
 					if((int)field[i][j][k] > 0 &&
-						(i == 0 || (int)field[i-1][j][k] == 0
-						|| i == 15 || (int)field[i+1][j][k] == 0
-						|| j == 0 || (int)field[i][j-1][k] == 0
-						|| j == 15 || (int)field[i][j+1][k] == 0
-						|| k == 0 || (int)field[i][j][k-1] == 0
-						|| k == 15 || (int)field[i][j][k+1] == 0))
-					{
-						if(field[i][j][k] > max)
-							max = field[i][j][k];
-					}
-					else
+						(i != 0 && (int)field[i-1][j][k] != 0
+							&& i != 15 && (int)field[i+1][j][k] != 0
+							&& j != 0 && (int)field[i][j-1][k] != 0
+							&& j != 15 && (int)field[i][j+1][k] != 0
+							&& k != 0 && (int)field[i][j][k-1] != 0
+							&& k != 15 && (int)field[i][j][k+1] != 0))
 					{
 						field[i][j][k] = 0F;
 					}
-				}
-			}
-		}
 		
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_LAVA);
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_LAVA); // TODO fluid texture
 		for(int i = 0; i < 16; i++)
 			for(int j = 0; j < 16; j++)
 				for(int k = 0; k < 16; k++)
 					if((int)field[i][j][k] > 0)
 					{
-						//RenderingHelper.renderFloatingText(i/16F, j/16F, k/16F, .08F, ""+(int)nfield[i][j][k], 0xffffff);
-						//RenderingHelper.renderFloatingRect(i/16F, j/16F, k/16F, 1F/4F, 1F/4F, new Color(field[i][j][k]/max/2F+0.25F, 0F, 0.75F-field[i][j][k]/max/2F));
 						glBegin(GL_QUADS);
 						
 						int tx = tank.texIndieces[i][j][k]%16;
 						int ty = tank.texIndieces[i][j][k]/16;
-						//System.out.println(tx+" "+ty);
 						
 						if(j == 15 || (int)field[i][j+1][k] == 0)
 						{

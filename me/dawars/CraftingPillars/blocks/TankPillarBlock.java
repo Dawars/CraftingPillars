@@ -62,7 +62,6 @@ public class TankPillarBlock extends BaseBlockContainer
 		ItemStack current = entityplayer.inventory.getCurrentItem();
 		if(current != null)
 		{
-			
 			FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(current);
 			
 			TileEntityTankPillar tank = (TileEntityTankPillar) world.getBlockTileEntity(i, j, k);

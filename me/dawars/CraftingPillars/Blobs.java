@@ -8,7 +8,7 @@ public class Blobs
 	public float x, y, z, velX, velY, velZ;
 	public int strength;
 
-	public static int scale = 2;//~vertex density
+	public static int scale = 2;
 	
 	private Random random = new Random();
 	
@@ -48,8 +48,6 @@ public class Blobs
 		if(random.nextBoolean())
 			this.velZ *= -1F;
 	}
-	
-	
 
 	public void update()
 	{
@@ -74,8 +72,6 @@ public class Blobs
 	
 	private static float f(float r, int strength)
 	{
-//		r /= 16;
-//		return 1/(r * r * r * (r * (r * 6 - 15) + 10));
 		return strength/r;
 	}
 	
@@ -102,11 +98,7 @@ public class Blobs
 							float yDist = blobs.get(i).y - y;
 							float zDist = blobs.get(i).z - z;
 							float r = xDist*xDist + yDist*yDist + zDist*zDist; //distance square
-	//						if(r <= blobs.get(i).strength*blobs.get(i).strength)
-	//						{
-								result[x][y][z] += f(r, blobs.get(i).strength);
-	//							result[x][y][z] += r);
-	//						}
+							result[x][y][z] += f(r, blobs.get(i).strength);
 						}
 					}
 				}

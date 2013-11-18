@@ -24,33 +24,36 @@ import net.minecraftforge.fluids.IFluidTank;
 
 public class TileEntityTankPillar extends BaseTileEntity implements IFluidHandler
 {
-	private static final int MAX_Fluid = FluidContainerRegistry.BUCKET_VOLUME * 10;
-	public final FluidTank tank = new FluidTank((int) MAX_Fluid);
+	public final FluidTank tank = new FluidTank((int) FluidContainerRegistry.BUCKET_VOLUME * 10);
 	
 	public List<Blobs> blobs;
 	
-	private Random random;
-	
 	public TileEntityTankPillar()
 	{
-		this.random = new Random(System.currentTimeMillis());
 		this.blobs = new ArrayList<Blobs>();
-		generateBlobs();
-		for(int i = 0; i < 16; i++)
-			for(int j = 0; j < 16; j++)
-				for(int k = 0; k < 16; k++)
-					this.texIndieces[i][j][k] = random.nextInt(256);
+		//generateBlobs();
 	}
 	
-	private void generateBlobs()
+	public void addBlob()
+	{
+		if(random.nextInt(4) == 0) // big
+			blobs.add(new Blobs(random.nextInt(12)+2.5F, random.nextInt(9)+4.5F, random.nextInt(12)+2.5F, random.nextInt(3)+4));
+		else // small
+			blobs.add(new Blobs(random.nextInt(12)+2.5F, random.nextInt(9)+4.5F, random.nextInt(12)+2.5F, (random.nextInt(20)+5)/10));
+	}
+	
+	public void removeBlob()
+	{
+		blobs.remove(random.nextInt(blobs.size()));
+	}
+	
+	/*private void generateBlobs()
 	{
 		//Big
 		for(int i = 0; i < 3; i++)
 		{
 			// x, z: 2.5-13.5 y: 4.5-12.5
 			int strength = random.nextInt(3)+4;
-			/*if(random.nextBoolean())
-				strength *= -1;*/
 			blobs.add(new Blobs(random.nextInt(12)+2.5F, random.nextInt(9)+4.5F, random.nextInt(12)+2.5F, strength));
 		}
 		//Small
@@ -59,82 +62,57 @@ public class TileEntityTankPillar extends BaseTileEntity implements IFluidHandle
 			// x, z: 2.5-13.5 y: 4.5-12.5
 			blobs.add(new Blobs(random.nextInt(12)+2.5F, random.nextInt(9)+4.5F, random.nextInt(12)+2.5F, (random.nextInt(20)+5)/10));
 		}
-	}
+	}*/
 	
-	public int[][][] texIndieces = new int[16][16][16];
+	public int[][][] texIndieces = null;
 	
+	@Override
 	public void updateEntity()
 	{
 		if(this.worldObj.isRemote)
 		{
+			if(this.texIndieces == null)
+			{
+				this.texIndieces = new int[16][16][16];
+				for(int i = 0; i < 16; i++)
+					for(int j = 0; j < 16; j++)
+						for(int k = 0; k < 16; k++)
+							this.texIndieces[i][j][k] = random.nextInt(256);
+			}
+			
+			while(this.blobs.size() < this.tank.getFluidAmount()/FluidContainerRegistry.BUCKET_VOLUME+1)
+				this.addBlob();
+			while(this.blobs.size() > this.tank.getFluidAmount()/FluidContainerRegistry.BUCKET_VOLUME+1)
+				this.removeBlob();
+			
 			int i = random.nextInt(16);
 			int j = random.nextInt(16);
 			int k = random.nextInt(16);
 			this.texIndieces[i][j][k]++;
 			this.texIndieces[i][j][k] %= 256;
-			/*for(int i = 0; i < 16; i++)
-				for(int j = 0; j < 16; j++)
-					for(int k = 0; k < 16; k++)
-						if(random.nextInt(16*16*16) == 0)
-						{
-							this.texIndieces[i][j][k]++;
-							this.texIndieces[i][j][k] %= 256;
-						}*/
 			
 			for(i = 0; i < this.blobs.size(); i++)
-			{
 				this.blobs.get(i).update(0.1F);
-			}
-			
-//			int[][][] field = Blobs.fieldStrength(blobs);
-//
-//			for(int x = 0; x < 16; x++)
-//			{
-//				for(int y = 0; y < 16; y++)
-//				{
-//					for(int z = 0; z < 16; z++)
-//					{
-//						System.out.print(field[x][y][z] + " ");
-//					}
-//					System.out.println();
-//
-//				}
-//				System.out.println();
-//				System.out.println();
-//				System.out.println();
-//			}
-			
 		}
-		if(tank.getFluid() != null && !worldObj.isRemote)
-			System.out.println(tank.getFluid().amount + " " + FluidRegistry.getFluidName(tank.getFluid()));
+		//if(tank.getFluid() != null && worldObj.isRemote)
+			//System.out.println((worldObj.isRemote ? "Client: " : "Server: ")+tank.getFluid().amount + " " + FluidRegistry.getFluidName(tank.getFluid()));
 	}
 	
 	/* SAVING & LOADING */
 	@Override
-	public void readFromNBT(NBTTagCompound data)
+	public void readFromNBT(NBTTagCompound nbt)
 	{
-		super.readFromNBT(data);
-		FluidStack liquid = new FluidStack(0, 0);
-		
-		if(data.hasKey("stored") && data.hasKey("FluidId"))
-		{
-			liquid = new FluidStack(data.getInteger("FluidId"), data.getInteger("stored"));
-		}
-		else
-		{
-			liquid = FluidStack.loadFluidStackFromNBT(data.getCompoundTag("tank"));
-		}
-		tank.setFluid(liquid);
+		super.readFromNBT(nbt);
+		if(nbt.hasKey("tank"))
+			this.tank.setFluid(FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("tank")));
 	}
 	
 	@Override
-	public void writeToNBT(NBTTagCompound data)
+	public void writeToNBT(NBTTagCompound nbt)
 	{
-		super.writeToNBT(data);
+		super.writeToNBT(nbt);
 		if(tank.getFluid() != null)
-		{
-			data.setTag("tank", tank.getFluid().writeToNBT(new NBTTagCompound()));
-		}
+			nbt.setTag("tank", tank.getFluid().writeToNBT(new NBTTagCompound()));
 	}
 	
 	@Override
@@ -149,35 +127,35 @@ public class TileEntityTankPillar extends BaseTileEntity implements IFluidHandle
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
 		this.writeToNBT(nbt);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, nbt);
+		return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 0, nbt);
 	}
 	
 	@Override
 	public void onInventoryChanged()
 	{
 		super.onInventoryChanged();
-		
 		if(!this.worldObj.isRemote)
-		{
-			CraftingPillars.proxy.sendToPlayers(this.getDescriptionPacket(), this.worldObj, this.xCoord, this.yCoord, this.zCoord, 128);
-		}
+			CraftingPillars.proxy.sendToPlayers(this.getDescriptionPacket(), this.worldObj, this.xCoord, this.yCoord, this.zCoord, 64);
 	}
 	
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
 	{
+		this.onInventoryChanged();
 		return this.tank.fill(resource, doFill);
 	}
 	
 	@Override
 	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
 	{
+		this.onInventoryChanged();
 		return this.drain(from, resource.amount, doDrain);
 	}
 	
 	@Override
 	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
 	{
+		this.onInventoryChanged();
 		return this.tank.drain(maxDrain, doDrain);
 	}
 	

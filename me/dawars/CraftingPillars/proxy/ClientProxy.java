@@ -43,8 +43,8 @@ public class ClientProxy extends CommonProxy
 	public void init()
 	{
 		VersionChecker.check();
-		Minecraft.getMinecraft().gameSettings.keyBindAttack = new KeyBindingReplaceAttack();
-		Minecraft.getMinecraft().gameSettings.keyBindUseItem = new KeyBindingReplaceUse();
+		//Minecraft.getMinecraft().gameSettings.keyBindAttack = new KeyBindingReplaceAttack();
+		//Minecraft.getMinecraft().gameSettings.keyBindUseItem = new KeyBindingReplaceUse();
 		
 		CraftingPillars.extendPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
 		CraftingPillars.showOffPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
