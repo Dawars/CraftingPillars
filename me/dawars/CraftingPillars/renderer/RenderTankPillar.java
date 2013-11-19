@@ -334,14 +334,12 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 	{
 		glPushMatrix();
 		glTranslated(x, y, z);
-		glPushMatrix();
-			glTranslatef(0.5F, 1.5F, 0.5F);
-			glScalef(0.0625F, 0.0625F, 0.0625F);
-			glRotatef(180F, 1F, 0F, 0F);
-			
-			FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_FANCY_TANK);
-			render(tile, 1F);
+		glTranslatef(0.5F, 1.5F, 0.5F);
+		glScalef(0.0625F, 0.0625F, 0.0625F);
+		glRotatef(180F, 1F, 0F, 0F);
 		
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_FANCY_TANK);
+		render(tile, 1F);
 		glPopMatrix();
 		
 		TileEntityTankPillar tank = ((TileEntityTankPillar) tile);
@@ -353,6 +351,7 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 
 		
 		glPushMatrix();
+		glTranslated(x, y, z);
 		glPushAttrib(GL_ENABLE_BIT);
 		glDisable(GL_LIGHTING);
 		glTranslatef(0.005F, 0.005F, 0.005F);
@@ -375,7 +374,6 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 		
 //		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_LAVA); // TODO fluid texture
 		ResourceLocation BLOCK_TEXTURE = TextureMap.locationBlocksTexture;
-
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(BLOCK_TEXTURE); // TODO fluid texture
 		
 		//change texture coord according to icon coords
@@ -387,98 +385,89 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 					{
 						glBegin(GL_QUADS);
 						Icon icon = tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid.getFluid().getStillIcon();
-						int tx = (int) tank.texIndieces[i][j][k]%16;
-						int ty = (int) tank.texIndieces[i][j][k]/16;
-
-						if(i == 0 || (int)field[i-1][j][k] == 0)
-						{
-							glTexCoord2f((tx)/16F + icon.getMinU(), (ty)/256F + icon.getMinV());
-							glVertex3f((i)/16F, (j)/16F, (k+1)/16F);
-							glTexCoord2f((tx)/16F + icon.getMinU(), (ty+1)/256F + icon.getMinV());
-							glVertex3f((i)/16F, (j+1)/16F, (k+1)/16F);
-							glTexCoord2f((tx+1)/16F + icon.getMinU(), (ty+1)/256F + icon.getMinV());
-							glVertex3f((i)/16F, (j+1)/16F, (k)/16F);
-							glTexCoord2f((tx+1)/16F + icon.getMinU(), (ty)/256F + icon.getMinV());
-							glVertex3f((i)/16F, (j)/16F, (k)/16F);
-						}
-						/*
+						int tx = tank.texIndieces[i][j][k]%16;
+						int ty = tank.texIndieces[i][j][k]/16;
+						if(tx < 0 || ty < 0 || tx >= 16 || ty >= 16)
+							System.out.println(tx+" "+ty);
+						
+						//System.out.println(16*icon.getMinU()+" "+16*icon.getMinV());
+						
+						float minX = (int)(tx+icon.getMinU()*256F)/256F;
+						float maxX = (int)(tx+1+icon.getMinU()*256F)/256F;
+						float minY = (int)(ty+icon.getMinV()*256F)/256F;
+						float maxY = (int)(ty+1+icon.getMinV()*256F)/256F;
+						
 						if(j == 15 || (int)field[i][j+1][k] == 0)
 						{
-							glTexCoord2f((tx)/16F, (ty)/256F);
+							glTexCoord2f(minX, minY);
 							glVertex3f((i)/16F, (j+1)/16F, (k)/16F);
-							glTexCoord2f((tx)/16F, (ty+1)/256F);
+							glTexCoord2f(minX, maxY);
 							glVertex3f((i)/16F, (j+1)/16F, (k+1)/16F);
-							glTexCoord2f((tx+1)/16F, (ty+1)/256F);
+							glTexCoord2f(maxX, maxY);
 							glVertex3f((i+1)/16F, (j+1)/16F, (k+1)/16F);
-							glTexCoord2f((tx+1)/16F, (ty)/256F);
+							glTexCoord2f(maxX, minY);
 							glVertex3f((i+1)/16F, (j+1)/16F, (k)/16F);
 						}
-						
 						if(j == 0 || (int)field[i][j-1][k] == 0)
 						{
-							glTexCoord2f((tx)/16F, (ty)/256F);
+							glTexCoord2f(minX, minY);
 							glVertex3f((i)/16F, (j)/16F, (k+1)/16F);
-							glTexCoord2f((tx)/16F, (ty+1)/256F);
+							glTexCoord2f(minX, maxY);
 							glVertex3f((i)/16F, (j)/16F, (k)/16F);
-							glTexCoord2f((tx+1)/16F, (ty+1)/256F);
+							glTexCoord2f(maxX, maxY);
 							glVertex3f((i+1)/16F, (j)/16F, (k)/16F);
-							glTexCoord2f((tx+1)/16F, (ty)/256F);
+							glTexCoord2f(maxX, minY);
 							glVertex3f((i+1)/16F, (j)/16F, (k+1)/16F);
 						}
-						
 						if(k == 15 || (int)field[i][j][k+1] == 0)
 						{
-							glTexCoord2f((tx)/16F, (ty)/256F);
+							glTexCoord2f(minX, minY);
 							glVertex3f((i)/16F, (j+1)/16F, (k+1)/16F);
-							glTexCoord2f((tx)/16F, (ty+1)/256F);
+							glTexCoord2f(minX, maxY);
 							glVertex3f((i)/16F, (j)/16F, (k+1)/16F);
-							glTexCoord2f((tx+1)/16F, (ty+1)/256F);
+							glTexCoord2f(maxX, maxY);
 							glVertex3f((i+1)/16F, (j)/16F, (k+1)/16F);
-							glTexCoord2f((tx+1)/16F, (ty)/256F);
+							glTexCoord2f(maxX, minY);
 							glVertex3f((i+1)/16F, (j+1)/16F, (k+1)/16F);
 						}
-						
 						if(k == 0 || (int)field[i][j][k-1] == 0)
 						{
-							glTexCoord2f((tx)/16F, (ty)/256F);
+							glTexCoord2f(minX, minY);
 							glVertex3f((i+1)/16F, (j+1)/16F, (k)/16F);
-							glTexCoord2f((tx)/16F, (ty+1)/256F);
+							glTexCoord2f(minX, maxY);
 							glVertex3f((i+1)/16F, (j)/16F, (k)/16F);
-							glTexCoord2f((tx+1)/16F, (ty+1)/256F);
+							glTexCoord2f(maxX, maxY);
 							glVertex3f((i)/16F, (j)/16F, (k)/16F);
-							glTexCoord2f((tx+1)/16F, (ty)/256F);
+							glTexCoord2f(maxX, minY);
 							glVertex3f((i)/16F, (j+1)/16F, (k)/16F);
 						}
-						
 						if(i == 15 || (int)field[i+1][j][k] == 0)
 						{
-							glTexCoord2f((tx)/16F, (ty)/256F);
+							glTexCoord2f(minX, minY);
 							glVertex3f((i+1)/16F, (j+1)/16F, (k+1)/16F);
-							glTexCoord2f((tx)/16F, (ty+1)/256F);
+							glTexCoord2f(minX, maxY);
 							glVertex3f((i+1)/16F, (j)/16F, (k+1)/16F);
-							glTexCoord2f((tx+1)/16F, (ty+1)/256F);
+							glTexCoord2f(maxX, maxY);
 							glVertex3f((i+1)/16F, (j)/16F, (k)/16F);
-							glTexCoord2f((tx+1)/16F, (ty)/256F);
+							glTexCoord2f(maxX, minY);
 							glVertex3f((i+1)/16F, (j+1)/16F, (k)/16F);
 						}
-						
 						if(i == 0 || (int)field[i-1][j][k] == 0)
 						{
-							glTexCoord2f((tx)/16F, (ty)/256F);
+							glTexCoord2f(minX, minY);
 							glVertex3f((i)/16F, (j)/16F, (k+1)/16F);
-							glTexCoord2f((tx)/16F, (ty+1)/256F);
+							glTexCoord2f(minX, maxY);
 							glVertex3f((i)/16F, (j+1)/16F, (k+1)/16F);
-							glTexCoord2f((tx+1)/16F, (ty+1)/256F);
+							glTexCoord2f(maxX, maxY);
 							glVertex3f((i)/16F, (j+1)/16F, (k)/16F);
-							glTexCoord2f((tx+1)/16F, (ty)/256F);
+							glTexCoord2f(maxX, minY);
 							glVertex3f((i)/16F, (j)/16F, (k)/16F);
 						}
-						*/
+						
 						glEnd();
 					}
 		
 		glPopAttrib();
-		glPopMatrix();
 		glPopMatrix();
 	}
 	

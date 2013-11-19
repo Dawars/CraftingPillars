@@ -88,8 +88,8 @@ public class TileEntityTankPillar extends BaseTileEntity implements IFluidHandle
 			this.texIndieces[i][j][k]++;
 			this.texIndieces[i][j][k] %= 256;
 			
-//			for(i = 0; i < this.blobs.size(); i++)
-//				this.blobs.get(i).update(0.1F);
+			for(i = 0; i < this.blobs.size(); i++)
+				this.blobs.get(i).update(0.1F);
 		}
 		//if(tank.getFluid() != null && worldObj.isRemote)
 			//System.out.println((worldObj.isRemote ? "Client: " : "Server: ")+tank.getFluid().amount + " " + FluidRegistry.getFluidName(tank.getFluid()));
