@@ -36,10 +36,7 @@ public class TileEntityTankPillar extends BaseTileEntity implements IFluidHandle
 	
 	public void addBlob()
 	{
-		if(random.nextInt(4) == 0) // big
-			blobs.add(new Blobs(random.nextInt(12)+2.5F, random.nextInt(9)+4.5F, random.nextInt(12)+2.5F, random.nextInt(3)+4));
-		else // small
-			blobs.add(new Blobs(random.nextInt(12)+2.5F, random.nextInt(9)+4.5F, random.nextInt(12)+2.5F, (random.nextInt(20)+5)/10));
+		blobs.add(new Blobs(random.nextInt(12)+2.5F, random.nextInt(9)+4.5F, random.nextInt(12)+2.5F, 3));
 	}
 	
 	public void removeBlob()
@@ -91,8 +88,8 @@ public class TileEntityTankPillar extends BaseTileEntity implements IFluidHandle
 			this.texIndieces[i][j][k]++;
 			this.texIndieces[i][j][k] %= 256;
 			
-			for(i = 0; i < this.blobs.size(); i++)
-				this.blobs.get(i).update(0.1F);
+//			for(i = 0; i < this.blobs.size(); i++)
+//				this.blobs.get(i).update(0.1F);
 		}
 		//if(tank.getFluid() != null && worldObj.isRemote)
 			//System.out.println((worldObj.isRemote ? "Client: " : "Server: ")+tank.getFluid().amount + " " + FluidRegistry.getFluidName(tank.getFluid()));
@@ -148,7 +145,6 @@ public class TileEntityTankPillar extends BaseTileEntity implements IFluidHandle
 	@Override
 	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
 	{
-		this.onInventoryChanged();
 		return this.drain(from, resource.amount, doDrain);
 	}
 	

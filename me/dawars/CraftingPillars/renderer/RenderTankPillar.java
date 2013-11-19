@@ -14,11 +14,14 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidTank;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -314,14 +317,15 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
 	{
 		glPushMatrix();
-		glTranslatef(0, 1, 0);
-		glRotatef(180F, 1F, 0F, 0F);
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_FANCY_TANK);
-		glPushMatrix();
-		glScalef(1F/16F, 1F/16F, 1F/16F);
-		render(null, 1F);
-		glPopMatrix();
-		Valve2.render(0.0625F);
+			glTranslatef(0, 1, 0);
+			glRotatef(180F, 1F, 0F, 0F);
+			
+			FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_FANCY_TANK);
+			glPushMatrix();
+				glScalef(1F/16F, 1F/16F, 1F/16F);
+				render(null, 1F);
+			glPopMatrix();
+			Valve2.render(0.0625F);
 		glPopMatrix();
 	}
 	
@@ -334,11 +338,19 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 			glTranslatef(0.5F, 1.5F, 0.5F);
 			glScalef(0.0625F, 0.0625F, 0.0625F);
 			glRotatef(180F, 1F, 0F, 0F);
+			
 			FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_FANCY_TANK);
 			render(tile, 1F);
+		
 		glPopMatrix();
 		
 		TileEntityTankPillar tank = ((TileEntityTankPillar) tile);
+
+		if(tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid == null)
+			return;
+		
+//		ResourceLocation TEXTURE_LIQUID = new ResourceLocation(tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid.getFluid().getFlowingIcon().);
+
 		
 		glPushMatrix();
 		glPushAttrib(GL_ENABLE_BIT);
@@ -361,17 +373,35 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 						field[i][j][k] = 0F;
 					}
 		
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_LAVA); // TODO fluid texture
+//		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_LAVA); // TODO fluid texture
+		ResourceLocation BLOCK_TEXTURE = TextureMap.locationBlocksTexture;
+
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(BLOCK_TEXTURE); // TODO fluid texture
+		
+		//change texture coord according to icon coords
+
 		for(int i = 0; i < 16; i++)
 			for(int j = 0; j < 16; j++)
 				for(int k = 0; k < 16; k++)
 					if((int)field[i][j][k] > 0)
 					{
 						glBegin(GL_QUADS);
-						
-						int tx = tank.texIndieces[i][j][k]%16;
-						int ty = tank.texIndieces[i][j][k]/16;
-						
+						Icon icon = tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid.getFluid().getStillIcon();
+						int tx = (int) tank.texIndieces[i][j][k]%16;
+						int ty = (int) tank.texIndieces[i][j][k]/16;
+
+						if(i == 0 || (int)field[i-1][j][k] == 0)
+						{
+							glTexCoord2f((tx)/16F + icon.getMinU(), (ty)/256F + icon.getMinV());
+							glVertex3f((i)/16F, (j)/16F, (k+1)/16F);
+							glTexCoord2f((tx)/16F + icon.getMinU(), (ty+1)/256F + icon.getMinV());
+							glVertex3f((i)/16F, (j+1)/16F, (k+1)/16F);
+							glTexCoord2f((tx+1)/16F + icon.getMinU(), (ty+1)/256F + icon.getMinV());
+							glVertex3f((i)/16F, (j+1)/16F, (k)/16F);
+							glTexCoord2f((tx+1)/16F + icon.getMinU(), (ty)/256F + icon.getMinV());
+							glVertex3f((i)/16F, (j)/16F, (k)/16F);
+						}
+						/*
 						if(j == 15 || (int)field[i][j+1][k] == 0)
 						{
 							glTexCoord2f((tx)/16F, (ty)/256F);
@@ -443,7 +473,7 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 							glTexCoord2f((tx+1)/16F, (ty)/256F);
 							glVertex3f((i)/16F, (j)/16F, (k)/16F);
 						}
-						
+						*/
 						glEnd();
 					}
 		
