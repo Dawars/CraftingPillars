@@ -29,7 +29,7 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler
 {
-	private static final ResourceLocation TEXTURE_FANCY_TANK = new ResourceLocation(CraftingPillars.id + ":textures/models/tankPillar.png");
+	private ResourceLocation TEXTURE_TANKPILLAR;
 	private static final ResourceLocation TEXTURE_LAVA = new ResourceLocation("textures/blocks/lava_flow.png");
 	
 	public static ModelBase model = new ModelBase()
@@ -57,8 +57,27 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 	
 	private ModelRenderer Valve;
 	
+
+	private ModelRenderer Icicle1A;
+	private ModelRenderer Icicle1B;
+	private ModelRenderer Icicle1C;
+	private ModelRenderer Icicle2A;
+	private ModelRenderer Icicle2C;
+	private ModelRenderer Icicle2B;
+	private ModelRenderer Icicle3A;
+	private ModelRenderer Icicle3B;
+	private ModelRenderer Icicle3C;
+	private ModelRenderer Icicle3D;
+	private ModelRenderer Icicle4A;
+	private ModelRenderer Icicle4B;
+	
 	public RenderTankPillar()
 	{
+		if(CraftingPillars.winter)
+			TEXTURE_TANKPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/tankPillarFrozen.png");
+		else
+			TEXTURE_TANKPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/tankPillar.png");
+		
 		model.textureWidth = 128;
 		model.textureHeight = 64;
 		
@@ -163,6 +182,79 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 		Valve4.setTextureSize(128, 64);
 		Valve4.mirror = true;
 		setRotation(Valve4, 0F, -1.570796F, 0F);
+		
+		Icicle1A = new ModelRenderer(model, 122, 38);
+		Icicle1A.addBox(0F, 0F, 0F, 2, 1, 1);
+		Icicle1A.setRotationPoint(6F, 10F, 7F);
+		Icicle1A.setTextureSize(128, 64);
+		Icicle1A.mirror = true;
+		setRotation(Icicle1A, 0F, 0F, 0F);
+		Icicle1B = new ModelRenderer(model, 122, 40);
+		Icicle1B.addBox(0F, 0F, 0F, 1, 2, 1);
+		Icicle1B.setRotationPoint(7F, 11F, 7F);
+		Icicle1B.setTextureSize(128, 64);
+		Icicle1B.mirror = true;
+		setRotation(Icicle1B, 0F, 0F, 0F);
+		Icicle1C = new ModelRenderer(model, 116, 52);
+		Icicle1C.addBox(0F, 0F, 0F, 1, 1, 2);
+		Icicle1C.setRotationPoint(7F, 10F, 5F);
+		Icicle1C.setTextureSize(128, 64);
+		Icicle1C.mirror = true;
+		setRotation(Icicle1C, 0F, 0F, 0F);
+		Icicle2A = new ModelRenderer(model, 122, 60);
+		Icicle2A.addBox(0F, 0F, 0F, 1, 2, 2);
+		Icicle2A.setRotationPoint(7F, 10F, -7F);
+		Icicle2A.setTextureSize(128, 64);
+		Icicle2A.mirror = true;
+		setRotation(Icicle2A, 0F, 0F, 0F);
+		Icicle2B = new ModelRenderer(model, 122, 38);
+		Icicle2B.addBox(0F, 0F, 0F, 2, 1, 1);
+		Icicle2B.setRotationPoint(6F, 10F, -8F);
+		Icicle2B.setTextureSize(128, 64);
+		Icicle2B.mirror = true;
+		setRotation(Icicle2B, 0F, 0F, 0F);
+		Icicle2C = new ModelRenderer(model, 122, 44);
+		Icicle2C.addBox(0F, 0F, 0F, 1, 1, 1);
+		Icicle2C.setRotationPoint(7F, 12F, -7F);
+		Icicle2C.setTextureSize(128, 64);
+		Icicle2C.mirror = true;
+		setRotation(Icicle2C, 0F, 0F, 0F);
+		Icicle3A = new ModelRenderer(model, 106, 50);
+		Icicle3A.addBox(0F, 0F, 0F, 1, 1, 3);
+		Icicle3A.setRotationPoint(-8F, 10F, -8F);
+		Icicle3A.setTextureSize(128, 64);
+		Icicle3A.mirror = true;
+		setRotation(Icicle3A, 0F, 0F, 0F);
+		Icicle3B = new ModelRenderer(model, 101, 50);
+		Icicle3B.addBox(0F, 0F, 0F, 1, 1, 2);
+		Icicle3B.setRotationPoint(-8F, 11F, -8F);
+		Icicle3B.setTextureSize(128, 64);
+		Icicle3B.mirror = true;
+		setRotation(Icicle3B, 0F, 0F, 0F);
+		Icicle3C = new ModelRenderer(model, 106, 50);
+		Icicle3C.addBox(0F, 0F, 0F, 1, 1, 1);
+		Icicle3C.setRotationPoint(-7F, 10F, -8F);
+		Icicle3C.setTextureSize(128, 64);
+		Icicle3C.mirror = true;
+		setRotation(Icicle3C, 0F, 0F, 0F);
+		Icicle3D = new ModelRenderer(model, 106, 46);
+		Icicle3D.addBox(0F, 0F, 0F, 1, 1, 1);
+		Icicle3D.setRotationPoint(-8F, 12F, -8F);
+		Icicle3D.setTextureSize(128, 64);
+		Icicle3D.mirror = true;
+		setRotation(Icicle3D, 0F, 0F, 0F);
+		Icicle4A = new ModelRenderer(model, 122, 35);
+		Icicle4A.addBox(0F, 0F, 0F, 1, 1, 1);
+		Icicle4A.setRotationPoint(-8F, 10F, 7F);
+		Icicle4A.setTextureSize(128, 64);
+		Icicle4A.mirror = true;
+		setRotation(Icicle4A, 0F, 0F, 0F);
+		Icicle4B = new ModelRenderer(model, 117, 43);
+		Icicle4B.addBox(0F, 0F, 0F, 1, 2, 1);
+		Icicle4B.setRotationPoint(-7F, 10F, 7F);
+		Icicle4B.setTextureSize(128, 64);
+		Icicle4B.mirror = true;
+		setRotation(Icicle4B, 0F, 0F, 0F);
 	}
 	
 	public void render(TileEntity tile, float f)
@@ -179,6 +271,26 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 		GlassPane2.render(f);
 		GlassPane4.render(f);
 		GlassPane3.render(f);
+		
+		
+		if(CraftingPillars.winter)
+		{
+			FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(CraftingPillars.id + ":textures/models/furnacePillarFrozen.png"));
+			Icicle1A.render(f);
+			Icicle1B.render(f);
+			Icicle1C.render(f);
+			Icicle2A.render(f);
+			Icicle2C.render(f);
+			Icicle2B.render(f);
+			Icicle3A.render(f);
+			Icicle3B.render(f);
+			Icicle3C.render(f);
+			Icicle3D.render(f);
+			Icicle4A.render(f);
+			Icicle4B.render(f);
+			FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_TANKPILLAR);
+
+		}
 		
 		if(tile == null)
 			return;
@@ -320,7 +432,7 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 			glTranslatef(0, 1, 0);
 			glRotatef(180F, 1F, 0F, 0F);
 			
-			FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_FANCY_TANK);
+			FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_TANKPILLAR);
 			glPushMatrix();
 				glScalef(1F/16F, 1F/16F, 1F/16F);
 				render(null, 1F);
@@ -338,7 +450,7 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 		glScalef(0.0625F, 0.0625F, 0.0625F);
 		glRotatef(180F, 1F, 0F, 0F);
 		
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_FANCY_TANK);
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_TANKPILLAR);
 		render(tile, 1F);
 		glPopMatrix();
 		

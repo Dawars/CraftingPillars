@@ -216,7 +216,6 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 		
 		if(CraftingPillars.winter)
 		{
-
 		    Icicle1A.render(f);
 		    Icicle1B.render(f);
 		    Icicle1C.render(f);
