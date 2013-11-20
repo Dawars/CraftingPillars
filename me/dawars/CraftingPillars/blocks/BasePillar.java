@@ -25,6 +25,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 public abstract class BasePillar extends BaseBlockContainer
 {
+	@SideOnly(Side.CLIENT)
 	public static boolean doClick(int button)
 	{
 		World world = Minecraft.getMinecraft().theWorld;
