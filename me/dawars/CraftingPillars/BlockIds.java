@@ -13,4 +13,5 @@ public class BlockIds
 	
 	
 	public static int idDiscElysium = 5000;
+	public static int idAdventCalendar = 5001;
 }

@@ -8,6 +8,7 @@ import java.util.Date;
 
 import me.dawars.CraftingPillars.api.CraftingPillarAPI;
 import me.dawars.CraftingPillars.blocks.*;
+import me.dawars.CraftingPillars.gui.GuiHandler;
 import me.dawars.CraftingPillars.handlers.*;
 import me.dawars.CraftingPillars.items.*;
 import me.dawars.CraftingPillars.tiles.*;
@@ -32,6 +33,7 @@ import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
@@ -54,6 +56,9 @@ public class CraftingPillars
 	public static final String name = "Crafting Pillars";
 	public static final String id = "craftingpillars";
 	public static final String packetChannel = "PillarChannel";
+	
+	// The Handler For Opening Guis
+    private GuiHandler guiHandler = new GuiHandler();
 	
 	@SidedProxy(clientSide = "me.dawars.CraftingPillars.proxy.ClientProxy", serverSide = "me.dawars.CraftingPillars.proxy.CommonProxy")
 	public static CommonProxy proxy;
@@ -115,7 +120,7 @@ public class CraftingPillars
 			blockShowOffPillar = (new ShowOffPillarBlock(idShowOffPillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("showOffPillar");
 			registerBlock(blockShowOffPillar);
 			LanguageRegistry.instance().addStringLocalization(blockShowOffPillar.getUnlocalizedName()+".name", "en_US", "Show-Off Pillar");
-			LanguageRegistry.instance().addStringLocalization(blockShowOffPillar.getUnlocalizedName()+".name", "hu_HU", "Kegyhely Oszlop");
+			LanguageRegistry.instance().addStringLocalization(blockShowOffPillar.getUnlocalizedName()+".name", "hu_HU", "Kegyhely Oszlop");//FIXME
 			
 			Property idCraftingPillar = CraftingPillars.config.getBlock("CraftingPillar.id", BlockIds.idCraftingPillar);
 			blockCraftingPillar = (new CraftingPillarBlock(idCraftingPillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("craftingPillar");
@@ -147,16 +152,18 @@ public class CraftingPillars
 			LanguageRegistry.instance().addStringLocalization(blockBrewingPillar.getUnlocalizedName()+".name", "en_US", "Brewing Pillar");
 			LanguageRegistry.instance().addStringLocalization(blockBrewingPillar.getUnlocalizedName()+".name", "hu_HU", "Kotyvasztó Oszlop");
 			
-			//add time check for visiblity
 			Property idDiskPlayerPillar = CraftingPillars.config.getBlock("DiskPlayerPillar.id", BlockIds.idDiskPillar);
 			blockDiskPlayerPillar = (new DiskPlayerPillarBlock(idDiskPlayerPillar.getInt(), Material.iron)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("diskPillar");
 			registerBlock(blockDiskPlayerPillar);
 			LanguageRegistry.instance().addStringLocalization(blockDiskPlayerPillar.getUnlocalizedName()+".name", "en_US", "Juke Pillar");
 			LanguageRegistry.instance().addStringLocalization(blockDiskPlayerPillar.getUnlocalizedName()+".name", "hu_HU", "Zenelejátszó Oszlop");
-			
+
 			Property idDiscElysium = CraftingPillars.config.getItem("idDiscElysium.id", BlockIds.idDiscElysium);
 			discElysium = new PillarRecord(idDiscElysium.getInt(), CraftingPillars.id + ":UranusParadiseShort").setUnlocalizedName("record");
             LanguageRegistry.instance().addStringLocalization(CraftingPillars.id + ":UranusParadiseShort", "en_US", "Elysium - Uranus Paradise Short");
+
+			Property idAdventCalendar = CraftingPillars.config.getItem("idAdventCalendar.id", BlockIds.idAdventCalendar);
+			discElysium = new AdventCalendar(idAdventCalendar.getInt()).setUnlocalizedName("adventCalendar");
             
 			GameRegistry.registerTileEntity(TileEntityExtendPillar.class, "TileEntityExtendPillar");
 			GameRegistry.registerTileEntity(TileEntityShowOffPillar.class, "TileEntityShowOffPillar");
@@ -215,6 +222,8 @@ public class CraftingPillars
 		CraftingPillarAPI.addDiskTexture(Item.record11.itemID, CraftingPillars.id + ":textures/models/disk_11.png");
 		CraftingPillarAPI.addDiskTexture(Item.recordWait.itemID, CraftingPillars.id + ":textures/models/disk_wait.png");
 	
+        NetworkRegistry.instance().registerGuiHandler(this, guiHandler);
+
 		if(FMLCommonHandler.instance().getEffectiveSide().isClient())
 		{
 			MinecraftForge.EVENT_BUS.register(new PillarSoundHandler());
