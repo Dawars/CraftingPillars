@@ -256,8 +256,7 @@ public class TileEntityBrewingPillar extends BaseTileEntity implements
 		super.onInventoryChanged();
 
 		if (!this.worldObj.isRemote)
-			CraftingPillars.proxy.sendToPlayers(this.getDescriptionPacket(),
-					this.worldObj, this.xCoord, this.yCoord, this.zCoord, 64);
+			CraftingPillars.proxy.sendToPlayers(this.getDescriptionPacket(), this.worldObj, this.xCoord, this.yCoord, this.zCoord, 64);
 	}
 
 	public void dropItemFromSlot(int slot, int amount, EntityPlayer player) {

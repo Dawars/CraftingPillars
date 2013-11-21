@@ -19,6 +19,7 @@ public class AdventCalendar extends BaseItem
      */
     public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player)
     {
+    	System.out.println("opening gui...");
     	player.openGui(CraftingPillars.getInstance(), GuiIds.ADVENT_CALENDAR, world, (int) player.posX, (int) player.posY, (int) player.posZ);
         return item;
     }

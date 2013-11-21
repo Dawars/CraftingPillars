@@ -93,7 +93,8 @@ public class CraftingPillars
 	public static Block blockDiskPlayerPillar;
 	
 	public static Item discElysium;
-	
+	public static Item itemCalendar;
+
 	public static boolean floatingItems = true, rayTrace = false, renderHitBoxes = true, winter;
 	
 	public static final Achievement achievementGettingStarted = new Achievement(509, "gettingstarted", -2, 0, /* blockCraftingPillar */Block.stoneBrick, AchievementList.openInventory).registerAchievement();
@@ -163,18 +164,20 @@ public class CraftingPillars
             LanguageRegistry.instance().addStringLocalization(CraftingPillars.id + ":UranusParadiseShort", "en_US", "Elysium - Uranus Paradise Short");
 
 			Property idAdventCalendar = CraftingPillars.config.getItem("idAdventCalendar.id", BlockIds.idAdventCalendar);
-			discElysium = new AdventCalendar(idAdventCalendar.getInt()).setUnlocalizedName("adventCalendar");
-            
+			itemCalendar = new AdventCalendar(idAdventCalendar.getInt()).setUnlocalizedName("adventCalendar");
+            LanguageRegistry.instance().addStringLocalization(itemCalendar.getUnlocalizedName() + ".name", "en_US", "Advent Calendar");
+
 			GameRegistry.registerTileEntity(TileEntityExtendPillar.class, "TileEntityExtendPillar");
 			GameRegistry.registerTileEntity(TileEntityShowOffPillar.class, "TileEntityShowOffPillar");
 			GameRegistry.registerTileEntity(TileEntityCraftingPillar.class, "TileEntityCraftingPillar");
 			GameRegistry.registerTileEntity(TileEntityFurnacePillar.class, "TileEntityFurnacePillar");
-			
+
 			GameRegistry.registerTileEntity(TileEntityAnvilPillar.class, "TileEntityAnvilPillar");
 			GameRegistry.registerTileEntity(TileEntityTankPillar.class, "TileEntityTankPillar");
 			GameRegistry.registerTileEntity(TileEntityEnchantmentPillar.class, "TileEntityEnchantmentPillar");
 			GameRegistry.registerTileEntity(TileEntityBrewingPillar.class, "TileEntityBrewingPillar");
 			GameRegistry.registerTileEntity(TileEntityDiskPlayerPillar.class, "TileEntityDiskPlayerPillar");
+			
 			
 			LanguageRegistry.instance().addStringLocalization("itemGroup.CraftingPillars", "en_US", "Crafting Pillars");
 			LanguageRegistry.instance().addStringLocalization("itemGroup.CraftingPillars", "hu_HU", "Barkácsoszlopok");
