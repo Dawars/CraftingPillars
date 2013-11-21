@@ -4,6 +4,7 @@ import java.util.Random;
 
 import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.client.gui.BaseContainer;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
@@ -29,21 +30,52 @@ public class ContainerAdventCalendar extends BaseContainer implements IInventory
 		{
 			
 		}
+		
+		@Override
+		public boolean canTakeStack(EntityPlayer player)
+		{
+			return false;
+		}
 	}
 	
-	private static ItemStack[] inventory = new ItemStack[24];
+	private ItemStack[] inventory = new ItemStack[24];
 	private EntityPlayer player;
 	
 	private static Random rand = new Random();
+	private static ItemStack[] adventItems = new ItemStack[]{new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
+															new ItemStack(CraftingPillars.blockAnvilPillar.blockID, 1, 0),
+															new ItemStack(Block.coalBlock.blockID, 1, 0),
+															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
+															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
+															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
+															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
+															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
+															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
+															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
+															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
+															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
+															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
+															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
+															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
+															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
+															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
+															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
+															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
+															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
+															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
+															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
+															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
+															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0)};
 	
-	public ContainerAdventCalendar(InventoryPlayer player_inventory, EntityPlayer player)
+	public ContainerAdventCalendar(InventoryPlayer inventoryPlayer, EntityPlayer player)
 	{// FIXME: shift crash
-		super(inventory.length);
+		super(24);
 		this.player = player;
 		
 		for(int i = 0; i < 24; i++)
 		{
 			this.addSlotToContainer(new AdventSlot(this, i, (i%4)*44 + 54, (i/4)*30 + 53));
+			this.setInventorySlotContents(i, adventItems[i]);
 		}
 		
 		/*int i;
