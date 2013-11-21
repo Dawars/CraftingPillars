@@ -24,7 +24,7 @@ import net.minecraftforge.fluids.IFluidTank;
 
 public class TileEntityTankPillar extends BaseTileEntity implements IFluidHandler
 {
-	public final FluidTank tank = new FluidTank((int) FluidContainerRegistry.BUCKET_VOLUME * 10);
+	public final FluidTank tank = new FluidTank((int) FluidContainerRegistry.BUCKET_VOLUME * 16);
 	
 	public List<Blobs> blobs;
 	
@@ -77,9 +77,9 @@ public class TileEntityTankPillar extends BaseTileEntity implements IFluidHandle
 							this.texIndieces[i][j][k] = random.nextInt(256);
 			}
 			
-			while(this.blobs.size() < this.tank.getFluidAmount()/FluidContainerRegistry.BUCKET_VOLUME+1)
+			while(this.blobs.size() < this.tank.getFluidAmount()/FluidContainerRegistry.BUCKET_VOLUME)
 				this.addBlob();
-			while(this.blobs.size() > this.tank.getFluidAmount()/FluidContainerRegistry.BUCKET_VOLUME+1)
+			while(this.blobs.size() > this.tank.getFluidAmount()/FluidContainerRegistry.BUCKET_VOLUME)
 				this.removeBlob();
 			
 			int i = random.nextInt(16);
@@ -91,8 +91,8 @@ public class TileEntityTankPillar extends BaseTileEntity implements IFluidHandle
 			for(i = 0; i < this.blobs.size(); i++)
 				this.blobs.get(i).update(0.1F);
 		}
-		//if(tank.getFluid() != null && worldObj.isRemote)
-			//System.out.println((worldObj.isRemote ? "Client: " : "Server: ")+tank.getFluid().amount + " " + FluidRegistry.getFluidName(tank.getFluid()));
+//		if(tank.getFluid() != null && worldObj.isRemote)
+//			System.out.println((worldObj.isRemote ? "Client: " : "Server: ")+tank.getFluid().amount + " " + FluidRegistry.getFluidName(tank.getFluid()));
 	}
 	
 	/* SAVING & LOADING */
@@ -138,8 +138,9 @@ public class TileEntityTankPillar extends BaseTileEntity implements IFluidHandle
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
 	{
+		int res = this.tank.fill(resource, doFill);
 		this.onInventoryChanged();
-		return this.tank.fill(resource, doFill);
+		return res;
 	}
 	
 	@Override
@@ -151,8 +152,9 @@ public class TileEntityTankPillar extends BaseTileEntity implements IFluidHandle
 	@Override
 	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
 	{
+		FluidStack res = this.tank.drain(maxDrain, doDrain);
 		this.onInventoryChanged();
-		return this.tank.drain(maxDrain, doDrain);
+		return res;
 	}
 	
 	@Override
@@ -171,5 +173,10 @@ public class TileEntityTankPillar extends BaseTileEntity implements IFluidHandle
 	public FluidTankInfo[] getTankInfo(ForgeDirection from)
 	{
 		return new FluidTankInfo[] { tank.getInfo() };
+	}
+	
+	public int getFluidLightLevel() {
+		FluidStack tankFluid = tank.getFluid();
+        return tankFluid == null ? 0 : tankFluid.getFluid().getLuminosity(tankFluid);
 	}
 }

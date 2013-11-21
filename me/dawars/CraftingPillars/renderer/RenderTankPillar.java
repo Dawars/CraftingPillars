@@ -30,7 +30,6 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler
 {
 	private ResourceLocation TEXTURE_TANKPILLAR;
-	private static final ResourceLocation TEXTURE_LAVA = new ResourceLocation("textures/blocks/lava_flow.png");
 	
 	public static ModelBase model = new ModelBase()
 	{
@@ -484,9 +483,8 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 						field[i][j][k] = 0F;
 					}
 		
-//		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_LAVA); // TODO fluid texture
 		ResourceLocation BLOCK_TEXTURE = TextureMap.locationBlocksTexture;
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture(BLOCK_TEXTURE); // TODO fluid texture
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(BLOCK_TEXTURE);
 		
 		//change texture coord according to icon coords
 

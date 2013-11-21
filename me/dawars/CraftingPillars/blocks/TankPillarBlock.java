@@ -11,12 +11,14 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.src.ModLoader;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -50,15 +52,6 @@ public class TankPillarBlock extends BaseBlockContainer
 	@Override
 	public boolean onBlockActivated(World world, int i, int j, int k, EntityPlayer entityplayer, int side, float hitX, float hitY, float hitZ)
 	{
-		if(world.isRemote)
-		{
-			for(int e = 0; e < ((TileEntityTankPillar) world.getBlockTileEntity(i, j, k)).blobs.size(); e++)
-			{
-				((TileEntityTankPillar) world.getBlockTileEntity(i, j, k)).blobs.get(e).update(0.1F);
-			}
-			return true;
-		}
-		
 		ItemStack current = entityplayer.inventory.getCurrentItem();
 		if(current != null)
 		{
@@ -73,8 +66,13 @@ public class TankPillarBlock extends BaseBlockContainer
 				
 				if(qty != 0 && !entityplayer.capabilities.isCreativeMode)
 				{
-					// entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem,
-					// Utils.consumeItem(current));
+					entityplayer.getCurrentEquippedItem().stackSize--;
+
+					if(current.getItem().getContainerItemStack(current) != null)
+					{
+						entityplayer.inventory.addItemStackToInventory(current.getItem().getContainerItemStack(current));
+					}
+					
 				}
 				
 				return true;
@@ -101,14 +99,11 @@ public class TankPillarBlock extends BaseBlockContainer
 									return false;
 								else
 								{
-									// entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem,
-									// Utils.consumeItem(current));
+									entityplayer.getCurrentEquippedItem().stackSize--;
 								}
 							}
 							else
 							{
-								// entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem,
-								// Utils.consumeItem(current));
 								entityplayer.inventory.setInventorySlotContents(entityplayer.inventory.currentItem, filled);
 							}
 						}
