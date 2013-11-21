@@ -1,10 +1,14 @@
 package me.dawars.CraftingPillars.container;
 
+import java.util.Random;
+
 import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.gui.BaseContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
@@ -15,10 +19,34 @@ public class ContainerAdventCalendar extends BaseContainer implements IInventory
 
     private static ItemStack[] inventory = new ItemStack[24];
     private EntityPlayer player;
+    
+    private static Random rand = new Random();
+    
 	public ContainerAdventCalendar(InventoryPlayer player_inventory, EntityPlayer player)
-	{
+	{//FIXME: shift crash
         super(inventory.length);
         this.player = player;
+        
+        int i;
+        for (i = 0; i < 4; ++i)
+        {
+        	for (int j = 0; j < 6; ++j)
+            {
+            	this.addSlotToContainer(new Slot(this, j+i*6, 8 + j * 18, i * 18));
+            }
+        }
+        for (i = 0; i < 3; ++i)
+        {
+            for (int j = 0; j < 9; ++j)
+            {
+                this.addSlotToContainer(new Slot(player_inventory, j + i * 9 + 9, 48 + j * 18, 174 + i * 18));
+            }
+        }
+
+        for (i = 0; i < 9; ++i)
+        {
+            this.addSlotToContainer(new Slot(player_inventory, i, 48 + i * 18, 232));
+        }
 	}
 
 	@Override

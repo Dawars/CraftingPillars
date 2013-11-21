@@ -17,8 +17,8 @@ public class GuiAdventCalendar extends BaseGui
 	public GuiAdventCalendar(InventoryPlayer inventoryplayer, EntityPlayer player)
 	{
         super(new ContainerAdventCalendar(inventoryplayer, player));
-        this.xSize = 180;
-        this.ySize = 228;
+        this.xSize = 256;
+        this.ySize = 256;
     }
 
 	@Override
@@ -38,7 +38,7 @@ public class GuiAdventCalendar extends BaseGui
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(TEXTURE_ADVENT_CALENDAR);
         int k = (this.width - this.xSize) / 2;
-        int l = (this.height - this.ySize) / 2;
+        int l = (this.height -this.ySize) / 2;
         this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
     }
 }
