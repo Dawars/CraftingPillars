@@ -8,7 +8,7 @@ import java.util.Date;
 
 import me.dawars.CraftingPillars.api.CraftingPillarAPI;
 import me.dawars.CraftingPillars.blocks.*;
-import me.dawars.CraftingPillars.gui.GuiHandler;
+import me.dawars.CraftingPillars.client.gui.GuiHandler;
 import me.dawars.CraftingPillars.handlers.*;
 import me.dawars.CraftingPillars.items.*;
 import me.dawars.CraftingPillars.tiles.*;

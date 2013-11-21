@@ -1,4 +1,4 @@
-package me.dawars.CraftingPillars.gui;
+package me.dawars.CraftingPillars.client.gui;
 
 import net.minecraft.inventory.Container;
 

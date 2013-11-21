@@ -1,4 +1,4 @@
-package me.dawars.CraftingPillars.gui;
+package me.dawars.CraftingPillars.client.gui;
 
 import me.dawars.CraftingPillars.container.ContainerAdventCalendar;
 import net.minecraft.entity.player.EntityPlayer;

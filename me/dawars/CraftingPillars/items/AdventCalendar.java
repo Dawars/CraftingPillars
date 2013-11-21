@@ -1,14 +1,13 @@
 package me.dawars.CraftingPillars.items;
 
 import me.dawars.CraftingPillars.CraftingPillars;
-import me.dawars.CraftingPillars.gui.GuiIds;
+import me.dawars.CraftingPillars.client.gui.GuiIds;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public class AdventCalendar extends BaseItem
 {
-
 	public AdventCalendar(int id)
 	{
 		super(id);
@@ -19,7 +18,6 @@ public class AdventCalendar extends BaseItem
      */
     public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player)
     {
-    	System.out.println("opening gui...");
     	player.openGui(CraftingPillars.getInstance(), GuiIds.ADVENT_CALENDAR, world, (int) player.posX, (int) player.posY, (int) player.posZ);
         return item;
     }
