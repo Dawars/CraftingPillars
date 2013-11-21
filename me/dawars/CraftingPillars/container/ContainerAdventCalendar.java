@@ -25,6 +25,14 @@ public class ContainerAdventCalendar extends BaseContainer implements IInventory
 			super(inventory, i, x, y);
 		}
 		
+		/*@Override
+		public void onPickupFromSlot(EntityPlayer player, ItemStack stack)
+		{
+			super.onPickupFromSlot(player, stack);
+			if(!player.worldObj.isRemote)
+				player.inventory.addItemStackToInventory(stack);
+		}*/
+		
 		@Override
 		public void putStack(ItemStack stack)
 		{
@@ -34,7 +42,7 @@ public class ContainerAdventCalendar extends BaseContainer implements IInventory
 		@Override
 		public boolean canTakeStack(EntityPlayer player)
 		{
-			return false;
+			return true;
 		}
 	}
 	
