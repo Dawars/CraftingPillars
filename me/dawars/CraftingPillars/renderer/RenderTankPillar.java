@@ -487,13 +487,24 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(BLOCK_TEXTURE);
 		
 		//change texture coord according to icon coords
-
+		
+		glBegin(GL_QUADS);
+		
+		/*glNormal3f(0F, 1F, 0F);
+		glTexCoord2f(0F, 0F);
+		glVertex3f(0F, 1.25F, 0F);
+		glTexCoord2f(0F, 1F);
+		glVertex3f(0F, 1.25F, 1F);
+		glTexCoord2f(1F, 1F);
+		glVertex3f(1F, 1.25F, 1F);
+		glTexCoord2f(1F, 0F);
+		glVertex3f(1F, 1.25F, 0F);*/
+		
 		for(int i = 0; i < 16; i++)
 			for(int j = 0; j < 16; j++)
 				for(int k = 0; k < 16; k++)
 					if((int)field[i][j][k] > 0)
 					{
-						glBegin(GL_QUADS);
 						Icon icon = tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid.getFluid().getStillIcon();
 						int tx = tank.texIndieces[i][j][k]%16;
 						int ty = tank.texIndieces[i][j][k]/16;
@@ -502,8 +513,8 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 						
 						//System.out.println(16*icon.getMinU()+" "+16*icon.getMinV());
 						
-						float minX = (int)(tx+icon.getMinU()*256F)/256F;
-						float maxX = (int)(tx+1+icon.getMinU()*256F)/256F;
+						float minX = (int)(tx+icon.getMinU()*512F)/512F;
+						float maxX = (int)(tx+1+icon.getMinU()*512F)/512F;
 						float minY = (int)(ty+icon.getMinV()*256F)/256F;
 						float maxY = (int)(ty+1+icon.getMinV()*256F)/256F;
 						
@@ -573,10 +584,9 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 							glTexCoord2f(maxX, minY);
 							glVertex3f((i)/16F, (j)/16F, (k)/16F);
 						}
-						
-						glEnd();
 					}
 		
+		glEnd();
 		glPopAttrib();
 		glPopMatrix();
 	}
