@@ -183,7 +183,8 @@ public class ContainerAdventCalendar extends BaseContainer implements IInventory
 	@Override
 	public String getInvName()
 	{
-		return CraftingPillars.itemCalendar.getUnlocalizedName() + ".name";
+		return "Advent Calendar";
+//		return CraftingPillars.itemCalendar.getUnlocalizedName() + ".name";
 	}
 	
 	@Override

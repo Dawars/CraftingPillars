@@ -24,7 +24,7 @@ public class GuiAdventCalendar extends BaseGui
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-		String s = I18n.getString(CraftingPillars.itemCalendar.getUnlocalizedName() + ".name");
+		String s = I18n.getString(/*CraftingPillars.itemCalendar.getUnlocalizedName() + */".name");
         this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 35, 4210752);
         //this.fontRenderer.drawString(I18n.getString("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
     }
