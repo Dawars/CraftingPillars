@@ -322,7 +322,7 @@ public class RenderFreezerPillar extends TileEntitySpecialRenderer implements IS
 			}
 			
 			//processed item
-			if(tank.canFreeze() && tank.freezingTime > 0)
+			if(tank.canFreeze() && tank.freezingTime > 0 && !tank.isEmpty)
 			{
 				glPushMatrix();
 					glTranslatef(0F, 1.75F - tank.freezingTime/150F, 0F);

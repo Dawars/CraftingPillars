@@ -55,7 +55,8 @@ public class TileEntityFreezerPillar extends BaseTileEntity implements IInventor
 
 	public int freezingTime;
 	public boolean showNum = false;
-	
+	public boolean isEmpty = true;
+
 	public List<Blobs> blobs;
 	
 	public TileEntityFreezerPillar()
@@ -121,6 +122,8 @@ public class TileEntityFreezerPillar extends BaseTileEntity implements IInventor
 	}
 
 	public boolean canFreeze() {
+		if(this.isEmpty)
+			return false;
 		if(this.tank.getFluidAmount() >= FluidContainerRegistry.BUCKET_VOLUME)
 		{
 			if(this.inventory[0] == null || this.inventory[0].stackSize < this.getInventoryStackLimit())
@@ -142,7 +145,12 @@ public class TileEntityFreezerPillar extends BaseTileEntity implements IInventor
 				inventory[0].stackSize += itemstack.stackSize;
 			
 			this.drain(ForgeDirection.UNKNOWN, FluidContainerRegistry.BUCKET_VOLUME, true);
+			if(this.tank.getFluidAmount() <= 0)
+				this.isEmpty = true;
+			else
+				this.isEmpty = false;
 		}
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		this.onInventoryChanged();
 	}
 	@Override
@@ -164,6 +172,7 @@ public class TileEntityFreezerPillar extends BaseTileEntity implements IInventor
 		
 		this.freezingTime = nbt.getInteger("freezingTime");
 		this.showNum = nbt.getBoolean("showNum");
+		this.isEmpty = nbt.getBoolean("isEmpty");
 	}
 	
 	@Override
@@ -187,6 +196,7 @@ public class TileEntityFreezerPillar extends BaseTileEntity implements IInventor
 		
 		nbt.setInteger("freezingTime", this.freezingTime);
 		nbt.setBoolean("showNum", this.showNum);
+		nbt.setBoolean("isEmpty", this.isEmpty);
 	}
 	
 	@Override
@@ -346,6 +356,8 @@ public class TileEntityFreezerPillar extends BaseTileEntity implements IInventor
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
 	{
+		if(doFill && resource.amount > 0)
+			this.isEmpty = false;
 		int res = this.tank.fill(resource, doFill);
 		this.onInventoryChanged();
 		return res;
@@ -361,6 +373,8 @@ public class TileEntityFreezerPillar extends BaseTileEntity implements IInventor
 	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
 	{
 		FluidStack res = this.tank.drain(maxDrain, doDrain);
+		if(this.tank.getFluidAmount() <= 0)
+			this.isEmpty = true;
 		this.onInventoryChanged();
 		return res;
 	}
