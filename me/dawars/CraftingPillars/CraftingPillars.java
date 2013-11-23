@@ -220,11 +220,7 @@ public class CraftingPillars
 		CraftingPillarAPI.addDiskTexture(Item.recordWait.itemID, CraftingPillars.id + ":textures/models/disk_wait.png");
 	
         NetworkRegistry.instance().registerGuiHandler(this, guiHandler);
-
-		if(FMLCommonHandler.instance().getEffectiveSide().isClient())
-		{
-			MinecraftForge.EVENT_BUS.register(new PillarSoundHandler());
-		}
+        MinecraftForge.EVENT_BUS.register(new PillarEventHandler());
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 	
@@ -251,13 +247,16 @@ public class CraftingPillars
 		return false;
 	}
 	
-	public static int getDayInDecember()
+	public static int getNumberOfCalendarElements()
 	{
 		Calendar c = Calendar.getInstance();
-		if(c.get(Calendar.MONTH) == Calendar.DECEMBER)
-			return c.get(Calendar.DAY_OF_MONTH);
+		return 11;
+		/*if(c.get(Calendar.MONTH) == Calendar.DECEMBER)
+			return Math.min(c.get(Calendar.DAY_OF_MONTH), 24);
+		else if(c.get(Calendar.MONTH) == Calendar.JANUARY)
+			return 24;
 		else
-			return 0;
+			return 0;*/
 	}
 	
 	public static boolean isWinterTime()

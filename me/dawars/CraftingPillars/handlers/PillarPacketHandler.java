@@ -5,6 +5,7 @@ import me.dawars.CraftingPillars.blocks.BasePillar;
 import me.dawars.CraftingPillars.container.ContainerAdventCalendar;
 import me.dawars.CraftingPillars.network.packets.PacketInGameClick;
 import me.dawars.CraftingPillars.network.packets.PacketInGuiClick;
+import me.dawars.CraftingPillars.properties.CalendarPlayerProps;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -37,7 +38,7 @@ public class PillarPacketHandler implements IPacketHandler
 			if(stack != null)
 			{
 				entity.inventory.addItemStackToInventory(stack);
-				calendar.setInventorySlotContents(click.slot, null);
+				CalendarPlayerProps.get(entity).discovered[click.slot] = true;
 				entity.inventory.onInventoryChanged();
 			}
 		}

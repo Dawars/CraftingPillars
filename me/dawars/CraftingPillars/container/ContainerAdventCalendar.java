@@ -1,15 +1,18 @@
 package me.dawars.CraftingPillars.container;
 
+import java.util.Calendar;
 import java.util.Random;
 
 import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.client.gui.BaseContainer;
+import me.dawars.CraftingPillars.properties.CalendarPlayerProps;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnace;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
@@ -32,10 +35,11 @@ public class ContainerAdventCalendar extends BaseContainer implements IInventory
 		}
 	}
 	
-	private ItemStack[] inventory = new ItemStack[24];
+	private ItemStack[] inventory;
 	private EntityPlayer player;
-	public boolean[] discovered = new boolean[24];
+	public boolean[] discovered;
 	
+	// TODO items
 	private static ItemStack[] adventItems = new ItemStack[]{new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
 															new ItemStack(CraftingPillars.blockAnvilPillar.blockID, 1, 0),
 															new ItemStack(Block.coalBlock.blockID, 1, 0),
@@ -63,14 +67,35 @@ public class ContainerAdventCalendar extends BaseContainer implements IInventory
 	
 	public ContainerAdventCalendar(InventoryPlayer inventoryPlayer, EntityPlayer player)
 	{
-		super(24);
+		super(CraftingPillars.getNumberOfCalendarElements());
+		this.player = player;
+		this.inventory = new ItemStack[CraftingPillars.getNumberOfCalendarElements()];
+		if(CalendarPlayerProps.get(this.player) != null)
+		{
+			if(this.player.worldObj.isRemote)
+				System.out.println("Client props");
+			else
+				System.out.println("Server props");
+			this.discovered = CalendarPlayerProps.get(this.player).discovered;
+		}
+		else
+			this.discovered = new boolean[24];
 		this.player = player;
 		
-		for(int i = 0; i < 24; i++)
+		for(int i = 0; i < this.inventory.length; i++)
 		{
 			this.addSlotToContainer(new AdventSlot(this, i, (i%4)*44 + 54, (i/4)*30 + 53));
-			this.setInventorySlotContents(i, adventItems[i]);
+			if(CalendarPlayerProps.get(this.player).discovered[i] || i == this.inventory.length-1)
+				this.setInventorySlotContents(i, adventItems[i]);
+			else
+				this.setInventorySlotContents(i, new ItemStack(Item.goldNugget.itemID, 1, 0)); // TODO chocolate
 		}
+	}
+	
+	public void setDiscovered(int slot)
+	{
+		this.discovered[slot] = true;
+		CalendarPlayerProps.get(this.player).discovered[slot] = true;
 	}
 	
 	@Override

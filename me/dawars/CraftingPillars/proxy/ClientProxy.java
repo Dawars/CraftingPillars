@@ -9,6 +9,7 @@ import java.io.InputStream;
 
 import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.client.*;
+import me.dawars.CraftingPillars.handlers.PillarSoundHandler;
 import me.dawars.CraftingPillars.renderer.*;
 import me.dawars.CraftingPillars.tiles.*;
 import net.minecraft.block.Block;
@@ -44,6 +45,7 @@ public class ClientProxy extends CommonProxy
 	public void init()
 	{
 		VersionChecker.check();
+		MinecraftForge.EVENT_BUS.register(new PillarSoundHandler());
 		//Minecraft.getMinecraft().gameSettings.keyBindAttack = new KeyBindingReplaceAttack();
 		//Minecraft.getMinecraft().gameSettings.keyBindUseItem = new KeyBindingReplaceUse();
 		
