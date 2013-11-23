@@ -36,44 +36,74 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileEntityFreezerPillar extends BaseTileEntity implements IInventory, ISidedInventory
+public class TileEntityFreezerPillar extends BaseTileEntity implements IInventory, ISidedInventory, IFluidHandler
 {
 	private ItemStack[] inventory = new ItemStack[this.getSizeInventory()];
-	public int burnTime, cookTime, xp;
 	
-	// @SideOnly(Side.CLIENT)
-	public float rot = 0F;
+	public final FluidTank tank = new FluidTank((int) FluidContainerRegistry.BUCKET_VOLUME * 16);
+
+	public int freezingTime;
+	
 	public boolean showNum = false;
 
 	@Override
 	public void updateEntity()
 	{
-//		System.out.println((this.worldObj.isRemote ? "Client: " : "Server: ")+this.cookTime+" "+this.burnTime);
-		
-		if(this.worldObj.isRemote)
+		if(worldObj.isRemote)
 		{
-			this.rot += 0.1F;
-			if(this.rot >= 360F)
-				this.rot -= 360F;
+			if(canFreeze())
+			{
+				if(this.freezingTime > 0)
+					this.freezingTime--;
+				else
+					this.freezingTime = 150;
+			} else {
+				this.freezingTime = 150;
+			}
 		}
 		
-		if(this.burnTime > 0)
-			this.burnTime--;
-		else if(this.canBurn())
-			this.burnItem();
-		
-		if(this.burnTime > 0 && this.canSmelt())
-			if(this.cookTime > 0)
-				this.cookTime--;
-			else
-				this.smeltItem();
-		
-		//this.onInventoryChanged();
-		
+		if(!worldObj.isRemote)
+		{
+			if(canFreeze())
+			{
+				if(this.freezingTime > 0)
+				{
+					this.freezingTime--;
+				} else {
+					this.freezingTime = 150;
+					freezeWater();
+				}
+			} else {
+				this.freezingTime = 150;
+			}
+		}
 		super.updateEntity();
 	}
+
+	public boolean canFreeze() {
+		return this.tank.getFluidAmount() >= FluidContainerRegistry.BUCKET_VOLUME && this.inventory[0].stackSize < this.getInventoryStackLimit();
+	}
+
 	
+	private void freezeWater() {
+		int amount = 0;
+		if(this.inventory[0] == null){
+			amount = 1;
+		} else {
+			amount = this.getStackInSlot(0).stackSize + 1;
+		}
+		this.setInventorySlotContents(0, new ItemStack(Block.ice, amount));
+		
+		this.drain(ForgeDirection.UNKNOWN, FluidContainerRegistry.BUCKET_VOLUME, true);
+		this.onInventoryChanged();
+	}
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)
 	{
@@ -90,8 +120,7 @@ public class TileEntityFreezerPillar extends BaseTileEntity implements IInventor
 				this.inventory[j] = ItemStack.loadItemStackFromNBT(nbtslot);
 		}
 		
-		this.burnTime = nbt.getInteger("BurnTime");
-		this.cookTime = nbt.getInteger("CookTime");
+		this.freezingTime = nbt.getInteger("freezingTime");
 		this.showNum = nbt.getBoolean("showNum");
 	}
 	
@@ -100,8 +129,6 @@ public class TileEntityFreezerPillar extends BaseTileEntity implements IInventor
 	{
 		super.writeToNBT(nbt);
 		
-		nbt.setInteger("BurnTime", this.burnTime);
-		nbt.setInteger("CookTime", this.cookTime);
 		
 		NBTTagList nbtlist = new NBTTagList();
 		for(int i = 0; i < this.getSizeInventory(); i++)
@@ -115,6 +142,8 @@ public class TileEntityFreezerPillar extends BaseTileEntity implements IInventor
 			}
 		}
 		nbt.setTag("Items", nbtlist);
+		
+		nbt.setInteger("freezingTime", this.freezingTime);
 		nbt.setBoolean("showNum", this.showNum);
 	}
 	
@@ -150,17 +179,6 @@ public class TileEntityFreezerPillar extends BaseTileEntity implements IInventor
 			itemEntity.setEntityItemStack(this.decrStackSize(slot, amount));
 			this.worldObj.spawnEntityInWorld(itemEntity);
 			
-			//player.dropPlayerItem(this.decrStackSize(slot, amount));
-			
-			/*
-			EntityItem droppedItem = new EntityItem(this.worldObj, this.xCoord + 0.5D, this.yCoord + 1.5D, this.zCoord + 0.5D);
-			droppedItem.setEntityItemStack(this.decrStackSize(slot, amount));
-			droppedItem.motionX = random.nextDouble() / 4 - 0.125D;
-			droppedItem.motionZ = random.nextDouble() / 4 - 0.125D;
-			droppedItem.motionY = random.nextDouble() / 4;
-			this.worldObj.spawnEntityInWorld(droppedItem);
-			*/
-			
 			this.onInventoryChanged();
 		}
 	}
@@ -168,7 +186,7 @@ public class TileEntityFreezerPillar extends BaseTileEntity implements IInventor
 	@Override
 	public int getSizeInventory()
 	{
-		return 3;
+		return 1;
 	}
 	
 	@Override
@@ -234,7 +252,7 @@ public class TileEntityFreezerPillar extends BaseTileEntity implements IInventor
 	@Override
 	public String getInvName()
 	{
-		return "Furnace Pillar";
+		return "Freezer Pillar";
 	}
 	
 	@Override
@@ -268,88 +286,58 @@ public class TileEntityFreezerPillar extends BaseTileEntity implements IInventor
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side)
 	{
-		return new int[]{0, 1, 2};
+		return new int[]{0};
 	}
 	
 	@Override
 	public boolean canInsertItem(int slot, ItemStack itemstack, int side)
 	{
-		if(slot == 0 && FurnaceRecipes.smelting().getSmeltingResult(itemstack) != null && (this.inventory[slot] == null || this.inventory[slot].isItemEqual(itemstack)))//Input
-			return true;
-		if(slot == 1 && TileEntityFurnace.isItemFuel(itemstack) && (this.inventory[slot] == null || this.inventory[slot].isItemEqual(itemstack)))//Fuel
-			return true;
 		return false;
 	}
 	
 	@Override
 	public boolean canExtractItem(int slot, ItemStack itemstack, int side)
 	{
-		return slot == 2;
-	}
-	
-	public boolean canSmelt()
-	{
-		if(this.inventory[0] == null)
-			return false;
-		ItemStack result = FurnaceRecipes.smelting().getSmeltingResult(this.inventory[0]);
-		if(result == null)
-			return false;
-		if(this.inventory[2] != null)
-		{
-			if(!this.inventory[2].isItemEqual(result))
-				return false;
-			if(this.inventory[2].stackSize + result.stackSize >= result.getMaxStackSize())
-				return false;
-			if(this.inventory[2].stackSize + result.stackSize >= this.getInventoryStackLimit())
-				return false;
-		}
-		if(result.stackSize >= this.getInventoryStackLimit())
-			return false;
 		return true;
 	}
 	
-	public void smeltItem()
+	@Override
+	public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
 	{
-		this.cookTime = 150;
-		if(this.worldObj.isRemote)
-			return;
-		
-		ItemStack itemstack = FurnaceRecipes.smelting().getSmeltingResult(this.inventory[0]);
-		this.xp += FurnaceRecipes.smelting().getExperience(this.inventory[0]);
-		
-		if(this.inventory[2] == null)
-			this.inventory[2] = itemstack.copy();
-		else if(this.inventory[2].isItemEqual(itemstack))
-			inventory[2].stackSize += itemstack.stackSize;
-		
-		this.inventory[0].stackSize--;
-		
-		if(this.inventory[0].stackSize <= 0)
-			this.inventory[0] = null;
-		
+		int res = this.tank.fill(resource, doFill);
 		this.onInventoryChanged();
+		return res;
 	}
 	
-	public boolean canBurn()
+	@Override
+	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
 	{
-		if(this.inventory[1] == null)
-			return false;
-		if(TileEntityFurnace.getItemBurnTime(this.inventory[1]) <= 0)
-			return false;
-		return this.canSmelt();
+		return this.drain(from, resource.amount, doDrain);
 	}
 	
-	public void burnItem()
+	@Override
+	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
 	{
-		if(this.worldObj.isRemote)
-			return;
-		
-		if(this.cookTime == 0)
-			this.cookTime = 150;
-		this.burnTime = TileEntityFurnace.getItemBurnTime(this.inventory[1]);
-		this.inventory[1].stackSize--;
-		if(this.inventory[1].stackSize <= 0)
-			this.inventory[1] = null;
+		FluidStack res = this.tank.drain(maxDrain, doDrain);
 		this.onInventoryChanged();
+		return res;
+	}
+	
+	@Override
+	public boolean canFill(ForgeDirection from, Fluid fluid)
+	{
+		return true;
+	}
+	
+	@Override
+	public boolean canDrain(ForgeDirection from, Fluid fluid)
+	{
+		return true;
+	}
+	
+	@Override
+	public FluidTankInfo[] getTankInfo(ForgeDirection from)
+	{
+		return new FluidTankInfo[] { tank.getInfo() };
 	}
 }
