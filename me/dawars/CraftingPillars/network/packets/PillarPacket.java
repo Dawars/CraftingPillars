@@ -11,6 +11,13 @@ import net.minecraft.network.packet.Packet250CustomPayload;
 
 public abstract class PillarPacket
 {
+	public String channel;
+	
+	public PillarPacket(String channel)
+	{
+		this.channel = channel;
+	}
+	
 	public Packet250CustomPayload pack()
 	{
 		try
@@ -18,7 +25,7 @@ public abstract class PillarPacket
 			ByteArrayOutputStream bos = new ByteArrayOutputStream(this.getSize());
 			DataOutputStream out = new DataOutputStream(bos);
 			this.writePacketData(out);
-			return new Packet250CustomPayload(CraftingPillars.packetChannel, bos.toByteArray());
+			return new Packet250CustomPayload(this.channel, bos.toByteArray());
 		}
 		catch(IOException e)
 		{

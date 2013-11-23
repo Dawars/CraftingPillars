@@ -41,7 +41,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @Mod(name = CraftingPillars.name, version = CraftingPillars.version, useMetadata = false, modid = CraftingPillars.id, dependencies = "required-after:Forge@[8.9.0,)")
-@NetworkMod(clientSideRequired = true, serverSideRequired = false, channels = {CraftingPillars.packetChannel}, packetHandler = PillarPacketHandler.class)
+@NetworkMod(clientSideRequired = true, serverSideRequired = false, channels = {CraftingPillars.channelGame, CraftingPillars.channelGui}, packetHandler = PillarPacketHandler.class)
 public class CraftingPillars
 {
 	@Instance(CraftingPillars.id)
@@ -55,7 +55,8 @@ public class CraftingPillars
 	public static final String version = "1.4";
 	public static final String name = "Crafting Pillars";
 	public static final String id = "craftingpillars";
-	public static final String packetChannel = "PillarChannel";
+	public static final String channelGame = "PillarGameClick";
+	public static final String channelGui = "PillarGuiClick";
 	
 	// The Handler For Opening Guis
     private GuiHandler guiHandler = new GuiHandler();
@@ -94,7 +95,7 @@ public class CraftingPillars
 	public static Block blockDiskPlayerPillar;
 	
 	public static Item discElysium;
-//	public static Item itemCalendar;
+	public static Item itemCalendar;
 
 	public static boolean floatingItems = true, rayTrace = false, renderHitBoxes = true, winter;
 	
@@ -156,9 +157,9 @@ public class CraftingPillars
 			discElysium = new PillarRecord(idDiscElysium.getInt(), CraftingPillars.id + ":UranusParadiseShort").setUnlocalizedName("record");
             LanguageRegistry.instance().addStringLocalization(CraftingPillars.id + ":UranusParadiseShort", "en_US", "Elysium - Uranus Paradise Short");
 
-//			Property idAdventCalendar = CraftingPillars.config.getItem("idAdventCalendar.id", BlockIds.idAdventCalendar);
-//			itemCalendar = new AdventCalendar(idAdventCalendar.getInt()).setUnlocalizedName("adventCalendar");
-//            LanguageRegistry.instance().addStringLocalization(itemCalendar.getUnlocalizedName() + ".name", "en_US", "Advent Calendar");
+			Property idAdventCalendar = CraftingPillars.config.getItem("idAdventCalendar.id", BlockIds.idAdventCalendar);
+			itemCalendar = new AdventCalendar(idAdventCalendar.getInt()).setUnlocalizedName("adventCalendar");
+			LanguageRegistry.instance().addStringLocalization(itemCalendar.getUnlocalizedName() + ".name", "en_US", "Advent Calendar");
 
 			GameRegistry.registerTileEntity(TileEntityExtendPillar.class, "TileEntityExtendPillar");
 			GameRegistry.registerTileEntity(TileEntityShowOffPillar.class, "TileEntityShowOffPillar");

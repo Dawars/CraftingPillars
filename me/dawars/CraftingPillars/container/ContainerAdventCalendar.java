@@ -25,24 +25,10 @@ public class ContainerAdventCalendar extends BaseContainer implements IInventory
 			super(inventory, i, x, y);
 		}
 		
-		/*@Override
-		public void onPickupFromSlot(EntityPlayer player, ItemStack stack)
-		{
-			super.onPickupFromSlot(player, stack);
-			if(!player.worldObj.isRemote)
-				player.inventory.addItemStackToInventory(stack);
-		}*/
-		
-		@Override
-		public void putStack(ItemStack stack)
-		{
-			
-		}
-		
 		@Override
 		public boolean canTakeStack(EntityPlayer player)
 		{
-			return true;
+			return false;
 		}
 	}
 	
@@ -76,7 +62,7 @@ public class ContainerAdventCalendar extends BaseContainer implements IInventory
 															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0)};
 	
 	public ContainerAdventCalendar(InventoryPlayer inventoryPlayer, EntityPlayer player)
-	{// FIXME: shift crash
+	{
 		super(24);
 		this.player = player;
 		
@@ -85,27 +71,6 @@ public class ContainerAdventCalendar extends BaseContainer implements IInventory
 			this.addSlotToContainer(new AdventSlot(this, i, (i%4)*44 + 54, (i/4)*30 + 53));
 			this.setInventorySlotContents(i, adventItems[i]);
 		}
-		
-		/*int i;
-		for(i = 0; i < 4; ++i)
-		{
-			for(int j = 0; j < 6; ++j)
-			{
-				this.addSlotToContainer(new Slot(this, j + i * 6, 8 + j * 18, i * 18));
-			}
-		}
-		for(i = 0; i < 3; ++i)
-		{
-			for(int j = 0; j < 9; ++j)
-			{
-				this.addSlotToContainer(new Slot(player_inventory, j + i * 9 + 9, 48 + j * 18, 174 + i * 18));
-			}
-		}
-		
-		for(i = 0; i < 9; ++i)
-		{
-			this.addSlotToContainer(new Slot(player_inventory, i, 48 + i * 18, 232));
-		}*/
 	}
 	
 	@Override
@@ -199,28 +164,6 @@ public class ContainerAdventCalendar extends BaseContainer implements IInventory
 		return 64;
 	}
 	
-	// @Override
-	// public void onDataPacket(INetworkManager net, Packet132TileEntityData
-	// pkt) {
-	// NBTTagCompound nbt = pkt.data;
-	// this.readFromNBT(nbt);
-	// }
-	//
-	// @Override
-	// public Packet getDescriptionPacket() {
-	// NBTTagCompound nbt = new NBTTagCompound();
-	// this.writeToNBT(nbt);
-	// return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, nbt);
-	// }
-	
-	// @Override
-	// public void onInventoryChanged()
-	// {
-	// if (!this.player.worldObj.isRemote)
-	// CraftingPillars.proxy.sendToPlayer(this.player,
-	// this.getDescriptionPacket());
-	// }
-	
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer)
 	{
@@ -248,5 +191,4 @@ public class ContainerAdventCalendar extends BaseContainer implements IInventory
 	{
 		
 	}
-	
 }

@@ -6,7 +6,7 @@ import java.util.List;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import me.dawars.CraftingPillars.CraftingPillars;
-import me.dawars.CraftingPillars.network.packets.PacketClick;
+import me.dawars.CraftingPillars.network.packets.PacketInGameClick;
 import me.dawars.CraftingPillars.tiles.TileEntityAnvilPillar;
 import me.dawars.CraftingPillars.tiles.BaseTileEntityPillar;
 import net.minecraft.block.Block;
@@ -39,7 +39,7 @@ public abstract class BasePillar extends BaseBlockContainer
 						if(id > -1)
 						{
 							//System.out.println("Packet sent! "+button+" "+id+" "+x+" "+y+" "+z);
-							CraftingPillars.proxy.sendToServer(new PacketClick(button, id, x, y, z).pack());
+							CraftingPillars.proxy.sendToServer(new PacketInGameClick(button, id, x, y, z).pack());
 							return true;
 						}
 					}
