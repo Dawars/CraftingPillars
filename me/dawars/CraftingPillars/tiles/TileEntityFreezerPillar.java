@@ -1,15 +1,20 @@
 package me.dawars.CraftingPillars.tiles;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import me.dawars.CraftingPillars.Blobs;
 import me.dawars.CraftingPillars.CraftingPillars;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
@@ -46,69 +51,106 @@ import net.minecraftforge.fluids.IFluidHandler;
 public class TileEntityFreezerPillar extends BaseTileEntity implements IInventory, ISidedInventory, IFluidHandler
 {
 	private ItemStack[] inventory = new ItemStack[this.getSizeInventory()];
-	
 	public final FluidTank tank = new FluidTank((int) FluidContainerRegistry.BUCKET_VOLUME * 16);
 
 	public int freezingTime;
-	
 	public boolean showNum = false;
-
+	
+	public List<Blobs> blobs;
+	
+	public TileEntityFreezerPillar()
+	{
+		this.blobs = new ArrayList<Blobs>();
+	}
+	
+	public void addBlob()
+	{
+		blobs.add(new Blobs(random.nextInt(12)+2.5F, random.nextInt(9)+4.5F, random.nextInt(12)+2.5F, 4));
+	}
+	
+	public void removeBlob()
+	{
+		blobs.remove(random.nextInt(blobs.size()));
+	}
+	public int[][][] texIndieces = null;
+	
 	@Override
 	public void updateEntity()
 	{
 		if(worldObj.isRemote)
 		{
+			if(this.texIndieces == null)
+			{
+				this.texIndieces = new int[16][16][16];
+				for(int i = 0; i < 16; i++)
+					for(int j = 0; j < 16; j++)
+						for(int k = 0; k < 16; k++)
+							this.texIndieces[i][j][k] = random.nextInt(256);
+			}
+			EntityClientPlayerMP player = FMLClientHandler.instance().getClient().thePlayer;
+			if((player.posX-this.xCoord) * (player.posX-this.xCoord) + (player.posY-this.yCoord) * (player.posY-this.yCoord) + (player.posZ-this.zCoord) * (player.posZ-this.zCoord) < 128)
+			{
+				while(this.blobs.size() < this.tank.getFluidAmount()/FluidContainerRegistry.BUCKET_VOLUME)
+					this.addBlob();
+				while(this.blobs.size() > this.tank.getFluidAmount()/FluidContainerRegistry.BUCKET_VOLUME)
+					this.removeBlob();
+				
+				int i = random.nextInt(16);
+				int j = random.nextInt(16);
+				int k = random.nextInt(16);
+				this.texIndieces[i][j][k]++;
+				this.texIndieces[i][j][k] %= 256;
+				
+				for(i = 0; i < this.blobs.size(); i++)
+					this.blobs.get(i).update(0.1F);
+			}
+		}
+//		else {
 			if(canFreeze())
 			{
 				if(this.freezingTime > 0)
 					this.freezingTime--;
 				else
-					this.freezingTime = 150;
-			} else {
-				this.freezingTime = 150;
-			}
-		}
-		
-		if(!worldObj.isRemote)
-		{
-			if(canFreeze())
-			{
-				if(this.freezingTime > 0)
-				{
-					this.freezingTime--;
-				} else {
-					this.freezingTime = 150;
 					freezeWater();
-				}
 			} else {
 				this.freezingTime = 150;
 			}
-		}
+//		}
+		
 		super.updateEntity();
 	}
 
 	public boolean canFreeze() {
-		return this.tank.getFluidAmount() >= FluidContainerRegistry.BUCKET_VOLUME && this.inventory[0].stackSize < this.getInventoryStackLimit();
+		if(this.tank.getFluidAmount() >= FluidContainerRegistry.BUCKET_VOLUME)
+		{
+			if(this.inventory[0] == null || this.inventory[0].stackSize < this.getInventoryStackLimit())
+				return true;
+		}
+		return false;
 	}
 
 	
 	private void freezeWater() {
-		int amount = 0;
-		if(this.inventory[0] == null){
-			amount = 1;
-		} else {
-			amount = this.getStackInSlot(0).stackSize + 1;
+		this.freezingTime = 150;
+
+		if(!this.worldObj.isRemote)
+		{
+			ItemStack itemstack = new ItemStack(Block.ice, 1);
+			if(this.inventory[0] == null)
+				this.inventory[0] = itemstack.copy();
+			else if(this.inventory[0].isItemEqual(itemstack))
+				inventory[0].stackSize += itemstack.stackSize;
+			
+			this.drain(ForgeDirection.UNKNOWN, FluidContainerRegistry.BUCKET_VOLUME, true);
 		}
-		this.setInventorySlotContents(0, new ItemStack(Block.ice, amount));
-		
-		this.drain(ForgeDirection.UNKNOWN, FluidContainerRegistry.BUCKET_VOLUME, true);
 		this.onInventoryChanged();
 	}
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
-		
+		if(nbt.hasKey("tank"))
+			this.tank.setFluid(FluidStack.loadFluidStackFromNBT(nbt.getCompoundTag("tank")));
 		this.inventory = new ItemStack[this.getSizeInventory()];
 		NBTTagList nbtlist = nbt.getTagList("Items");
 		for(int i = 0; i < nbtlist.tagCount(); i++)
@@ -128,8 +170,8 @@ public class TileEntityFreezerPillar extends BaseTileEntity implements IInventor
 	public void writeToNBT(NBTTagCompound nbt)
 	{
 		super.writeToNBT(nbt);
-		
-		
+		if(tank.getFluid() != null)
+			nbt.setTag("tank", tank.getFluid().writeToNBT(new NBTTagCompound()));
 		NBTTagList nbtlist = new NBTTagList();
 		for(int i = 0; i < this.getSizeInventory(); i++)
 		{

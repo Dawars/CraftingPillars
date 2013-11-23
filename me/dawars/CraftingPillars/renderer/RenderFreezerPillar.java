@@ -13,10 +13,12 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import me.dawars.CraftingPillars.Blobs;
 import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.client.CustomParticle;
+import me.dawars.CraftingPillars.tiles.TileEntityFreezerPillar;
 import me.dawars.CraftingPillars.tiles.TileEntityFurnacePillar;
 import me.dawars.CraftingPillars.tiles.TileEntityTankPillar;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -85,9 +87,9 @@ public class RenderFreezerPillar extends TileEntitySpecialRenderer implements IS
 	
 	public RenderFreezerPillar()
 	{
-//		if(CraftingPillars.winter)
-//			TEXTURE_FREEZERPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/freezerPillarFrozen.png");
-//		else
+		if(CraftingPillars.winter)
+			TEXTURE_FREEZERPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/freezerPillarFrozen.png");
+		else
 			TEXTURE_FREEZERPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/freezerPillar.png");
 		
 		
@@ -300,124 +302,158 @@ public class RenderFreezerPillar extends TileEntitySpecialRenderer implements IS
 		render(1F);
 		glPopMatrix();
 		
-		TileEntityTankPillar tank = ((TileEntityTankPillar) tile);
+		TileEntityFreezerPillar tank = ((TileEntityFreezerPillar) tile);
+		
+		EntityItem citem = new EntityItem(tile.worldObj);
 
+		glPushMatrix();
+		
+		glTranslated(x+0.5D, y, z+0.5D);
+
+			//Output
+			if(tank.getStackInSlot(0) != null)
+			{
+				glPushMatrix();
+					glTranslatef(0F, 1.75F, 0F);
+					citem.hoverStart = 0F;
+					citem.setEntityItemStack(tank.getStackInSlot(0));
+					resultRenderer.render(citem, 0F, 0F, 0F, tank.showNum);
+				glPopMatrix();
+			}
+			
+			//processed item
+			if(tank.canFreeze() && tank.freezingTime > 0)
+			{
+				glPushMatrix();
+					glTranslatef(0F, 1.75F - tank.freezingTime/150F, 0F);
+					citem.hoverStart = 0F;
+					citem.setEntityItemStack(new ItemStack(Block.ice, 1));
+					resultRenderer.render(citem, 0.01F, 0F, 0.01F, false);
+				glPopMatrix();
+			}
+		
+		glPopMatrix();
+		
+		
 		if(tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid == null)
 			return;
-		
-//		ResourceLocation TEXTURE_LIQUID = new ResourceLocation(tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid.getFluid().getFlowingIcon().);
-
-		
-		glPushMatrix();
-		glTranslated(x, y, z);
-		glPushAttrib(GL_ENABLE_BIT);
-		glDisable(GL_LIGHTING);
-		glTranslatef(0.005F, 0.005F, 0.005F);
-		glScalef(0.99F, 0.99F, 0.99F);
-		
-		float[][][] field = Blobs.fieldStrength(tank.blobs);
-		for(int i = 0; i < 16; i++)
-			for(int j = 0; j < 16; j++)
-				for(int k = 0; k < 16; k++)
-					if((int)field[i][j][k] > 0 &&
-						(i != 0 && (int)field[i-1][j][k] != 0
-							&& i != 15 && (int)field[i+1][j][k] != 0
-							&& j != 0 && (int)field[i][j-1][k] != 0
-							&& j != 15 && (int)field[i][j+1][k] != 0
-							&& k != 0 && (int)field[i][j][k-1] != 0
-							&& k != 15 && (int)field[i][j][k+1] != 0))
-					{
-						field[i][j][k] = 0F;
-					}
-		
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation("water_still"));
-		
-		glBegin(GL_QUADS);
-		
-		for(int i = 0; i < 16; i++)
-			for(int j = 0; j < 16; j++)
-				for(int k = 0; k < 16; k++)
-					if((int)field[i][j][k] > 0)
-					{
-						int tx = tank.texIndieces[i][j][k]%16;
-						int ty = tank.texIndieces[i][j][k]/16;
-						
-						if(j == 15 || (int)field[i][j+1][k] == 0)
-                        {
-                                glTexCoord2f((tx)/16F, (ty)/256F);
-                                glVertex3f((i)/16F, (j+1)/16F, (k)/16F);
-                                glTexCoord2f((tx)/16F, (ty+1)/256F);
-                                glVertex3f((i)/16F, (j+1)/16F, (k+1)/16F);
-                                glTexCoord2f((tx+1)/16F, (ty+1)/256F);
-                                glVertex3f((i+1)/16F, (j+1)/16F, (k+1)/16F);
-                                glTexCoord2f((tx+1)/16F, (ty)/256F);
-                                glVertex3f((i+1)/16F, (j+1)/16F, (k)/16F);
-                        }
-                        
-                        if(j == 0 || (int)field[i][j-1][k] == 0)
-                        {
-                                glTexCoord2f((tx)/16F, (ty)/256F);
-                                glVertex3f((i)/16F, (j)/16F, (k+1)/16F);
-                                glTexCoord2f((tx)/16F, (ty+1)/256F);
-                                glVertex3f((i)/16F, (j)/16F, (k)/16F);
-                                glTexCoord2f((tx+1)/16F, (ty+1)/256F);
-                                glVertex3f((i+1)/16F, (j)/16F, (k)/16F);
-                                glTexCoord2f((tx+1)/16F, (ty)/256F);
-                                glVertex3f((i+1)/16F, (j)/16F, (k+1)/16F);
-                        }
-                        
-                        if(k == 15 || (int)field[i][j][k+1] == 0)
-                        {
-                                glTexCoord2f((tx)/16F, (ty)/256F);
-                                glVertex3f((i)/16F, (j+1)/16F, (k+1)/16F);
-                                glTexCoord2f((tx)/16F, (ty+1)/256F);
-                                glVertex3f((i)/16F, (j)/16F, (k+1)/16F);
-                                glTexCoord2f((tx+1)/16F, (ty+1)/256F);
-                                glVertex3f((i+1)/16F, (j)/16F, (k+1)/16F);
-                                glTexCoord2f((tx+1)/16F, (ty)/256F);
-                                glVertex3f((i+1)/16F, (j+1)/16F, (k+1)/16F);
-                        }
-                        
-                        if(k == 0 || (int)field[i][j][k-1] == 0)
-                        {
-                                glTexCoord2f((tx)/16F, (ty)/256F);
-                                glVertex3f((i+1)/16F, (j+1)/16F, (k)/16F);
-                                glTexCoord2f((tx)/16F, (ty+1)/256F);
-                                glVertex3f((i+1)/16F, (j)/16F, (k)/16F);
-                                glTexCoord2f((tx+1)/16F, (ty+1)/256F);
-                                glVertex3f((i)/16F, (j)/16F, (k)/16F);
-                                glTexCoord2f((tx+1)/16F, (ty)/256F);
-                                glVertex3f((i)/16F, (j+1)/16F, (k)/16F);
-                        }
-                        
-                        if(i == 15 || (int)field[i+1][j][k] == 0)
-                        {
-                                glTexCoord2f((tx)/16F, (ty)/256F);
-                                glVertex3f((i+1)/16F, (j+1)/16F, (k+1)/16F);
-                                glTexCoord2f((tx)/16F, (ty+1)/256F);
-                                glVertex3f((i+1)/16F, (j)/16F, (k+1)/16F);
-                                glTexCoord2f((tx+1)/16F, (ty+1)/256F);
-                                glVertex3f((i+1)/16F, (j)/16F, (k)/16F);
-                                glTexCoord2f((tx+1)/16F, (ty)/256F);
-                                glVertex3f((i+1)/16F, (j+1)/16F, (k)/16F);
-                        }
-                        
-                        if(i == 0 || (int)field[i-1][j][k] == 0)
-                        {
-                                glTexCoord2f((tx)/16F, (ty)/256F);
-                                glVertex3f((i)/16F, (j)/16F, (k+1)/16F);
-                                glTexCoord2f((tx)/16F, (ty+1)/256F);
-                                glVertex3f((i)/16F, (j+1)/16F, (k+1)/16F);
-                                glTexCoord2f((tx+1)/16F, (ty+1)/256F);
-                                glVertex3f((i)/16F, (j+1)/16F, (k)/16F);
-                                glTexCoord2f((tx+1)/16F, (ty)/256F);
-                                glVertex3f((i)/16F, (j)/16F, (k)/16F);
-                        }
-					}
-		
-		glEnd();
-		glPopAttrib();
-		glPopMatrix();
+		EntityClientPlayerMP player = FMLClientHandler.instance().getClient().thePlayer;
+		if((player.posX-tank.xCoord) * (player.posX-tank.xCoord) + (player.posY-tank.yCoord) * (player.posY-tank.yCoord) + (player.posZ-tank.zCoord) * (player.posZ-tank.zCoord) < 128)
+		{
+			glPushMatrix();
+			glTranslated(x, y, z);
+			glPushAttrib(GL_ENABLE_BIT);
+			glDisable(GL_LIGHTING);
+			glTranslatef(0.005F, 0.005F, 0.005F);
+			glScalef(0.99F, 0.99F, 0.99F);
+			
+			
+			float[][][] field = Blobs.fieldStrength(tank.blobs);
+			for(int i = 0; i < 16; i++)
+				for(int j = 0; j < 16; j++)
+					for(int k = 0; k < 16; k++)
+						if((int)field[i][j][k] > 0 &&
+							(i != 0 && (int)field[i-1][j][k] != 0
+								&& i != 15 && (int)field[i+1][j][k] != 0
+								&& j != 0 && (int)field[i][j-1][k] != 0
+								&& j != 15 && (int)field[i][j+1][k] != 0
+								&& k != 0 && (int)field[i][j][k-1] != 0
+								&& k != 15 && (int)field[i][j][k+1] != 0))
+						{
+							field[i][j][k] = 0F;
+						}
+			
+			FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation("textures/blocks/water_still.png"));
+			
+			glBegin(GL_QUADS);
+			
+			for(int i = 0; i < 16; i++)
+				for(int j = 0; j < 16; j++)
+					for(int k = 0; k < 16; k++)
+						if((int)field[i][j][k] > 0)
+						{
+							int tx = tank.texIndieces[i][j][k]%16;
+							int ty = tank.texIndieces[i][j][k]/16;
+							
+							if(j == 15 || (int)field[i][j+1][k] == 0)
+	                        {
+	                                glTexCoord2f((tx)/16F, (ty)/256F);
+	                                glVertex3f((i)/16F, (j+1)/16F, (k)/16F);
+	                                glTexCoord2f((tx)/16F, (ty+1)/256F);
+	                                glVertex3f((i)/16F, (j+1)/16F, (k+1)/16F);
+	                                glTexCoord2f((tx+1)/16F, (ty+1)/256F);
+	                                glVertex3f((i+1)/16F, (j+1)/16F, (k+1)/16F);
+	                                glTexCoord2f((tx+1)/16F, (ty)/256F);
+	                                glVertex3f((i+1)/16F, (j+1)/16F, (k)/16F);
+	                        }
+	                        
+	                        if(j == 0 || (int)field[i][j-1][k] == 0)
+	                        {
+	                                glTexCoord2f((tx)/16F, (ty)/256F);
+	                                glVertex3f((i)/16F, (j)/16F, (k+1)/16F);
+	                                glTexCoord2f((tx)/16F, (ty+1)/256F);
+	                                glVertex3f((i)/16F, (j)/16F, (k)/16F);
+	                                glTexCoord2f((tx+1)/16F, (ty+1)/256F);
+	                                glVertex3f((i+1)/16F, (j)/16F, (k)/16F);
+	                                glTexCoord2f((tx+1)/16F, (ty)/256F);
+	                                glVertex3f((i+1)/16F, (j)/16F, (k+1)/16F);
+	                        }
+	                        
+	                        if(k == 15 || (int)field[i][j][k+1] == 0)
+	                        {
+	                                glTexCoord2f((tx)/16F, (ty)/256F);
+	                                glVertex3f((i)/16F, (j+1)/16F, (k+1)/16F);
+	                                glTexCoord2f((tx)/16F, (ty+1)/256F);
+	                                glVertex3f((i)/16F, (j)/16F, (k+1)/16F);
+	                                glTexCoord2f((tx+1)/16F, (ty+1)/256F);
+	                                glVertex3f((i+1)/16F, (j)/16F, (k+1)/16F);
+	                                glTexCoord2f((tx+1)/16F, (ty)/256F);
+	                                glVertex3f((i+1)/16F, (j+1)/16F, (k+1)/16F);
+	                        }
+	                        
+	                        if(k == 0 || (int)field[i][j][k-1] == 0)
+	                        {
+	                                glTexCoord2f((tx)/16F, (ty)/256F);
+	                                glVertex3f((i+1)/16F, (j+1)/16F, (k)/16F);
+	                                glTexCoord2f((tx)/16F, (ty+1)/256F);
+	                                glVertex3f((i+1)/16F, (j)/16F, (k)/16F);
+	                                glTexCoord2f((tx+1)/16F, (ty+1)/256F);
+	                                glVertex3f((i)/16F, (j)/16F, (k)/16F);
+	                                glTexCoord2f((tx+1)/16F, (ty)/256F);
+	                                glVertex3f((i)/16F, (j+1)/16F, (k)/16F);
+	                        }
+	                        
+	                        if(i == 15 || (int)field[i+1][j][k] == 0)
+	                        {
+	                                glTexCoord2f((tx)/16F, (ty)/256F);
+	                                glVertex3f((i+1)/16F, (j+1)/16F, (k+1)/16F);
+	                                glTexCoord2f((tx)/16F, (ty+1)/256F);
+	                                glVertex3f((i+1)/16F, (j)/16F, (k+1)/16F);
+	                                glTexCoord2f((tx+1)/16F, (ty+1)/256F);
+	                                glVertex3f((i+1)/16F, (j)/16F, (k)/16F);
+	                                glTexCoord2f((tx+1)/16F, (ty)/256F);
+	                                glVertex3f((i+1)/16F, (j+1)/16F, (k)/16F);
+	                        }
+	                        
+	                        if(i == 0 || (int)field[i-1][j][k] == 0)
+	                        {
+	                                glTexCoord2f((tx)/16F, (ty)/256F);
+	                                glVertex3f((i)/16F, (j)/16F, (k+1)/16F);
+	                                glTexCoord2f((tx)/16F, (ty+1)/256F);
+	                                glVertex3f((i)/16F, (j+1)/16F, (k+1)/16F);
+	                                glTexCoord2f((tx+1)/16F, (ty+1)/256F);
+	                                glVertex3f((i)/16F, (j+1)/16F, (k)/16F);
+	                                glTexCoord2f((tx+1)/16F, (ty)/256F);
+	                                glVertex3f((i)/16F, (j)/16F, (k)/16F);
+	                        }
+						}
+			
+			glEnd();
+			glPopAttrib();
+			glPopMatrix();
+		} else {
+			
+		}
 	}
 	
 	@Override

@@ -93,7 +93,8 @@ public class CraftingPillars
 //	public static Block blockTankPillar;
 	public static Block blockBrewingPillar;
 	public static Block blockDiskPlayerPillar;
-	
+	public static Block blockFreezerPillar;
+
 	public static Item discElysium;
 	public static Item itemCalendar;
 
@@ -137,11 +138,16 @@ public class CraftingPillars
 			blockAnvilPillar = (new AnvilPillar(idAnvilPillar.getInt(), Material.anvil)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("anvilPillar");
 			registerBlock(blockAnvilPillar);
 			LanguageRegistry.instance().addStringLocalization(blockAnvilPillar.getUnlocalizedName()+".name", "en_US", "Anvil Pillar");
-		
+
 //			Property idTankPillar = CraftingPillars.config.getBlock("TankPillar.id", BlockIds.idTankPillar, "Coming soon...");
 //			blockTankPillar = (new TankPillarBlock(idTankPillar.getInt(), Material.glass)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("tankPillar");
 //			registerBlock(blockTankPillar);
 //			LanguageRegistry.instance().addStringLocalization(blockTankPillar.getUnlocalizedName()+".name", "en_US", "Tank Pillar");
+
+			Property idFreezerPillar = CraftingPillars.config.getBlock("FreezerPillar.id", BlockIds.idFreezerPillar);
+			blockFreezerPillar = (new FreezerPillarBlock(idFreezerPillar.getInt(), Material.glass)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("freezerPillar");
+			registerBlock(blockFreezerPillar);
+			LanguageRegistry.instance().addStringLocalization(blockFreezerPillar.getUnlocalizedName()+".name", "en_US", "Freezer Pillar");
 			
 			Property idBrewingPillar = CraftingPillars.config.getBlock("BrewingPillar.id", BlockIds.idBrewingPillar);
 			blockBrewingPillar = (new BrewingPillarBlock(idBrewingPillar.getInt(), Material.iron)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("brewingPillar");
