@@ -30,7 +30,7 @@ public class GuiAdventCalendar extends BaseGui
 	{
 		super.mouseClicked(x, y, btn);
 		for(Slot slot : (ArrayList<Slot>)this.inventorySlots.inventorySlots)
-			if(isMouseOverSlot(slot, x, y))
+			if(this.isMouseOverSlot(slot, x, y) && !this.isSlotDiscovered(slot) && this.isSlotDiscoverable(slot))
 				CraftingPillars.proxy.sendToServer(new PacketInGuiClick(slot.slotNumber).pack());
 	}
 	
@@ -38,7 +38,28 @@ public class GuiAdventCalendar extends BaseGui
 	{
 		return this.isPointInRegion(slot.xDisplayPosition, slot.yDisplayPosition, 16, 16, x, y);
 	}
-
+	
+	public boolean isSlotDiscovered(Slot slot)
+	{
+		return true; // TODO
+	}
+	
+	public boolean isSlotDiscoverable(Slot slot)
+	{
+		return false; // TODO
+	}
+	
+	@Override
+	protected void drawSlotInventory(Slot slot)
+	{
+		if(this.isSlotDiscovered(slot))
+			super.drawSlotInventory(slot);
+		else
+		{
+			// TODO
+		}
+	}
+	
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
     {
