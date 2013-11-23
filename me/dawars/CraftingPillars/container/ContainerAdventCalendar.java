@@ -34,8 +34,8 @@ public class ContainerAdventCalendar extends BaseContainer implements IInventory
 	
 	private ItemStack[] inventory = new ItemStack[24];
 	private EntityPlayer player;
+	public boolean[] discovered = new boolean[24];
 	
-	private static Random rand = new Random();
 	private static ItemStack[] adventItems = new ItemStack[]{new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
 															new ItemStack(CraftingPillars.blockAnvilPillar.blockID, 1, 0),
 															new ItemStack(Block.coalBlock.blockID, 1, 0),

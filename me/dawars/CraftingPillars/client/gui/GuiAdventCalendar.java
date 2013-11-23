@@ -46,7 +46,7 @@ public class GuiAdventCalendar extends BaseGui
 	
 	public boolean isSlotDiscoverable(Slot slot)
 	{
-		return false; // TODO
+		return slot.slotNumber < CraftingPillars.getDayInDecember();
 	}
 	
 	@Override

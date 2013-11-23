@@ -242,13 +242,22 @@ public class CraftingPillars
 			Date v = format.parse(date);
 			System.out.println(c);
 			System.out.println(v);
-			return c.after(v);
+			return v.after(c);
 		}
 		catch(ParseException e)
 		{
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public static int getDayInDecember()
+	{
+		Calendar c = Calendar.getInstance();
+		if(c.get(Calendar.MONTH) == Calendar.DECEMBER)
+			return c.get(Calendar.DAY_OF_MONTH);
+		else
+			return 0;
 	}
 	
 	public static boolean isWinterTime()
