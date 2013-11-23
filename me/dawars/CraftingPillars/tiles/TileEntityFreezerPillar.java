@@ -150,7 +150,7 @@ public class TileEntityFreezerPillar extends BaseTileEntity implements IInventor
 			else
 				this.isEmpty = false;
 		}
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+//		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		this.onInventoryChanged();
 	}
 	@Override

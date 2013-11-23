@@ -335,7 +335,7 @@ public class RenderFreezerPillar extends TileEntitySpecialRenderer implements IS
 		glPopMatrix();
 		
 		
-		if(tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid == null)
+		if(tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid == null || tank.isEmpty)
 			return;
 		EntityClientPlayerMP player = FMLClientHandler.instance().getClient().thePlayer;
 		if((player.posX-tank.xCoord) * (player.posX-tank.xCoord) + (player.posY-tank.yCoord) * (player.posY-tank.yCoord) + (player.posZ-tank.zCoord) * (player.posZ-tank.zCoord) < 128)

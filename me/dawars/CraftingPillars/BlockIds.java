@@ -13,6 +13,6 @@ public class BlockIds
 	public static int idFreezerPillar = 2012;
 
 	
-	public static int idDiscElysium = 5000;
-	public static int idAdventCalendar = 5001;
+	public static int idDiscElysium = 5150;
+	public static int idAdventCalendar = 5151;
 }
