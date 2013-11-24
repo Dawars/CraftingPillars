@@ -160,7 +160,7 @@ public class CraftingPillars
 			LanguageRegistry.instance().addStringLocalization(blockDiskPlayerPillar.getUnlocalizedName()+".name", "en_US", "Juke Pillar");
 
 			Property idDiscElysium = CraftingPillars.config.getItem("idDiscElysium.id", BlockIds.idDiscElysium);
-			discElysium = new PillarRecord(idDiscElysium.getInt(), CraftingPillars.id + ":UranusParadiseShort").setUnlocalizedName("record");
+			discElysium = new PillarRecord(idDiscElysium.getInt(), CraftingPillars.id + ":UranusParadiseShort").setUnlocalizedName("record").setTextureName(CraftingPillars.id + ":ElysiumDisk");
             LanguageRegistry.instance().addStringLocalization(CraftingPillars.id + ":UranusParadiseShort", "en_US", "Elysium - Uranus Paradise Short");
 
 			Property idAdventCalendar = CraftingPillars.config.getItem("idAdventCalendar.id", BlockIds.idAdventCalendar);
