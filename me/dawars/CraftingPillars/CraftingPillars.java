@@ -84,6 +84,7 @@ public class CraftingPillars
 	public static int brewingillarRenderID;
 	public static int diskPlayerRenderID;
 	public static int freezerPillarRenderID;
+	public static int christmasLeavesRenderID;
 
 	public static Block blockExtendPillar;
 	public static Block blockShowOffPillar;
@@ -94,6 +95,7 @@ public class CraftingPillars
 	public static Block blockBrewingPillar;
 	public static Block blockDiskPlayerPillar;
 	public static Block blockFreezerPillar;
+	public static Block blockChristmasLeaves;
 
 	public static Item discElysium;
 	public static Item itemCalendar;
@@ -153,12 +155,18 @@ public class CraftingPillars
 			blockBrewingPillar = (new BrewingPillarBlock(idBrewingPillar.getInt(), Material.iron)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("brewingPillar");
 			registerBlock(blockBrewingPillar);
 			LanguageRegistry.instance().addStringLocalization(blockBrewingPillar.getUnlocalizedName()+".name", "en_US", "Brewing Pillar");
-			
+
 			Property idDiskPlayerPillar = CraftingPillars.config.getBlock("DiskPlayerPillar.id", BlockIds.idDiskPillar);
 			blockDiskPlayerPillar = (new DiskPlayerPillarBlock(idDiskPlayerPillar.getInt(), Material.iron)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("diskPillar");
 			registerBlock(blockDiskPlayerPillar);
 			LanguageRegistry.instance().addStringLocalization(blockDiskPlayerPillar.getUnlocalizedName()+".name", "en_US", "Juke Pillar");
 
+			Property idChristmasLeaves = CraftingPillars.config.getBlock("ChristmasLeaves.id", BlockIds.idChristmasLeaves);
+			blockChristmasLeaves = (new ChristmasLeavesBlock(idChristmasLeaves.getInt(), Material.leaves)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundGrassFootstep).setUnlocalizedName("xmasLeaves");
+			registerBlock(blockChristmasLeaves);
+			LanguageRegistry.instance().addStringLocalization(blockChristmasLeaves.getUnlocalizedName()+".name", "en_US", "Christmas Leaves");
+
+			
 			Property idDiscElysium = CraftingPillars.config.getItem("idDiscElysium.id", BlockIds.idDiscElysium);
 			discElysium = new PillarRecord(idDiscElysium.getInt(), CraftingPillars.id + ":UranusParadiseShort").setUnlocalizedName("record").setTextureName(CraftingPillars.id + ":ElysiumDisk");
             LanguageRegistry.instance().addStringLocalization(CraftingPillars.id + ":UranusParadiseShort", "en_US", "Elysium - Uranus Paradise Short");

@@ -19,12 +19,12 @@ public class PillarRecord extends ItemRecord
 
 	}
 
-	@Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister itemIcon)
-    {
-        this.itemIcon = itemIcon.registerIcon(CraftingPillars.id + ":" + getUnlocalizedName().substring(5));
-    }
+//	@Override
+//    @SideOnly(Side.CLIENT)
+//    public void registerIcons(IconRegister itemIcon)
+//    {
+//        this.itemIcon = itemIcon.registerIcon(CraftingPillars.id + ":" + getUnlocalizedName().substring(5));
+//    }
 	
 	public String getRecordTitle()
 	{
