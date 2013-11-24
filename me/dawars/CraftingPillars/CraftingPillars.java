@@ -193,6 +193,7 @@ public class CraftingPillars
 			proxy.init();
 			
 			GameRegistry.addRecipe(new ItemStack(blockExtendPillar), new Object[] { "SSS", " S ", "SSS", Character.valueOf('S'), Block.stone });
+			GameRegistry.addRecipe(new ItemStack(blockFreezerPillar), new Object[] { "SSS", "SPS", "SSS", Character.valueOf('S'), Block.blockSnow, Character.valueOf('P'), blockExtendPillar });
 			GameRegistry.addShapelessRecipe(new ItemStack(blockShowOffPillar), new ItemStack(Item.itemFrame), new ItemStack(blockExtendPillar));
 			GameRegistry.addShapelessRecipe(new ItemStack(blockCraftingPillar), new ItemStack(Block.workbench), new ItemStack(blockExtendPillar));
 			GameRegistry.addShapelessRecipe(new ItemStack(blockFurnacePillar), new ItemStack(Block.furnaceIdle), new ItemStack(blockExtendPillar));

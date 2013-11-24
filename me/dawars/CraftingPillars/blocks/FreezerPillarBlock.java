@@ -5,6 +5,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import me.dawars.CraftingPillars.BlockIds;
 import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.tiles.TileEntityFreezerPillar;
+import me.dawars.CraftingPillars.tiles.TileEntityFurnacePillar;
 import me.dawars.CraftingPillars.tiles.TileEntityTankPillar;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -57,7 +58,7 @@ public class FreezerPillarBlock extends BaseBlockContainer
 		ItemStack current = entityplayer.inventory.getCurrentItem();
 		TileEntityFreezerPillar tank = (TileEntityFreezerPillar) world.getBlockTileEntity(i, j, k);
 
-		if(current == null)
+		if(current == null && !entityplayer.isSneaking())
 		{
 			tank.showNum = !tank.showNum;
 			tank.onInventoryChanged();
@@ -121,6 +122,51 @@ public class FreezerPillarBlock extends BaseBlockContainer
 		}
 		
 		return false;
+	}
+
+	@Override
+	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player)
+	{
+		if(!world.isRemote)
+		{
+			TileEntityFreezerPillar pillarTile = (TileEntityFreezerPillar) world.getBlockTileEntity(x, y, z);
+			
+			if(pillarTile.getStackInSlot(0) != null)
+			{
+				if(player.isSneaking())
+				{
+					pillarTile.dropItemFromSlot(0, pillarTile.getStackInSlot(0).stackSize, player);
+				}
+				else
+				{
+					ItemStack itemStack = pillarTile.getStackInSlot(0).copy();
+					itemStack.stackSize = 1;
+					pillarTile.dropItemFromSlot(0, 1, player);
+				}
+			}
+		}
+	}
+	
+	@Override
+	public void breakBlock(World world, int x, int y, int z, int par5, int par6)
+	{
+		if(!world.isRemote)
+		{
+			TileEntityFreezerPillar pillarTile = (TileEntityFreezerPillar) world.getBlockTileEntity(x, y, z);
+			
+				if(pillarTile.getStackInSlot(0) != null)
+				{
+					EntityItem itemDropped = new EntityItem(world, x + 0.5D, y, z + 0.5D, pillarTile.getStackInSlot(0));
+					itemDropped.motionX = itemDropped.motionY = itemDropped.motionZ = 0D;
+					
+					if(pillarTile.getStackInSlot(0).hasTagCompound())
+						itemDropped.getEntityItem().setTagCompound((NBTTagCompound) pillarTile.getStackInSlot(0).getTagCompound().copy());
+					
+					world.spawnEntityInWorld(itemDropped);
+			}
+		}
+		
+		super.breakBlock(world, x, y, z, par5, par6);
 	}
 	
 	@Override
