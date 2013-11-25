@@ -68,7 +68,7 @@ public class ContainerAdventCalendar extends BaseContainer implements IInventory
 	{
 		super(CraftingPillars.getNumberOfCalendarElements());
 		this.player = player;
-		this.inventory = new ItemStack[24];
+		this.inventory = new ItemStack[CraftingPillars.getNumberOfCalendarElements()];
 		this.player = player;
 		
 		for(int i = 0; i < this.inventory.length; i++)
