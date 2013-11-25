@@ -40,44 +40,38 @@ public class ContainerAdventCalendar extends BaseContainer implements IInventory
 	public boolean[] discovered;
 	
 	// TODO items
-	private static ItemStack[] adventItems = new ItemStack[]{new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
+	private static ItemStack[] adventItems = new ItemStack[]{new ItemStack(CraftingPillars.itemElysiumLoreBook.itemID, 1, 0),
+															new ItemStack(CraftingPillars.blockChristmasTreeSapling.blockID, 1, 0),
+															new ItemStack(Item.cookie, 16, 0),
+															new ItemStack(CraftingPillars.blockFurnacePillar.blockID, 1, 0),
+															new ItemStack(CraftingPillars.blockExtendPillar.blockID, 1, 0),
+															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
+															new ItemStack(Block.ice.blockID, 1, 0),
+															new ItemStack(CraftingPillars.itemGingerbreadMan.itemID, 1, 0),
 															new ItemStack(CraftingPillars.blockAnvilPillar.blockID, 1, 0),
-															new ItemStack(Block.coalBlock.blockID, 1, 0),
-															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
-															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
-															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
-															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
-															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
-															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
-															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
-															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
-															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
-															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
-															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
-															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
-															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
-															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
-															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
-															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
-															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
-															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
-															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
-															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
-															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0)};
+															new ItemStack(CraftingPillars.itemChristmasCandy.itemID, 1, 0),
+															new ItemStack(Item.coal.itemID, 8, 0),
+															new ItemStack(CraftingPillars.blockDiskPlayerPillar.blockID, 1, 0),
+															new ItemStack(Item.snowball.itemID, 32, 0),
+															new ItemStack(Item.appleRed.itemID, 1, 0),
+															new ItemStack(Block.dirt.blockID, 1, 0),//TODO
+															new ItemStack(CraftingPillars.itemChristmasCandy.itemID, 1, 0),
+															new ItemStack(Block.dirt.blockID, 1, 0),//TODO
+															new ItemStack(CraftingPillars.blockFreezerPillar.blockID, 1, 0),
+															new ItemStack(Block.dirt.blockID, 1, 0),//TODO
+															new ItemStack(Block.dirt.blockID, 1, 0),//TODO
+															new ItemStack(CraftingPillars.itemDiscElysium.itemID, 1, 0),
+															new ItemStack(Block.dirt.blockID, 1, 0),//TODO
+															new ItemStack(Block.dirt.blockID, 1, 0),//TODO
+															new ItemStack(Block.dirt.blockID, 1, 0)};//TODO
 	
 	public ContainerAdventCalendar(InventoryPlayer inventoryPlayer, EntityPlayer player)
 	{
 		super(CraftingPillars.getNumberOfCalendarElements());
 		this.player = player;
-		this.inventory = new ItemStack[CraftingPillars.getNumberOfCalendarElements()];
+		this.inventory = new ItemStack[24];
 		if(CalendarPlayerProps.get(this.player) != null)
-		{
-			if(this.player.worldObj.isRemote)
-				System.out.println("Client props");
-			else
-				System.out.println("Server props");
 			this.discovered = CalendarPlayerProps.get(this.player).discovered;
-		}
 		else
 			this.discovered = new boolean[24];
 		this.player = player;
@@ -85,10 +79,7 @@ public class ContainerAdventCalendar extends BaseContainer implements IInventory
 		for(int i = 0; i < this.inventory.length; i++)
 		{
 			this.addSlotToContainer(new AdventSlot(this, i, (i%4)*44 + 54, (i/4)*30 + 53));
-			if(CalendarPlayerProps.get(this.player).discovered[i] || i == this.inventory.length-1)
-				this.setInventorySlotContents(i, adventItems[i]);
-			else
-				this.setInventorySlotContents(i, new ItemStack(Item.goldNugget.itemID, 1, 0)); // TODO chocolate
+			this.setInventorySlotContents(i, adventItems[i]);
 		}
 	}
 	

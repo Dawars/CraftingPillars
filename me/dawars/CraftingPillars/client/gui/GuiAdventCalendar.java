@@ -37,7 +37,7 @@ public class GuiAdventCalendar extends BaseGui
 	{
 		super.mouseClicked(x, y, btn);
 		for(Slot slot : (ArrayList<Slot>)this.inventorySlots.inventorySlots)
-			if(this.isMouseOverSlot(slot, x, y) && !this.isSlotDiscovered(slot))
+			if(this.isMouseOverSlot(slot, x, y) && !this.isSlotDiscovered(slot) && CraftingPillars.getNumberOfCalendarElements() > slot.slotNumber)
 			{
 				((ContainerAdventCalendar)this.inventorySlots).setDiscovered(slot.slotNumber);
 				CraftingPillars.proxy.sendToServer(new PacketInGuiClick(slot.slotNumber).pack());
