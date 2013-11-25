@@ -51,7 +51,7 @@ public class GuiAdventCalendar extends BaseGui
 	
 	public boolean isSlotDiscovered(Slot slot)
 	{
-		return ((ContainerAdventCalendar)this.inventorySlots).discovered[slot.slotNumber];
+		return ((ContainerAdventCalendar)this.inventorySlots).isDiscovered(slot.slotNumber);
 	}
 	
 	@Override

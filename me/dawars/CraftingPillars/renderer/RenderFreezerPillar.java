@@ -310,9 +310,8 @@ public class RenderFreezerPillar extends TileEntitySpecialRenderer implements IS
 		EntityItem citem = new EntityItem(tile.worldObj);
 
 		glPushMatrix();
-		
-		glTranslated(x+0.5D, y, z+0.5D);
-
+			glTranslated(x+0.5D, y, z+0.5D);
+			
 			//Output
 			if(tank.getStackInSlot(0) != null)
 			{
@@ -334,21 +333,17 @@ public class RenderFreezerPillar extends TileEntitySpecialRenderer implements IS
 					resultRenderer.render(citem, 0.01F, 0F, 0.01F, false);
 				glPopMatrix();
 			}
-			
-
-			
 		glPopMatrix();
 		
 		if(tank.showNum && !tank.isEmpty)
 		{
 			glPushMatrix();
-			glTranslated(x + 0.5D, y + 1, z + 0.5D);
+				glTranslated(x + 0.5D, y + 1, z + 0.5D);
 				
 				glDisable(GL_LIGHTING);
 				RenderingHelper.renderFloatingTextWithBackground(0, 0.35F, 0, 0.3F, tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid.getFluid().getLocalizedName(), Color.WHITE.getRGB(), new Color(0F, 0F, 0F, 0.5F));
 				RenderingHelper.renderFloatingTextWithBackground(0, 0.2F, 0, 0.2F, tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid.amount + " Unit", Color.WHITE.getRGB(), new Color(0F, 0F, 0F, 0.5F));
 				glEnable(GL_LIGHTING);
-
 			glPopMatrix();
 
 		}

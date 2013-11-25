@@ -37,7 +37,6 @@ public class ContainerAdventCalendar extends BaseContainer implements IInventory
 	
 	private ItemStack[] inventory;
 	private EntityPlayer player;
-	public boolean[] discovered;
 	
 	// TODO items
 	private static ItemStack[] adventItems = new ItemStack[]{new ItemStack(CraftingPillars.itemElysiumLoreBook.itemID, 1, 0),
@@ -70,10 +69,6 @@ public class ContainerAdventCalendar extends BaseContainer implements IInventory
 		super(CraftingPillars.getNumberOfCalendarElements());
 		this.player = player;
 		this.inventory = new ItemStack[24];
-		if(CalendarPlayerProps.get(this.player) != null)
-			this.discovered = CalendarPlayerProps.get(this.player).discovered;
-		else
-			this.discovered = new boolean[24];
 		this.player = player;
 		
 		for(int i = 0; i < this.inventory.length; i++)
@@ -85,8 +80,12 @@ public class ContainerAdventCalendar extends BaseContainer implements IInventory
 	
 	public void setDiscovered(int slot)
 	{
-		this.discovered[slot] = true;
-		CalendarPlayerProps.get(this.player).discovered[slot] = true;
+		CalendarPlayerProps.get(this.player).setDiscovered(slot);
+	}
+	
+	public boolean isDiscovered(int slot)
+	{
+		return CalendarPlayerProps.get(this.player).discovered[slot];
 	}
 	
 	@Override
@@ -164,8 +163,7 @@ public class ContainerAdventCalendar extends BaseContainer implements IInventory
 	@Override
 	public String getInvName()
 	{
-		return "Advent Calendar";
-//		return CraftingPillars.itemCalendar.getUnlocalizedName() + ".name";
+		return CraftingPillars.itemCalendar.getUnlocalizedName() + ".name";
 	}
 	
 	@Override

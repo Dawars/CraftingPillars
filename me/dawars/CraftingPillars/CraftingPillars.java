@@ -42,7 +42,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @Mod(name = CraftingPillars.name, version = CraftingPillars.version, useMetadata = false, modid = CraftingPillars.id, dependencies = "required-after:Forge@[8.9.0,)")
-@NetworkMod(clientSideRequired = true, serverSideRequired = false, channels = {CraftingPillars.channelGame, CraftingPillars.channelGui}, packetHandler = PillarPacketHandler.class)
+@NetworkMod(clientSideRequired = true, serverSideRequired = false, channels = {CraftingPillars.channelGame, CraftingPillars.channelGui, CraftingPillars.channelProps}, packetHandler = PillarPacketHandler.class)
 public class CraftingPillars
 {
 	@Instance(CraftingPillars.id)
@@ -58,6 +58,7 @@ public class CraftingPillars
 	public static final String id = "craftingpillars";
 	public static final String channelGame = "PillarGameClick";
 	public static final String channelGui = "PillarGuiClick";
+	public static final String channelProps = "PillarProps";
 	
 	// The Handler For Opening Guis
     private GuiHandler guiHandler = new GuiHandler();
@@ -200,11 +201,11 @@ public class CraftingPillars
 			LanguageRegistry.instance().addStringLocalization(itemCalendar.getUnlocalizedName() + ".name", "Advent Calendar");
 
 			Property idChrsitmasCandy = CraftingPillars.config.getItem("ChrsitmasCandy.id", BlockIds.idChrsitmasCandy);
-			itemChristmasCandy = new BaseItemEdiable(idChrsitmasCandy.getInt(), 5, 0.5F).setUnlocalizedName("ChristmasCandy");
+			itemChristmasCandy = new BaseItemEatable(idChrsitmasCandy.getInt(), 5, 0.5F).setUnlocalizedName("ChristmasCandy");
 			LanguageRegistry.instance().addStringLocalization(itemChristmasCandy.getUnlocalizedName() + ".name", "Christmas Candy");
 
 			Property idGingerbreadMan = CraftingPillars.config.getItem("GingerbreadMan.id", BlockIds.idGingerbreadMan);
-			itemGingerbreadMan = new BaseItemEdiable(idGingerbreadMan.getInt(), 7, 1.5F).setUnlocalizedName("GingerbreadMan");
+			itemGingerbreadMan = new BaseItemEatable(idGingerbreadMan.getInt(), 7, 1.5F).setUnlocalizedName("GingerbreadMan");
 			LanguageRegistry.instance().addStringLocalization(itemGingerbreadMan.getUnlocalizedName() + ".name", "Gingerbread Man");
 
 			Property idRibbonDiamond = CraftingPillars.config.getItem("RibbonDiamond.id", BlockIds.idRibbonDiamond);

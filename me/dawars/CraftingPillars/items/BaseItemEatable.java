@@ -12,16 +12,15 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 import me.dawars.CraftingPillars.CraftingPillars;
 
-public class BaseItemEdiable extends ItemFood
+public class BaseItemEatable extends ItemFood
 {
-	public BaseItemEdiable(int id, int heal, float saturation)
+	public BaseItemEatable(int id, int heal, float saturation)
     {
         super(id, heal, saturation, false);
         this.setCreativeTab(CraftingPillars.tabPillar);
-
     }
 
-    public BaseItemEdiable(int id, int heal)
+    public BaseItemEatable(int id, int heal)
     {
         this(id, heal, 0.6F);
     }

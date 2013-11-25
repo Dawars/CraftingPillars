@@ -1,6 +1,9 @@
 package me.dawars.CraftingPillars.properties;
 
+import me.dawars.CraftingPillars.CraftingPillars;
+import me.dawars.CraftingPillars.network.packets.PacketCalendarProps;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
@@ -23,11 +26,28 @@ public class CalendarPlayerProps implements IExtendedEntityProperties
 	
 	public Entity player;
 	public boolean[] discovered;
+	public int data;
 	
 	public CalendarPlayerProps(Entity entity)
 	{
 		this.player = entity;
 		this.discovered = new boolean[24];
+	}
+	
+	public void setData(int data)
+	{
+		this.data = data;
+		for(int i = 0; i < 24; i++)
+			this.discovered[i] = (this.data/(int)Math.pow(2, i))%2 == 1;
+	}
+	
+	public void setDiscovered(int slot)
+	{
+		this.discovered[slot] = true;
+		this.data = 0;
+		for(int i = 0; i < 24; i++)
+			if(this.discovered[i])
+				this.data += Math.pow(2, i);
 	}
 	
 	@Override
@@ -40,17 +60,8 @@ public class CalendarPlayerProps implements IExtendedEntityProperties
 	public void saveNBTData(NBTTagCompound compound)
 	{
 		NBTTagCompound props = new NBTTagCompound();
-		int data = 0;
-		for(int i = 0; i < 24; i++)
-			if(this.discovered[i])
-				data += Math.pow(2, i);
-		props.setInteger("dicovered", data);
+		props.setInteger("discovered", this.data);
 		compound.setTag(name, props);
-		
-		if(this.player.worldObj.isRemote)
-			System.out.println("Client save: "+data);
-		else
-			System.out.println("Server save: "+data);
 	}
 
 	@Override
@@ -59,23 +70,12 @@ public class CalendarPlayerProps implements IExtendedEntityProperties
 		NBTTagCompound props = (NBTTagCompound)compound.getTag(name);
 		if(props.hasKey("discovered"))
 		{
-			int data = props.getInteger("discovered");
-			for(int i = 0; i < 24; i++)
-				this.discovered[i] = (data/(int)Math.pow(2, i))%2 == 1;
-			
-			if(this.player.worldObj.isRemote)
-				System.out.println("Client load: "+data);
-			else
-				System.out.println("Server load: "+data);
+			this.setData(props.getInteger("discovered"));
 		}
 		else
 		{
 			this.discovered = new boolean[24];
-			
-			if(this.player.worldObj.isRemote)
-				System.out.println("Client load: "+0);
-			else
-				System.out.println("Server load: "+0);
+			this.data = 0;
 		}
 	}
 }
