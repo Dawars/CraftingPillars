@@ -85,6 +85,8 @@ public class CraftingPillars
 	public static int brewingillarRenderID;
 	public static int diskPlayerRenderID;
 	public static int freezerPillarRenderID;
+	public static int potPillarRenderID;
+	
 	public static int christmasLeavesRenderID;
 
 	public static Block blockExtendPillar;
@@ -96,6 +98,8 @@ public class CraftingPillars
 	public static Block blockBrewingPillar;
 	public static Block blockDiskPlayerPillar;
 	public static Block blockFreezerPillar;
+	public static Block blockPotPillar;
+
 	public static Block blockChristmasLeaves;
 	public static Block blockChristmasTreeSapling;
 
@@ -126,48 +130,55 @@ public class CraftingPillars
 			Property idExtendPillar = CraftingPillars.config.getBlock("ExtendPillar.id", BlockIds.idExtendPillar);
 			blockExtendPillar = (new ExtendPillarBlock(idExtendPillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("extendPillar");
 			registerBlock(blockExtendPillar);
-			LanguageRegistry.instance().addStringLocalization(blockExtendPillar.getUnlocalizedName()+".name", "en_US", "Base Pillar");
+			LanguageRegistry.instance().addStringLocalization(blockExtendPillar.getUnlocalizedName()+".name", "Base Pillar");
 			
 			Property idShowOffPillar = CraftingPillars.config.getBlock("ShowOffPillar.id", BlockIds.idShowOffPillar);
 			blockShowOffPillar = (new ShowOffPillarBlock(idShowOffPillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("showOffPillar");
 			registerBlock(blockShowOffPillar);
-			LanguageRegistry.instance().addStringLocalization(blockShowOffPillar.getUnlocalizedName()+".name", "en_US", "Show-Off Pillar");
+			LanguageRegistry.instance().addStringLocalization(blockShowOffPillar.getUnlocalizedName()+".name",  "Show-Off Pillar");
 			
 			Property idCraftingPillar = CraftingPillars.config.getBlock("CraftingPillar.id", BlockIds.idCraftingPillar);
 			blockCraftingPillar = (new CraftingPillarBlock(idCraftingPillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("craftingPillar");
 			registerBlock(blockCraftingPillar);
-			LanguageRegistry.instance().addStringLocalization(blockCraftingPillar.getUnlocalizedName()+".name", "en_US", "Crafting Pillar");
+			LanguageRegistry.instance().addStringLocalization(blockCraftingPillar.getUnlocalizedName()+".name", "Crafting Pillar");
 			
 			Property idFurnacePillar = CraftingPillars.config.getBlock("FurnacePillar.id", BlockIds.idFurnacePillar);
 			blockFurnacePillar = (new FurnacePillarBlock(idFurnacePillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("furnacePillar");
 			registerBlock(blockFurnacePillar);
-			LanguageRegistry.instance().addStringLocalization(blockFurnacePillar.getUnlocalizedName()+".name", "en_US", "Furnace Pillar");
+			LanguageRegistry.instance().addStringLocalization(blockFurnacePillar.getUnlocalizedName()+".name", "Furnace Pillar");
 			
-			Property idAnvilPillar = CraftingPillars.config.getBlock("AnvilPillar.id", BlockIds.idAnvilPillar, "Coming soon...");
+			Property idAnvilPillar = CraftingPillars.config.getBlock("AnvilPillar.id", BlockIds.idAnvilPillar);
 			blockAnvilPillar = (new AnvilPillar(idAnvilPillar.getInt(), Material.anvil)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("anvilPillar");
 			registerBlock(blockAnvilPillar);
-			LanguageRegistry.instance().addStringLocalization(blockAnvilPillar.getUnlocalizedName()+".name", "en_US", "Anvil Pillar");
+			LanguageRegistry.instance().addStringLocalization(blockAnvilPillar.getUnlocalizedName()+".name", "Anvil Pillar");
 
 //			Property idTankPillar = CraftingPillars.config.getBlock("TankPillar.id", BlockIds.idTankPillar, "Coming soon...");
 //			blockTankPillar = (new TankPillarBlock(idTankPillar.getInt(), Material.glass)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("tankPillar");
 //			registerBlock(blockTankPillar);
-//			LanguageRegistry.instance().addStringLocalization(blockTankPillar.getUnlocalizedName()+".name", "en_US", "Tank Pillar");
+//			LanguageRegistry.instance().addStringLocalization(blockTankPillar.getUnlocalizedName()+".name", "Tank Pillar");
 
-			Property idFreezerPillar = CraftingPillars.config.getBlock("FreezerPillar.id", BlockIds.idFreezerPillar);
-			blockFreezerPillar = (new FreezerPillarBlock(idFreezerPillar.getInt(), Material.glass)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("freezerPillar");
-			registerBlock(blockFreezerPillar);
-			LanguageRegistry.instance().addStringLocalization(blockFreezerPillar.getUnlocalizedName()+".name", "en_US", "Freezer Pillar");
-			
 			Property idBrewingPillar = CraftingPillars.config.getBlock("BrewingPillar.id", BlockIds.idBrewingPillar);
 			blockBrewingPillar = (new BrewingPillarBlock(idBrewingPillar.getInt(), Material.iron)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("brewingPillar");
 			registerBlock(blockBrewingPillar);
-			LanguageRegistry.instance().addStringLocalization(blockBrewingPillar.getUnlocalizedName()+".name", "en_US", "Brewing Pillar");
+			LanguageRegistry.instance().addStringLocalization(blockBrewingPillar.getUnlocalizedName()+".name", "Brewing Pillar");
 
 			Property idDiskPlayerPillar = CraftingPillars.config.getBlock("DiskPlayerPillar.id", BlockIds.idDiskPillar);
 			blockDiskPlayerPillar = (new DiskPlayerPillarBlock(idDiskPlayerPillar.getInt(), Material.iron)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("diskPillar");
 			registerBlock(blockDiskPlayerPillar);
-			LanguageRegistry.instance().addStringLocalization(blockDiskPlayerPillar.getUnlocalizedName()+".name", "en_US", "Juke Pillar");
+			LanguageRegistry.instance().addStringLocalization(blockDiskPlayerPillar.getUnlocalizedName()+".name", "Juke Pillar");
 
+			Property idFreezerPillar = CraftingPillars.config.getBlock("FreezerPillar.id", BlockIds.idFreezerPillar);
+			blockFreezerPillar = (new FreezerPillarBlock(idFreezerPillar.getInt(), Material.glass)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("freezerPillar");
+			registerBlock(blockFreezerPillar);
+			LanguageRegistry.instance().addStringLocalization(blockFreezerPillar.getUnlocalizedName()+".name", "Freezer Pillar");
+			
+			Property idPotPillar = CraftingPillars.config.getBlock("PotPillar.id", BlockIds.idPotPillar);
+			blockPotPillar = (new PotPillarBlock(idPotPillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("potPillar");
+			registerBlock(blockPotPillar);
+			LanguageRegistry.instance().addStringLocalization(blockPotPillar.getUnlocalizedName()+".name", "Pot Pillar");
+
+			
+			//Christmas
 			Property idChristmasLeaves = CraftingPillars.config.getBlock("ChristmasLeaves.id", BlockIds.idChristmasLeaves);
 			blockChristmasLeaves = (new ChristmasLeavesBlock(idChristmasLeaves.getInt(), Material.leaves)).setHardness(0.2F).setLightOpacity(1).setStepSound(Block.soundGrassFootstep).setUnlocalizedName("xmasLeaves");
 			registerBlock(blockChristmasLeaves);
@@ -214,6 +225,7 @@ public class CraftingPillars
 			GameRegistry.registerTileEntity(TileEntityBrewingPillar.class, "TileEntityBrewingPillar");
 			GameRegistry.registerTileEntity(TileEntityDiskPlayerPillar.class, "TileEntityDiskPlayerPillar");
 			GameRegistry.registerTileEntity(TileEntityFreezerPillar.class, "TileEntityFreezerPillar");
+			GameRegistry.registerTileEntity(TileEntityPotPillar.class, "TileEntityPotPillar");
 			
 			
 			LanguageRegistry.instance().addStringLocalization("itemGroup.CraftingPillars", "en_US", "Crafting Pillars");
@@ -236,6 +248,7 @@ public class CraftingPillars
 			GameRegistry.addShapelessRecipe(new ItemStack(blockCraftingPillar), new ItemStack(Block.workbench), new ItemStack(blockExtendPillar));
 			GameRegistry.addShapelessRecipe(new ItemStack(blockFurnacePillar), new ItemStack(Block.furnaceIdle), new ItemStack(blockExtendPillar));
 			GameRegistry.addShapelessRecipe(new ItemStack(blockBrewingPillar), new ItemStack(Item.brewingStand), new ItemStack(blockExtendPillar));
+			GameRegistry.addShapelessRecipe(new ItemStack(blockBrewingPillar), new ItemStack(Block.flowerPot));
 			
 			
 			GameRegistry.addShapelessRecipe(new ItemStack(Item.diamond), new ItemStack(itemRibbonDiamond));

@@ -1,4 +1,4 @@
-package me.dawars.CraftingPillars;
+package me.dawars.CraftingPillars.items;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -10,7 +10,7 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
-import me.dawars.CraftingPillars.items.BaseItem;
+import me.dawars.CraftingPillars.CraftingPillars;
 
 public class BaseItemEdiable extends ItemFood
 {

@@ -58,6 +58,7 @@ public class ClientProxy extends CommonProxy
 		CraftingPillars.brewingillarRenderID = RenderingRegistry.getNextAvailableRenderId();
 		CraftingPillars.diskPlayerRenderID = RenderingRegistry.getNextAvailableRenderId();
 		CraftingPillars.freezerPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
+		CraftingPillars.potPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
 		CraftingPillars.christmasLeavesRenderID = RenderingRegistry.getNextAvailableRenderId();
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityExtendPillar.class, new RenderExtendPillar());
@@ -69,6 +70,7 @@ public class ClientProxy extends CommonProxy
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBrewingPillar.class, new RenderBrewingPillar());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityDiskPlayerPillar.class, new RenderDiskPillar());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFreezerPillar.class, new RenderFreezerPillar());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPotPillar.class, new RenderPotPillar());
 
 		RenderingRegistry.registerBlockHandler(new RenderExtendPillar());
 		RenderingRegistry.registerBlockHandler(new RenderShowOffPillar());
@@ -79,6 +81,7 @@ public class ClientProxy extends CommonProxy
 		RenderingRegistry.registerBlockHandler(new RenderBrewingPillar());
 		RenderingRegistry.registerBlockHandler(new RenderDiskPillar());
 		RenderingRegistry.registerBlockHandler(new RenderFreezerPillar());
+		RenderingRegistry.registerBlockHandler(new RenderPotPillar());
 		RenderingRegistry.registerBlockHandler(new RenderChristmasLeavesPillar());
 	}
 	
