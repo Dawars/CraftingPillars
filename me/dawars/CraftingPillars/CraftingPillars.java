@@ -121,7 +121,7 @@ public class CraftingPillars
 	@EventHandler
 	public void load(FMLPreInitializationEvent evt)
 	{
-		winter = /*isWinterTime()*/true;
+		winter = isWinterTime();
 		
 		config = new Configuration(new File(evt.getModConfigurationDirectory(), "CraftingPillars.cfg"));
 		try
@@ -198,7 +198,7 @@ public class CraftingPillars
 
 			Property idAdventCalendar = CraftingPillars.config.getItem("AdventCalendar.id", BlockIds.idAdventCalendar);
 			itemCalendar = new AdventCalendar(idAdventCalendar.getInt()).setUnlocalizedName("adventCalendar");
-			LanguageRegistry.instance().addStringLocalization(itemCalendar.getUnlocalizedName() + ".name", "Advent Calendar");
+			LanguageRegistry.instance().addStringLocalization(itemCalendar.getUnlocalizedName() + ".name", "Advent Calendar 2013");
 
 			Property idChrsitmasCandy = CraftingPillars.config.getItem("ChrsitmasCandy.id", BlockIds.idChrsitmasCandy);
 			itemChristmasCandy = new BaseItemEatable(idChrsitmasCandy.getInt(), 5, 0.5F).setUnlocalizedName("ChristmasCandy");
@@ -313,28 +313,35 @@ public class CraftingPillars
 	public static int getNumberOfCalendarElements()
 	{
 		Calendar c = Calendar.getInstance();
-		return 11;
-		/*if(c.get(Calendar.MONTH) == Calendar.DECEMBER)
+		Calendar b = Calendar.getInstance();
+		b.set(Calendar.YEAR, 2013);
+		b.set(Calendar.MONTH, Calendar.DECEMBER);
+		b.set(Calendar.DAY_OF_MONTH, 24);
+		b.set(Calendar.HOUR_OF_DAY, 0);
+		b.set(Calendar.MINUTE, 0);
+		b.set(Calendar.MILLISECOND, 0);
+//		return 11;
+		if(c.get(Calendar.MONTH) == Calendar.DECEMBER && c.get(Calendar.YEAR) == 2013)
 			return Math.min(c.get(Calendar.DAY_OF_MONTH), 24);
-		else if(c.get(Calendar.MONTH) == Calendar.JANUARY)
+		else if(c.after(b))
 			return 24;
 		else
-			return 0;*/
+			return 0;
 	}
 	
 	public static boolean isWinterTime()
 	{
 		Calendar c = Calendar.getInstance();
 		Calendar b = Calendar.getInstance();
-		b.set(Calendar.MONTH, Calendar.DECEMBER);
-		b.set(Calendar.DAY_OF_MONTH, 1);
+		b.set(Calendar.MONTH, Calendar.NOVEMBER);
+		b.set(Calendar.DAY_OF_MONTH, 25);
 		b.set(Calendar.HOUR_OF_DAY, 0);
 		b.set(Calendar.MINUTE, 0);
 		b.set(Calendar.MILLISECOND, 0);
 		Calendar e = Calendar.getInstance();
 		e.set(Calendar.YEAR, c.get(Calendar.YEAR)+1);
 		e.set(Calendar.MONTH, Calendar.JANUARY);
-		e.set(Calendar.DAY_OF_MONTH, 1);
+		e.set(Calendar.DAY_OF_MONTH, 15);
 		e.set(Calendar.HOUR_OF_DAY, 0);
 		e.set(Calendar.MINUTE, 0);
 		e.set(Calendar.MILLISECOND, 0);
