@@ -52,6 +52,8 @@ public class RenderPotPillar extends TileEntitySpecialRenderer implements ISimpl
 	private ModelRenderer pillartop;
 	private ModelRenderer top;
 	
+    private ModelRenderer pot;
+
 	private ModelRenderer pillarBottom;
 	
 	
@@ -144,6 +146,13 @@ public class RenderPotPillar extends TileEntitySpecialRenderer implements ISimpl
 		top.mirror = true;
 		setRotation(top, 0F, 0F, 0F);
 		
+		pot = new ModelRenderer(model, 64, 18);
+		pot.addBox(-3F, 0F, -3F, 6, 5, 6);
+		pot.setRotationPoint(0F, 3F, 0F);
+		pot.setTextureSize(128, 64);
+		pot.mirror = true;
+		setRotation(pot, 0F, 0F, 0F);
+	      
 		//Winter
 		Icicle1A = new ModelRenderer(model, 122, 60);
 		Icicle1A.addBox(0F, 0F, 0F, 1, 2, 2);
@@ -342,6 +351,7 @@ public class RenderPotPillar extends TileEntitySpecialRenderer implements ISimpl
 		pillar.render(f);
 		pillartop.render(f);
 		top.render(f);
+		pot.render(f);
 		
 		if(CraftingPillars.winter)
 		{
