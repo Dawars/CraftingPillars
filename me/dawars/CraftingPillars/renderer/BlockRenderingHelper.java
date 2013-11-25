@@ -10,18 +10,19 @@ import net.minecraft.world.IBlockAccess;
 import org.lwjgl.opengl.GL11;
 
 public class BlockRenderingHelper {
-	public static void drawFaces(RenderBlocks renderblocks, Block block,
-			Icon icon) {
+	public static void drawBlock(Tessellator t, RenderBlocks renderblocks, Block block, Icon icon) {
+		drawFaces(t, renderblocks, block, icon, icon, icon, icon, icon, icon);
+	}
+	
+	public static void drawBlock(RenderBlocks renderblocks, Block block, Icon icon) {
 		drawFaces(renderblocks, block, icon, icon, icon, icon, icon, icon);
 	}
 
-	public static void drawSideBlockFaces(RenderBlocks renderblocks,
-			Block block, Icon icon, Icon top) {
+	public static void drawSideBlockFaces(RenderBlocks renderblocks, Block block, Icon icon, Icon top) {
 		drawFaces(renderblocks, block, top, top, icon, icon, icon, icon);
 	}
 
-	public static void drawFaces(RenderBlocks renderblocks, Block block,
-			Icon i1, Icon i2, Icon i3, Icon i4, Icon i5, Icon i6) {
+	public static void drawFaces(RenderBlocks renderblocks, Block block, Icon i1, Icon i2, Icon i3, Icon i4, Icon i5, Icon i6) {
 		Tessellator tessellator = Tessellator.instance;
 		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 		tessellator.startDrawingQuads();
@@ -50,9 +51,37 @@ public class BlockRenderingHelper {
 		tessellator.draw();
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 	}
+	
+	public static void drawFaces(Tessellator tessellator, RenderBlocks renderblocks, Block block, Icon i1, Icon i2, Icon i3, Icon i4, Icon i5, Icon i6) {
+		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(0.0F, -1.0F, 0.0F);
+		renderblocks.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, i1);
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(0.0F, 1.0F, 0.0F);
+		renderblocks.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, i2);
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(0.0F, 0.0F, 1.0F);
+		renderblocks.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, i3);
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(0.0F, 0.0F, -1.0F);
+		renderblocks.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, i4);
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(1.0F, 0.0F, 0.0F);
+		renderblocks.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, i5);
+		tessellator.draw();
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(-1.0F, 0.0F, 0.0F);
+		renderblocks.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, i6);
+		tessellator.draw();
+		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+	}
 
-	protected static int setBrightness(IBlockAccess blockAccess, int i, int j,
-			int k, Block block) {
+	protected static int setBrightness(IBlockAccess blockAccess, int i, int j, int k, Block block) {
 		int brightness = block.getMixedBrightnessForBlock(blockAccess, i, j, k);
 
 		Tessellator tessellator = Tessellator.instance;
@@ -80,13 +109,11 @@ public class BlockRenderingHelper {
 		return brightness;
 	}
 
-	protected static void renderSides(IBlockAccess world, int x, int y, int z,
-			Block block, RenderBlocks renderer, Icon tex) {
+	protected static void renderSides(IBlockAccess world, int x, int y, int z, Block block, RenderBlocks renderer, Icon tex) {
 		renderSides(world, x, y, z, block, renderer, tex, false);
 	}
 
-	protected static void renderSides(IBlockAccess world, int x, int y, int z,
-			Block block, RenderBlocks renderer, Icon tex, boolean allsides) {
+	protected static void renderSides(IBlockAccess world, int x, int y, int z, Block block, RenderBlocks renderer, Icon tex, boolean allsides) {
 		if ((allsides) || (block.shouldSideBeRendered(world, x + 1, y, z, 6)))
 			renderer.renderFaceXPos(block, x, y, z, tex);
 		if ((allsides) || (block.shouldSideBeRendered(world, x - 1, y, z, 6)))
@@ -97,8 +124,7 @@ public class BlockRenderingHelper {
 			renderer.renderFaceZNeg(block, x, y, z, tex);
 	}
 
-	protected static void renderAllSides(int x, int y, int z, Block block,
-			RenderBlocks renderer, Icon tex) {
+	protected static void renderAllSides(int x, int y, int z, Block block, RenderBlocks renderer, Icon tex) {
 		renderer.renderFaceXPos(block, x - 1, y, z, tex);
 		renderer.renderFaceXNeg(block, x + 1, y, z, tex);
 		renderer.renderFaceZPos(block, x, y, z - 1, tex);
@@ -107,8 +133,7 @@ public class BlockRenderingHelper {
 		renderer.renderFaceYNeg(block, x, y + 1, z, tex);
 	}
 
-	protected static void renderSides(int x, int y, int z, Block block,
-			RenderBlocks renderer, Icon tex) {
+	protected static void renderSides(int x, int y, int z, Block block, RenderBlocks renderer, Icon tex) {
 		renderer.renderFaceXPos(block, x - 1, y, z, tex);
 		renderer.renderFaceXNeg(block, x + 1, y, z, tex);
 		renderer.renderFaceZPos(block, x, y, z - 1, tex);

@@ -23,7 +23,7 @@ import net.minecraftforge.common.IShearable;
 
 public class ChristmasLeavesBlock extends BaseLeavesBlock implements IShearable
 {
-	private Icon[] iconArray = new Icon[2];
+	public Icon[] iconArray = new Icon[2];
 	public Icon glowing;
     int[] adjacentTreeBlocks;
     
