@@ -2,6 +2,8 @@ package me.dawars.CraftingPillars.renderer;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import java.awt.Color;
+
 import javax.swing.Renderer;
 
 import org.lwjgl.opengl.GL11;
@@ -15,6 +17,7 @@ import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.client.CustomParticle;
 import me.dawars.CraftingPillars.tiles.TileEntityFreezerPillar;
 import me.dawars.CraftingPillars.tiles.TileEntityFurnacePillar;
+import me.dawars.CraftingPillars.tiles.TileEntityPotPillar;
 import me.dawars.CraftingPillars.tiles.TileEntityTankPillar;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -331,9 +334,24 @@ public class RenderFreezerPillar extends TileEntitySpecialRenderer implements IS
 					resultRenderer.render(citem, 0.01F, 0F, 0.01F, false);
 				glPopMatrix();
 			}
-		
+			
+
+			
 		glPopMatrix();
 		
+		if(tank.showNum && !tank.isEmpty)
+		{
+			glPushMatrix();
+			glTranslated(x + 0.5D, y + 1, z + 0.5D);
+				
+				glDisable(GL_LIGHTING);
+				RenderingHelper.renderFloatingTextWithBackground(0, 0.35F, 0, 0.3F, tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid.getFluid().getLocalizedName(), Color.WHITE.getRGB(), new Color(0F, 0F, 0F, 0.5F));
+				RenderingHelper.renderFloatingTextWithBackground(0, 0.2F, 0, 0.2F, tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid.amount + " Unit", Color.WHITE.getRGB(), new Color(0F, 0F, 0F, 0.5F));
+				glEnable(GL_LIGHTING);
+
+			glPopMatrix();
+
+		}
 		
 		if(tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid == null || tank.isEmpty)
 			return;
