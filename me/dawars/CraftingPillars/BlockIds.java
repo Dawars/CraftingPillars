@@ -12,8 +12,16 @@ public class BlockIds
 	public static int idDiskPillar = 3261;
 	public static int idFreezerPillar = 3262;
 	public static int idChristmasLeaves = 3270;
+	public static int idChristmasTreeSapling = 3271;
 
 	
 	public static int idDiscElysium = 5150;
 	public static int idAdventCalendar = 5151;
+	public static int idRibbonDiamond = 5152;
+	public static int idLoreBook = 5153;
+
+	//Food
+	public static int idChrsitmasCandy = 5160;
+	public static int idGingerbreadMan = 5162;
+	
 }

@@ -38,7 +38,6 @@ public class RenderChristmasLeavesPillar extends BlockRenderingHelper implements
     	int bb = setBrightness(world, x, y, z, block);
 
         Tessellator t = Tessellator.instance;
-//        t.setColorOpaque_I(thaumcraft.common.world.BlockCustomOreItem.colors[metadata]);
         t.setBrightness(160);
 
 

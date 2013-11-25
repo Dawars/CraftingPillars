@@ -26,6 +26,7 @@ import net.minecraft.stats.AchievementList;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Property;
+import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -96,9 +97,15 @@ public class CraftingPillars
 	public static Block blockDiskPlayerPillar;
 	public static Block blockFreezerPillar;
 	public static Block blockChristmasLeaves;
+	public static Block blockChristmasTreeSapling;
 
-	public static Item discElysium;
+	public static Item itemDiscElysium;
 	public static Item itemCalendar;
+	public static Item itemChristmasCandy;
+	public static Item itemGingerbreadMan;
+	public static Item itemElysiumLoreBook;
+	public static Item itemRibbonDiamond;
+	
 
 	public static boolean floatingItems = true, rayTrace = false, renderHitBoxes = true, winter;
 	
@@ -162,18 +169,40 @@ public class CraftingPillars
 			LanguageRegistry.instance().addStringLocalization(blockDiskPlayerPillar.getUnlocalizedName()+".name", "en_US", "Juke Pillar");
 
 			Property idChristmasLeaves = CraftingPillars.config.getBlock("ChristmasLeaves.id", BlockIds.idChristmasLeaves);
-			blockChristmasLeaves = (new ChristmasLeavesBlock(idChristmasLeaves.getInt(), Material.leaves)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundGrassFootstep).setUnlocalizedName("xmasLeaves");
+			blockChristmasLeaves = (new ChristmasLeavesBlock(idChristmasLeaves.getInt(), Material.leaves)).setHardness(0.2F).setLightOpacity(1).setStepSound(Block.soundGrassFootstep).setUnlocalizedName("xmasLeaves");
 			registerBlock(blockChristmasLeaves);
 			LanguageRegistry.instance().addStringLocalization(blockChristmasLeaves.getUnlocalizedName()+".name", "en_US", "Christmas Leaves");
 
+			Property idChristmasTreeSapling = CraftingPillars.config.getBlock("ChristmasTreeSapling.id", BlockIds.idChristmasTreeSapling);
+			blockChristmasTreeSapling = (new ChristmasTreeSapling(idChristmasTreeSapling.getInt(), Material.plants)).setHardness(0.0F).setStepSound(Block.soundGrassFootstep).setUnlocalizedName("ChristmasTreeSapling");
+			registerBlock(blockChristmasTreeSapling);
+			LanguageRegistry.instance().addStringLocalization(blockChristmasTreeSapling.getUnlocalizedName()+".name", "en_US", "Christmas Tree Sapling");
 			
-			Property idDiscElysium = CraftingPillars.config.getItem("idDiscElysium.id", BlockIds.idDiscElysium);
-			discElysium = new PillarRecord(idDiscElysium.getInt(), CraftingPillars.id + ":UranusParadiseShort").setUnlocalizedName("record").setTextureName(CraftingPillars.id + ":ElysiumDisk");
-            LanguageRegistry.instance().addStringLocalization(CraftingPillars.id + ":UranusParadiseShort", "en_US", "Elysium - Uranus Paradise Short");
+			
+			
+			Property idDiscElysium = CraftingPillars.config.getItem("DiscElysium.id", BlockIds.idDiscElysium);
+			itemDiscElysium = new PillarRecord(idDiscElysium.getInt(), CraftingPillars.id + ":UranusParadiseShort").setUnlocalizedName("record").setTextureName(CraftingPillars.id + ":ElysiumDisk");
+            LanguageRegistry.instance().addStringLocalization(CraftingPillars.id + ":UranusParadiseShort", "Elysium - Uranus Paradise Short");
 
-			Property idAdventCalendar = CraftingPillars.config.getItem("idAdventCalendar.id", BlockIds.idAdventCalendar);
+			Property idAdventCalendar = CraftingPillars.config.getItem("AdventCalendar.id", BlockIds.idAdventCalendar);
 			itemCalendar = new AdventCalendar(idAdventCalendar.getInt()).setUnlocalizedName("adventCalendar");
-			LanguageRegistry.instance().addStringLocalization(itemCalendar.getUnlocalizedName() + ".name", "en_US", "Advent Calendar");
+			LanguageRegistry.instance().addStringLocalization(itemCalendar.getUnlocalizedName() + ".name", "Advent Calendar");
+
+			Property idChrsitmasCandy = CraftingPillars.config.getItem("ChrsitmasCandy.id", BlockIds.idChrsitmasCandy);
+			itemChristmasCandy = new BaseItemEdiable(idChrsitmasCandy.getInt(), 5, 0.5F).setUnlocalizedName("ChristmasCandy");
+			LanguageRegistry.instance().addStringLocalization(itemChristmasCandy.getUnlocalizedName() + ".name", "Christmas Candy");
+
+			Property idGingerbreadMan = CraftingPillars.config.getItem("GingerbreadMan.id", BlockIds.idGingerbreadMan);
+			itemGingerbreadMan = new BaseItemEdiable(idGingerbreadMan.getInt(), 7, 1.5F).setUnlocalizedName("GingerbreadMan");
+			LanguageRegistry.instance().addStringLocalization(itemGingerbreadMan.getUnlocalizedName() + ".name", "Gingerbread Man");
+
+			Property idRibbonDiamond = CraftingPillars.config.getItem("RibbonDiamond.id", BlockIds.idRibbonDiamond);
+			itemRibbonDiamond = new BaseItem(idRibbonDiamond.getInt()).setUnlocalizedName("RibbonDiamond");
+			LanguageRegistry.instance().addStringLocalization(itemRibbonDiamond.getUnlocalizedName() + ".name", "Ribbon Diamond");
+
+			Property idLoreBook = CraftingPillars.config.getItem("LoreBook.id", BlockIds.idLoreBook);
+			itemElysiumLoreBook = new BaseItem(idLoreBook.getInt()).setUnlocalizedName("ElysiumLoreBook");
+			LanguageRegistry.instance().addStringLocalization(itemElysiumLoreBook.getUnlocalizedName() + ".name", "Elysium Lore Book");
 
 			GameRegistry.registerTileEntity(TileEntityExtendPillar.class, "TileEntityExtendPillar");
 			GameRegistry.registerTileEntity(TileEntityShowOffPillar.class, "TileEntityShowOffPillar");
@@ -201,15 +230,20 @@ public class CraftingPillars
 			proxy.init();
 			
 			GameRegistry.addRecipe(new ItemStack(blockExtendPillar), new Object[] { "SSS", " S ", "SSS", Character.valueOf('S'), Block.stone });
+			
 			GameRegistry.addRecipe(new ItemStack(blockFreezerPillar), new Object[] { "SSS", "SPS", "SSS", Character.valueOf('S'), Block.blockSnow, Character.valueOf('P'), blockExtendPillar });
 			GameRegistry.addShapelessRecipe(new ItemStack(blockShowOffPillar), new ItemStack(Item.itemFrame), new ItemStack(blockExtendPillar));
 			GameRegistry.addShapelessRecipe(new ItemStack(blockCraftingPillar), new ItemStack(Block.workbench), new ItemStack(blockExtendPillar));
 			GameRegistry.addShapelessRecipe(new ItemStack(blockFurnacePillar), new ItemStack(Block.furnaceIdle), new ItemStack(blockExtendPillar));
-			
 			GameRegistry.addShapelessRecipe(new ItemStack(blockBrewingPillar), new ItemStack(Item.brewingStand), new ItemStack(blockExtendPillar));
 			
-			CraftingPillarAPI.addDiskTexture(discElysium.itemID, CraftingPillars.id + ":textures/models/disk_elysium.png");
 			
+			GameRegistry.addShapelessRecipe(new ItemStack(Item.diamond), new ItemStack(itemRibbonDiamond));
+
+			CraftingPillarAPI.addDiskTexture(itemDiscElysium.itemID, CraftingPillars.id + ":textures/models/disk_elysium.png");
+			
+			OreDictionary.registerOre("record", itemDiscElysium);
+
 			GameRegistry.registerCraftingHandler(new PillarCraftingHandler());
 		}
 		finally
