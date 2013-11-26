@@ -19,7 +19,7 @@ import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
-public class RenderChristmasLeavesPillar extends BlockRenderingHelper implements ISimpleBlockRenderingHandler
+public class RenderChristmasLeaves extends BlockRenderingHelper implements ISimpleBlockRenderingHandler
 {
 	@Override
     public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {

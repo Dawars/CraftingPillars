@@ -288,7 +288,6 @@ public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimp
 		Icicle8D.mirror = true;
 		setRotation(Icicle8D, 0F, 0F, 0F);
 		
-		
 		Icicle9A = new ModelRenderer(model, 122, 38);
 		Icicle9A.addBox(0F, 0F, 0F, 2, 1, 1);
 		Icicle9A.setRotationPoint(3F, 11F, -7F);
@@ -339,22 +338,8 @@ public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimp
 		setRotation(Icicle11C, 0F, 0F, 0F);
 	}
 	
-	public void render(float f, boolean connected)
+	public void render(float f)
 	{
-//		if(connected)
-//		{
-//			pillarBottom.render(f);
-//		}
-//		else
-//		{
-			bottom.render(f);
-			pillarbottom.render(f);
-//		}
-		pillar.render(f);
-		pillartop.render(f);
-		top.render(f);
-		Nail.render(f);
-		
 		if(CraftingPillars.winter)
 		{
 			Icicle1A.render(f);
@@ -390,6 +375,13 @@ public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimp
 		    Icicle11B.render(f);
 		    Icicle11C.render(f);
 		}
+		
+		bottom.render(f);
+		pillarbottom.render(f);
+		pillar.render(f);
+		pillartop.render(f);
+		top.render(f);
+		Nail.render(f);
 	}
 	
 	private void setRotation(ModelRenderer model, float x, float y, float z)
@@ -407,7 +399,7 @@ public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimp
 			glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
 			glRotatef(180F, 1F, 0F, 0F);
 			Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_DISKPILLAR);
-			render(0.0625F, tile.worldObj.getBlockId(tile.xCoord, tile.yCoord-1, tile.zCoord) == CraftingPillars.blockExtendPillar.blockID);
+			render(0.0625F);
 		glPopMatrix();
 		
 		TileEntityDiskPlayerPillar workTile = (TileEntityDiskPlayerPillar) tile;
@@ -445,7 +437,7 @@ public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimp
 		glTranslated(0, 1.0D, 0);
 		glRotatef(180F, 1F, 0F, 0F);
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_DISKPILLAR);
-		render(0.0625F, false);
+		render(0.0625F);
 		glPopMatrix();
 	}
 	

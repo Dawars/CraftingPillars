@@ -43,7 +43,7 @@ public class ContainerAdventCalendar extends BaseContainer implements IInventory
 															new ItemStack(CraftingPillars.blockChristmasTreeSapling.blockID, 1, 0),
 															new ItemStack(Item.cookie, 16, 0),
 															new ItemStack(CraftingPillars.blockFurnacePillar.blockID, 1, 0),
-															new ItemStack(CraftingPillars.blockExtendPillar.blockID, 1, 0),
+															new ItemStack(CraftingPillars.blockBasePillar.blockID, 1, 0),
 															new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
 															new ItemStack(Block.ice.blockID, 1, 0),
 															new ItemStack(CraftingPillars.itemGingerbreadMan.itemID, 1, 0),

@@ -347,21 +347,8 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 		setRotation(Bow, 0F, 0F, 0F);
 	}
 	
-	public void render(float f, boolean connected)
+	public void render(float f)
 	{
-		if(connected)
-		{
-			pillarBottom.render(f);
-		}
-		else
-		{
-			bottom.render(f);
-			pillarbottom.render(f);
-		}
-		pillar.render(f);
-		pillartop.render(f);
-		top.render(f);
-		
 		if(CraftingPillars.winter)
 		{
 			Icicle1A.render(f);
@@ -399,6 +386,12 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 		    WreathJ.render(f);
 		    Bow.render(f);
 		}
+		
+		bottom.render(f);
+		pillarbottom.render(f);
+		pillar.render(f);
+		pillartop.render(f);
+		top.render(f);
 	}
 	
 	private void setRotation(ModelRenderer model, float x, float y, float z)
@@ -417,7 +410,7 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 		glRotatef(90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
 		
 		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_WORKPILLAR);
-		render(0.0625F, tile.worldObj.getBlockId(tile.xCoord, tile.yCoord-1, tile.zCoord) == CraftingPillars.blockExtendPillar.blockID);
+		render(0.0625F);
 		glPopMatrix();
 		
 		TileEntityCraftingPillar workTile = (TileEntityCraftingPillar) tile;
@@ -460,7 +453,7 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 		glTranslated(0, 1.0D, 0);
 		glRotatef(180F, 1F, 0F, 0F);
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_WORKPILLAR);
-		render(0.0625F, false);
+		render(0.0625F);
 		glPopMatrix();
 	}
 	

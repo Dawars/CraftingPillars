@@ -255,11 +255,6 @@ public class RenderAnvilPillar extends TileEntitySpecialRenderer implements ISim
 	
 	public void render(TileEntity tileentity, float f)
 	{
-		CraftingBottom.render(f);
-		CraftingBotSlab.render(f);
-		WorkbenchSlab.render(f);
-		WorkbenchTop.render(f);
-		Pillar2.render(f);
 		if(CraftingPillars.winter)
 		{
 			Icicle1A.render(f);
@@ -285,6 +280,12 @@ public class RenderAnvilPillar extends TileEntitySpecialRenderer implements ISim
 		    Icicle8B.render(f);
 		    Icicle8C.render(f);
 		}
+		
+		CraftingBottom.render(f);
+		CraftingBotSlab.render(f);
+		WorkbenchSlab.render(f);
+		WorkbenchTop.render(f);
+		Pillar2.render(f);
 	}
 	
 	private void setRotation(ModelRenderer model, float x, float y, float z)

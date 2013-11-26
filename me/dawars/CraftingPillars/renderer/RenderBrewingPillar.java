@@ -265,16 +265,6 @@ public class RenderBrewingPillar extends TileEntitySpecialRenderer implements IS
 	
 	public void render(float f)
 	{
-		CraftingBottom.render(f);
-		CraftingBotSlab.render(f);
-	    Pillar.render(f);
-	    WorkbenchSlab.render(f);
-	    WorkbenchTop.render(f);
-	    Holder2.render(f);
-	    Holder1.render(f);
-	    Holder4.render(f);
-	    Holder3.render(f);
-	    
 	    if(CraftingPillars.winter)
 	    {
 	    	Icicle1A.render(f);
@@ -298,6 +288,15 @@ public class RenderBrewingPillar extends TileEntitySpecialRenderer implements IS
 	        Bow.render(f);
 	    }
 	    
+		CraftingBottom.render(f);
+		CraftingBotSlab.render(f);
+	    Pillar.render(f);
+	    WorkbenchSlab.render(f);
+	    WorkbenchTop.render(f);
+	    Holder2.render(f);
+	    Holder1.render(f);
+	    Holder4.render(f);
+	    Holder3.render(f);
 	}
 	
 	private void setRotation(ModelRenderer model, float x, float y, float z)

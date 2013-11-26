@@ -82,7 +82,7 @@ public class ClientProxy extends CommonProxy
 		RenderingRegistry.registerBlockHandler(new RenderDiskPillar());
 		RenderingRegistry.registerBlockHandler(new RenderFreezerPillar());
 		RenderingRegistry.registerBlockHandler(new RenderPotPillar());
-		RenderingRegistry.registerBlockHandler(new RenderChristmasLeavesPillar());
+		RenderingRegistry.registerBlockHandler(new RenderChristmasLeaves());
 	}
 	
 	@Override

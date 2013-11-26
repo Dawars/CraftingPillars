@@ -32,6 +32,7 @@ import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -90,7 +91,7 @@ public class CraftingPillars
 	
 	public static int christmasLeavesRenderID;
 
-	public static Block blockExtendPillar;
+	public static Block blockBasePillar;
 	public static Block blockShowOffPillar;
 	public static Block blockCraftingPillar;
 	public static Block blockFurnacePillar;
@@ -114,12 +115,17 @@ public class CraftingPillars
 
 	public static boolean floatingItems = true, rayTrace = false, renderHitBoxes = true, winter;
 	
-	public static final Achievement achievementGettingStarted = new Achievement(509, "gettingstarted", -2, 0, /* blockCraftingPillar */Block.stoneBrick, AchievementList.openInventory).registerAchievement();
-	public static final Achievement achievementRecursion = new Achievement(510, "recursion", -3, -2, /* blockCraftingPillar */Item.redstone, achievementGettingStarted).registerAchievement();
-	public static final Achievement achievementShowoff = new Achievement(511, "showoff", -5, -2, /* blockCraftingPillar */Item.diamond, achievementRecursion).registerAchievement();
+	public static Achievement achievementGettingStarted;
+	public static Achievement achievementChristmas;
+	public static Achievement achievementRecursion;
+	public static Achievement achievementCompressingLiquids;
 	
+	public static Achievement achievementShowoff;
+	public static Achievement achievementDiamond;
+	public static Achievement achievementDisc;
+
 	@EventHandler
-	public void load(FMLPreInitializationEvent evt)
+	public void preInit(FMLPreInitializationEvent evt)
 	{
 		winter = isWinterTime();
 		
@@ -129,9 +135,9 @@ public class CraftingPillars
 			config.load();
 			// Block Registering
 			Property idExtendPillar = CraftingPillars.config.getBlock("ExtendPillar.id", BlockIds.idExtendPillar);
-			blockExtendPillar = (new ExtendPillarBlock(idExtendPillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("extendPillar");
-			registerBlock(blockExtendPillar);
-			LanguageRegistry.instance().addStringLocalization(blockExtendPillar.getUnlocalizedName()+".name", "Base Pillar");
+			blockBasePillar = (new ExtendPillarBlock(idExtendPillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("extendPillar");
+			registerBlock(blockBasePillar);
+			LanguageRegistry.instance().addStringLocalization(blockBasePillar.getUnlocalizedName()+".name", "Base Pillar");
 			
 			Property idShowOffPillar = CraftingPillars.config.getBlock("ShowOffPillar.id", BlockIds.idShowOffPillar);
 			blockShowOffPillar = (new ShowOffPillarBlock(idShowOffPillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("showOffPillar");
@@ -216,59 +222,71 @@ public class CraftingPillars
 			itemElysiumLoreBook = new BaseItem(idLoreBook.getInt()).setUnlocalizedName("ElysiumLoreBook");
 			LanguageRegistry.instance().addStringLocalization(itemElysiumLoreBook.getUnlocalizedName() + ".name", "Elysium Lore Book");
 
-			GameRegistry.registerTileEntity(TileEntityExtendPillar.class, "TileEntityExtendPillar");
-			GameRegistry.registerTileEntity(TileEntityShowOffPillar.class, "TileEntityShowOffPillar");
-			GameRegistry.registerTileEntity(TileEntityCraftingPillar.class, "TileEntityCraftingPillar");
-			GameRegistry.registerTileEntity(TileEntityFurnacePillar.class, "TileEntityFurnacePillar");
-			GameRegistry.registerTileEntity(TileEntityAnvilPillar.class, "TileEntityAnvilPillar");
-			GameRegistry.registerTileEntity(TileEntityTankPillar.class, "TileEntityTankPillar");
-			GameRegistry.registerTileEntity(TileEntityEnchantmentPillar.class, "TileEntityEnchantmentPillar");
-			GameRegistry.registerTileEntity(TileEntityBrewingPillar.class, "TileEntityBrewingPillar");
-			GameRegistry.registerTileEntity(TileEntityDiskPlayerPillar.class, "TileEntityDiskPlayerPillar");
-			GameRegistry.registerTileEntity(TileEntityFreezerPillar.class, "TileEntityFreezerPillar");
-			GameRegistry.registerTileEntity(TileEntityPotPillar.class, "TileEntityPotPillar");
-			
-			
-			LanguageRegistry.instance().addStringLocalization("itemGroup.CraftingPillars", "en_US", "Crafting Pillars");
-			
-			LanguageRegistry.instance().addStringLocalization("achievement.gettingstarted", "en_US", "Getting Started");
-			LanguageRegistry.instance().addStringLocalization("achievement.gettingstarted.desc", "en_US", "Craft a BasicPillar");
-
-			LanguageRegistry.instance().addStringLocalization("achievement.recursion", "en_US", "Recursion I");
-			LanguageRegistry.instance().addStringLocalization("achievement.recursion.desc", "en_US", "Craft a CraftingPillar in a CraftingPillar");
-			
-			LanguageRegistry.instance().addStringLocalization("achievement.showoff", "en_US", "Recursion II");
-			LanguageRegistry.instance().addStringLocalization("achievement.showoff.desc", "en_US", "Show off your Show-Off Pillar!");
-			
-			proxy.init();
-			
-			GameRegistry.addRecipe(new ItemStack(blockExtendPillar), new Object[] { "SSS", " S ", "SSS", Character.valueOf('S'), Block.stone });
-			
-			GameRegistry.addRecipe(new ItemStack(blockFreezerPillar), new Object[] { "SSS", "SPS", "SSS", Character.valueOf('S'), Block.blockSnow, Character.valueOf('P'), blockExtendPillar });
-			GameRegistry.addShapelessRecipe(new ItemStack(blockShowOffPillar), new ItemStack(Item.itemFrame), new ItemStack(blockExtendPillar));
-			GameRegistry.addShapelessRecipe(new ItemStack(blockCraftingPillar), new ItemStack(Block.workbench), new ItemStack(blockExtendPillar));
-			GameRegistry.addShapelessRecipe(new ItemStack(blockFurnacePillar), new ItemStack(Block.furnaceIdle), new ItemStack(blockExtendPillar));
-			GameRegistry.addShapelessRecipe(new ItemStack(blockBrewingPillar), new ItemStack(Item.brewingStand), new ItemStack(blockExtendPillar));
-			GameRegistry.addShapelessRecipe(new ItemStack(blockBrewingPillar), new ItemStack(Block.flowerPot));
-			
-			
-			GameRegistry.addShapelessRecipe(new ItemStack(Item.diamond), new ItemStack(itemRibbonDiamond));
-
-			CraftingPillarAPI.addDiskTexture(itemDiscElysium.itemID, CraftingPillars.id + ":textures/models/disk_elysium.png");
-			
-			OreDictionary.registerOre("record", itemDiscElysium);
-
-			GameRegistry.registerCraftingHandler(new PillarCraftingHandler());
 		}
 		finally
 		{
 			config.save();
 		}
-	}
-	
-	@EventHandler
-	public void preInit(FMLPreInitializationEvent event)
-	{
+
+		GameRegistry.registerTileEntity(TileEntityExtendPillar.class, "TileEntityExtendPillar");
+		GameRegistry.registerTileEntity(TileEntityShowOffPillar.class, "TileEntityShowOffPillar");
+		GameRegistry.registerTileEntity(TileEntityCraftingPillar.class, "TileEntityCraftingPillar");
+		GameRegistry.registerTileEntity(TileEntityFurnacePillar.class, "TileEntityFurnacePillar");
+		GameRegistry.registerTileEntity(TileEntityAnvilPillar.class, "TileEntityAnvilPillar");
+		GameRegistry.registerTileEntity(TileEntityTankPillar.class, "TileEntityTankPillar");
+		GameRegistry.registerTileEntity(TileEntityEnchantmentPillar.class, "TileEntityEnchantmentPillar");
+		GameRegistry.registerTileEntity(TileEntityBrewingPillar.class, "TileEntityBrewingPillar");
+		GameRegistry.registerTileEntity(TileEntityDiskPlayerPillar.class, "TileEntityDiskPlayerPillar");
+		GameRegistry.registerTileEntity(TileEntityFreezerPillar.class, "TileEntityFreezerPillar");
+		GameRegistry.registerTileEntity(TileEntityPotPillar.class, "TileEntityPotPillar");
+		
+		
+		LanguageRegistry.instance().addStringLocalization("itemGroup.CraftingPillars", "en_US", "Crafting Pillars");
+		
+		LanguageRegistry.instance().addStringLocalization("achievement.gettingstarted", "en_US", "Getting Started");
+		LanguageRegistry.instance().addStringLocalization("achievement.gettingstarted.desc", "en_US", "Craft a BasicPillar");
+
+		LanguageRegistry.instance().addStringLocalization("achievement.recursion", "en_US", "Recursion I");
+		LanguageRegistry.instance().addStringLocalization("achievement.recursion.desc", "en_US", "Craft a CraftingPillar in a CraftingPillar");
+
+		LanguageRegistry.instance().addStringLocalization("achievement.showoff", "en_US", "Recursion II");
+		LanguageRegistry.instance().addStringLocalization("achievement.showoff.desc", "en_US", "Show off your Show-Off Pillar!");
+
+		LanguageRegistry.instance().addStringLocalization("achievement.christmaspillar", "en_US", "Christmas Event");
+		LanguageRegistry.instance().addStringLocalization("achievement.christmaspillar.desc", "en_US", "Celebrate Christmas with us!");
+
+		LanguageRegistry.instance().addStringLocalization("achievement.christmasdiamond", "en_US", "Diamond Mania");
+		LanguageRegistry.instance().addStringLocalization("achievement.christmasdiamond.desc", "en_US", "Unwrap a Diamond!");
+
+		LanguageRegistry.instance().addStringLocalization("achievement.liquids", "en_US", "Liquid Tanks!");
+		LanguageRegistry.instance().addStringLocalization("achievement.liquids.desc", "en_US", "Store liquids in an ancient way!");
+
+		LanguageRegistry.instance().addStringLocalization("achievement.elysiandisc", "en_US", "Preparing with music!");
+		LanguageRegistry.instance().addStringLocalization("achievement.elysiandisc.desc", "en_US", "Listen to the Elysium Theme disc!");
+		
+		proxy.init();
+		
+		GameRegistry.addRecipe(new ItemStack(blockBasePillar), new Object[] { "SSS", " S ", "SSS", Character.valueOf('S'), Block.stone });
+		
+		GameRegistry.addRecipe(new ItemStack(blockFreezerPillar), new Object[] { "SSS", "GPG", "SSS", Character.valueOf('S'), Block.blockSnow, Character.valueOf('P'), blockBasePillar, Character.valueOf('G'), Block.thinGlass});
+		GameRegistry.addShapelessRecipe(new ItemStack(blockShowOffPillar), new ItemStack(Item.itemFrame), new ItemStack(blockBasePillar));
+		GameRegistry.addShapelessRecipe(new ItemStack(blockCraftingPillar), new ItemStack(Block.workbench), new ItemStack(blockBasePillar));
+		GameRegistry.addShapelessRecipe(new ItemStack(blockFurnacePillar), new ItemStack(Block.furnaceIdle), new ItemStack(blockBasePillar));
+		GameRegistry.addShapelessRecipe(new ItemStack(blockBrewingPillar), new ItemStack(Item.brewingStand), new ItemStack(blockBasePillar));
+		GameRegistry.addRecipe(new ItemStack(blockBrewingPillar), new Object[] { "S", "F", "P", Character.valueOf('S'), Block.dirt, Character.valueOf('P'), blockBasePillar , Character.valueOf('F'), Block.flowerPot});
+
+		
+		GameRegistry.addShapelessRecipe(new ItemStack(Item.diamond), new ItemStack(itemRibbonDiamond));
+
+		CraftingPillarAPI.addDiskTexture(itemDiscElysium.itemID, CraftingPillars.id + ":textures/models/disk_elysium.png");
+		
+		//OreDictionary
+		OreDictionary.registerOre("record", itemDiscElysium);
+		OreDictionary.registerOre("treeSapling", blockChristmasTreeSapling);
+		OreDictionary.registerOre("treeLeaves",  blockChristmasLeaves);
+		
+		GameRegistry.registerCraftingHandler(new PillarCraftingHandler());
+		
 		CraftingPillarAPI.addDiskTexture(Item.record13.itemID, CraftingPillars.id + ":textures/models/disk_13.png");
 		CraftingPillarAPI.addDiskTexture(Item.recordCat.itemID, CraftingPillars.id + ":textures/models/disk_cat.png");
 		CraftingPillarAPI.addDiskTexture(Item.recordBlocks.itemID, CraftingPillars.id + ":textures/models/disk_blocks.png");
@@ -285,6 +303,21 @@ public class CraftingPillars
         NetworkRegistry.instance().registerGuiHandler(this, guiHandler);
         MinecraftForge.EVENT_BUS.register(new PillarEventHandler());
 		MinecraftForge.EVENT_BUS.register(this);
+	}
+	
+	@EventHandler
+	public void init(FMLInitializationEvent event)
+	{
+		achievementGettingStarted = new Achievement(509, "gettingstarted", -2, -1, blockBasePillar, AchievementList.openInventory).registerAchievement();
+		achievementRecursion = new Achievement(510, "recursion", -3, -3, blockCraftingPillar, achievementGettingStarted).registerAchievement();
+		achievementShowoff = new Achievement(511, "showoff", -5, -3, blockShowOffPillar, achievementRecursion).registerAchievement();
+		achievementCompressingLiquids = new Achievement(512, "liquids", -4, -1, blockFreezerPillar, achievementGettingStarted).registerAchievement();
+		
+		achievementChristmas = new Achievement(515, "christmaspillar", -2, 2, blockChristmasTreeSapling, (Achievement)null).setSpecial().setIndependent().registerAchievement();
+		achievementDiamond = new Achievement(516, "christmasdiamond", -1, 2, itemRibbonDiamond, achievementChristmas).setSpecial().registerAchievement();
+		achievementDisc = new Achievement(517, "elysiandisc", -1, 2, itemDiscElysium, achievementDiamond).setSpecial().registerAchievement();
+		
+		
 	}
 	
 	public static void registerBlock(Block block)

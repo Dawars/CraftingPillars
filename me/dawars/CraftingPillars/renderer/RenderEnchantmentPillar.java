@@ -133,7 +133,7 @@ public class RenderEnchantmentPillar extends TileEntitySpecialRenderer implement
 		glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
 		glRotatef(180F, 1F, 0F, 0F);
 		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_SHOWOFFPILLAR);
-		render(0.0625F, tile.worldObj.getBlockId(tile.xCoord, tile.yCoord-1, tile.zCoord) == CraftingPillars.blockExtendPillar.blockID);
+		render(0.0625F, tile.worldObj.getBlockId(tile.xCoord, tile.yCoord-1, tile.zCoord) == CraftingPillars.blockBasePillar.blockID);
 		glPopMatrix();
 		
 		TileEntityShowOffPillar workTile = (TileEntityShowOffPillar) tile;

@@ -72,6 +72,7 @@ public class DiskPlayerPillarBlock extends BaseBlockContainer
 	        	ItemStack disk = player.getCurrentEquippedItem();
 	        	if(disk != null && disk.getItem() instanceof ItemRecord)
 	        	{
+	        		player.addStat(CraftingPillars.achievementDisc, 1);
 		        	insertRecord(world, x, y, z, player.getCurrentEquippedItem());
 		            world.playAuxSFXAtEntity((EntityPlayer)null, 1005, x, y, z, disk.itemID);
 		            if(!player.capabilities.isCreativeMode)

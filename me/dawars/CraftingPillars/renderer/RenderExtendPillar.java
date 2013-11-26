@@ -352,9 +352,6 @@ public class RenderExtendPillar extends TileEntitySpecialRenderer implements ISi
 		}
 		else
 		{
-			top.render(f);
-			tops.render(f);
-			
 			if(CraftingPillars.winter)
 			{
 				//Icicles
@@ -391,7 +388,11 @@ public class RenderExtendPillar extends TileEntitySpecialRenderer implements ISi
 			    Icicle11B.render(f);
 			    Icicle11C.render(f);
 			}
+			
+			top.render(f);
+			tops.render(f);
 		}
+		
 		pillar.render(f);
 		if(bb)
 		{
@@ -449,26 +450,26 @@ public class RenderExtendPillar extends TileEntitySpecialRenderer implements ISi
 			idNorth = tile.worldObj.getBlockId(tile.xCoord, tile.yCoord, tile.zCoord-1);
 			idSouth = tile.worldObj.getBlockId(tile.xCoord, tile.yCoord, tile.zCoord+1);
 		}
-		boolean top = (idTop == CraftingPillars.blockExtendPillar.blockID);
+		boolean top = (idTop == CraftingPillars.blockBasePillar.blockID);
 //				|| (idTop == CraftingPillars.blockShowOffPillar.blockID)
 //				|| (idTop == CraftingPillars.blockCraftingPillar.blockID)
 //				|| (idTop == CraftingPillars.blockFurnacePillar.blockID)
 //				|| (idTop == CraftingPillars.blockBrewingPillar.blockID);
-		boolean bottom = (idBottom == CraftingPillars.blockExtendPillar.blockID);
+		boolean bottom = (idBottom == CraftingPillars.blockBasePillar.blockID);
 //				|| (idBottom == CraftingPillars.blockShowOffPillar.blockID)
 //				|| (idBottom == CraftingPillars.blockCraftingPillar.blockID)
 //				|| (idBottom == CraftingPillars.blockFurnacePillar.blockID)
 //				|| (idBottom == CraftingPillars.blockBrewingPillar.blockID);
-		boolean east = (idEast == CraftingPillars.blockExtendPillar.blockID);
+		boolean east = (idEast == CraftingPillars.blockBasePillar.blockID);
 //				|| (idEast == CraftingPillars.blockShowOffPillar.blockID)
 //				|| (idEast == CraftingPillars.blockCraftingPillar.blockID);
-		boolean west = (idWest == CraftingPillars.blockExtendPillar.blockID);
+		boolean west = (idWest == CraftingPillars.blockBasePillar.blockID);
 //				|| (idWest == CraftingPillars.blockShowOffPillar.blockID)
 //				|| (idWest == CraftingPillars.blockCraftingPillar.blockID);
-		boolean north = (idNorth == CraftingPillars.blockExtendPillar.blockID);
+		boolean north = (idNorth == CraftingPillars.blockBasePillar.blockID);
 //				|| (idNorth == CraftingPillars.blockShowOffPillar.blockID)
 //				|| (idNorth == CraftingPillars.blockCraftingPillar.blockID);
-		boolean south = (idSouth == CraftingPillars.blockExtendPillar.blockID);
+		boolean south = (idSouth == CraftingPillars.blockBasePillar.blockID);
 //				|| (idSouth == CraftingPillars.blockShowOffPillar.blockID)
 //				|| (idSouth == CraftingPillars.blockCraftingPillar.blockID);
 		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_WORKPILLAR);

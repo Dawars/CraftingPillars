@@ -30,7 +30,9 @@ public class RenderingHelper
 		}
 		
 		public void render(EntityItem item, float x, float y, float z, boolean showNum)
-		{
+		{	
+			this.doRenderItem(item, x, y, z, 0F, 0F);
+
 			int number = item.getEntityItem().stackSize;
 			if(number > 0 && showNum)
 			{
@@ -38,7 +40,6 @@ public class RenderingHelper
 				renderFloatingTextWithBackground(x, y+(this.bob ? 0.6F : 0.4F), z, 0.4F, ""+number, Color.white.getRGB(), new Color(0F, 0F, 0F, 0.5F));
 				glEnable(GL_LIGHTING);
 			}
-			this.doRenderItem(item, x, y, z, 0F, 0F);
 		}
 
 		@Override

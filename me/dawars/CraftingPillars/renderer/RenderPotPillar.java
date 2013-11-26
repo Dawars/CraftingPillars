@@ -346,12 +346,6 @@ public class RenderPotPillar extends TileEntitySpecialRenderer implements ISimpl
 	
 	public void render(float f)
 	{
-		bottom.render(f);
-		pillarbottom.render(f);
-		pillar.render(f);
-		pillartop.render(f);
-		top.render(f);
-		pot.render(f);
 		
 		if(CraftingPillars.winter)
 		{
@@ -388,6 +382,14 @@ public class RenderPotPillar extends TileEntitySpecialRenderer implements ISimpl
 		    Icicle11B.render(f);
 		    Icicle11C.render(f);
 		}
+		
+		bottom.render(f);
+		pillarbottom.render(f);
+		pillar.render(f);
+		pillartop.render(f);
+		top.render(f);
+		pot.render(f);
+		
 	}
 	
 	private void setRotation(ModelRenderer model, float x, float y, float z)

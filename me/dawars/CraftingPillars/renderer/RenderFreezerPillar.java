@@ -252,20 +252,6 @@ public class RenderFreezerPillar extends TileEntitySpecialRenderer implements IS
 	
 	public void render(float f)
 	{
-		pillarbottom.render(f);
-		pillartop.render(f);
-		Corner1.render(f);
-		Corner2.render(f);
-		Corner3.render(f);
-		Corner4.render(f);
-		BottomTank.render(f);
-		TopTank.render(f);
-		GlassPane1.render(f);
-		GlassPane2.render(f);
-		GlassPane4.render(f);
-		GlassPane3.render(f);
-		
-		
 		if(CraftingPillars.winter)
 		{
 			FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(CraftingPillars.id + ":textures/models/furnacePillarFrozen.png"));
@@ -283,6 +269,21 @@ public class RenderFreezerPillar extends TileEntitySpecialRenderer implements IS
 			Icicle4B.render(f);
 			FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_FREEZERPILLAR);
 		}
+		
+		pillarbottom.render(f);
+		pillartop.render(f);
+		Corner1.render(f);
+		Corner2.render(f);
+		Corner3.render(f);
+		Corner4.render(f);
+		BottomTank.render(f);
+		TopTank.render(f);
+		
+		GlassPane1.render(f);
+		GlassPane2.render(f);
+		GlassPane4.render(f);
+		GlassPane3.render(f);
+		
 	}
 	
 	private void setRotation(ModelRenderer model, float x, float y, float z)

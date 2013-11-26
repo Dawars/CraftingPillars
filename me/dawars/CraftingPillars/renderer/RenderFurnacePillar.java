@@ -205,15 +205,6 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 	
 	public void render(float f)
 	{
-		CraftingBottom.render(f);
-		CraftingBotSlab.render(f);
-		Pillar1.render(f);
-		WorkbenchSlab.render(f);
-		WorkbenchTop.render(f);
-		Pillar2.render(f);
-		Pillar3.render(f);
-		Pillar4.render(f);
-		
 		if(CraftingPillars.winter)
 		{
 		    Icicle1A.render(f);
@@ -229,6 +220,15 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 		    Icicle4A.render(f);
 		    Icicle4B.render(f);
 		}
+		
+		CraftingBottom.render(f);
+		CraftingBotSlab.render(f);
+		Pillar1.render(f);
+		WorkbenchSlab.render(f);
+		WorkbenchTop.render(f);
+		Pillar2.render(f);
+		Pillar3.render(f);
+		Pillar4.render(f);
 	}
 	
 	private void setRotation(ModelRenderer model, float x, float y, float z)

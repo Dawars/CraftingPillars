@@ -258,19 +258,10 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 	
 	public void render(TileEntity tile, float f)
 	{
-		pillarbottom.render(f);
-		pillartop.render(f);
-		Corner1.render(f);
-		Corner2.render(f);
-		Corner3.render(f);
-		Corner4.render(f);
-		BottomTank.render(f);
-		TopTank.render(f);
 		GlassPane1.render(f);
 		GlassPane2.render(f);
 		GlassPane4.render(f);
 		GlassPane3.render(f);
-		
 		
 		if(CraftingPillars.winter)
 		{
@@ -288,8 +279,19 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 			Icicle4A.render(f);
 			Icicle4B.render(f);
 			FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_TANKPILLAR);
-
 		}
+		
+		pillarbottom.render(f);
+		pillartop.render(f);
+		Corner1.render(f);
+		Corner2.render(f);
+		Corner3.render(f);
+		Corner4.render(f);
+		BottomTank.render(f);
+		TopTank.render(f);
+		
+		
+		
 		
 		if(tile == null)
 			return;
