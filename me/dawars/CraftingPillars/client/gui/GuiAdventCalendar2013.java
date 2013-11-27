@@ -60,6 +60,7 @@ public class GuiAdventCalendar2013 extends BaseGui
 	{
 		if(this.isSlotDiscovered(slot))
 		{
+			glDisable(GL_LIGHTING);
 			glBindTexture(GL_TEXTURE_2D, 0);
 			glColor4f(0.5F, 0.5F, 0.5F, 1F);
 			glBegin(GL_QUADS);
@@ -69,14 +70,21 @@ public class GuiAdventCalendar2013 extends BaseGui
 				glVertex2i(slot.xDisplayPosition+16, slot.yDisplayPosition);
 			glEnd();
 			//super.drawSlotInventory(slot);
+			glEnable(GL_LIGHTING);
+			this.itemRenderer.zLevel = 100F;
 			this.itemRenderer.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.getTextureManager(), slot.getStack(), slot.xDisplayPosition, slot.yDisplayPosition);
+			glDisable(GL_LIGHTING);
+			
+			glBindTexture(GL_TEXTURE_2D, 0);
 			this.itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.getTextureManager(), slot.getStack(), slot.xDisplayPosition, slot.yDisplayPosition);
+			glEnable(GL_LIGHTING);
 		}
 		else
 		{
 			//if(CraftingPillars.getWinterDay(2013) <= slot.slotNumber)
 				// TODO lock
-			this.fontRenderer.drawString(""+(slot.slotNumber+1), slot.xDisplayPosition+8-this.fontRenderer.getStringWidth(""+(slot.slotNumber+1))/2, slot.yDisplayPosition+8-this.fontRenderer.FONT_HEIGHT/2, 16777215);
+			glDisable(GL_LIGHTING);
+			this.fontRenderer.drawStringWithShadow(""+(slot.slotNumber+1), slot.xDisplayPosition+8-this.fontRenderer.getStringWidth(""+(slot.slotNumber+1))/2, slot.yDisplayPosition+8-this.fontRenderer.FONT_HEIGHT/2, 16777215);
 		}
 	}
 	
@@ -126,7 +134,7 @@ public class GuiAdventCalendar2013 extends BaseGui
 		{
 			Slot slot = (Slot)this.inventorySlots.inventorySlots.get(j1);
 			this.drawSlotInventory(slot);
-
+			
 			if(this.isMouseOverSlot(slot, mouseX, mouseY) && slot.func_111238_b())
 			{
 				int k1 = slot.xDisplayPosition;
@@ -137,9 +145,9 @@ public class GuiAdventCalendar2013 extends BaseGui
 		
 		//Forge: Force lighting to be disabled as there are some issue where lighting would
 		//incorrectly be applied based on items that are in the inventory.
-		/*glDisable(GL_LIGHTING);
+		glDisable(GL_LIGHTING);
 		this.drawGuiContainerForegroundLayer(mouseX, mouseY);
-		glEnable(GL_LIGHTING);*/
+		glEnable(GL_LIGHTING);
 		glPopMatrix();
 		glEnable(GL_LIGHTING);
 		glEnable(GL_DEPTH_TEST);
