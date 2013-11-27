@@ -77,7 +77,7 @@ public class CraftingPillars
 			return CraftingPillars.blockCraftingPillar.blockID;
 		}
 	};
-
+	
 	public static int extendPillarRenderID;
 	public static int showOffPillarRenderID;
 	public static int craftingPillarRenderID;
@@ -90,7 +90,7 @@ public class CraftingPillars
 	public static int potPillarRenderID;
 	
 	public static int christmasLeavesRenderID;
-
+	
 	public static Block blockBasePillar;
 	public static Block blockShowOffPillar;
 	public static Block blockCraftingPillar;
@@ -101,10 +101,10 @@ public class CraftingPillars
 	public static Block blockDiskPlayerPillar;
 	public static Block blockFreezerPillar;
 	public static Block blockPotPillar;
-
+	
 	public static Block blockChristmasLeaves;
 	public static Block blockChristmasTreeSapling;
-
+	
 	public static Item itemDiscElysium;
 	public static Item itemCalendar2013;
 	public static Item itemChristmasCandy;
@@ -112,7 +112,7 @@ public class CraftingPillars
 	public static Item itemElysiumLoreBook;
 	public static Item itemRibbonDiamond;
 	
-
+	
 	public static boolean floatingItems = true, rayTrace = false, renderHitBoxes = true, winter;
 	
 	public static Achievement achievementGettingStarted;
@@ -123,7 +123,7 @@ public class CraftingPillars
 	public static Achievement achievementShowoff;
 	public static Achievement achievementDiamond;
 	public static Achievement achievementDisc;
-
+	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt)
 	{
@@ -158,22 +158,22 @@ public class CraftingPillars
 			blockAnvilPillar = (new AnvilPillar(idAnvilPillar.getInt(), Material.anvil)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("anvilPillar");
 			registerBlock(blockAnvilPillar);
 			LanguageRegistry.instance().addStringLocalization(blockAnvilPillar.getUnlocalizedName()+".name", "Anvil Pillar");
-
+			
 //			Property idTankPillar = CraftingPillars.config.getBlock("TankPillar.id", BlockIds.idTankPillar, "Coming soon...");
 //			blockTankPillar = (new TankPillarBlock(idTankPillar.getInt(), Material.glass)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("tankPillar");
 //			registerBlock(blockTankPillar);
 //			LanguageRegistry.instance().addStringLocalization(blockTankPillar.getUnlocalizedName()+".name", "Tank Pillar");
-
+			
 			Property idBrewingPillar = CraftingPillars.config.getBlock("BrewingPillar.id", BlockIds.idBrewingPillar);
 			blockBrewingPillar = (new BrewingPillarBlock(idBrewingPillar.getInt(), Material.iron)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("brewingPillar");
 			registerBlock(blockBrewingPillar);
 			LanguageRegistry.instance().addStringLocalization(blockBrewingPillar.getUnlocalizedName()+".name", "Brewing Pillar");
-
+			
 			Property idDiskPlayerPillar = CraftingPillars.config.getBlock("DiskPlayerPillar.id", BlockIds.idDiskPillar);
 			blockDiskPlayerPillar = (new DiskPlayerPillarBlock(idDiskPlayerPillar.getInt(), Material.iron)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("diskPillar");
 			registerBlock(blockDiskPlayerPillar);
 			LanguageRegistry.instance().addStringLocalization(blockDiskPlayerPillar.getUnlocalizedName()+".name", "Juke Pillar");
-
+			
 			Property idFreezerPillar = CraftingPillars.config.getBlock("FreezerPillar.id", BlockIds.idFreezerPillar);
 			blockFreezerPillar = (new FreezerPillarBlock(idFreezerPillar.getInt(), Material.glass)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("freezerPillar");
 			registerBlock(blockFreezerPillar);
@@ -191,7 +191,7 @@ public class CraftingPillars
 				blockChristmasLeaves.setCreativeTab(null);
 			registerBlock(blockChristmasLeaves);
 			LanguageRegistry.instance().addStringLocalization(blockChristmasLeaves.getUnlocalizedName()+".name", "en_US", "Christmas Leaves");
-
+			
 			Property idChristmasTreeSapling = CraftingPillars.config.getBlock("ChristmasTreeSapling.id", BlockIds.idChristmasTreeSapling);
 			blockChristmasTreeSapling = (new ChristmasTreeSapling(idChristmasTreeSapling.getInt(), Material.plants)).setHardness(0.0F).setStepSound(Block.soundGrassFootstep).setUnlocalizedName("ChristmasTreeSapling");
 			if(!winter)
@@ -210,19 +210,19 @@ public class CraftingPillars
 			if(!winter)
 				itemCalendar2013.setCreativeTab(null);
 			LanguageRegistry.instance().addStringLocalization(itemCalendar2013.getUnlocalizedName() + ".name", "Advent Calendar 2013");
-
+			
 			Property idChrsitmasCandy = CraftingPillars.config.getItem("ChrsitmasCandy.id", BlockIds.idChrsitmasCandy);
 			itemChristmasCandy = new BaseItemEatable(idChrsitmasCandy.getInt(), 5, 0.5F).setUnlocalizedName("ChristmasCandy");
 			if(!winter)
 				itemChristmasCandy.setCreativeTab(null);
 			LanguageRegistry.instance().addStringLocalization(itemChristmasCandy.getUnlocalizedName() + ".name", "Christmas Candy");
-
+			
 			Property idGingerbreadMan = CraftingPillars.config.getItem("GingerbreadMan.id", BlockIds.idGingerbreadMan);
 			itemGingerbreadMan = new BaseItemEatable(idGingerbreadMan.getInt(), 7, 1.5F).setUnlocalizedName("GingerbreadMan");
 			if(!winter)
 				itemGingerbreadMan.setCreativeTab(null);
 			LanguageRegistry.instance().addStringLocalization(itemGingerbreadMan.getUnlocalizedName() + ".name", "Gingerbread Man");
-
+			
 			Property idRibbonDiamond = CraftingPillars.config.getItem("RibbonDiamond.id", BlockIds.idRibbonDiamond);
 			itemRibbonDiamond = new BaseItem(idRibbonDiamond.getInt()).setUnlocalizedName("RibbonDiamond");
 			LanguageRegistry.instance().addStringLocalization(itemRibbonDiamond.getUnlocalizedName() + ".name", "Ribbon Diamond");
@@ -236,7 +236,7 @@ public class CraftingPillars
 		{
 			config.save();
 		}
-
+		
 		GameRegistry.registerTileEntity(TileEntityExtendPillar.class, "TileEntityExtendPillar");
 		GameRegistry.registerTileEntity(TileEntityShowOffPillar.class, "TileEntityShowOffPillar");
 		GameRegistry.registerTileEntity(TileEntityCraftingPillar.class, "TileEntityCraftingPillar");
@@ -254,22 +254,22 @@ public class CraftingPillars
 		
 		LanguageRegistry.instance().addStringLocalization("achievement.gettingstarted", "en_US", "Getting Started");
 		LanguageRegistry.instance().addStringLocalization("achievement.gettingstarted.desc", "en_US", "Craft a BasicPillar");
-
+		
 		LanguageRegistry.instance().addStringLocalization("achievement.recursion", "en_US", "Recursion I");
 		LanguageRegistry.instance().addStringLocalization("achievement.recursion.desc", "en_US", "Craft a CraftingPillar in a CraftingPillar");
-
+		
 		LanguageRegistry.instance().addStringLocalization("achievement.showoff", "en_US", "Recursion II");
 		LanguageRegistry.instance().addStringLocalization("achievement.showoff.desc", "en_US", "Show off your Show-Off Pillar!");
-
+		
 		LanguageRegistry.instance().addStringLocalization("achievement.christmaspillar", "en_US", "Christmas Event");
 		LanguageRegistry.instance().addStringLocalization("achievement.christmaspillar.desc", "en_US", "Celebrate Christmas with us!");
-
+		
 		LanguageRegistry.instance().addStringLocalization("achievement.christmasdiamond", "en_US", "Diamond Mania");
 		LanguageRegistry.instance().addStringLocalization("achievement.christmasdiamond.desc", "en_US", "Unwrap a Diamond!");
-
+		
 		LanguageRegistry.instance().addStringLocalization("achievement.liquids", "en_US", "Liquid Tanks!");
 		LanguageRegistry.instance().addStringLocalization("achievement.liquids.desc", "en_US", "Store liquids in an ancient way!");
-
+		
 		LanguageRegistry.instance().addStringLocalization("achievement.elysiandisc", "en_US", "Preparing with music!");
 		LanguageRegistry.instance().addStringLocalization("achievement.elysiandisc.desc", "en_US", "Listen to the Elysium Theme disc!");
 		
