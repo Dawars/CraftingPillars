@@ -40,21 +40,12 @@ public class TileEntityPotPillar extends BaseTileEntity implements IInventory, I
 {
 	private ItemStack[] inventory = new ItemStack[this.getSizeInventory()];
 	
-	// @SideOnly(Side.CLIENT)
-	public float rot = 0F;
-	
 	public boolean showNum = false;
+	public int christmasTreeState = 0;
 	
 	@Override
 	public void updateEntity()
 	{
-		if(this.worldObj.isRemote)
-		{
-			this.rot += 0.1F;
-			if(this.rot >= 360F)
-				this.rot -= 360F;
-		}
-		
 		super.updateEntity();
 	}
 	
@@ -75,6 +66,7 @@ public class TileEntityPotPillar extends BaseTileEntity implements IInventory, I
 		}
 		
 		this.showNum = nbt.getBoolean("showNum");
+		this.christmasTreeState = nbt.getInteger("xmasTree");
 	}
 	
 	@Override
@@ -94,6 +86,7 @@ public class TileEntityPotPillar extends BaseTileEntity implements IInventory, I
 		}
 		nbt.setTag("Items", nbtlist);
 		nbt.setBoolean("showNum", this.showNum);
+		nbt.setInteger("xmasTree", this.christmasTreeState);
 	}
 	
 
@@ -129,10 +122,6 @@ public class TileEntityPotPillar extends BaseTileEntity implements IInventory, I
 		{
 			CraftingPillars.proxy.sendToPlayers(this.getDescriptionPacket(), this.worldObj, this.xCoord, this.yCoord, this.zCoord, 64);
 		}
-		
-        Minecraft.getMinecraft().renderGlobal.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
-        this.worldObj.updateAllLightTypes(this.xCoord, this.yCoord, this.zCoord);
-
 	}
 
 	public void dropItemFromSlot(int slot, int amount, EntityPlayer player)

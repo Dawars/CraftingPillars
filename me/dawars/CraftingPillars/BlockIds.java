@@ -21,9 +21,7 @@ public class BlockIds
 	public static int idAdventCalendar2013 = 5151;
 	public static int idRibbonDiamond = 5152;
 	public static int idLoreBook = 5153;
+	public static int idVirgacs = 5154;
+	public static int idWinterFood = 5155;
 
-	//Food
-	public static int idChrsitmasCandy = 5160;
-	public static int idGingerbreadMan = 5162;
-	
 }

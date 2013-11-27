@@ -107,13 +107,17 @@ public class CraftingPillars
 	
 	public static Item itemDiscElysium;
 	public static Item itemCalendar2013;
-	public static Item itemChristmasCandy;
-	public static Item itemGingerbreadMan;
 	public static Item itemElysiumLoreBook;
 	public static Item itemRibbonDiamond;
+	public static Item itemWinterFood2013;
+	public static Item itemVirgacs;
+
 	
-	
-	public static boolean floatingItems = true, rayTrace = false, renderHitBoxes = true, winter;
+	public static boolean floatingItems = true, rayTrace = false, renderHitBoxes = true, winter, isChristmas = false;
+	public static boolean treeState1 = false;
+	public static boolean treeState2 = false;
+	public static boolean treeState3 = false;
+	public static boolean treeState4 = false;
 	
 	public static Achievement achievementGettingStarted;
 	public static Achievement achievementChristmas;
@@ -127,6 +131,11 @@ public class CraftingPillars
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt)
 	{
+		if(isAfter("2013-12-24")) isChristmas = true;
+		if(isAfter("2013-12-03")) treeState1 = true;
+		if(isAfter("2013-12-10")) treeState2 = true;
+		if(isAfter("2013-12-17")) treeState3 = true;
+		if(isAfter("2013-12-24")) treeState4 = true;
 		winter = isWinterTime();
 		
 		config = new Configuration(new File(evt.getModConfigurationDirectory(), "CraftingPillars.cfg"));
@@ -199,8 +208,6 @@ public class CraftingPillars
 			registerBlock(blockChristmasTreeSapling);
 			LanguageRegistry.instance().addStringLocalization(blockChristmasTreeSapling.getUnlocalizedName()+".name", "en_US", "Christmas Tree Sapling");
 			
-			
-			
 			Property idDiscElysium = CraftingPillars.config.getItem("DiscElysium.id", BlockIds.idDiscElysium);
 			itemDiscElysium = new PillarRecord(idDiscElysium.getInt(), CraftingPillars.id + ":UranusParadiseShort").setUnlocalizedName("record").setTextureName(CraftingPillars.id + ":ElysiumDisk");
             LanguageRegistry.instance().addStringLocalization(CraftingPillars.id + ":UranusParadiseShort", "Elysium - Uranus Paradise Short");
@@ -211,21 +218,20 @@ public class CraftingPillars
 				itemCalendar2013.setCreativeTab(null);
 			LanguageRegistry.instance().addStringLocalization(itemCalendar2013.getUnlocalizedName() + ".name", "Advent Calendar 2013");
 			
-			Property idChrsitmasCandy = CraftingPillars.config.getItem("ChrsitmasCandy.id", BlockIds.idChrsitmasCandy);
-			itemChristmasCandy = new BaseItemEatable(idChrsitmasCandy.getInt(), 5, 0.5F).setUnlocalizedName("ChristmasCandy");
+			Property idWinterFood = CraftingPillars.config.getItem("idWinterFood.id", BlockIds.idWinterFood);
+			itemWinterFood2013 = new WinterFood2013(idWinterFood.getInt(), 5, 0.5F).setUnlocalizedName("WinterFood");
 			if(!winter)
-				itemChristmasCandy.setCreativeTab(null);
-			LanguageRegistry.instance().addStringLocalization(itemChristmasCandy.getUnlocalizedName() + ".name", "Christmas Candy");
-			
-			Property idGingerbreadMan = CraftingPillars.config.getItem("GingerbreadMan.id", BlockIds.idGingerbreadMan);
-			itemGingerbreadMan = new BaseItemEatable(idGingerbreadMan.getInt(), 7, 1.5F).setUnlocalizedName("GingerbreadMan");
-			if(!winter)
-				itemGingerbreadMan.setCreativeTab(null);
-			LanguageRegistry.instance().addStringLocalization(itemGingerbreadMan.getUnlocalizedName() + ".name", "Gingerbread Man");
-			
+				itemWinterFood2013.setCreativeTab(null);
+			for(int i = 0; i < WinterFood2013.itemNames.length; i++)
+				LanguageRegistry.instance().addStringLocalization(itemWinterFood2013.getUnlocalizedName() + "." + i + ".name", WinterFood2013.itemNames[i]);
+
 			Property idRibbonDiamond = CraftingPillars.config.getItem("RibbonDiamond.id", BlockIds.idRibbonDiamond);
 			itemRibbonDiamond = new BaseItem(idRibbonDiamond.getInt()).setUnlocalizedName("RibbonDiamond");
 			LanguageRegistry.instance().addStringLocalization(itemRibbonDiamond.getUnlocalizedName() + ".name", "Ribbon Diamond");
+
+			Property idVirgacs = CraftingPillars.config.getItem("Virgacs.id", BlockIds.idVirgacs);
+			itemVirgacs = new BaseItem(idVirgacs.getInt()).setUnlocalizedName("Virgacs");
+			LanguageRegistry.instance().addStringLocalization(itemVirgacs.getUnlocalizedName() + ".name", "Virgacs");
 			
 			Property idLoreBook = CraftingPillars.config.getItem("LoreBook.id", BlockIds.idLoreBook);
 			itemElysiumLoreBook = new BaseItem(idLoreBook.getInt()).setUnlocalizedName("ElysiumLoreBook");

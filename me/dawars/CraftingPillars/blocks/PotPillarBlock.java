@@ -1,10 +1,13 @@
 package me.dawars.CraftingPillars.blocks;
 
+import java.util.Random;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.tiles.TileEntityCraftingPillar;
 import me.dawars.CraftingPillars.tiles.TileEntityPotPillar;
+import me.dawars.CraftingPillars.world.gen.ChristmasTreeGen;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,6 +20,13 @@ import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.WorldGenBigTree;
+import net.minecraft.world.gen.feature.WorldGenForest;
+import net.minecraft.world.gen.feature.WorldGenHugeTrees;
+import net.minecraft.world.gen.feature.WorldGenTaiga2;
+import net.minecraft.world.gen.feature.WorldGenTrees;
+import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraftforge.event.terraingen.TerrainGen;
 
 public class PotPillarBlock extends BaseBlockContainer
 {
@@ -132,7 +142,67 @@ public class PotPillarBlock extends BaseBlockContainer
 		return tile;
 	}
 	
+//	 /**
+//     * Ticks the block if it's been scheduled
+//     */
+//    public void updateTick(World world, int x, int y, int z, Random rand)
+//    {
+//        if (!world.isRemote)
+//        {
+//        	super.updateTick(world, x, y, z, rand);
+//
+//        }
+//		TileEntityPotPillar tile = (TileEntityPotPillar) world.getBlockTileEntity(x, y, z);
+//
+//        if (tile.getStackInSlot(0) != null && tile.getStackInSlot(0).itemID == CraftingPillars.blockChristmasTreeSapling.blockID && rand.nextInt(7) == 0)
+//        {
+//            this.markOrGrowMarked(world, x, y, z, rand);
+//        }
+//    }
+//
+//    public void markOrGrowMarked(World world, int x, int y, int z, Random rand)
+//    {
+//        int l = world.getBlockMetadata(x, y, z);
+//
+//        if ((l & 8) == 0)
+//        {
+//            if(!world.isRemote)
+//            	world.setBlockMetadataWithNotify(x, y, z, l | 8, 4);
+//            else
+//            	world.spawnParticle("happyVillager", x, y, z, 0, 0, 0);
+//
+//        }
+//        else
+//        {
+//        }
+//    }
+
+    @SideOnly(Side.CLIENT)
 	@Override
+	/**
+	 * A randomly called display update to be able to add particles or other items for display
+	 */
+	public void randomDisplayTick(World world, int x, int y, int z, Random rand)
+	{
+    	if(rand.nextInt(100) == 0)
+    	{
+			TileEntityPotPillar tile = (TileEntityPotPillar) world.getBlockTileEntity(x, y, z);
+			if(tile.getStackInSlot(0) != null && tile.getStackInSlot(0).itemID == CraftingPillars.blockChristmasTreeSapling.blockID && tile.christmasTreeState == 0)
+			{
+				for (int i = 0; i < 5; ++i)
+		        {
+		            double d0 = rand.nextGaussian() * 0.02D;
+		            double d1 = rand.nextGaussian() * 0.02D;
+		            double d2 = rand.nextGaussian() * 0.02D;
+		            float width = 0.3F;
+		            float height = 0.5F;
+					world.spawnParticle("happyVillager", x + 0.6F + (double)(rand.nextFloat() * width  * 2.0F) - (double)width, y + 1.2D + (double)(rand.nextFloat() * height), z + 0.6F + (double)(rand.nextFloat() * width * 2.0F) - (double)width, d0, d1, d2);
+		        }
+			}
+    	}
+	}
+
+    @Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister itemIcon)
 	{

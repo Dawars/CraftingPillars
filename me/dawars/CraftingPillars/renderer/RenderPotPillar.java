@@ -411,18 +411,20 @@ public class RenderPotPillar extends TileEntitySpecialRenderer implements ISimpl
 		
         TileEntityPotPillar pillarTile = (TileEntityPotPillar)tile;
 
-		if(pillarTile.showNum)
-		{
-			glPushMatrix();
-			glTranslated(x + 0.5D, y + 1, z + 0.5D);
-				
-				glDisable(GL_LIGHTING);
-				RenderingHelper.renderFloatingTextWithBackground(0, 1, 0, 0.2F, pillarTile.getStackInSlot(0).getDisplayName(), Color.WHITE.getRGB(), new Color(0F, 0F, 0F, 0.5F));
-				glEnable(GL_LIGHTING);
-
-			glPopMatrix();
-
-		}
+        if(pillarTile.getStackInSlot(0) != null)
+        {
+			if(pillarTile.showNum)
+			{
+				glPushMatrix();
+				glTranslated(x + 0.5D, y + 1, z + 0.5D);
+					
+					glDisable(GL_LIGHTING);
+					RenderingHelper.renderFloatingTextWithBackground(0, 1, 0, 0.2F, pillarTile.getStackInSlot(0).getDisplayName(), Color.WHITE.getRGB(), new Color(0F, 0F, 0F, 0.5F));
+					glEnable(GL_LIGHTING);
+	
+				glPopMatrix();
+			}
+        }
 	}
 	
 	@Override
