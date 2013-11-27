@@ -8,6 +8,7 @@ import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.container.ContainerAdventCalendar2013;
 import me.dawars.CraftingPillars.network.packets.PacketInGuiClick;
 import me.dawars.CraftingPillars.properties.CalendarPlayerProps2013;
+import me.dawars.CraftingPillars.renderer.RenderingHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
@@ -60,14 +61,22 @@ public class GuiAdventCalendar2013 extends BaseGui
 		if(this.isSlotDiscovered(slot))
 		{
 			glBindTexture(GL_TEXTURE_2D, 0);
-			glColor3f(0.5F, 0.5F, 0.5F);
+			glColor4f(0.5F, 0.5F, 0.5F, 1F);
 			glBegin(GL_QUADS);
 				glVertex2i(slot.xDisplayPosition, slot.yDisplayPosition);
 				glVertex2i(slot.xDisplayPosition, slot.yDisplayPosition+16);
 				glVertex2i(slot.xDisplayPosition+16, slot.yDisplayPosition+16);
 				glVertex2i(slot.xDisplayPosition+16, slot.yDisplayPosition);
 			glEnd();
-			super.drawSlotInventory(slot);
+			//super.drawSlotInventory(slot);
+			this.itemRenderer.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.getTextureManager(), slot.getStack(), slot.xDisplayPosition, slot.yDisplayPosition);
+			this.itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.getTextureManager(), slot.getStack(), slot.xDisplayPosition, slot.yDisplayPosition);
+		}
+		else
+		{
+			//if(CraftingPillars.getWinterDay(2013) <= slot.slotNumber)
+				// TODO lock
+			this.fontRenderer.drawString(""+(slot.slotNumber+1), slot.xDisplayPosition+8-this.fontRenderer.getStringWidth(""+(slot.slotNumber+1))/2, slot.yDisplayPosition+8-this.fontRenderer.FONT_HEIGHT/2, 16777215);
 		}
 	}
 	
@@ -76,7 +85,6 @@ public class GuiAdventCalendar2013 extends BaseGui
 	{
 		String s = I18n.getString(CraftingPillars.itemCalendar2013.getUnlocalizedName() + ".name");
 		this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 35, 4210752);
-		//this.fontRenderer.drawString(I18n.getString("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 
 	/**
@@ -121,25 +129,18 @@ public class GuiAdventCalendar2013 extends BaseGui
 
 			if(this.isMouseOverSlot(slot, mouseX, mouseY) && slot.func_111238_b())
 			{
-				glDisable(GL_LIGHTING);
-				glDisable(GL_DEPTH_TEST);
 				int k1 = slot.xDisplayPosition;
 				i1 = slot.yDisplayPosition;
 				this.drawGradientRect(k1, i1, k1 + 16, i1 + 16, -2130706433, -2130706433);
-				glEnable(GL_LIGHTING);
-				glEnable(GL_DEPTH_TEST);
 			}
 		}
 		
 		//Forge: Force lighting to be disabled as there are some issue where lighting would
 		//incorrectly be applied based on items that are in the inventory.
-		glDisable(GL_LIGHTING);
+		/*glDisable(GL_LIGHTING);
 		this.drawGuiContainerForegroundLayer(mouseX, mouseY);
-		glEnable(GL_LIGHTING);
-		InventoryPlayer inventoryplayer = this.mc.thePlayer.inventory;
-		
+		glEnable(GL_LIGHTING);*/
 		glPopMatrix();
-		
 		glEnable(GL_LIGHTING);
 		glEnable(GL_DEPTH_TEST);
 		RenderHelper.enableStandardItemLighting();
