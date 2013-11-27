@@ -2,11 +2,11 @@ package me.dawars.CraftingPillars.handlers;
 
 import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.blocks.BasePillar;
-import me.dawars.CraftingPillars.container.ContainerAdventCalendar;
+import me.dawars.CraftingPillars.container.ContainerAdventCalendar2013;
 import me.dawars.CraftingPillars.network.packets.PacketCalendarProps;
 import me.dawars.CraftingPillars.network.packets.PacketInGameClick;
 import me.dawars.CraftingPillars.network.packets.PacketInGuiClick;
-import me.dawars.CraftingPillars.properties.CalendarPlayerProps;
+import me.dawars.CraftingPillars.properties.CalendarPlayerProps2013;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -35,12 +35,12 @@ public class PillarPacketHandler implements IPacketHandler
 		{
 			PacketInGuiClick click = new PacketInGuiClick(packet);
 			EntityPlayer entity = (EntityPlayer)player;
-			ContainerAdventCalendar calendar = (ContainerAdventCalendar)entity.openContainer;
+			ContainerAdventCalendar2013 calendar = (ContainerAdventCalendar2013)entity.openContainer;
 			ItemStack stack = (ItemStack)calendar.inventoryItemStacks.get(click.slot);
 			if(stack != null)
 			{
 				entity.inventory.addItemStackToInventory(stack);
-				CalendarPlayerProps.get(entity).setDiscovered(click.slot);
+				CalendarPlayerProps2013.get(entity).setDiscovered(click.slot);
 			}
 		}
 		else if(packet.channel.equals(CraftingPillars.channelProps))
@@ -48,7 +48,7 @@ public class PillarPacketHandler implements IPacketHandler
 			PacketCalendarProps props = new PacketCalendarProps(packet);
 			EntityPlayer entity = (EntityPlayer)player;
 			//System.out.println("Client Received: "+props.data);
-			((CalendarPlayerProps)entity.getExtendedProperties(CalendarPlayerProps.name)).setData(props.data);
+			((CalendarPlayerProps2013)entity.getExtendedProperties(CalendarPlayerProps2013.name)).setData(props.data);
 		}
 	}
 }

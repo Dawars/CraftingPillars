@@ -8,18 +8,18 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
 
-public class CalendarPlayerProps implements IExtendedEntityProperties
+public class CalendarPlayerProps2013 implements IExtendedEntityProperties
 {
 	public static final String name = "PillarPlayerExtension";
 	
 	public static void register(Entity entity)
 	{
-		entity.registerExtendedProperties(name, new CalendarPlayerProps(entity));
+		entity.registerExtendedProperties(name, new CalendarPlayerProps2013(entity));
 	}
 	
-	public static CalendarPlayerProps get(Entity entity)
+	public static CalendarPlayerProps2013 get(Entity entity)
 	{
-		return (CalendarPlayerProps)entity.getExtendedProperties(name);
+		return (CalendarPlayerProps2013)entity.getExtendedProperties(name);
 	}
 	
 	
@@ -28,7 +28,7 @@ public class CalendarPlayerProps implements IExtendedEntityProperties
 	public boolean[] discovered;
 	public int data;
 	
-	public CalendarPlayerProps(Entity entity)
+	public CalendarPlayerProps2013(Entity entity)
 	{
 		this.player = entity;
 		this.discovered = new boolean[24];
@@ -60,7 +60,7 @@ public class CalendarPlayerProps implements IExtendedEntityProperties
 	public void saveNBTData(NBTTagCompound compound)
 	{
 		NBTTagCompound props = new NBTTagCompound();
-		props.setInteger("discovered", this.data);
+		props.setInteger("discovered2013", this.data);
 		compound.setTag(name, props);
 	}
 
@@ -68,9 +68,9 @@ public class CalendarPlayerProps implements IExtendedEntityProperties
 	public void loadNBTData(NBTTagCompound compound)
 	{
 		NBTTagCompound props = (NBTTagCompound)compound.getTag(name);
-		if(props.hasKey("discovered"))
+		if(props.hasKey("discovered2013"))
 		{
-			this.setData(props.getInteger("discovered"));
+			this.setData(props.getInteger("discovered2013"));
 		}
 		else
 		{

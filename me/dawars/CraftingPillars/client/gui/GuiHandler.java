@@ -1,6 +1,6 @@
 package me.dawars.CraftingPillars.client.gui;
 
-import me.dawars.CraftingPillars.container.ContainerAdventCalendar;
+import me.dawars.CraftingPillars.container.ContainerAdventCalendar2013;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -14,7 +14,7 @@ public class GuiHandler implements IGuiHandler
 		switch(id)
 		{
 			case GuiIds.ADVENT_CALENDAR:
-				return new ContainerAdventCalendar(player.inventory, player);
+				return new ContainerAdventCalendar2013(player.inventory, player);
 			default:
 				return null;
 		}
@@ -26,7 +26,7 @@ public class GuiHandler implements IGuiHandler
 		switch(id)
 		{
 			case GuiIds.ADVENT_CALENDAR:
-				return new GuiAdventCalendar(player.inventory, player);
+				return new GuiAdventCalendar2013(player.inventory, player);
 			default:
 				return null;
 		}

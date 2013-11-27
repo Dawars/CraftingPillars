@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.*;
 import me.dawars.CraftingPillars.CraftingPillars;
-import me.dawars.CraftingPillars.container.ContainerAdventCalendar;
+import me.dawars.CraftingPillars.container.ContainerAdventCalendar2013;
 import me.dawars.CraftingPillars.network.packets.PacketInGuiClick;
-import me.dawars.CraftingPillars.properties.CalendarPlayerProps;
+import me.dawars.CraftingPillars.properties.CalendarPlayerProps2013;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
@@ -21,13 +21,13 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiAdventCalendar extends BaseGui
+public class GuiAdventCalendar2013 extends BaseGui
 {
 	ResourceLocation TEXTURE_ADVENT_CALENDAR = new ResourceLocation(CraftingPillars.id + ":textures/gui/advent_calendar_bg.png");
 	
-	public GuiAdventCalendar(InventoryPlayer inventoryplayer, EntityPlayer player)
+	public GuiAdventCalendar2013(InventoryPlayer inventoryplayer, EntityPlayer player)
 	{
-		super(new ContainerAdventCalendar(inventoryplayer, player));
+		super(new ContainerAdventCalendar2013(inventoryplayer, player));
 		this.xSize = 256;
 		this.ySize = 256;
 	}
@@ -37,9 +37,9 @@ public class GuiAdventCalendar extends BaseGui
 	{
 		super.mouseClicked(x, y, btn);
 		for(Slot slot : (ArrayList<Slot>)this.inventorySlots.inventorySlots)
-			if(this.isMouseOverSlot(slot, x, y) && !this.isSlotDiscovered(slot) && CraftingPillars.getNumberOfCalendarElements() > slot.slotNumber)
+			if(this.isMouseOverSlot(slot, x, y) && !this.isSlotDiscovered(slot) && CraftingPillars.getWinterDay(2013) > slot.slotNumber)
 			{
-				((ContainerAdventCalendar)this.inventorySlots).setDiscovered(slot.slotNumber);
+				((ContainerAdventCalendar2013)this.inventorySlots).setDiscovered(slot.slotNumber);
 				CraftingPillars.proxy.sendToServer(new PacketInGuiClick(slot.slotNumber).pack());
 			}
 	}
@@ -51,7 +51,7 @@ public class GuiAdventCalendar extends BaseGui
 	
 	public boolean isSlotDiscovered(Slot slot)
 	{
-		return ((ContainerAdventCalendar)this.inventorySlots).isDiscovered(slot.slotNumber);
+		return ((ContainerAdventCalendar2013)this.inventorySlots).isDiscovered(slot.slotNumber);
 	}
 	
 	@Override
@@ -74,7 +74,7 @@ public class GuiAdventCalendar extends BaseGui
 	@Override
 	protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)
 	{
-		String s = I18n.getString(CraftingPillars.itemCalendar.getUnlocalizedName() + ".name");
+		String s = I18n.getString(CraftingPillars.itemCalendar2013.getUnlocalizedName() + ".name");
 		this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 35, 4210752);
 		//this.fontRenderer.drawString(I18n.getString("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}

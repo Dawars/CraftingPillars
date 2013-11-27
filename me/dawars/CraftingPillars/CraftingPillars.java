@@ -106,7 +106,7 @@ public class CraftingPillars
 	public static Block blockChristmasTreeSapling;
 
 	public static Item itemDiscElysium;
-	public static Item itemCalendar;
+	public static Item itemCalendar2013;
 	public static Item itemChristmasCandy;
 	public static Item itemGingerbreadMan;
 	public static Item itemElysiumLoreBook;
@@ -183,16 +183,19 @@ public class CraftingPillars
 			blockPotPillar = (new PotPillarBlock(idPotPillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("potPillar");
 			registerBlock(blockPotPillar);
 			LanguageRegistry.instance().addStringLocalization(blockPotPillar.getUnlocalizedName()+".name", "Pot Pillar");
-
 			
 			//Christmas
 			Property idChristmasLeaves = CraftingPillars.config.getBlock("ChristmasLeaves.id", BlockIds.idChristmasLeaves);
 			blockChristmasLeaves = (new ChristmasLeavesBlock(idChristmasLeaves.getInt(), Material.leaves)).setHardness(0.2F).setLightOpacity(1).setStepSound(Block.soundGrassFootstep).setUnlocalizedName("xmasLeaves");
+			if(!winter)
+				blockChristmasLeaves.setCreativeTab(null);
 			registerBlock(blockChristmasLeaves);
 			LanguageRegistry.instance().addStringLocalization(blockChristmasLeaves.getUnlocalizedName()+".name", "en_US", "Christmas Leaves");
 
 			Property idChristmasTreeSapling = CraftingPillars.config.getBlock("ChristmasTreeSapling.id", BlockIds.idChristmasTreeSapling);
 			blockChristmasTreeSapling = (new ChristmasTreeSapling(idChristmasTreeSapling.getInt(), Material.plants)).setHardness(0.0F).setStepSound(Block.soundGrassFootstep).setUnlocalizedName("ChristmasTreeSapling");
+			if(!winter)
+				blockChristmasTreeSapling.setCreativeTab(null);
 			registerBlock(blockChristmasTreeSapling);
 			LanguageRegistry.instance().addStringLocalization(blockChristmasTreeSapling.getUnlocalizedName()+".name", "en_US", "Christmas Tree Sapling");
 			
@@ -202,22 +205,28 @@ public class CraftingPillars
 			itemDiscElysium = new PillarRecord(idDiscElysium.getInt(), CraftingPillars.id + ":UranusParadiseShort").setUnlocalizedName("record").setTextureName(CraftingPillars.id + ":ElysiumDisk");
             LanguageRegistry.instance().addStringLocalization(CraftingPillars.id + ":UranusParadiseShort", "Elysium - Uranus Paradise Short");
 
-			Property idAdventCalendar = CraftingPillars.config.getItem("AdventCalendar.id", BlockIds.idAdventCalendar);
-			itemCalendar = new AdventCalendar(idAdventCalendar.getInt()).setUnlocalizedName("adventCalendar");
-			LanguageRegistry.instance().addStringLocalization(itemCalendar.getUnlocalizedName() + ".name", "Advent Calendar 2013");
+			Property idAdventCalendar = CraftingPillars.config.getItem("AdventCalendar2013.id", BlockIds.idAdventCalendar2013);
+			itemCalendar2013 = new AdventCalendar(idAdventCalendar.getInt()).setUnlocalizedName("adventCalendar2013");
+			if(!winter)
+				itemCalendar2013.setCreativeTab(null);
+			LanguageRegistry.instance().addStringLocalization(itemCalendar2013.getUnlocalizedName() + ".name", "Advent Calendar 2013");
 
 			Property idChrsitmasCandy = CraftingPillars.config.getItem("ChrsitmasCandy.id", BlockIds.idChrsitmasCandy);
 			itemChristmasCandy = new BaseItemEatable(idChrsitmasCandy.getInt(), 5, 0.5F).setUnlocalizedName("ChristmasCandy");
+			if(!winter)
+				itemChristmasCandy.setCreativeTab(null);
 			LanguageRegistry.instance().addStringLocalization(itemChristmasCandy.getUnlocalizedName() + ".name", "Christmas Candy");
 
 			Property idGingerbreadMan = CraftingPillars.config.getItem("GingerbreadMan.id", BlockIds.idGingerbreadMan);
 			itemGingerbreadMan = new BaseItemEatable(idGingerbreadMan.getInt(), 7, 1.5F).setUnlocalizedName("GingerbreadMan");
+			if(!winter)
+				itemGingerbreadMan.setCreativeTab(null);
 			LanguageRegistry.instance().addStringLocalization(itemGingerbreadMan.getUnlocalizedName() + ".name", "Gingerbread Man");
 
 			Property idRibbonDiamond = CraftingPillars.config.getItem("RibbonDiamond.id", BlockIds.idRibbonDiamond);
 			itemRibbonDiamond = new BaseItem(idRibbonDiamond.getInt()).setUnlocalizedName("RibbonDiamond");
 			LanguageRegistry.instance().addStringLocalization(itemRibbonDiamond.getUnlocalizedName() + ".name", "Ribbon Diamond");
-
+			
 			Property idLoreBook = CraftingPillars.config.getItem("LoreBook.id", BlockIds.idLoreBook);
 			itemElysiumLoreBook = new BaseItem(idLoreBook.getInt()).setUnlocalizedName("ElysiumLoreBook");
 			LanguageRegistry.instance().addStringLocalization(itemElysiumLoreBook.getUnlocalizedName() + ".name", "Elysium Lore Book");
@@ -274,10 +283,14 @@ public class CraftingPillars
 		GameRegistry.addShapelessRecipe(new ItemStack(blockFurnacePillar), new ItemStack(Block.furnaceIdle), new ItemStack(blockBasePillar));
 		GameRegistry.addShapelessRecipe(new ItemStack(blockBrewingPillar), new ItemStack(Item.brewingStand), new ItemStack(blockBasePillar));
 		GameRegistry.addRecipe(new ItemStack(blockBrewingPillar), new Object[] { "S", "F", "P", Character.valueOf('S'), Block.dirt, Character.valueOf('P'), blockBasePillar , Character.valueOf('F'), Block.flowerPot});
-
+		
+		if(winter)
+		{
+			// TODO add crafting for winter items
+		}
 		
 		GameRegistry.addShapelessRecipe(new ItemStack(Item.diamond), new ItemStack(itemRibbonDiamond));
-
+		
 		CraftingPillarAPI.addDiskTexture(itemDiscElysium.itemID, CraftingPillars.id + ":textures/models/disk_elysium.png");
 		
 		//OreDictionary
@@ -299,7 +312,7 @@ public class CraftingPillars
 		CraftingPillarAPI.addDiskTexture(Item.recordWard.itemID, CraftingPillars.id + ":textures/models/disk_ward.png");
 		CraftingPillarAPI.addDiskTexture(Item.record11.itemID, CraftingPillars.id + ":textures/models/disk_11.png");
 		CraftingPillarAPI.addDiskTexture(Item.recordWait.itemID, CraftingPillars.id + ":textures/models/disk_wait.png");
-	
+		
         NetworkRegistry.instance().registerGuiHandler(this, guiHandler);
         MinecraftForge.EVENT_BUS.register(new PillarEventHandler());
 		MinecraftForge.EVENT_BUS.register(this);
@@ -316,8 +329,6 @@ public class CraftingPillars
 		achievementChristmas = new Achievement(515, "christmaspillar", -2, 2, blockChristmasTreeSapling, (Achievement)null).setSpecial().setIndependent().registerAchievement();
 		achievementDiamond = new Achievement(516, "christmasdiamond", -1, 2, itemRibbonDiamond, achievementChristmas).setSpecial().registerAchievement();
 		achievementDisc = new Achievement(517, "elysiandisc", -1, 2, itemDiscElysium, achievementDiamond).setSpecial().registerAchievement();
-		
-		
 	}
 	
 	public static void registerBlock(Block block)
@@ -343,23 +354,14 @@ public class CraftingPillars
 		return false;
 	}
 	
-	public static int getNumberOfCalendarElements()
+	public static int getWinterDay(int year)
 	{
 		Calendar c = Calendar.getInstance();
-		Calendar b = Calendar.getInstance();
-		b.set(Calendar.YEAR, 2013);
-		b.set(Calendar.MONTH, Calendar.DECEMBER);
-		b.set(Calendar.DAY_OF_MONTH, 24);
-		b.set(Calendar.HOUR_OF_DAY, 0);
-		b.set(Calendar.MINUTE, 0);
-		b.set(Calendar.MILLISECOND, 0);
-//		return 11;
-		if(c.get(Calendar.MONTH) == Calendar.DECEMBER && c.get(Calendar.YEAR) == 2013)
-			return Math.min(c.get(Calendar.DAY_OF_MONTH), 24);
-		else if(c.after(b))
-			return 24;
+		return 11; // TODO debug
+		/*if(c.get(Calendar.YEAR) == year && c.get(Calendar.MONTH) == Calendar.DECEMBER && c.get(Calendar.DAY_OF_MONTH) <= 24)
+			return c.get(Calendar.DAY_OF_MONTH);
 		else
-			return 0;
+			return 0;*/
 	}
 	
 	public static boolean isWinterTime()
@@ -367,7 +369,7 @@ public class CraftingPillars
 		Calendar c = Calendar.getInstance();
 		Calendar b = Calendar.getInstance();
 		b.set(Calendar.MONTH, Calendar.NOVEMBER);
-		b.set(Calendar.DAY_OF_MONTH, 25);
+		b.set(Calendar.DAY_OF_MONTH, 15);
 		b.set(Calendar.HOUR_OF_DAY, 0);
 		b.set(Calendar.MINUTE, 0);
 		b.set(Calendar.MILLISECOND, 0);

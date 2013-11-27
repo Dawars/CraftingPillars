@@ -5,7 +5,7 @@ import java.util.Random;
 
 import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.client.gui.BaseContainer;
-import me.dawars.CraftingPillars.properties.CalendarPlayerProps;
+import me.dawars.CraftingPillars.properties.CalendarPlayerProps2013;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -19,7 +19,7 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 
-public class ContainerAdventCalendar extends BaseContainer implements IInventory
+public class ContainerAdventCalendar2013 extends BaseContainer implements IInventory
 {
 	static class AdventSlot extends Slot
 	{
@@ -64,11 +64,11 @@ public class ContainerAdventCalendar extends BaseContainer implements IInventory
 															new ItemStack(Block.dirt.blockID, 1, 0),//TODO
 															new ItemStack(Block.dirt.blockID, 1, 0)};//TODO
 	
-	public ContainerAdventCalendar(InventoryPlayer inventoryPlayer, EntityPlayer player)
+	public ContainerAdventCalendar2013(InventoryPlayer inventoryPlayer, EntityPlayer player)
 	{
-		super(CraftingPillars.getNumberOfCalendarElements());
+		super(24);
 		this.player = player;
-		this.inventory = new ItemStack[CraftingPillars.getNumberOfCalendarElements()];
+		this.inventory = new ItemStack[24];
 		this.player = player;
 		
 		for(int i = 0; i < this.inventory.length; i++)
@@ -80,12 +80,12 @@ public class ContainerAdventCalendar extends BaseContainer implements IInventory
 	
 	public void setDiscovered(int slot)
 	{
-		CalendarPlayerProps.get(this.player).setDiscovered(slot);
+		CalendarPlayerProps2013.get(this.player).setDiscovered(slot);
 	}
 	
 	public boolean isDiscovered(int slot)
 	{
-		return CalendarPlayerProps.get(this.player).discovered[slot];
+		return CalendarPlayerProps2013.get(this.player).discovered[slot];
 	}
 	
 	@Override
@@ -163,7 +163,7 @@ public class ContainerAdventCalendar extends BaseContainer implements IInventory
 	@Override
 	public String getInvName()
 	{
-		return CraftingPillars.itemCalendar.getUnlocalizedName() + ".name";
+		return CraftingPillars.itemCalendar2013.getUnlocalizedName() + ".name";
 	}
 	
 	@Override
