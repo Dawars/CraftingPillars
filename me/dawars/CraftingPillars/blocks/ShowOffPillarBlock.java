@@ -44,17 +44,6 @@ public class ShowOffPillarBlock extends BaseBlockContainer
 	}
 	
 	@Override
-	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player)
-	{
-		if(!world.isRemote)
-		{
-			TileEntityShowOffPillar pillarTile = (TileEntityShowOffPillar)world.getBlockTileEntity(x, y, z);
-			if(pillarTile.getStackInSlot(0) != null)
-				pillarTile.dropItemFromSlot(0, pillarTile.getStackInSlot(0).stackSize, player);
-		}
-	}
-	
-	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
 	{
 		if(world.isRemote)
