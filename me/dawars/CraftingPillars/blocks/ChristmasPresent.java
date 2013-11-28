@@ -31,7 +31,7 @@ public class ChristmasPresent extends BaseBlockContainer
 		if(!world.isRemote)
 		{
 			EntityItem item = new EntityItem(world, x+0.5D, y+0.5D, z+0.5D);
-			item.setEntityItemStack(presents[CraftingPillars.rand.nextInt(presents.length)]);
+			item.setEntityItemStack(presents[CraftingPillars.rand.nextInt(presents.length)].copy());
 			//if(item.getEntityItem().itemID == CraftingPillars.blockPresent.blockID)
 				// TODO recursion III
 			world.spawnEntityInWorld(item);

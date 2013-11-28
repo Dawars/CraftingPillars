@@ -73,7 +73,7 @@ public class ContainerAdventCalendar2013 extends BaseContainer implements IInven
 		new ItemStack(CraftingPillars.itemDiscElysium, 1, 0),
 		new ItemStack(CraftingPillars.itemRibbonDiamond, 21),
 		new ItemStack(CraftingPillars.itemWinterFood2013, 22, 7),
-		new ItemStack(Block.dirt.blockID, 1, 0),//TODO: Star
+		new ItemStack(Block.dirt.blockID, 1, 0),//TODO: Star - something else
 		new ItemStack(Block.dirt.blockID, 1, 0)//TODO: coming soon text
 	};
 	
@@ -94,7 +94,7 @@ public class ContainerAdventCalendar2013 extends BaseContainer implements IInven
 		"todo",
 		"Make more ice!",
 		"todo",
-		"One apple once a day, keeps the doctor away!",
+		"One apple a day, keeps the doctor away!",
 		"Listen to the music!",
 		"todo",
 		"Do you hear this awesome music?",
