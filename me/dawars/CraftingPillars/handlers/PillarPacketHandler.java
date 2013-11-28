@@ -36,7 +36,7 @@ public class PillarPacketHandler implements IPacketHandler
 			PacketInGuiClick click = new PacketInGuiClick(packet);
 			EntityPlayer entity = (EntityPlayer)player;
 			ContainerAdventCalendar2013 calendar = (ContainerAdventCalendar2013)entity.openContainer;
-			ItemStack stack = (ItemStack)calendar.inventoryItemStacks.get(click.slot);
+			ItemStack stack = ContainerAdventCalendar2013.getStackForDrop(click.slot);
 			if(stack != null)
 			{
 				entity.inventory.addItemStackToInventory(stack);

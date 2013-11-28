@@ -5,6 +5,7 @@ import java.util.Random;
 
 import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.client.gui.BaseContainer;
+import me.dawars.CraftingPillars.items.WinterFood2013;
 import me.dawars.CraftingPillars.properties.CalendarPlayerProps2013;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -41,6 +42,13 @@ public class ContainerAdventCalendar2013 extends BaseContainer implements IInven
 	private ItemStack[] inventory;
 	private EntityPlayer player;
 	
+	public static ItemStack getStackForDrop(int slot)
+	{
+		if(adventItems[slot].itemID == CraftingPillars.itemWinterFood2013.itemID)
+			return new ItemStack(adventItems[slot].itemID, adventItems[slot].stackSize, CraftingPillars.rand.nextInt(WinterFood2013.itemNames.length));
+		return adventItems[slot];
+	}
+	
 	// TODO items
 	private static final ItemStack[] adventItems = new ItemStack[]{
 		new ItemStack(CraftingPillars.itemElysiumLoreBook, 1, 0),
@@ -72,7 +80,7 @@ public class ContainerAdventCalendar2013 extends BaseContainer implements IInven
 	public static final String[] tooltips = new String[]{
 		"A book about Elysium",
 		"A pillar for growing Christmas Trees",
-		"A sapling just for you",
+		"A sapling just for you, #name#!",
 		"Hmm, sweet!",
 		"Let's trow these at your friends!",
 		"You were a bad boy, #name#!",
@@ -103,6 +111,7 @@ public class ContainerAdventCalendar2013 extends BaseContainer implements IInven
 		this.inventory = new ItemStack[24];
 		this.player = player;
 		
+		tooltips[2] = "A sapling just for you, "+player.username+"!";
 		tooltips[5] = "You were a bad boy, "+player.username+"!";
 		
 		for(int i = 0; i < this.inventory.length; i++)

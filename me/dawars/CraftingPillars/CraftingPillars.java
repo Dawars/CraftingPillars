@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 import me.dawars.CraftingPillars.api.CraftingPillarAPI;
 import me.dawars.CraftingPillars.blocks.*;
@@ -60,6 +61,8 @@ public class CraftingPillars
 	public static final String channelGame = "PillarGameClick";
 	public static final String channelGui = "PillarGuiClick";
 	public static final String channelProps = "PillarProps";
+	
+	public static Random rand;
 	
 	// The Handler For Opening Guis
     private GuiHandler guiHandler = new GuiHandler();
@@ -133,6 +136,8 @@ public class CraftingPillars
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt)
 	{
+		rand = new Random(System.currentTimeMillis());
+		
 		if(isAfter("2013-12-24")) isChristmas = true;
 		if(isAfter("2013-12-03")) treeState1 = true;
 		if(isAfter("2013-12-10")) treeState2 = true;
@@ -246,7 +251,8 @@ public class CraftingPillars
 			Property idLoreBook = CraftingPillars.config.getItem("LoreBook.id", BlockIds.idLoreBook);
 			itemElysiumLoreBook = new BaseItem(idLoreBook.getInt()).setUnlocalizedName("ElysiumLoreBook");
 			LanguageRegistry.instance().addStringLocalization(itemElysiumLoreBook.getUnlocalizedName() + ".name", "Elysium Lore Book");
-
+			
+			ChristmasPresent.init();
 		}
 		finally
 		{
@@ -343,7 +349,7 @@ public class CraftingPillars
 		achievementShowoff = new Achievement(511, "showoff", -5, -3, blockShowOffPillar, achievementRecursion).registerAchievement();
 		achievementCompressingLiquids = new Achievement(512, "liquids", -4, -1, blockFreezerPillar, achievementGettingStarted).registerAchievement();
 		
-		achievementChristmas = new Achievement(515, "christmaspillar", -2, 2, blockChristmasTreeSapling, (Achievement)null).setSpecial().setIndependent().registerAchievement();
+		//achievementChristmas = new Achievement(515, "christmaspillar", -2, 2, blockChristmasTreeSapling, (Achievement)null).setSpecial().setIndependent().registerAchievement();
 		achievementDiamond = new Achievement(516, "christmasdiamond", -1, 2, itemRibbonDiamond, achievementChristmas).setSpecial().registerAchievement();
 		achievementDisc = new Achievement(517, "elysiandisc", -1, 2, itemDiscElysium, achievementChristmas).setSpecial().registerAchievement();
 	}
@@ -360,8 +366,8 @@ public class CraftingPillars
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			Date c = new Date();
 			Date v = format.parse(date);
-			System.out.println(c);
-			System.out.println(v);
+			//System.out.println(c);
+			//System.out.println(v);
 			return v.after(c);
 		}
 		catch(ParseException e)
