@@ -15,8 +15,9 @@ public class BlockIds
 
 	public static int idChristmasLeaves = 3270;
 	public static int idChristmasTreeSapling = 3271;
+	public static int idChristmasPresent = 3272;
 
-	
+	//Items
 	public static int idDiscElysium = 5150;
 	public static int idAdventCalendar2013 = 5151;
 	public static int idRibbonDiamond = 5152;

@@ -88,6 +88,7 @@ public class CraftingPillars
 	public static int diskPlayerRenderID;
 	public static int freezerPillarRenderID;
 	public static int potPillarRenderID;
+	public static int PresentRenderID;
 	
 	public static int christmasLeavesRenderID;
 	
@@ -104,7 +105,8 @@ public class CraftingPillars
 	
 	public static Block blockChristmasLeaves;
 	public static Block blockChristmasTreeSapling;
-	
+	public static Block blockPresent;
+
 	public static Item itemDiscElysium;
 	public static Item itemCalendar2013;
 	public static Item itemElysiumLoreBook;
@@ -200,13 +202,20 @@ public class CraftingPillars
 				blockChristmasLeaves.setCreativeTab(null);
 			registerBlock(blockChristmasLeaves);
 			LanguageRegistry.instance().addStringLocalization(blockChristmasLeaves.getUnlocalizedName()+".name", "en_US", "Christmas Leaves");
-			
+
 			Property idChristmasTreeSapling = CraftingPillars.config.getBlock("ChristmasTreeSapling.id", BlockIds.idChristmasTreeSapling);
 			blockChristmasTreeSapling = (new ChristmasTreeSapling(idChristmasTreeSapling.getInt(), Material.plants)).setHardness(0.0F).setStepSound(Block.soundGrassFootstep).setUnlocalizedName("ChristmasTreeSapling");
 			if(!winter)
 				blockChristmasTreeSapling.setCreativeTab(null);
 			registerBlock(blockChristmasTreeSapling);
 			LanguageRegistry.instance().addStringLocalization(blockChristmasTreeSapling.getUnlocalizedName()+".name", "en_US", "Christmas Tree Sapling");
+
+			Property idChristmasPresent = CraftingPillars.config.getBlock("ChristmasPresent.id", BlockIds.idChristmasPresent);
+			blockPresent = (new ChristmasPresent(idChristmasPresent.getInt(), Material.cloth)).setHardness(1.0F).setStepSound(Block.soundClothFootstep).setUnlocalizedName("PresentSide");
+			if(!winter)
+				blockPresent.setCreativeTab(null);
+			registerBlock(blockPresent);
+			LanguageRegistry.instance().addStringLocalization(blockPresent.getUnlocalizedName()+".name", "en_US", "Christmas Present");
 			
 			Property idDiscElysium = CraftingPillars.config.getItem("DiscElysium.id", BlockIds.idDiscElysium);
 			itemDiscElysium = new PillarRecord(idDiscElysium.getInt(), CraftingPillars.id + ":UranusParadiseShort").setUnlocalizedName("record").setTextureName(CraftingPillars.id + ":ElysiumDisk");
@@ -254,6 +263,7 @@ public class CraftingPillars
 		GameRegistry.registerTileEntity(TileEntityDiskPlayerPillar.class, "TileEntityDiskPlayerPillar");
 		GameRegistry.registerTileEntity(TileEntityFreezerPillar.class, "TileEntityFreezerPillar");
 		GameRegistry.registerTileEntity(TileEntityPotPillar.class, "TileEntityPotPillar");
+		GameRegistry.registerTileEntity(TileEntityPresent.class, "TileEntityPresent");
 		
 		
 		LanguageRegistry.instance().addStringLocalization("itemGroup.CraftingPillars", "en_US", "Crafting Pillars");

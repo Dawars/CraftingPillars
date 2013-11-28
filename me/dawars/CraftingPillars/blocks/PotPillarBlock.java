@@ -171,14 +171,14 @@ public class PotPillarBlock extends BaseBlockContainer
         	
         	TileEntityPotPillar tile = (TileEntityPotPillar) world.getBlockTileEntity(x, y, z);
 	
-	        if (tile.getStackInSlot(0) != null && tile.getStackInSlot(0).itemID == CraftingPillars.blockChristmasTreeSapling.blockID)
+	        if (tile.getStackInSlot(0) != null && tile.getStackInSlot(0).itemID == CraftingPillars.blockChristmasTreeSapling.blockID && tile.christmasTreeState <= 5)
 	        {
 	        	int l = world.getBlockMetadata(x, y, z);
 	        	int randNum = rand.nextInt(4);
-	        	System.out.println("Xmas tree pot metadata: " + l + " rand: " + randNum + " Stage: " + tile.christmasTreeState);
+//	        	System.out.println("Xmas tree pot metadata: " + l + " rand: " + randNum + " Stage: " + tile.christmasTreeState);
 			
-//	        	if(randNum == 0)
-//	        	{
+	        	if(randNum == 0)
+	        	{
 	        		if (l < 8)
 	                {
 	                	world.setBlockMetadataWithNotify(x, y, z, l+1, 2);
@@ -192,20 +192,20 @@ public class PotPillarBlock extends BaseBlockContainer
 						}
 						else 
 						{
-//							if(tile.christmasTreeState >= 1 && CraftingPillars.treeState1)
-//							if(tile.christmasTreeState >= 2 && CraftingPillars.treeState2)
-//							if(tile.christmasTreeState >= 3 && CraftingPillars.treeState3)
-//							if(tile.christmasTreeState >= 4 && CraftingPillars.treeState4)
-//							{
+							if(tile.christmasTreeState >= 1 && CraftingPillars.treeState1)
+							if(tile.christmasTreeState >= 2 && CraftingPillars.treeState2)
+							if(tile.christmasTreeState >= 3 && CraftingPillars.treeState3)
+							if(tile.christmasTreeState >= 4 && CraftingPillars.treeState4)
+							{
 								tree.generate(world, rand, x, y, z);
-//							}
+							}
 						}
 						tile.christmasTreeState+=1;
 	                	world.setBlockMetadataWithNotify(x, y, z, 0, 4);
 						Minecraft.getMinecraft().renderGlobal.markBlockForRenderUpdate(x, y, z);
 			            world.updateAllLightTypes(x, y, z);
 	                }
-//	        	}
+	        	}
 	        }
         }
     }
