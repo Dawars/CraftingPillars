@@ -31,13 +31,14 @@ public class ChristmasTreeGen extends WorldGenerator
         public boolean generate(World world, Random random, int x, int y, int z)
         {
         	if(!this.fromSapling)
-        		++y;
+        		y += 1;
         	this.leavesId = CraftingPillars.blockChristmasLeaves.blockID;
         	this.logId = Block.wood.blockID;
         	this.logMeta = 1;
 
         	if(this.stage >= 0)
         	{
+        		addLog(world, x, y, z);
         		addLeaves(world, x, y+1, z);
         		addLeaves(world, x+1, y, z);
         		addLeaves(world, x, y, z+1);
@@ -83,7 +84,7 @@ public class ChristmasTreeGen extends WorldGenerator
         		addLeaves(world, x, y+3, z);
 
         	}
-        	
+
         	if(this.stage >= 3)
         	{
         		//lvl1
@@ -105,9 +106,50 @@ public class ChristmasTreeGen extends WorldGenerator
         		addLeaves(world, x, y+3, z-1);
         		addLog(world, x, y+3, z);
 
-        		//lvl3
+        		//lvl4
         		addLeaves(world, x, y+3, z);
 
+        	}
+        	
+        	if(this.stage >= 4)
+        	{
+        		//lvl1
+        		addLeaves(world, x+1, y+1, z+2);
+        		addLeaves(world, x-1, y+1, z+2);
+        		addLeaves(world, x+2, y+1, z+1);
+        		addLeaves(world, x+2, y+1, z-1);
+        		addLeaves(world, x+1, y+1, z-2);
+        		addLeaves(world, x-1, y+1, z-2);
+        		addLeaves(world, x-2, y+1, z+1);
+        		addLeaves(world, x-2, y+1, z-1);
+        		
+        		//lvl2
+        		addLeaves(world, x+2, y+2, z);
+        		addLeaves(world, x, y+2, z+2);
+        		addLeaves(world, x-2, y+2, z);
+        		addLeaves(world, x, y+2, z-2);
+        		
+        		//lvl3
+        		addLeaves(world, x+1, y+3, z+1);
+        		addLeaves(world, x-1, y+3, z-1);
+        		addLeaves(world, x+1, y+3, z-1);
+        		addLeaves(world, x-1, y+3, z+1);
+
+        		//lvl4
+        		addLeaves(world, x+1, y+4, z);
+        		addLeaves(world, x, y+4, z+1);
+        		addLeaves(world, x-1, y+4, z);
+        		addLeaves(world, x, y+4, z-1);
+        		addLog(world, x, y+4, z);
+
+        		//lvl5
+        		addLeaves(world, x+1, y+5, z);
+
+        		//lvl5
+//        		addLeaves(world, x+1, y+5, z); //TODO: Star
+        		
+
+        		//presents
         	}
         	
         	return true;
