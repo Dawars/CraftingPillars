@@ -151,29 +151,48 @@ public class PotPillarBlock extends BaseBlockContainer
         if (!world.isRemote)
         {
         	super.updateTick(world, x, y, z, rand);
-
-			TileEntityPotPillar tile = (TileEntityPotPillar) world.getBlockTileEntity(x, y, z);
+        	
+        	TileEntityPotPillar tile = (TileEntityPotPillar) world.getBlockTileEntity(x, y, z);
 	
-	        if (tile.getStackInSlot(0) != null && tile.getStackInSlot(0).itemID == CraftingPillars.blockChristmasTreeSapling.blockID && rand.nextInt(7) == 0)
+	        if (tile.getStackInSlot(0) != null && tile.getStackInSlot(0).itemID == CraftingPillars.blockChristmasTreeSapling.blockID)
 	        {
-	            this.markOrGrowMarked(world, x, y, z, rand);
+	        	int l = world.getBlockMetadata(x, y, z);
+	        	int randNum = rand.nextInt(7);
+	        	System.out.println("Xmas tree pot metadata: " + l + " rand: " + randNum + " Stage: " + tile.christmasTreeState);
+			
+	        	if(randNum == 0)
+	        	{
+	        		if (l < 8)
+	                {
+	                	world.setBlockMetadataWithNotify(x, y, z, l+1, 2);
+	                }
+	                else
+	                {
+						WorldGenerator tree = new ChristmasTreeGen(false, tile.christmasTreeState);
+						if(tile.christmasTreeState == 0)
+						{
+							tree.generate(world, rand, x, y, z);
+						}
+						else 
+						{
+							if(tile.christmasTreeState >= 1 && CraftingPillars.treeState1)
+							if(tile.christmasTreeState >= 2 && CraftingPillars.treeState2)
+							if(tile.christmasTreeState >= 3 && CraftingPillars.treeState3)
+							if(tile.christmasTreeState >= 4 && CraftingPillars.treeState4)
+							{
+								tree.generate(world, rand, x, y, z);
+							}
+						}
+						
+						tile.christmasTreeState+=1;
+	                	world.setBlockMetadataWithNotify(x, y, z, 0, 4);
+	                }
+	        	}
 	        }
 	        
         }
     }
 
-    public void markOrGrowMarked(World world, int x, int y, int z, Random rand)
-    {
-        int l = world.getBlockMetadata(x, y, z);
-        System.out.println("Pot metadata: " + l);
-        if ((l & 8) == 0)
-        {
-        	world.setBlockMetadataWithNotify(x, y, z, l | 8, 4);
-        }
-        else
-        {
-        }
-    }
 
     @SideOnly(Side.CLIENT)
 	@Override

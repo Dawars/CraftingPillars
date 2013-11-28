@@ -11,110 +11,125 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 
 public class ChristmasTreeGen extends WorldGenerator
 {
-        int leavesId,logId;
+        private int leavesId, logId, logMeta;
         boolean fromSapling;
-        
+		private int stage;
+
         public ChristmasTreeGen(boolean fromSapling)
         {
                 super(fromSapling);
                 this.fromSapling = fromSapling;
         }
         
+        public ChristmasTreeGen(boolean fromSapling, int stage)
+        {
+                this(fromSapling);
+                this.stage = stage;
+        }
+        
         @Override
         public boolean generate(World world, Random random, int x, int y, int z)
         {
-        	int maxTreeHeight = 6;
-        	int minTreeHeight = 4;
+        	if(!this.fromSapling)
+        		++y;
+        	this.leavesId = CraftingPillars.blockChristmasLeaves.blockID;
+        	this.logId = Block.wood.blockID;
+        	this.logMeta = 1;
 
-        	int SpaceToGrow;
-        	//check max height
-        	for(SpaceToGrow = 0; SpaceToGrow < maxTreeHeight; SpaceToGrow++)
+        	if(this.stage >= 0)
         	{
+        		addLeaves(world, x, y+1, z);
+        		addLeaves(world, x+1, y, z);
+        		addLeaves(world, x, y, z+1);
+        		addLeaves(world, x-1, y, z);
+        		addLeaves(world, x, y, z-1);
+        	}
+
+        	if(this.stage >= 1)
+        	{
+        		addLog(world, x, y+1, z);
+        		addLeaves(world, x, y+2, z);
+        		addLeaves(world, x+1, y+1, z);
+        		addLeaves(world, x, y+1, z+1);
+        		addLeaves(world, x-1, y+1, z);
+        		addLeaves(world, x, y+1, z-1);
+
+        		if(world.getBlockId(x+1, y, z) == this.leavesId)
+        			world.setBlockToAir(x+1, y, z);
+        		if(world.getBlockId(x, y, z+1) == this.leavesId)
+        			world.setBlockToAir(x, y, z+1);
+        		if(world.getBlockId(x-1, y, z) == this.leavesId)
+        			world.setBlockToAir(x-1, y, z);
+        		if(world.getBlockId(x, y, z-1) == this.leavesId)
+        			world.setBlockToAir(x, y, z-1);
+        	}
+
+        	if(this.stage >= 2)
+        	{
+        		//lvl1
+        		addLeaves(world, x+1, y+1, z+1);
+        		addLeaves(world, x-1, y+1, z-1);
+        		addLeaves(world, x+1, y+1, z-1);
+        		addLeaves(world, x-1, y+1, z+1);
         		
+        		//lvl2
+        		addLeaves(world, x+1, y+2, z);
+        		addLeaves(world, x, y+2, z+1);
+        		addLeaves(world, x-1, y+2, z);
+        		addLeaves(world, x, y+2, z-1);
+        		addLog(world, x, y+2, z);
+
+        		//lvl3
+        		addLeaves(world, x, y+3, z);
+
         	}
         	
-        	//room for presents
+        	if(this.stage >= 3)
+        	{
+        		//lvl1
+        		addLeaves(world, x+2, y+1, z);
+        		addLeaves(world, x-2, y+1, z);
+        		addLeaves(world, x, y+1, z-2);
+        		addLeaves(world, x, y+1, z+2);
+        		
+        		//lvl2
+        		addLeaves(world, x+1, y+2, z+1);
+        		addLeaves(world, x-1, y+2, z-1);
+        		addLeaves(world, x+1, y+2, z-1);
+        		addLeaves(world, x-1, y+2, z+1);
+        		
+        		//lvl3
+        		addLeaves(world, x+1, y+3, z);
+        		addLeaves(world, x, y+3, z+1);
+        		addLeaves(world, x-1, y+3, z);
+        		addLeaves(world, x, y+3, z-1);
+        		addLog(world, x, y+3, z);
+
+        		//lvl3
+        		addLeaves(world, x, y+3, z);
+
+        	}
         	
-        	/////////
-                int cap = random.nextInt(2) + 2;
-                int trunk = random.nextInt(3) + 3;
-                
-                int treeHeight = trunk + minTreeHeight;
-                
-//                if(!((ChristmasTreeSapling)CraftingPillars.blockChristmasTreeSapling).canThisPlantGrowOnThisBlockID(world.getBlockId(x, y-1, z)))
-//                        return false;
-                
-                if(fromSapling)
-                {
-                        for(int j = 1; j <= treeHeight; j++)
-                        {
-                                if(!world.isAirBlock(x, y+j, z))
-                                return false;
-                        }
-                }
-                else
-                {
-                        for(int i = -2; i <= 2; i++)
-                        {
-                                for(int k = -2; k <= 2; k++)
-                                {
-                                        for(int j = 1; j <= treeHeight; j++)
-                                        {
-                                                if(!world.isAirBlock(x+i, y+j, z+k))
-                                                        return false;
-                                        }
-                                }
-                }
-                }
-                
-                int h1 = treeHeight - random.nextInt(2);
-                int h2 = treeHeight - random.nextInt(2);
-                int h3 = treeHeight - random.nextInt(2);
-                int h4 = treeHeight - random.nextInt(2);
-                
-                for(int i = 0; i < treeHeight + cap; i++)
-                {
-                        
-                        if(i < treeHeight)
-                        {
-                                this.setBlock(world, x, y + i, z, logId);
-                        }
-                        
-                        if(i >= trunk && i < treeHeight + 1)
-                        {
-                            addLeaves(world, x + 1, y+i, z);
-                            addLeaves(world, x - 1, y+i, z);
-                            addLeaves(world, x, y+i, z + 1);
-                            addLeaves(world, x, y+i, z - 1);
-                        }
-                        
-                        if(i > trunk && i < h1)
-                            addLeaves(world, x + 1, y+i, z + 1);
-                        if(i > trunk && i < h2)
-                                addLeaves(world, x - 1, y+i, z - 1);
-                        if(i > trunk && i < h3)
-                                addLeaves(world, x - 1, y+i, z + 1);
-                        if(i > trunk && i < h4)
-                                addLeaves(world, x + 1, y+i, z - 1);
-                        
-                        if(i >= treeHeight)
-                        {
-                                addLeaves(world, x, y+i, z);
-                        }
-                }
-                
-                return true;
+        	return true;
         }
-        
+
         private boolean addLeaves(World world, int x, int y, int z)
         {
-                int id = world.getBlockId(x, y, z);
+            int id = world.getBlockId(x, y, z);
             Block block = Block.blocksList[id];
-                if(block == null || block.canBeReplacedByLeaves(world, x, y, z))
-                {
-                        world.setBlock(x, y, z, leavesId);
-                        return true;
-                }
-                return false;
+            if(block == null || block.canBeReplacedByLeaves(world, x, y, z))
+            {
+                    world.setBlock(x, y, z, leavesId);
+                    return true;
+            }
+            return false;
+        }
+        
+        private boolean addLog(World world, int x, int y, int z)
+        {
+        	world.setBlock(x, y, z, this.logId);
+    		world.setBlockMetadataWithNotify(x, y, z, this.logMeta, 2);
+    		
+            return true;
         }
 }
