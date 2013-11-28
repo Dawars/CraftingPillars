@@ -33,6 +33,7 @@ public class PotPillarBlock extends BaseBlockContainer
 	public PotPillarBlock(int id, Material mat)
 	{
 		super(id, mat);
+        this.setTickRandomly(true);
 	}
 	
 	@Override
@@ -142,40 +143,37 @@ public class PotPillarBlock extends BaseBlockContainer
 		return tile;
 	}
 	
-//	 /**
-//     * Ticks the block if it's been scheduled
-//     */
-//    public void updateTick(World world, int x, int y, int z, Random rand)
-//    {
-//        if (!world.isRemote)
-//        {
-//        	super.updateTick(world, x, y, z, rand);
-//
-//        }
-//		TileEntityPotPillar tile = (TileEntityPotPillar) world.getBlockTileEntity(x, y, z);
-//
-//        if (tile.getStackInSlot(0) != null && tile.getStackInSlot(0).itemID == CraftingPillars.blockChristmasTreeSapling.blockID && rand.nextInt(7) == 0)
-//        {
-//            this.markOrGrowMarked(world, x, y, z, rand);
-//        }
-//    }
-//
-//    public void markOrGrowMarked(World world, int x, int y, int z, Random rand)
-//    {
-//        int l = world.getBlockMetadata(x, y, z);
-//
-//        if ((l & 8) == 0)
-//        {
-//            if(!world.isRemote)
-//            	world.setBlockMetadataWithNotify(x, y, z, l | 8, 4);
-//            else
-//            	world.spawnParticle("happyVillager", x, y, z, 0, 0, 0);
-//
-//        }
-//        else
-//        {
-//        }
-//    }
+	 /**
+     * Ticks the block if it's been scheduled
+     */
+    public void updateTick(World world, int x, int y, int z, Random rand)
+    {
+        if (!world.isRemote)
+        {
+        	super.updateTick(world, x, y, z, rand);
+
+			TileEntityPotPillar tile = (TileEntityPotPillar) world.getBlockTileEntity(x, y, z);
+	
+	        if (tile.getStackInSlot(0) != null && tile.getStackInSlot(0).itemID == CraftingPillars.blockChristmasTreeSapling.blockID && rand.nextInt(7) == 0)
+	        {
+	            this.markOrGrowMarked(world, x, y, z, rand);
+	        }
+	        
+        }
+    }
+
+    public void markOrGrowMarked(World world, int x, int y, int z, Random rand)
+    {
+        int l = world.getBlockMetadata(x, y, z);
+        System.out.println("Pot metadata: " + l);
+        if ((l & 8) == 0)
+        {
+        	world.setBlockMetadataWithNotify(x, y, z, l | 8, 4);
+        }
+        else
+        {
+        }
+    }
 
     @SideOnly(Side.CLIENT)
 	@Override
