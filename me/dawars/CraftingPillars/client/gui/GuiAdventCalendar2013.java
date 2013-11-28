@@ -130,6 +130,8 @@ public class GuiAdventCalendar2013 extends BaseGui
 		glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		int i1;
 		
+		
+		int mouseOverSlot = -1;
 		for(int j1 = 0; j1 < this.inventorySlots.inventorySlots.size(); ++j1)
 		{
 			Slot slot = (Slot)this.inventorySlots.inventorySlots.get(j1);
@@ -140,14 +142,25 @@ public class GuiAdventCalendar2013 extends BaseGui
 				int k1 = slot.xDisplayPosition;
 				i1 = slot.yDisplayPosition;
 				this.drawGradientRect(k1, i1, k1 + 16, i1 + 16, -2130706433, -2130706433);
+				if(this.isSlotDiscovered(slot))
+				{
+					mouseOverSlot = slot.slotNumber;
+				}
 			}
+		}
+		glDisable(GL_LIGHTING);
+		if(mouseOverSlot != -1)
+		{
+			int x = mouseX-(this.width - this.xSize)/2;
+			int y = mouseY-(this.height - this.ySize)/2;
+			ArrayList list = new ArrayList();
+			list.add(EnumChatFormatting.GRAY+ContainerAdventCalendar2013.tooltips[mouseOverSlot]);
+			this.drawHoveringText(list, x, y, this.fontRenderer);
 		}
 		
 		//Forge: Force lighting to be disabled as there are some issue where lighting would
 		//incorrectly be applied based on items that are in the inventory.
-		glDisable(GL_LIGHTING);
 		this.drawGuiContainerForegroundLayer(mouseX, mouseY);
-		glEnable(GL_LIGHTING);
 		glPopMatrix();
 		glEnable(GL_LIGHTING);
 		glEnable(GL_DEPTH_TEST);

@@ -7,7 +7,10 @@ import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.client.gui.BaseContainer;
 import me.dawars.CraftingPillars.properties.CalendarPlayerProps2013;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
@@ -39,12 +42,12 @@ public class ContainerAdventCalendar2013 extends BaseContainer implements IInven
 	private EntityPlayer player;
 	
 	// TODO items
-	private static ItemStack[] adventItems = new ItemStack[]{
+	private static final ItemStack[] adventItems = new ItemStack[]{
 		new ItemStack(CraftingPillars.itemElysiumLoreBook, 1, 0),
 		new ItemStack(CraftingPillars.blockPotPillar, 1, 0),
 		new ItemStack(CraftingPillars.blockChristmasTreeSapling, 1, 0),
 		new ItemStack(CraftingPillars.itemWinterFood2013, 1, 2),
-		new ItemStack(Item.snowball, 16, 0),//spawns more
+		new ItemStack(Item.snowball, 64, 0),//spawns more
 		new ItemStack(CraftingPillars.itemVirgacs, 1, 0),
 		new ItemStack(CraftingPillars.blockBasePillar, 5, 0),
 		new ItemStack(CraftingPillars.itemWinterFood2013, 3, 3),
@@ -66,12 +69,41 @@ public class ContainerAdventCalendar2013 extends BaseContainer implements IInven
 		new ItemStack(Block.dirt.blockID, 1, 0)//TODO: coming soon text
 	};
 	
+	public static final String[] tooltips = new String[]{
+		"A book about Elysium",
+		"A pillar for growing Christmas Trees",
+		"A sapling just for you",
+		"Hmm, sweet!",
+		"Let's trow these at your friends!",
+		"You were a bad boy, #name#!",
+		"Connect your pillars!",
+		"Hmm, tastes good!",
+		"Let's cook your porkchops!",
+		"Oh, you need fuel!?",
+		"todo",
+		"What kind of sorcery is this!? :O",
+		"What!? Why is this here?",
+		"todo",
+		"Make more ice!",
+		"todo",
+		"One apple once a day, keeps the doctor away!",
+		"Listen to the music!",
+		"todo",
+		"Do you hear this awesome music?",
+		"todo",
+		"todo",
+		"Put it on the top of your tree!",
+		"Comming Soon!"
+	};
+	
 	public ContainerAdventCalendar2013(InventoryPlayer inventoryPlayer, EntityPlayer player)
 	{
 		super(24);
 		this.player = player;
 		this.inventory = new ItemStack[24];
 		this.player = player;
+		
+		tooltips[5] = "You were a bad boy, "+player.username+"!";
 		
 		for(int i = 0; i < this.inventory.length; i++)
 		{
