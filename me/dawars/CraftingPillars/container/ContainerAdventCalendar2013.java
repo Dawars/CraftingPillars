@@ -93,7 +93,7 @@ public class ContainerAdventCalendar2013 extends BaseContainer implements IInven
 		"todo",
 		"todo",
 		"Put it on the top of your tree!",
-		"Comming Soon!"
+		"Coming Soon!"
 	};
 	
 	public ContainerAdventCalendar2013(InventoryPlayer inventoryPlayer, EntityPlayer player)
