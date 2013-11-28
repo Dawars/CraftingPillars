@@ -344,7 +344,7 @@ public class CraftingPillars
 		
 		achievementChristmas = new Achievement(515, "christmaspillar", -2, 2, blockChristmasTreeSapling, (Achievement)null).setSpecial().setIndependent().registerAchievement();
 		achievementDiamond = new Achievement(516, "christmasdiamond", -1, 2, itemRibbonDiamond, achievementChristmas).setSpecial().registerAchievement();
-		achievementDisc = new Achievement(517, "elysiandisc", -1, 2, itemDiscElysium, achievementDiamond).setSpecial().registerAchievement();
+		achievementDisc = new Achievement(517, "elysiandisc", -1, 2, itemDiscElysium, achievementChristmas).setSpecial().registerAchievement();
 	}
 	
 	public static void registerBlock(Block block)
