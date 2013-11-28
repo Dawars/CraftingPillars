@@ -107,7 +107,7 @@ public class ChristmasTreeGen extends WorldGenerator
         		addLog(world, x, y+3, z);
 
         		//lvl4
-        		addLeaves(world, x, y+3, z);
+        		addLeaves(world, x, y+4, z);
 
         	}
         	
@@ -143,7 +143,7 @@ public class ChristmasTreeGen extends WorldGenerator
         		addLog(world, x, y+4, z);
 
         		//lvl5
-        		addLeaves(world, x+1, y+5, z);
+        		addLeaves(world, x, y+5, z);
 
         		//lvl5
 //        		addLeaves(world, x+1, y+5, z); //TODO: Star

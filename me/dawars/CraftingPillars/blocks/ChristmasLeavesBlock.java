@@ -275,50 +275,45 @@ public class ChristmasLeavesBlock extends BaseLeavesBlock implements IShearable
      */
     public int idDropped(int par1, Random par2Random, int par3)
     {
-        return Block.sapling.blockID;//FIXME
+        return CraftingPillars.blockChristmasTreeSapling.blockID;
     }
 
     /**
      * Drops the block items with a specified chance of dropping the specified items
      */
-    public void dropBlockAsItemWithChance(World par1World, int par2, int par3, int par4, int par5, float par6, int par7)
+    public void dropBlockAsItemWithChance(World world, int x, int y, int z, int meta, float par6, int bonus)
     {
-        if (!par1World.isRemote)
+        if (!world.isRemote)
         {
-            int j1 = 20;
+            int chance = 13;
 
-            if ((par5 & 3) == 3)
+            if (bonus > 0)
             {
-                j1 = 40;
-            }
+                chance -= 2 << bonus;
 
-            if (par7 > 0)
-            {
-                j1 -= 2 << par7;
-
-                if (j1 < 10)
+                if (chance < 8)
                 {
-                    j1 = 10;
+                    chance = 8;
                 }
             }
 
-            if (par1World.rand.nextInt(j1) == 0)
+            if (world.rand.nextInt(chance) == 0)
             {
-                int k1 = this.idDropped(par5, par1World.rand, par7);
-                this.dropBlockAsItem_do(par1World, par2, par3, par4, new ItemStack(k1, 1, this.damageDropped(par5)));
+                int id = this.idDropped(meta, world.rand, bonus);
+                this.dropBlockAsItem_do(world, x, y, z, new ItemStack(id, 1, this.damageDropped(meta)));
             }
 
-            j1 = 200;
+//            chance = 200;
 
-            if (par7 > 0)
-            {
-                j1 -= 10 << par7;
-
-                if (j1 < 40)
-                {
-                    j1 = 40;
-                }
-            }
+//            if (par7 > 0)
+//            {
+//                chance -= 10 << par7;
+//
+//                if (chance < 40)
+//                {
+//                    chance = 40;
+//                }
+//            }
             //light bulbkind of thing
 //            if ((par5 & 3) == 0 && par1World.rand.nextInt(j1) == 0)
 //            {

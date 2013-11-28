@@ -40,30 +40,30 @@ public class ContainerAdventCalendar2013 extends BaseContainer implements IInven
 	
 	// TODO items
 	private static ItemStack[] adventItems = new ItemStack[]{
-		new ItemStack(CraftingPillars.itemElysiumLoreBook.itemID, 1, 0),
-		new ItemStack(CraftingPillars.blockChristmasTreeSapling.blockID, 1, 0),
-		new ItemStack(Item.cookie, 16, 0),
-		new ItemStack(CraftingPillars.blockFurnacePillar.blockID, 1, 0),
-		new ItemStack(CraftingPillars.blockBasePillar.blockID, 1, 0),
-		new ItemStack(CraftingPillars.blockBrewingPillar.blockID, 1, 0),
-		new ItemStack(Block.ice.blockID, 1, 0),
-		new ItemStack(CraftingPillars.itemWinterFood2013.itemID, 1, 3),
-		new ItemStack(CraftingPillars.blockAnvilPillar.blockID, 1, 0),
-		new ItemStack(CraftingPillars.itemWinterFood2013.itemID, 1, 0),
-		new ItemStack(Item.coal.itemID, 8, 0),
-		new ItemStack(CraftingPillars.blockDiskPlayerPillar.blockID, 1, 0),
-		new ItemStack(Item.snowball.itemID, 32, 0),
-		new ItemStack(Item.appleRed.itemID, 1, 0),
-		new ItemStack(Block.dirt.blockID, 1, 0),//TODO
-		new ItemStack(CraftingPillars.itemWinterFood2013.itemID, 1, 0),
-		new ItemStack(Block.dirt.blockID, 1, 0),//TODO
-		new ItemStack(CraftingPillars.blockFreezerPillar.blockID, 1, 0),
-		new ItemStack(Block.dirt.blockID, 1, 0),//TODO
-		new ItemStack(Block.dirt.blockID, 1, 0),//TODO
-		new ItemStack(CraftingPillars.itemDiscElysium.itemID, 1, 0),
-		new ItemStack(Block.dirt.blockID, 1, 0),//TODO
-		new ItemStack(Block.dirt.blockID, 1, 0),//TODO
-		new ItemStack(Block.dirt.blockID, 1, 0)
+		new ItemStack(CraftingPillars.itemElysiumLoreBook, 1, 0),
+		new ItemStack(CraftingPillars.blockPotPillar, 1, 0),
+		new ItemStack(CraftingPillars.blockChristmasTreeSapling, 1, 0),
+		new ItemStack(CraftingPillars.itemWinterFood2013, 1, 2),
+		new ItemStack(Item.snowball, 16, 0),//spawns more
+		new ItemStack(CraftingPillars.itemVirgacs, 1, 0),
+		new ItemStack(CraftingPillars.blockBasePillar, 5, 0),
+		new ItemStack(CraftingPillars.itemWinterFood2013, 3, 3),
+		new ItemStack(CraftingPillars.blockFurnacePillar, 1, 0),
+		new ItemStack(Item.coal, 8, 0),
+		new ItemStack(CraftingPillars.itemWinterFood2013, 23, 0),
+		new ItemStack(CraftingPillars.blockBrewingPillar, 1, 0),
+		new ItemStack(Block.ice, 7, 0),
+		new ItemStack(CraftingPillars.itemWinterFood2013, 6, 1),
+		new ItemStack(CraftingPillars.blockFreezerPillar, 1, 0),
+		new ItemStack(CraftingPillars.itemWinterFood2013, 3, 0),
+		new ItemStack(Item.appleRed, 14, 0),
+		new ItemStack(CraftingPillars.blockDiskPlayerPillar, 1, 0),
+		new ItemStack(CraftingPillars.itemWinterFood2013, 7, 4),
+		new ItemStack(CraftingPillars.itemDiscElysium, 1, 0),
+		new ItemStack(CraftingPillars.itemRibbonDiamond, 21),
+		new ItemStack(CraftingPillars.itemWinterFood2013, 22, 7),
+		new ItemStack(Block.dirt.blockID, 1, 0),//TODO: Star
+		new ItemStack(Block.dirt.blockID, 1, 0)//TODO: coming soon text
 	};
 	
 	public ContainerAdventCalendar2013(InventoryPlayer inventoryPlayer, EntityPlayer player)

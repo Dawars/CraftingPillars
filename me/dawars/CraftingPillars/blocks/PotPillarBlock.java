@@ -174,7 +174,7 @@ public class PotPillarBlock extends BaseBlockContainer
 	        if (tile.getStackInSlot(0) != null && tile.getStackInSlot(0).itemID == CraftingPillars.blockChristmasTreeSapling.blockID)
 	        {
 	        	int l = world.getBlockMetadata(x, y, z);
-	        	int randNum = rand.nextInt(7);
+	        	int randNum = rand.nextInt(4);
 	        	System.out.println("Xmas tree pot metadata: " + l + " rand: " + randNum + " Stage: " + tile.christmasTreeState);
 			
 //	        	if(randNum == 0)
