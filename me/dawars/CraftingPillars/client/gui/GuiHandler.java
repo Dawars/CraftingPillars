@@ -27,6 +27,8 @@ public class GuiHandler implements IGuiHandler
 		{
 			case GuiIds.ADVENT_CALENDAR:
 				return new GuiAdventCalendar2013(player.inventory, player);
+			case GuiIds.COMING_SOON:
+				return new GuiComingSoon();
 			default:
 				return null;
 		}

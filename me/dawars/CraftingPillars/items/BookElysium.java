@@ -2,6 +2,8 @@ package me.dawars.CraftingPillars.items;
 
 import java.util.List;
 
+import me.dawars.CraftingPillars.CraftingPillars;
+import me.dawars.CraftingPillars.client.gui.GuiIds;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemWritableBook;
@@ -21,7 +23,14 @@ public class BookElysium extends BaseItem
 		this.setMaxStackSize(1);
 	}
 	
-	public static boolean validBookTagContents(NBTTagCompound nbt)
+	@Override
+	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+	{
+		player.openGui(CraftingPillars.getInstance(), GuiIds.COMING_SOON, world, (int)player.posX, (int)player.posY, (int)player.posZ);
+		return stack;
+	}
+	
+	/*public static boolean validBookTagContents(NBTTagCompound nbt)
 	{
 		if(!ItemWritableBook.validBookTagPages(nbt))
 		{
@@ -57,9 +66,6 @@ public class BookElysium extends BaseItem
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	/**
-	 * allows items to add custom lines of information to the mouseover description
-	 */
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
 	{
 		if(stack.hasTagCompound())
@@ -75,9 +81,6 @@ public class BookElysium extends BaseItem
 	}
 	
 	@Override
-	/**
-	 * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
-	 */
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
 	{
 		player.displayGUIBook(stack);
@@ -95,5 +98,5 @@ public class BookElysium extends BaseItem
 	public boolean hasEffect(ItemStack stack)
 	{
 		return true;
-	}
+	}*/
 }

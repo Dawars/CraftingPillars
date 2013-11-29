@@ -9,9 +9,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class AdventCalendar extends BaseItem
+public class AdventCalendar2013 extends BaseItem
 {
-	public AdventCalendar(int id)
+	public AdventCalendar2013(int id)
 	{
 		super(id);
 	}
@@ -24,7 +24,7 @@ public class AdventCalendar extends BaseItem
     {
 		if(!world.isRemote)
 			CraftingPillars.proxy.sendToPlayer((EntityPlayerMP)player, new PacketCalendarProps(CalendarPlayerProps2013.get(player).data).pack());
-    	player.openGui(CraftingPillars.getInstance(), GuiIds.ADVENT_CALENDAR, world, (int) player.posX, (int) player.posY, (int) player.posZ);
+		player.openGui(CraftingPillars.getInstance(), GuiIds.ADVENT_CALENDAR, world, (int) player.posX, (int) player.posY, (int) player.posZ);
         return item;
     }
 }
