@@ -154,48 +154,7 @@ public class PotPillarBlock extends BaseBlockContainer
 	public void updateTick(World world, int x, int y, int z, Random rand)
 	{
 		if(!world.isRemote)
-		{
-			
-			
-			
-			/*TileEntityPotPillar tile = (TileEntityPotPillar) world.getBlockTileEntity(x, y, z);
-			
-			if(tile.getStackInSlot(0) != null && tile.getStackInSlot(0).itemID == CraftingPillars.blockChristmasTreeSapling.blockID && tile.christmasTreeState <= 5)
-			{
-				int meta = world.getBlockMetadata(x, y, z);
-				int randNum = rand.nextInt(4);
-
-				if(randNum == 0)
-				{
-					if(meta < 8)
-					{
-						world.setBlockMetadataWithNotify(x, y, z, meta+1, 2);
-					}
-					else
-					{
-						WorldGenerator tree = new ChristmasTreeGen(false, tile.christmasTreeState);
-						if(tile.christmasTreeState == 0)
-						{
-							tree.generate(world, rand, x, y, z);
-						}
-						else
-						{
-							if(tile.christmasTreeState >= 1 && CraftingPillars.treeState1)
-								if(tile.christmasTreeState >= 2 && CraftingPillars.treeState2)
-									if(tile.christmasTreeState >= 3 && CraftingPillars.treeState3)
-										if(tile.christmasTreeState >= 4 && CraftingPillars.treeState4)
-							{
-								tree.generate(world, rand, x, y, z);
-							}
-						}
-						tile.christmasTreeState+=1;
-						world.setBlockMetadataWithNotify(x, y, z, 0, 4);
-						Minecraft.getMinecraft().renderGlobal.markBlockForRenderUpdate(x, y, z);
-						world.updateAllLightTypes(x, y, z);
-					}
-				}
-			}*/
-		}
+			((TileEntityPotPillar) world.getBlockTileEntity(x, y, z)).onBlockUpdate(rand);
 	}
 
 

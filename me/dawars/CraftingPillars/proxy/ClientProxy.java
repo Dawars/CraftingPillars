@@ -46,8 +46,6 @@ public class ClientProxy extends CommonProxy
 	{
 		VersionChecker.check();
 		MinecraftForge.EVENT_BUS.register(new PillarSoundHandler());
-		//Minecraft.getMinecraft().gameSettings.keyBindAttack = new KeyBindingReplaceAttack();
-		//Minecraft.getMinecraft().gameSettings.keyBindUseItem = new KeyBindingReplaceUse();
 		
 		CraftingPillars.extendPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
 		CraftingPillars.showOffPillarRenderID = RenderingRegistry.getNextAvailableRenderId();

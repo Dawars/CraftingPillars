@@ -39,54 +39,28 @@ import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
 public class TileEntityPotPillar extends BaseTileEntity implements IInventory, ISidedInventory
 {
-	public static final int minGrowTime = 20*60*5;
-	public static final int maxGrowTime = 20*60*10;
-	
-	
-	
 	private ItemStack[] inventory = new ItemStack[this.getSizeInventory()];
 	
 	public boolean showNum = false;
 	public int christmasTreeState = 0;
-	public int growTime;
 	
-	public TileEntityPotPillar()
+	public void onBlockUpdate(Random rand)
 	{
-		this.growTime = -1;
-	}
-	
-	/*@Override
-	public void updateEntity()
-	{
-		if(!this.worldObj.isRemote)
+		if(this.getStackInSlot(0) != null && this.getStackInSlot(0).itemID == CraftingPillars.blockChristmasTreeSapling.blockID)
 		{
-			if(this.growTime == -1)
-				this.growTime = minGrowTime+this.random.nextInt(maxGrowTime-minGrowTime);
-			
-			if(this.getStackInSlot(0) != null && this.getStackInSlot(0).itemID == CraftingPillars.blockChristmasTreeSapling.blockID && this.christmasTreeState <= 5)
+			if(this.christmasTreeState <= CraftingPillars.maxTreeState)
 			{
-				if(this.growTime == 0)
-				{
-					new ChristmasTreeGen(false, this.christmasTreeState).generate(this.worldObj, this.random, this.xCoord, this.yCoord, this.zCoord);
-					this.christmasTreeState++;
-					this.growTime = minGrowTime+this.random.nextInt(maxGrowTime-minGrowTime);
-				}
-				else
-					this.growTime--;
+				new ChristmasTreeGen(false, this.christmasTreeState).generate(this.worldObj, rand, this.xCoord, this.yCoord, this.zCoord);
+				this.christmasTreeState++;
 				this.onInventoryChanged();
 			}
-			else if(this.growTime != 0)
-			{
-				this.growTime = 0;
-				this.onInventoryChanged();
-			}
-			
-			if(this.growTime%20 == 0)
-				System.out.println("Tree state at ["+this.xCoord+", "+this.yCoord+", "+this.zCoord+"] is: "+this.growTime/20);
 		}
-		
-		super.updateEntity();
-	}*/
+		else if(this.christmasTreeState != 0)
+		{
+			this.christmasTreeState = 0;
+			this.onInventoryChanged();
+		}
+	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)
@@ -106,7 +80,6 @@ public class TileEntityPotPillar extends BaseTileEntity implements IInventory, I
 		
 		this.showNum = nbt.getBoolean("showNum");
 		this.christmasTreeState = nbt.getInteger("xmasTree");
-		this.growTime = nbt.getInteger("growTime");
 	}
 	
 	@Override
@@ -127,7 +100,6 @@ public class TileEntityPotPillar extends BaseTileEntity implements IInventory, I
 		nbt.setTag("Items", nbtlist);
 		nbt.setBoolean("showNum", this.showNum);
 		nbt.setInteger("xmasTree", this.christmasTreeState);
-		nbt.setInteger("growTime", this.growTime);
 	}
 	
 
