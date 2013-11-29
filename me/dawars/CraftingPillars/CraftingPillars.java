@@ -133,6 +133,7 @@ public class CraftingPillars
 	public static Achievement achievementShowoff;
 	public static Achievement achievementDiamond;
 	public static Achievement achievementDisc;
+	public static Achievement achievementRecursion3;
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt)
@@ -281,10 +282,13 @@ public class CraftingPillars
 		LanguageRegistry.instance().addStringLocalization("achievement.gettingstarted.desc", "en_US", "Craft a BasicPillar");
 		
 		LanguageRegistry.instance().addStringLocalization("achievement.recursion", "en_US", "Recursion I");
-		LanguageRegistry.instance().addStringLocalization("achievement.recursion.desc", "en_US", "Craft a CraftingPillar in a CraftingPillar");
+		LanguageRegistry.instance().addStringLocalization("achievement.recursion.desc", "en_US", "Craft a CraftingPillar in a CraftingPillar!");
 		
 		LanguageRegistry.instance().addStringLocalization("achievement.showoff", "en_US", "Recursion II");
 		LanguageRegistry.instance().addStringLocalization("achievement.showoff.desc", "en_US", "Show off your Show-Off Pillar!");
+		
+		LanguageRegistry.instance().addStringLocalization("achievement.recursion3", "en_US", "Recursion III");
+		LanguageRegistry.instance().addStringLocalization("achievement.recursion3.desc", "en_US", "Get a present from a present!");
 		
 		LanguageRegistry.instance().addStringLocalization("achievement.christmaspillar", "en_US", "Christmas Event");
 		LanguageRegistry.instance().addStringLocalization("achievement.christmaspillar.desc", "en_US", "Celebrate Christmas with us!");
@@ -350,6 +354,7 @@ public class CraftingPillars
 		achievementRecursion = new Achievement(510, "recursion", -3, -3, blockCraftingPillar, achievementGettingStarted).registerAchievement();
 		achievementShowoff = new Achievement(511, "showoff", -5, -3, blockShowOffPillar, achievementRecursion).registerAchievement();
 		achievementCompressingLiquids = new Achievement(512, "liquids", -4, -1, blockFreezerPillar, achievementGettingStarted).registerAchievement();
+		achievementRecursion3 = new Achievement(518, "recursion3", -7, -3, blockPresent, achievementShowoff).registerAchievement();
 		
 		//achievementChristmas = new Achievement(515, "christmaspillar", -2, 2, blockChristmasTreeSapling, (Achievement)null).setSpecial().setIndependent().registerAchievement();
 		achievementDiamond = new Achievement(516, "christmasdiamond", -1, 2, itemRibbonDiamond, achievementChristmas).setSpecial().registerAchievement();

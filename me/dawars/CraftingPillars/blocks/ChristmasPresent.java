@@ -18,10 +18,10 @@ public class ChristmasPresent extends BaseBlockContainer
 	{
 		// TODO presents
 		presents = new ItemStack[]{
-				new ItemStack(CraftingPillars.blockPresent, 1, 0),
-				new ItemStack(CraftingPillars.itemWinterFood2013, 16, 0),
-				new ItemStack(CraftingPillars.itemElysiumLoreBook, 1, 0),
-				new ItemStack(CraftingPillars.blockCraftingPillar, 1, 0)
+			new ItemStack(CraftingPillars.blockPresent, 1, 0),
+			new ItemStack(CraftingPillars.itemWinterFood2013, 16, 0),
+			new ItemStack(CraftingPillars.itemElysiumLoreBook, 1, 0),
+			new ItemStack(CraftingPillars.blockCraftingPillar, 1, 0)
 		};
 	}
 	
@@ -32,8 +32,8 @@ public class ChristmasPresent extends BaseBlockContainer
 		{
 			EntityItem item = new EntityItem(world, x+0.5D, y+0.5D, z+0.5D);
 			item.setEntityItemStack(presents[CraftingPillars.rand.nextInt(presents.length)].copy());
-			//if(item.getEntityItem().itemID == CraftingPillars.blockPresent.blockID)
-				// TODO recursion III
+			if(item.getEntityItem().itemID == CraftingPillars.blockPresent.blockID)
+				player.addStat(CraftingPillars.achievementRecursion3, 1);
 			world.spawnEntityInWorld(item);
 			world.setBlock(x, y, z, 0);
 		}
