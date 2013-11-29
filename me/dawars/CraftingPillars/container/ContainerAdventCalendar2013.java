@@ -59,7 +59,7 @@ public class ContainerAdventCalendar2013 extends BaseContainer implements IInven
 			new ItemStack(CraftingPillars.blockPotPillar, 1, 0),
 			new ItemStack(CraftingPillars.blockChristmasTreeSapling, 1, 0),
 			new ItemStack(CraftingPillars.itemWinterFood2013, 1, 2),
-			new ItemStack(Item.snowball, 64, 0),//spawns more
+			new ItemStack(Item.snowball, 64, 0),
 			new ItemStack(CraftingPillars.itemVirgacs, 1, 0),
 			new ItemStack(CraftingPillars.blockBasePillar, 5, 0),
 			new ItemStack(CraftingPillars.itemWinterFood2013, 3, 3),
@@ -116,8 +116,8 @@ public class ContainerAdventCalendar2013 extends BaseContainer implements IInven
 		this.inventory = new ItemStack[24];
 		this.player = player;
 		
-		tooltips[2] = "A sapling just for you, "+player.username+"!";
-		tooltips[5] = "You were a bad boy, "+player.username+"!";
+		for(int i = 0; i < tooltips.length; i++)
+			tooltips[i] = tooltips[i].replaceAll("#name#", player.username);
 		
 		for(int i = 0; i < this.inventory.length; i++)
 		{
