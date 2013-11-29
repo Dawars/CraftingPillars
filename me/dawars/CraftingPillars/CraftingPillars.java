@@ -137,6 +137,7 @@ public class CraftingPillars
 	public static Achievement achievementDiamond;
 	public static Achievement achievementDisc;
 	public static Achievement achievementRecursion3;
+	public static boolean debug = true;
 	
 	public void addItemsAndBlocks()
 	{
@@ -431,11 +432,12 @@ public class CraftingPillars
 	public static int getWinterDay(int year)
 	{
 		Calendar c = Calendar.getInstance();
-		return 11; // TODO debug
-		/*if(c.get(Calendar.YEAR) == year && c.get(Calendar.MONTH) == Calendar.DECEMBER && c.get(Calendar.DAY_OF_MONTH) <= 24)
+		if(debug)
+			return 24;
+		if(c.get(Calendar.YEAR) == year && c.get(Calendar.MONTH) == Calendar.DECEMBER && c.get(Calendar.DAY_OF_MONTH) <= 24)
 			return c.get(Calendar.DAY_OF_MONTH);
 		else
-			return 0;*/
+			return 0;
 	}
 	
 	public static boolean isWinterTime()

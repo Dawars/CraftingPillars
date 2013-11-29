@@ -44,8 +44,16 @@ public class ContainerAdventCalendar2013 extends BaseContainer implements IInven
 	
 	public static ItemStack getStackForDrop(int slot)
 	{
-		if(adventItems[slot].itemID == CraftingPillars.itemWinterFood2013.itemID)
-			return new ItemStack(adventItems[slot].itemID, adventItems[slot].stackSize, CraftingPillars.rand.nextInt(WinterFood2013.itemNames.length));
+		if(adventItems[slot].itemID == CraftingPillars.itemWinterFood2013.itemID){
+			if(adventItems[slot].getItemDamage() == 4 || adventItems[slot].getItemDamage() == 5)
+				return new ItemStack(adventItems[slot].itemID, CraftingPillars.rand.nextInt(5) + 10, CraftingPillars.rand.nextInt(2) + 4);
+
+			if(adventItems[slot].getItemDamage() == 6 || adventItems[slot].getItemDamage() == 7 || adventItems[slot].getItemDamage() == 8)
+				return new ItemStack(adventItems[slot].itemID, CraftingPillars.rand.nextInt(5) + 10, CraftingPillars.rand.nextInt(3) + 6);
+			
+			
+			return new ItemStack(adventItems[slot].itemID, adventItems[slot].stackSize, adventItems[slot].getItemDamage());
+		}
 		return adventItems[slot];
 	}
 	
@@ -86,7 +94,7 @@ public class ContainerAdventCalendar2013 extends BaseContainer implements IInven
 			"A pot for everything",
 			"Grows over time in a pillar",
 			"Hmm, sweet!",
-			"Let's trow these at eachother!",
+			"Let's throw these at eachother!",
 			"You were a bad boy, #name#!",
 			"Connect your pillars!",
 			"Hmm, tastes good!",
@@ -95,14 +103,14 @@ public class ContainerAdventCalendar2013 extends BaseContainer implements IInven
 			"Never enough of these",
 			"What kind of sorcery is this!? :O",
 			"\"What!? Why is this here?\" - FBalazs",
-			"todo",
+			"\"Let's just go to sleep instead!\" - Dawars",
 			"Make more ice from water!",
-			"todo",
+			"Recursion lvl 99",
 			"One apple a day, keeps the doctor away!",
 			"Listen to music!",
-			"todo",
-			"Do you hear this awesome music?",
 			"Granny made you some cookies, #name#!",
+			"Do you hear this awesome music?",
+			"Just take it!",
 			"Szaloncukor for everyone!",
 			"Put it everywhere!",
 			"Coming Soon!"

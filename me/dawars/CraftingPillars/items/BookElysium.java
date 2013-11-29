@@ -26,7 +26,7 @@ public class BookElysium extends BaseItem
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
 	{
-		player.openGui(CraftingPillars.getInstance(), GuiIds.COMING_SOON, world, (int)player.posX, (int)player.posY, (int)player.posZ);
+		player.openGui(CraftingPillars.getInstance(), GuiIds.ELYSIUM_LORE, world, (int)player.posX, (int)player.posY, (int)player.posZ);
 		return stack;
 	}
 	

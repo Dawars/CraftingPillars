@@ -50,9 +50,9 @@ public class PillarEventHandler
 				Block.blocksList[event.entity.worldObj.getBlockId(event.x, event.y, event.z)].onBlockClicked(event.entity.worldObj, event.x, event.y, event.z, event.entityPlayer);
 			}
 		}
-		else if(event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK && event.entity.isSneaking())
+		else if(event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK && event.entity.isSneaking() && event.entityPlayer.getCurrentEquippedItem() != null)
 		{
-			if(Block.blocksList[event.entity.worldObj.getBlockId(event.x, event.y, event.z)] instanceof BaseBlockContainer)
+			if(Block.blocksList[event.entity.worldObj.getBlockId(event.x, event.y, event.z)] instanceof BaseBlockContainer && event.face == 1)
 			{
 				event.setCanceled(true);
 			}

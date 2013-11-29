@@ -36,7 +36,8 @@ public class ChristmasTreeGen extends WorldGenerator
 		if(!this.fromSapling)
 			y += 1;
 		
-	 	if(this.stage == 0)
+		//We regenerate it every time so it always look good (player can't really replace it if broken by accident)
+	 	if(this.stage >= 0)
 	 	{
 	 		addLog(world, x, y, z);
 	 		addLeaves(world, x, y+1, z);
@@ -45,7 +46,7 @@ public class ChristmasTreeGen extends WorldGenerator
 	 		addLeaves(world, x-1, y, z);
 	 		addLeaves(world, x, y, z-1);
 	 	}
-	 	else if(this.stage == 1)
+	 	if(this.stage >= 1)
 	 	{
 	 		addLog(world, x, y+1, z);
 	 		addLeaves(world, x, y+2, z);
@@ -63,7 +64,7 @@ public class ChristmasTreeGen extends WorldGenerator
 	 		if(world.getBlockId(x, y, z-1) == this.leavesId)
 	 			world.setBlockToAir(x, y, z-1);
 	 	}
-	 	else if(this.stage == 2)
+	 	if(this.stage >= 2)
 	 	{
 	 		//lvl1
 	 		addLeaves(world, x+1, y+1, z+1);
@@ -82,7 +83,7 @@ public class ChristmasTreeGen extends WorldGenerator
 	 		addLeaves(world, x, y+3, z);
 	
 	 	}
-	 	else if(this.stage == 3)
+	 	if(this.stage >= 3)
 	 	{
 	 		//lvl1
 	 		addLeaves(world, x+2, y+1, z);
@@ -106,7 +107,7 @@ public class ChristmasTreeGen extends WorldGenerator
 	 		//lvl4
 	 		addLeaves(world, x, y+4, z);
 	 	}
-	 	else if(this.stage == 4)
+	 	if(this.stage >= 4)
 	 	{
 	 		//lvl1
 	 		addLeaves(world, x+1, y+1, z+2);
@@ -140,8 +141,6 @@ public class ChristmasTreeGen extends WorldGenerator
 	 		//lvl5
 	 		addLeaves(world, x, y+5, z);
 	
-	 		//lvl5
-	 		//addLeaves(world, x+1, y+5, z); //TODO: Star
 	 		
 	 		for(int a = 0; a < 5; a++)
 	 		{
