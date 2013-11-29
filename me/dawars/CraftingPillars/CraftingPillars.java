@@ -25,6 +25,7 @@ import net.minecraft.item.ItemRecord;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraft.stats.AchievementList;
+import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Property;
@@ -124,6 +125,8 @@ public class CraftingPillars
 	public static boolean renderHitBoxes = true;
 	public static boolean winter, isChristmas;
 	public static boolean treeState1, treeState2, treeState3, treeState4;
+	
+	public static AchievementPage achievementPage;
 	
 	public static Achievement achievementGettingStarted;
 	public static Achievement achievementChristmas;
@@ -243,15 +246,29 @@ public class CraftingPillars
 	
 	public void addAchievementsAndCreativeTab()
 	{
-		achievementGettingStarted = new Achievement(509, "gettingstarted", -2, -1, blockBasePillar, AchievementList.openInventory).registerAchievement();
-		achievementRecursion = new Achievement(510, "recursion", -3, -3, blockCraftingPillar, achievementGettingStarted).registerAchievement();
-		achievementShowoff = new Achievement(511, "showoff", -5, -3, blockShowOffPillar, achievementRecursion).registerAchievement();
-		achievementCompressingLiquids = new Achievement(512, "liquids", -4, -1, blockFreezerPillar, achievementGettingStarted).registerAchievement();
-		achievementRecursion3 = new Achievement(518, "recursion3", -7, -3, blockPresent, achievementShowoff).registerAchievement();
+		achievementGettingStarted = new Achievement(509, "gettingstarted", 0, 0, blockBasePillar, null).registerAchievement();
 		
-		achievementChristmas = new Achievement(515, "christmaspillar", -2, 2, blockChristmasTreeSapling, (Achievement)null).setSpecial().setIndependent().registerAchievement();
-		achievementDiamond = new Achievement(516, "christmasdiamond", -1, 2, itemRibbonDiamond, achievementChristmas).setSpecial().registerAchievement();
-		achievementDisc = new Achievement(517, "elysiandisc", -1, 2, itemDiscElysium, achievementChristmas).setSpecial().registerAchievement();
+		achievementRecursion = new Achievement(510, "recursion", 1, 1, blockCraftingPillar, achievementGettingStarted).registerAchievement();
+		achievementShowoff = new Achievement(511, "showoff", 3, 1, blockShowOffPillar, achievementRecursion).registerAchievement();
+		achievementRecursion3 = new Achievement(518, "recursion3", 5, 1, blockPresent, achievementShowoff).registerAchievement();
+		
+		achievementCompressingLiquids = new Achievement(512, "liquids", 1, 2, blockFreezerPillar, achievementGettingStarted).registerAchievement();
+		
+		achievementChristmas = new Achievement(515, "christmaspillar", 0, 4, blockChristmasTreeSapling, null).setSpecial().setIndependent().registerAchievement();
+		achievementDiamond = new Achievement(516, "christmasdiamond", 2, 4, itemRibbonDiamond, achievementChristmas).setSpecial().registerAchievement();
+		achievementDisc = new Achievement(517, "elysiandisc", 4, 4, itemDiscElysium, achievementChristmas).setSpecial().registerAchievement();
+		
+		achievementPage = new AchievementPage(name,
+				achievementGettingStarted,
+				achievementRecursion,
+				achievementShowoff,
+				achievementCompressingLiquids,
+				achievementRecursion3,
+				achievementChristmas,
+				achievementDiamond,
+				achievementDisc
+				);
+		AchievementPage.registerAchievementPage(achievementPage);
 		
 		LanguageRegistry.instance().addStringLocalization("achievement.gettingstarted", "en_US", "Getting Started");
 		LanguageRegistry.instance().addStringLocalization("achievement.gettingstarted.desc", "en_US", "Craft a BasicPillar");
@@ -310,11 +327,10 @@ public class CraftingPillars
 		GameRegistry.addShapelessRecipe(new ItemStack(blockBrewingPillar), new ItemStack(Item.brewingStand), new ItemStack(blockBasePillar));
 		GameRegistry.addRecipe(new ItemStack(blockBrewingPillar), new Object[] { "S", "F", "P", Character.valueOf('S'), Block.dirt, Character.valueOf('P'), blockBasePillar , Character.valueOf('F'), Block.flowerPot});
 		
-		GameRegistry.addShapelessRecipe(new ItemStack(Item.diamond), new ItemStack(itemRibbonDiamond));
-		
 		if(winter)
 		{
-			// TODO add crafting for winter items
+			GameRegistry.addShapelessRecipe(new ItemStack(Item.diamond), new ItemStack(itemRibbonDiamond));
+			// TODO sweet craftings
 		}
 	}
 	
