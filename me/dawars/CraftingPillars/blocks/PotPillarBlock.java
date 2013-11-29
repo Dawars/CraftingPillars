@@ -35,7 +35,7 @@ public class PotPillarBlock extends BaseBlockContainer
 	public PotPillarBlock(int id, Material mat)
 	{
 		super(id, mat);
-        this.setTickRandomly(true);
+		this.setTickRandomly(true);
 	}
 	
 	@Override
@@ -57,20 +57,20 @@ public class PotPillarBlock extends BaseBlockContainer
 	}
 	
 	/**
-     * Used during tree growth to determine if newly generated leaves can replace this block.
-     *
-     * @param world The current world
-     * @param x X Position
-     * @param y Y Position
-     * @param z Z Position
-     * @return true if this block can be replaced by growing leaves.
-     */
+	 * Used during tree growth to determine if newly generated leaves can replace this block.
+	 *
+	 * @param world The current world
+	 * @param x X Position
+	 * @param y Y Position
+	 * @param z Z Position
+	 * @return true if this block can be replaced by growing leaves.
+	 */
 	@Override
-    public boolean canBeReplacedByLeaves(World world, int x, int y, int z)
-    {
-        return false;
-    }
-    
+	public boolean canBeReplacedByLeaves(World world, int x, int y, int z)
+	{
+		return false;
+	}
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	/**
@@ -150,83 +150,82 @@ public class PotPillarBlock extends BaseBlockContainer
 		return tile;
 	}
 	
-	 /**
-     * Ticks the block if it's been scheduled
-     */
-    public void updateTick(World world, int x, int y, int z, Random rand)
-    {
-        if (!world.isRemote)
-        {
-        	super.updateTick(world, x, y, z, rand);
-        	
-        	TileEntityPotPillar tile = (TileEntityPotPillar) world.getBlockTileEntity(x, y, z);
-	
-	        if (tile.getStackInSlot(0) != null && tile.getStackInSlot(0).itemID == CraftingPillars.blockChristmasTreeSapling.blockID && tile.christmasTreeState <= 5)
-	        {
-	        	int l = world.getBlockMetadata(x, y, z);
-	        	int randNum = rand.nextInt(4);
-//	        	System.out.println("Xmas tree pot metadata: " + l + " rand: " + randNum + " Stage: " + tile.christmasTreeState);
+	/*@Override
+	public void updateTick(World world, int x, int y, int z, Random rand)
+	{
+		System.out.println("update "+CraftingPillars.winter);
+		if(!world.isRemote)
+		{
+			super.updateTick(world, x, y, z, rand);
 			
-	        	if(randNum == 0)
-	        	{
-	        		if (l < 8)
-	                {
-	                	world.setBlockMetadataWithNotify(x, y, z, l+1, 2);
-	                }
-	                else
-	                {
+			TileEntityPotPillar tile = (TileEntityPotPillar) world.getBlockTileEntity(x, y, z);
+	
+			if(tile.getStackInSlot(0) != null && tile.getStackInSlot(0).itemID == CraftingPillars.blockChristmasTreeSapling.blockID && tile.christmasTreeState <= 5)
+			{
+				int meta = world.getBlockMetadata(x, y, z);
+				int randNum = rand.nextInt(4);
+//				System.out.println("Xmas tree pot metadata: " + l + " rand: " + randNum + " Stage: " + tile.christmasTreeState);
+			
+				if(randNum == 0)
+				{
+					if(meta < 8)
+					{
+						world.setBlockMetadataWithNotify(x, y, z, meta+1, 2);
+					}
+					else
+					{
 						WorldGenerator tree = new ChristmasTreeGen(false, tile.christmasTreeState);
 						if(tile.christmasTreeState == 0)
 						{
 							tree.generate(world, rand, x, y, z);
 						}
-						else 
+						else
 						{
 							if(tile.christmasTreeState >= 1 && CraftingPillars.treeState1)
-							if(tile.christmasTreeState >= 2 && CraftingPillars.treeState2)
-							if(tile.christmasTreeState >= 3 && CraftingPillars.treeState3)
-							if(tile.christmasTreeState >= 4 && CraftingPillars.treeState4)
+								if(tile.christmasTreeState >= 2 && CraftingPillars.treeState2)
+									if(tile.christmasTreeState >= 3 && CraftingPillars.treeState3)
+										if(tile.christmasTreeState >= 4 && CraftingPillars.treeState4)
 							{
 								tree.generate(world, rand, x, y, z);
 							}
 						}
 						tile.christmasTreeState+=1;
-	                	world.setBlockMetadataWithNotify(x, y, z, 0, 4);
+						world.setBlockMetadataWithNotify(x, y, z, 0, 4);
 						Minecraft.getMinecraft().renderGlobal.markBlockForRenderUpdate(x, y, z);
-			            world.updateAllLightTypes(x, y, z);
-	                }
-	        	}
-	        }
-        }
-    }
+						world.updateAllLightTypes(x, y, z);
+					}
+				}
+			}
+		}
+	}*/
 
 
-    @SideOnly(Side.CLIENT)
+	@SideOnly(Side.CLIENT)
 	@Override
 	/**
 	 * A randomly called display update to be able to add particles or other items for display
 	 */
 	public void randomDisplayTick(World world, int x, int y, int z, Random rand)
 	{
-    	if(rand.nextInt(100) == 0)
-    	{
+		if(rand.nextInt(25) == 0)
+		{
 			TileEntityPotPillar tile = (TileEntityPotPillar) world.getBlockTileEntity(x, y, z);
 			if(tile.getStackInSlot(0) != null && tile.getStackInSlot(0).itemID == CraftingPillars.blockChristmasTreeSapling.blockID && tile.christmasTreeState == 0)
 			{
 				for (int i = 0; i < 5; ++i)
-		        {
-		            double d0 = rand.nextGaussian() * 0.02D;
-		            double d1 = rand.nextGaussian() * 0.02D;
-		            double d2 = rand.nextGaussian() * 0.02D;
-		            float width = 0.3F;
-		            float height = 0.5F;
+				{
+					double d0 = rand.nextGaussian() * 0.02D;
+					double d1 = rand.nextGaussian() * 0.02D;
+					double d2 = rand.nextGaussian() * 0.02D;
+					float width = 0.3F;
+					float height = 0.5F;
 					world.spawnParticle("happyVillager", x + 0.6F + (double)(rand.nextFloat() * width  * 2.0F) - (double)width, y + 1.2D + (double)(rand.nextFloat() * height), z + 0.6F + (double)(rand.nextFloat() * width * 2.0F) - (double)width, d0, d1, d2);
-		        }
+				}
 			}
-    	}
+		}
 	}
 
-    @Override
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister itemIcon)
 	{
