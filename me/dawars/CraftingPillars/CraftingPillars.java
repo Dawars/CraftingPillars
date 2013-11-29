@@ -10,6 +10,7 @@ import java.util.Random;
 import me.dawars.CraftingPillars.api.CraftingPillarAPI;
 import me.dawars.CraftingPillars.blocks.*;
 import me.dawars.CraftingPillars.client.gui.GuiHandler;
+import me.dawars.CraftingPillars.container.ContainerAdventCalendar2013;
 import me.dawars.CraftingPillars.handlers.*;
 import me.dawars.CraftingPillars.items.*;
 import me.dawars.CraftingPillars.tiles.*;
@@ -253,6 +254,7 @@ public class CraftingPillars
 			LanguageRegistry.instance().addStringLocalization(itemElysiumLoreBook.getUnlocalizedName() + ".name", "Elysium Lore Book");
 			
 			ChristmasPresent.init();
+			ContainerAdventCalendar2013.init();
 		}
 		finally
 		{

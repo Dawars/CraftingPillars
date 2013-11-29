@@ -1,6 +1,7 @@
 package me.dawars.CraftingPillars.client.gui;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.*;
@@ -156,6 +157,10 @@ public class GuiAdventCalendar2013 extends BaseGui
 			int x = mouseX-(this.width - this.xSize)/2;
 			int y = mouseY-(this.height - this.ySize)/2;
 			ArrayList list = new ArrayList();
+			List list2 = ContainerAdventCalendar2013.adventItems[mouseOverSlot].getTooltip(this.mc.thePlayer, this.mc.gameSettings.advancedItemTooltips);
+			list.add("\u00a7" + Integer.toHexString(ContainerAdventCalendar2013.adventItems[mouseOverSlot].getRarity().rarityColor)+(String)list2.get(0));
+			for(int i = 1; i < list2.size(); i++)
+				list.add(EnumChatFormatting.GRAY+(String)list2.get(i));
 			list.add(EnumChatFormatting.GRAY+ContainerAdventCalendar2013.tooltips[mouseOverSlot]);
 			this.drawHoveringText(list, x, y, this.fontRenderer);
 		}

@@ -49,60 +49,65 @@ public class ContainerAdventCalendar2013 extends BaseContainer implements IInven
 		return adventItems[slot];
 	}
 	
-	// TODO items
-	private static final ItemStack[] adventItems = new ItemStack[]{
-		new ItemStack(CraftingPillars.itemElysiumLoreBook, 1, 0),
-		new ItemStack(CraftingPillars.blockPotPillar, 1, 0),
-		new ItemStack(CraftingPillars.blockChristmasTreeSapling, 1, 0),
-		new ItemStack(CraftingPillars.itemWinterFood2013, 1, 2),
-		new ItemStack(Item.snowball, 64, 0),//spawns more
-		new ItemStack(CraftingPillars.itemVirgacs, 1, 0),
-		new ItemStack(CraftingPillars.blockBasePillar, 5, 0),
-		new ItemStack(CraftingPillars.itemWinterFood2013, 3, 3),
-		new ItemStack(CraftingPillars.blockFurnacePillar, 1, 0),
-		new ItemStack(Item.coal, 8, 0),
-		new ItemStack(CraftingPillars.itemWinterFood2013, 23, 0),
-		new ItemStack(CraftingPillars.blockBrewingPillar, 1, 0),
-		new ItemStack(Block.ice, 7, 0),
-		new ItemStack(CraftingPillars.itemWinterFood2013, 6, 1),
-		new ItemStack(CraftingPillars.blockFreezerPillar, 1, 0),
-		new ItemStack(CraftingPillars.itemWinterFood2013, 3, 0),
-		new ItemStack(Item.appleRed, 14, 0),
-		new ItemStack(CraftingPillars.blockDiskPlayerPillar, 1, 0),
-		new ItemStack(CraftingPillars.itemWinterFood2013, 7, 4),
-		new ItemStack(CraftingPillars.itemDiscElysium, 1, 0),
-		new ItemStack(CraftingPillars.itemRibbonDiamond, 21),
-		new ItemStack(CraftingPillars.itemWinterFood2013, 22, 7),
-		new ItemStack(Block.dirt.blockID, 1, 0),//TODO: Star - something else
-		new ItemStack(Block.dirt.blockID, 1, 0)//TODO: coming soon text
-	};
+	public static ItemStack[] adventItems;
+	public static String[] tooltips;
 	
-	public static final String[] tooltips = new String[]{
-		"A book about Elysium",
-		"A pillar for growing Christmas Trees",
-		"A sapling just for you, #name#!",
-		"Hmm, sweet!",
-		"Let's trow these at your friends!",
-		"You were a bad boy, #name#!",
-		"Connect your pillars!",
-		"Hmm, tastes good!",
-		"Let's cook your porkchops!",
-		"Oh, you need fuel!?",
-		"todo",
-		"What kind of sorcery is this!? :O",
-		"What!? Why is this here?",
-		"todo",
-		"Make more ice!",
-		"todo",
-		"One apple a day, keeps the doctor away!",
-		"Listen to the music!",
-		"todo",
-		"Do you hear this awesome music?",
-		"todo",
-		"todo",
-		"Put it on the top of your tree!",
-		"Coming Soon!"
-	};
+	public static void init()
+	{
+		adventItems = new ItemStack[]{
+			new ItemStack(CraftingPillars.itemElysiumLoreBook, 1, 0),
+			new ItemStack(CraftingPillars.blockPotPillar, 1, 0),
+			new ItemStack(CraftingPillars.blockChristmasTreeSapling, 1, 0),
+			new ItemStack(CraftingPillars.itemWinterFood2013, 1, 2),
+			new ItemStack(Item.snowball, 64, 0),//spawns more
+			new ItemStack(CraftingPillars.itemVirgacs, 1, 0),
+			new ItemStack(CraftingPillars.blockBasePillar, 5, 0),
+			new ItemStack(CraftingPillars.itemWinterFood2013, 3, 3),
+			new ItemStack(CraftingPillars.blockFurnacePillar, 1, 0),
+			new ItemStack(Item.coal, 8, 0),
+			new ItemStack(CraftingPillars.itemWinterFood2013, 23, 0),
+			new ItemStack(CraftingPillars.blockBrewingPillar, 1, 0),
+			new ItemStack(Block.ice, 7, 0),
+			new ItemStack(CraftingPillars.itemWinterFood2013, 6, 1),
+			new ItemStack(CraftingPillars.blockFreezerPillar, 1, 0),
+			new ItemStack(CraftingPillars.itemWinterFood2013, 3, 0),
+			new ItemStack(Item.appleRed, 14, 0),
+			new ItemStack(CraftingPillars.blockDiskPlayerPillar, 1, 0),
+			new ItemStack(CraftingPillars.itemWinterFood2013, 7, 4),
+			new ItemStack(CraftingPillars.itemDiscElysium, 1, 0),
+			new ItemStack(CraftingPillars.itemRibbonDiamond, 21),
+			new ItemStack(CraftingPillars.itemWinterFood2013, 22, 7),
+			new ItemStack(Block.dirt.blockID, 1, 0),//TODO: Star - something else
+			new ItemStack(Block.dirt.blockID, 1, 0)//TODO: coming soon text
+		};
+		
+		tooltips = new String[]{
+			"A book about Elysium",
+			"A pillar for growing Christmas Trees",
+			"A sapling just for you, #name#!",
+			"Hmm, sweet!",
+			"Let's trow these at your friends!",
+			"You were a bad boy, #name#!",
+			"Connect your pillars!",
+			"Hmm, tastes good!",
+			"Let's cook your porkchops!",
+			"Oh, you need fuel!?",
+			"todo",
+			"What kind of sorcery is this!? :O",
+			"What!? Why is this here?",
+			"todo",
+			"Make more ice!",
+			"todo",
+			"One apple a day, keeps the doctor away!",
+			"Listen to the music!",
+			"todo",
+			"Do you hear this awesome music?",
+			"todo",
+			"todo",
+			"Put it on the top of your tree!",
+			"Coming Soon!"
+		};
+	}
 	
 	public ContainerAdventCalendar2013(InventoryPlayer inventoryPlayer, EntityPlayer player)
 	{
