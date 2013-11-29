@@ -39,6 +39,7 @@ public class PillarEventHandler
 		}
 	}
 	
+	@ForgeSubscribe
 	public void onPlayerInterract(PlayerInteractEvent event)
 	{
 		if(event.action == PlayerInteractEvent.Action.LEFT_CLICK_BLOCK && event.entity.isSneaking())
