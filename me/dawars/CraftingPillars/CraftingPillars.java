@@ -124,7 +124,7 @@ public class CraftingPillars
 	public static boolean rayTrace = false;
 	public static boolean renderHitBoxes = true;
 	public static boolean winter, isChristmas;
-	public static boolean treeState1, treeState2, treeState3, treeState4;
+	public static int maxTreeState;
 	
 	public static AchievementPage achievementPage;
 	
@@ -371,10 +371,15 @@ public class CraftingPillars
 		rand = new Random(System.currentTimeMillis());
 		
 		winter = isWinterTime();
-		treeState1 = isAfter("2013-12-03");
-		treeState2 = isAfter("2013-12-10");
-		treeState3 = isAfter("2013-12-17");
-		treeState4 = isAfter("2013-12-24");
+		maxTreeState = 0;
+		if(isAfter("2013-12-03"))
+			maxTreeState++;
+		if(isAfter("2013-12-10"))
+			maxTreeState++;
+		if(isAfter("2013-12-17"))
+			maxTreeState++;
+		if(isAfter("2013-12-24"))
+			maxTreeState++;
 		isChristmas = isAfter("2013-12-24");
 		
 		try

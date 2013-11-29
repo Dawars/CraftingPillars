@@ -150,22 +150,21 @@ public class PotPillarBlock extends BaseBlockContainer
 		return tile;
 	}
 	
-	/*@Override
+	@Override
 	public void updateTick(World world, int x, int y, int z, Random rand)
 	{
-		System.out.println("update "+CraftingPillars.winter);
 		if(!world.isRemote)
 		{
-			super.updateTick(world, x, y, z, rand);
 			
-			TileEntityPotPillar tile = (TileEntityPotPillar) world.getBlockTileEntity(x, y, z);
-	
+			
+			
+			/*TileEntityPotPillar tile = (TileEntityPotPillar) world.getBlockTileEntity(x, y, z);
+			
 			if(tile.getStackInSlot(0) != null && tile.getStackInSlot(0).itemID == CraftingPillars.blockChristmasTreeSapling.blockID && tile.christmasTreeState <= 5)
 			{
 				int meta = world.getBlockMetadata(x, y, z);
 				int randNum = rand.nextInt(4);
-//				System.out.println("Xmas tree pot metadata: " + l + " rand: " + randNum + " Stage: " + tile.christmasTreeState);
-			
+
 				if(randNum == 0)
 				{
 					if(meta < 8)
@@ -195,9 +194,9 @@ public class PotPillarBlock extends BaseBlockContainer
 						world.updateAllLightTypes(x, y, z);
 					}
 				}
-			}
+			}*/
 		}
-	}*/
+	}
 
 
 	@SideOnly(Side.CLIENT)

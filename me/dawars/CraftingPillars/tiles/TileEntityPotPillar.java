@@ -55,7 +55,7 @@ public class TileEntityPotPillar extends BaseTileEntity implements IInventory, I
 		this.growTime = -1;
 	}
 	
-	@Override
+	/*@Override
 	public void updateEntity()
 	{
 		if(!this.worldObj.isRemote)
@@ -81,12 +81,12 @@ public class TileEntityPotPillar extends BaseTileEntity implements IInventory, I
 				this.onInventoryChanged();
 			}
 			
-			//if(this.growTime%20 == 0)
-				//System.out.println("Tree state at ["+this.xCoord+", "+this.yCoord+", "+this.zCoord+"] is: "+this.growTime/20);
+			if(this.growTime%20 == 0)
+				System.out.println("Tree state at ["+this.xCoord+", "+this.yCoord+", "+this.zCoord+"] is: "+this.growTime/20);
 		}
 		
 		super.updateEntity();
-	}
+	}*/
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)
