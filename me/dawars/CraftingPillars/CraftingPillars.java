@@ -371,7 +371,6 @@ public class CraftingPillars
 	{
 		rand = new Random(System.currentTimeMillis());
 		
-		winter = isWinterTime();
 		maxTreeState = 0;
 		if(isAfter("2013-12-03"))
 			maxTreeState++;
@@ -387,6 +386,8 @@ public class CraftingPillars
 		{
 			config = new Configuration(new File(evt.getModConfigurationDirectory(), "CraftingPillars.cfg"));
 			config.load();
+			
+			winter = isWinterTime() && config.get("default", "enableWinter", true).getBoolean(true);
 			
 			this.addItemsAndBlocks();
 			this.addAchievementsAndCreativeTab();
