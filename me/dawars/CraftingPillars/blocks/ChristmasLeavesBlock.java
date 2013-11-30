@@ -30,7 +30,7 @@ public class ChristmasLeavesBlock extends BaseLeavesBlock implements IShearable
 	public ChristmasLeavesBlock(int id, Material mat)
 	{
 		super(id, mat, true);
-		this.setLightValue(0.1F);
+		//this.setLightValue(0.1F);
 	}
 
 	@Override

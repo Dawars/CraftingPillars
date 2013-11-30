@@ -95,6 +95,7 @@ public class CraftingPillars
 	public static int freezerPillarRenderID;
 	public static int potPillarRenderID;
 	public static int PresentRenderID;
+	public static int lightRenderID;
 	
 	public static int christmasLeavesRenderID;
 	
@@ -111,7 +112,8 @@ public class CraftingPillars
 	
 	public static Block blockChristmasLeaves;
 	public static Block blockChristmasTreeSapling;
-	public static Block blockPresent;
+	public static Block blockChristmasPresent;
+	public static Block blockChristmasLight;
 
 	public static Item itemDiscElysium;
 	public static Item itemCalendar2013;
@@ -163,7 +165,7 @@ public class CraftingPillars
 		LanguageRegistry.instance().addStringLocalization(blockFurnacePillar.getUnlocalizedName()+".name", "Furnace Pillar");
 		
 		Property idAnvilPillar = CraftingPillars.config.getBlock("AnvilPillar.id", BlockIds.idAnvilPillar);
-		blockAnvilPillar = (new AnvilPillar(idAnvilPillar.getInt(), Material.anvil)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("anvilPillar");
+		blockAnvilPillar = (new AnvilPillarBlock(idAnvilPillar.getInt(), Material.anvil)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("anvilPillar");
 		registerBlock(blockAnvilPillar);
 		blockAnvilPillar.setCreativeTab(null);
 		LanguageRegistry.instance().addStringLocalization(blockAnvilPillar.getUnlocalizedName()+".name", "Anvil Pillar - NOT WORKING");
@@ -209,11 +211,19 @@ public class CraftingPillars
 		LanguageRegistry.instance().addStringLocalization(blockChristmasTreeSapling.getUnlocalizedName()+".name", "en_US", "Christmas Tree Sapling");
 
 		Property idChristmasPresent = CraftingPillars.config.getBlock("ChristmasPresent.id", BlockIds.idChristmasPresent);
-		blockPresent = (new ChristmasPresent(idChristmasPresent.getInt(), Material.cloth)).setHardness(1.0F).setStepSound(Block.soundClothFootstep).setUnlocalizedName("PresentSide");
+		blockChristmasPresent = (new ChristmasPresentBlock(idChristmasPresent.getInt(), Material.cloth)).setHardness(1.0F).setStepSound(Block.soundClothFootstep).setUnlocalizedName("PresentSide");
 		if(!winter)
-			blockPresent.setCreativeTab(null);
-		registerBlock(blockPresent);
-		LanguageRegistry.instance().addStringLocalization(blockPresent.getUnlocalizedName()+".name", "en_US", "Christmas Present");
+			blockChristmasPresent.setCreativeTab(null);
+		registerBlock(blockChristmasPresent);
+		LanguageRegistry.instance().addStringLocalization(blockChristmasPresent.getUnlocalizedName()+".name", "en_US", "Christmas Present");
+		
+		Property idChristmasLight = CraftingPillars.config.getBlock("ChristmasLight.id", BlockIds.idChristmasLight);
+		blockChristmasLight = (new ChristmasLightBlock(idChristmasLight.getInt(), Material.cloth)).setHardness(0.05F).setStepSound(Block.soundGlassFootstep).setUnlocalizedName("XmasLight");
+		if(!winter)
+			blockChristmasLight.setCreativeTab(null);
+		registerBlock(blockChristmasLight);
+		LanguageRegistry.instance().addStringLocalization(blockChristmasLight.getUnlocalizedName()+".name", "en_US", "Christmas Light");
+		
 		
 		Property idDiscElysium = CraftingPillars.config.getItem("DiscElysium.id", BlockIds.idDiscElysium);
 		itemDiscElysium = new PillarRecord(idDiscElysium.getInt(), CraftingPillars.id + ":UranusParadiseShort").setUnlocalizedName("record").setTextureName(CraftingPillars.id + ":ElysiumDisk");
@@ -251,7 +261,7 @@ public class CraftingPillars
 		
 		achievementRecursion = new Achievement(510, "recursion", 1, 1, blockCraftingPillar, achievementGettingStarted).registerAchievement();
 		achievementShowoff = new Achievement(511, "showoff", 3, 1, blockShowOffPillar, achievementRecursion).registerAchievement();
-		achievementRecursion3 = new Achievement(518, "recursion3", 5, 1, blockPresent, achievementShowoff).registerAchievement();
+		achievementRecursion3 = new Achievement(518, "recursion3", 5, 1, blockChristmasPresent, achievementShowoff).registerAchievement();
 		
 		achievementCompressingLiquids = new Achievement(512, "liquids", 1, 2, blockFreezerPillar, achievementGettingStarted).registerAchievement();
 		
@@ -313,7 +323,7 @@ public class CraftingPillars
 		GameRegistry.registerTileEntity(TileEntityDiskPlayerPillar.class, "TileEntityDiskPlayerPillar");
 		GameRegistry.registerTileEntity(TileEntityFreezerPillar.class, "TileEntityFreezerPillar");
 		GameRegistry.registerTileEntity(TileEntityPotPillar.class, "TileEntityPotPillar");
-		GameRegistry.registerTileEntity(TileEntityPresent.class, "TileEntityPresent");
+		GameRegistry.registerTileEntity(TileEntityChristmasPresent.class, "TileEntityPresent");
 	}
 	
 	public void addCrafting()
@@ -398,7 +408,7 @@ public class CraftingPillars
 			this.registerHandlers();
 			
 			proxy.init();
-			ChristmasPresent.init();
+			ChristmasPresentBlock.init();
 			ContainerAdventCalendar2013.init();
 			
 			config.save();

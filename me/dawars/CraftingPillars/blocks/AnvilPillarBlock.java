@@ -21,9 +21,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 
-public class AnvilPillar extends BasePillar
+public class AnvilPillarBlock extends BasePillar
 {
-	public AnvilPillar(int id, Material mat)
+	public AnvilPillarBlock(int id, Material mat)
 	{
 		super(id, mat);
 		if(CraftingPillars.rayTrace)
@@ -47,9 +47,9 @@ public class AnvilPillar extends BasePillar
 	}
 	
 	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int par2, int par3, int par4)
+	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
 	{
-		int l = par1IBlockAccess.getBlockMetadata(par2, par3, par4) & 3;
+		int l = world.getBlockMetadata(x, y, z) & 3;
 		if(l != 0 && l != 2)
 			this.setBlockBounds(3F/16F, 0F, 0F, 13F/16F, 1F, 1F);
 		else

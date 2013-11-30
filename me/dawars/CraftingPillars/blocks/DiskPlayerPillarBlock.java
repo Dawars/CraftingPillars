@@ -36,11 +36,11 @@ import net.minecraft.world.World;
 
 public class DiskPlayerPillarBlock extends BaseBlockContainer
 {
-
 	public DiskPlayerPillarBlock(int id, Material mat)
 	{
 		super(id, mat);
 	}
+	
 	@Override
 	public int getRenderType()
 	{
