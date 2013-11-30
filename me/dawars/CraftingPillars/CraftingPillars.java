@@ -220,7 +220,7 @@ public class CraftingPillars
         LanguageRegistry.instance().addStringLocalization(CraftingPillars.id + ":UranusParadiseShort", "Elysium - Uranus Paradise Short");
         
 		Property idAdventCalendar = CraftingPillars.config.getItem("AdventCalendar2013.id", BlockIds.idAdventCalendar2013);
-		itemCalendar2013 = new AdventCalendar2013(idAdventCalendar.getInt()).setUnlocalizedName("adventCalendar2013");
+		itemCalendar2013 = new AdventCalendar2013(idAdventCalendar.getInt()).setUnlocalizedName("AdventCalendar2013");
 		if(!winter)
 			itemCalendar2013.setCreativeTab(null);
 		LanguageRegistry.instance().addStringLocalization(itemCalendar2013.getUnlocalizedName() + ".name", "Advent Calendar 2013");
