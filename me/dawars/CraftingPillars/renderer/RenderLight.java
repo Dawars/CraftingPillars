@@ -5,54 +5,113 @@ import java.awt.Color;
 import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.tiles.TileEntityLight;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-
 import static org.lwjgl.opengl.GL11.*;
 
 public class RenderLight extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler
 {
-	public int cubeDisplay;
+	public static class Box
+	{
+		public float x, y, z, width, height, depth;
+		public float tx, ty, tw, th;
+		
+		public Box(float x, float y, float z, float width, float height, float depth)
+		{
+			this.x = x;
+			this.y = y;
+			this.z = z;
+			this.width = width;
+			this.height = height;
+			this.depth = depth;
+			this.setTextureCoords(0F, 0F, 1F, 1F);
+		}
+		
+		public void setTextureCoords(float x, float y, float width, float height)
+		{
+			this.tx = x;
+			this.ty = y;
+			this.tw = width;
+			this.th = height;
+		}
+		
+		public void render()
+		{
+			float[] texRows = new float[]{this.ty, this.ty+this.depth/(this.height+this.depth)*this.th, this.ty+this.th};
+			float[] texColumns = new float[]{this.tx, this.tx+this.depth/(this.width*2+this.depth*2)*this.tw, this.tx+(this.depth+this.width)/(this.width*2+this.depth*2)*this.tw, this.tx+(this.depth+this.width*2)/(this.width*2+this.depth*2)*this.tw, this.tx+this.tw};
+			
+			glBegin(GL_QUADS);
+				glTexCoord2f(texColumns[1], texRows[1]);
+				glVertex3f(this.x, this.y, this.z);
+				glTexCoord2f(texColumns[1], texRows[2]);
+				glVertex3f(this.x, this.y+this.height, this.z);
+				glTexCoord2f(texColumns[2], texRows[2]);
+				glVertex3f(this.x+this.width, this.y+this.height, this.z);
+				glTexCoord2f(texColumns[2], texRows[1]);
+				glVertex3f(this.x+this.width, this.y, this.z);
+				
+				glTexCoord2f(texColumns[3], texRows[1]);
+				glVertex3f(this.x+this.width, this.y, this.z+this.depth);
+				glTexCoord2f(texColumns[3], texRows[2]);
+				glVertex3f(this.x+this.width, this.y+this.height, this.z+this.depth);
+				glTexCoord2f(texColumns[2], texRows[2]);
+				glVertex3f(this.x, this.y+this.height, this.z+this.depth);
+				glTexCoord2f(texColumns[2], texRows[1]);
+				glVertex3f(this.x, this.y, this.z+this.depth);
+				
+				glTexCoord2f(texColumns[0], texRows[1]);
+				glVertex3f(this.x, this.y, this.z+this.depth);
+				glTexCoord2f(texColumns[0], texRows[2]);
+				glVertex3f(this.x, this.y+this.height, this.z+this.depth);
+				glTexCoord2f(texColumns[1], texRows[2]);
+				glVertex3f(this.x, this.y+this.height, this.z);
+				glTexCoord2f(texColumns[1], texRows[1]);
+				glVertex3f(this.x, this.y, this.z);
+				
+				glTexCoord2f(texColumns[3], texRows[1]);
+				glVertex3f(this.x+this.width, this.y, this.z);
+				glTexCoord2f(texColumns[3], texRows[2]);
+				glVertex3f(this.x+this.width, this.y+this.height, this.z);
+				glTexCoord2f(texColumns[4], texRows[2]);
+				glVertex3f(this.x+this.width, this.y+this.height, this.z+this.depth);
+				glTexCoord2f(texColumns[4], texRows[1]);
+				glVertex3f(this.x+this.width, this.y, this.z+this.depth);
+				
+				glTexCoord2f(texColumns[1], texRows[0]);
+				glVertex3f(this.x, this.y+this.height, this.z);
+				glTexCoord2f(texColumns[1], texRows[1]);
+				glVertex3f(this.x, this.y+this.height, this.z+this.depth);
+				glTexCoord2f(texColumns[2], texRows[1]);
+				glVertex3f(this.x+this.width, this.y+this.height, this.z+this.depth);
+				glTexCoord2f(texColumns[2], texRows[0]);
+				glVertex3f(this.x+this.width, this.y+this.height, this.z);
+				
+				glTexCoord2f(texColumns[3], texRows[0]);
+				glVertex3f(this.x+this.width, this.y, this.z);
+				glTexCoord2f(texColumns[3], texRows[1]);
+				glVertex3f(this.x+this.width, this.y, this.z+this.depth);
+				glTexCoord2f(texColumns[2], texRows[1]);
+				glVertex3f(this.x, this.y, this.z+this.depth);
+				glTexCoord2f(texColumns[2], texRows[0]);
+				glVertex3f(this.x, this.y, this.z);
+			glEnd();
+		}
+	}
+	
+	ResourceLocation texture = new ResourceLocation(CraftingPillars.id + ":textures/models/christmas_lights.png");
+	Box b1, b2;
 	
 	public RenderLight()
 	{
-		this.cubeDisplay = glGenLists(1);
-		glNewList(this.cubeDisplay, GL_COMPILE);
-			glBegin(GL_QUADS);
-				glVertex3f(0F, 1F, 1F);
-				glVertex3f(0F, 0F, 1F);
-				glVertex3f(1F, 0F, 1F);
-				glVertex3f(1F, 1F, 1F);
-				
-				glVertex3f(1F, 1F, 0F);
-				glVertex3f(1F, 0F, 0F);
-				glVertex3f(0F, 0F, 0F);
-				glVertex3f(0F, 1F, 0F);
-				
-				glVertex3f(0F, 1F, 0F);
-				glVertex3f(0F, 0F, 0F);
-				glVertex3f(0F, 0F, 1F);
-				glVertex3f(0F, 1F, 1F);
-				
-				glVertex3f(1F, 1F, 1F);
-				glVertex3f(1F, 0F, 1F);
-				glVertex3f(1F, 0F, 0F);
-				glVertex3f(1F, 1F, 0F);
-				
-				glVertex3f(0F, 1F, 0F);
-				glVertex3f(0F, 1F, 1F);
-				glVertex3f(1F, 1F, 1F);
-				glVertex3f(1F, 1F, 0F);
-				
-				glVertex3f(0F, 0F, 1F);
-				glVertex3f(0F, 0F, 0F);
-				glVertex3f(1F, 0F, 0F);
-				glVertex3f(1F, 0F, 1F);
-			glEnd();
-		glEndList();
+		this.b1 = new Box(6/16F, 14/16F, 6/16F, 4/16F, 2/16F, 4/16F);
+		this.b1.setTextureCoords(0/32F, 0/32F, 16/32F, 6/32F);
+		this.b2 = new Box(4/16F, 6/16F, 4/16F, 8/16F, 8/16F, 8/16F);
+		this.b2.setTextureCoords(0/32F, 6/32F, 32/32F, 16/32F);
 	}
 	
 	@Override
@@ -89,22 +148,12 @@ public class RenderLight extends TileEntitySpecialRenderer implements ISimpleBlo
 				glRotatef(90F, 0F, 0F, 1F);
 			glTranslatef(-0.5F, -0.5F, -0.5F);
 			
-			glBindTexture(GL_TEXTURE_2D, 0);
-			
-			glColor3f(1F, 1F, 0F);
-			glPushMatrix();
-				glTranslatef(6F/16F, 14F/16F, 6F/16F);
-				glScalef(4F/16F, 2F/16F, 4F/16F);
-				glCallList(this.cubeDisplay);
-			glPopMatrix();
+			Minecraft.getMinecraft().renderEngine.bindTexture(this.texture);
+			this.b1.render();
 			
 			glDisable(GL_LIGHTING);
 			glColor3f((float)color.getRed()/255F, (float)color.getGreen()/255F, (float)color.getBlue()/255F);
-			glPushMatrix();
-				glTranslatef(4F/16F, 6F/16F, 4F/16F);
-				glScalef(8F/16F, 8F/16F, 8F/16F);
-				glCallList(this.cubeDisplay);
-			glPopMatrix();
+			this.b2.render();
 			glEnable(GL_LIGHTING);
 		glPopMatrix();
 	}
