@@ -12,7 +12,7 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 public class ChristmasTreeGen extends WorldGenerator
 {
 	private int leavesId, logId, logMeta;
-	boolean fromSapling;
+	private boolean fromSapling;
 	private int stage;
 
 	public ChristmasTreeGen(boolean fromSapling)
@@ -141,15 +141,18 @@ public class ChristmasTreeGen extends WorldGenerator
 	 		//lvl5
 	 		addLeaves(world, x, y+5, z);
 	
-	 		
+	 		//System.out.println("gen");
 	 		for(int a = 0; a < 5; a++)
 	 		{
 	 			int i = x+random.nextInt(5)-2;
 	 			int k = z+random.nextInt(5)-2;
-	 			int j = 0;
-	 			for(j = y-2; world.getBlockId(i, j, k) != 0; j++);
-	 			if(world.getBlockId(i, j-1, k) != this.leavesId && world.getBlockId(i, j-1, k) != this.logId)
+	 			int j = y;
+	 			for(j = y-5; world.getBlockId(i, j, k) != 0; j++);
+	 			if(world.getBlockId(i, j-1, k) != this.leavesId)
+	 			{
+	 				//System.out.println(i+" "+j+" "+k);
 	 				world.setBlock(i, j, k, CraftingPillars.blockPresent.blockID);
+	 			}
 	 		}
 	 	}
  	

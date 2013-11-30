@@ -78,7 +78,6 @@ public class GuiAdventCalendar2013 extends BaseGui
 			glDisable(GL_DEPTH_TEST);
 			glDisable(GL_LIGHTING);
 			
-			glBindTexture(GL_TEXTURE_2D, 0);
 			this.itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.getTextureManager(), slot.getStack(), slot.xDisplayPosition, slot.yDisplayPosition);
 		}
 		else

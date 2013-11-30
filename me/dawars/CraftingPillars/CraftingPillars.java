@@ -241,7 +241,7 @@ public class CraftingPillars
 		LanguageRegistry.instance().addStringLocalization(itemVirgacs.getUnlocalizedName() + ".name", "Virgacs");
 		
 		Property idLoreBook = CraftingPillars.config.getItem("LoreBook.id", BlockIds.idLoreBook);
-		itemElysiumLoreBook = new BaseItem(idLoreBook.getInt()).setUnlocalizedName("ElysiumLoreBook");
+		itemElysiumLoreBook = new BookElysium(idLoreBook.getInt()).setUnlocalizedName("ElysiumLoreBook");
 		LanguageRegistry.instance().addStringLocalization(itemElysiumLoreBook.getUnlocalizedName() + ".name", "Elysium Lore Book");
 	}
 	

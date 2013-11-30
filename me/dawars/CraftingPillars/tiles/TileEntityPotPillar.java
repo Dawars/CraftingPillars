@@ -53,7 +53,7 @@ public class TileEntityPotPillar extends BaseTileEntity implements IInventory, I
 				new ChristmasTreeGen(false, this.christmasTreeState).generate(this.worldObj, rand, this.xCoord, this.yCoord, this.zCoord);
 				this.christmasTreeState++;
 				this.onInventoryChanged();
-				if(this.christmasTreeState == 4)
+				if(this.christmasTreeState == 5)
 					this.decrStackSize(0, 1);
 			}
 		}

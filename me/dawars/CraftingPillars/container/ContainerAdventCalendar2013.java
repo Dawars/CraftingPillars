@@ -73,7 +73,7 @@ public class ContainerAdventCalendar2013 extends BaseContainer implements IInven
 			new ItemStack(CraftingPillars.itemWinterFood2013, 3, 3),
 			new ItemStack(CraftingPillars.blockFurnacePillar, 1, 0),
 			new ItemStack(Item.coal, 8, 0),
-			new ItemStack(CraftingPillars.itemWinterFood2013, 23, 0),
+			new ItemStack(CraftingPillars.itemWinterFood2013, 10, 0),
 			new ItemStack(CraftingPillars.blockBrewingPillar, 1, 0),
 			new ItemStack(Block.ice, 7, 0),
 			new ItemStack(CraftingPillars.itemWinterFood2013, 6, 1),
@@ -83,8 +83,8 @@ public class ContainerAdventCalendar2013 extends BaseContainer implements IInven
 			new ItemStack(CraftingPillars.blockDiskPlayerPillar, 1, 0),
 			new ItemStack(CraftingPillars.itemWinterFood2013, 7, 4),
 			new ItemStack(CraftingPillars.itemDiscElysium, 1, 0),
-			new ItemStack(CraftingPillars.itemRibbonDiamond, 21),
-			new ItemStack(CraftingPillars.itemWinterFood2013, 22, 7),
+			new ItemStack(CraftingPillars.itemRibbonDiamond, 3),
+			new ItemStack(CraftingPillars.itemWinterFood2013, 10, 7),
 			new ItemStack(Block.dirt.blockID, 1, 0),//TODO: Star - something else
 			new ItemStack(Block.dirt.blockID, 1, 0)//TODO: coming soon text
 		};

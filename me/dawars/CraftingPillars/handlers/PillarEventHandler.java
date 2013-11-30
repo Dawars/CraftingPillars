@@ -6,6 +6,7 @@ import me.dawars.CraftingPillars.blocks.BaseBlockContainer;
 import me.dawars.CraftingPillars.properties.CalendarPlayerProps2013;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -13,6 +14,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 
 public class PillarEventHandler
 {
@@ -40,17 +42,19 @@ public class PillarEventHandler
 	}
 	
 	@ForgeSubscribe
+	public void onBreakBlock(BreakEvent event)
+	{
+		if(event.block instanceof BaseBlockContainer && event.getPlayer().isSneaking())
+		{
+			event.setCanceled(true);
+			event.block.onBlockClicked(event.world, event.x, event.y, event.z, event.getPlayer());
+		}
+	}
+	
+	@ForgeSubscribe
 	public void onPlayerInterract(PlayerInteractEvent event)
 	{
-		if(event.action == PlayerInteractEvent.Action.LEFT_CLICK_BLOCK && event.entity.isSneaking())
-		{
-			if(Block.blocksList[event.entity.worldObj.getBlockId(event.x, event.y, event.z)] instanceof BaseBlockContainer)
-			{
-				event.setCanceled(true);
-				Block.blocksList[event.entity.worldObj.getBlockId(event.x, event.y, event.z)].onBlockClicked(event.entity.worldObj, event.x, event.y, event.z, event.entityPlayer);
-			}
-		}
-		else if(event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK && event.entity.isSneaking() && event.entityPlayer.getCurrentEquippedItem() != null)
+		if(event.action == PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK && event.entity.isSneaking() && event.entityPlayer.getCurrentEquippedItem() != null)
 		{
 			if(Block.blocksList[event.entity.worldObj.getBlockId(event.x, event.y, event.z)] instanceof BaseBlockContainer && event.face == 1)
 			{
