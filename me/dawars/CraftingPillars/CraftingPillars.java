@@ -139,7 +139,7 @@ public class CraftingPillars
 	public static Achievement achievementDiamond;
 	public static Achievement achievementDisc;
 	public static Achievement achievementRecursion3;
-	public static boolean debug = true;
+	public static boolean debug = false;
 	
 	public void addItemsAndBlocks()
 	{
