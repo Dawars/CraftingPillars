@@ -152,7 +152,6 @@ public class ChristmasTreeGen extends WorldGenerator
 	 			{
 	 				//System.out.println(i+" "+j+" "+k);
 	 				world.setBlock(i, j, k, CraftingPillars.blockChristmasPresent.blockID);
-	 		    	world.setBlockMetadataWithNotify(x, y, z, random.nextInt(2), 2);
 	 			}
 	 		}
 	 	}
