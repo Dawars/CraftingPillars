@@ -288,7 +288,7 @@ public class CraftingPillars
 		LanguageRegistry.instance().addStringLocalization("achievement.recursion.desc", "en_US", "Craft a CraftingPillar in a CraftingPillar!");
 		
 		LanguageRegistry.instance().addStringLocalization("achievement.showoff", "en_US", "Recursion II");
-		LanguageRegistry.instance().addStringLocalization("achievement.showoff.desc", "en_US", "Show off your Show-Off Pillar!");
+		LanguageRegistry.instance().addStringLocalization("achievement.showoff.desc", "en_US", "Show off your Showcase Pillar!");
 		
 		LanguageRegistry.instance().addStringLocalization("achievement.recursion3", "en_US", "Recursion III");
 		LanguageRegistry.instance().addStringLocalization("achievement.recursion3.desc", "en_US", "Get a present from a present!");
