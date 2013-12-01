@@ -247,7 +247,7 @@ public class CraftingPillars
 		LanguageRegistry.instance().addStringLocalization(itemRibbonDiamond.getUnlocalizedName() + ".name", "Ribbon Diamond");
 
 		Property idVirgacs = CraftingPillars.config.getItem("Virgacs.id", BlockIds.idVirgacs);
-		itemVirgacs = new BaseItem(idVirgacs.getInt()).setUnlocalizedName("Virgacs");
+		itemVirgacs = new ItemVirgacs(idVirgacs.getInt()).setUnlocalizedName("Virgacs");
 		LanguageRegistry.instance().addStringLocalization(itemVirgacs.getUnlocalizedName() + ".name", "Virgacs");
 		
 		Property idLoreBook = CraftingPillars.config.getItem("LoreBook.id", BlockIds.idLoreBook);
