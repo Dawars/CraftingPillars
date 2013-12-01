@@ -11,10 +11,17 @@ public class TileEntityChristmasPresent extends BaseTileEntity
 	public int color;
 	//public boolean model;
 	
+	public static int[] colors = new int[]{
+		0x186a1b,
+		0xc04340,
+		0x105793,
+		0xdbdb24
+	};
+	
 	public TileEntityChristmasPresent()
 	{
 		Random rand = new Random(System.currentTimeMillis());
-		this.color = rand.nextInt(RenderPresent.colors.length/2);
+		this.color = rand.nextInt(colors.length/2);
 		//this.model = rand.nextBoolean();
 	}
 	

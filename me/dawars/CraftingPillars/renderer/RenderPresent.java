@@ -27,13 +27,6 @@ public class RenderPresent extends TileEntitySpecialRenderer implements ISimpleB
 	private ResourceLocation TEXTURE = new ResourceLocation(CraftingPillars.id + ":textures/models/present.png");
 	private ResourceLocation TEXTURE_OVERLAY = new ResourceLocation(CraftingPillars.id + ":textures/models/presentOverlay.png");
 	
-	public static int[] colors = new int[]{
-		0x186a1b,
-		0xc04340,
-		0x105793,
-		0xdbdb24
-	};
-	
 	public static ModelBase model = new ModelBase()
 	{
 		
@@ -118,7 +111,7 @@ public class RenderPresent extends TileEntitySpecialRenderer implements ISimpleB
 		glPushMatrix();
 		glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
 		glRotatef(180F, 1F, 0F, 0F);
-		render(0.0625F, new Color(colors[present.color*2]), new Color(colors[present.color*2+1]), /*present.model*/present.getBlockMetadata() == 1);
+		render(0.0625F, new Color(TileEntityChristmasPresent.colors[present.color*2]), new Color(TileEntityChristmasPresent.colors[present.color*2+1]), /*present.model*/present.getBlockMetadata() == 1);
 		glPopMatrix();
 	}
 	
@@ -128,7 +121,7 @@ public class RenderPresent extends TileEntitySpecialRenderer implements ISimpleB
 		glPushMatrix();
 		glTranslated(0, 1.0D, 0);
 		glRotatef(180F, 1F, 0F, 0F);
-		render(0.0625F, new Color(colors[0]), new Color(colors[1]), false);
+		render(0.0625F, new Color(TileEntityChristmasPresent.colors[0]), new Color(TileEntityChristmasPresent.colors[1]), false);
 		glPopMatrix();
 	}
 

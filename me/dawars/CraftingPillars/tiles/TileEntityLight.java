@@ -13,17 +13,28 @@ public class TileEntityLight extends BaseTileEntity
 {
 	public int color;
 	
+	public static int[] colors = new int[]{
+		Color.red.getRGB(),
+		Color.green.getRGB(),
+		Color.blue.getRGB(),
+		Color.orange.getRGB(),
+		Color.pink.getRGB(),
+		Color.cyan.getRGB(),
+		Color.magenta.getRGB(),
+		Color.yellow.getRGB(),
+	};
+	
 	public TileEntityLight()
 	{
-		this.color = new Random(System.currentTimeMillis()).nextInt(RenderLight.colors.length);
+		this.color = new Random(System.currentTimeMillis()).nextInt(colors.length);
 	}
 	
 	public void incrColorIndex(int i)
 	{
 		this.color += i;
 		if(this.color < 0)
-			this.color = RenderLight.colors.length-1;
-		if(this.color >= RenderLight.colors.length)
+			this.color = colors.length-1;
+		if(this.color >= colors.length)
 			this.color = 0;
 		if(!this.worldObj.isRemote)
 			CraftingPillars.proxy.sendToPlayers(this.getDescriptionPacket(), this.worldObj, this.xCoord, this.yCoord, this.zCoord, 64);

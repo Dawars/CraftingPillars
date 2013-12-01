@@ -103,17 +103,6 @@ public class RenderLight extends TileEntitySpecialRenderer implements ISimpleBlo
 		}
 	}
 	
-	public static int[] colors = new int[]{
-		Color.red.getRGB(),
-		Color.green.getRGB(),
-		Color.blue.getRGB(),
-		Color.orange.getRGB(),
-		Color.pink.getRGB(),
-		Color.cyan.getRGB(),
-		Color.magenta.getRGB(),
-		Color.yellow.getRGB(),
-	};
-	
 	ResourceLocation texture = new ResourceLocation(CraftingPillars.id + ":textures/models/christmas_lights.png");
 	Box b1, b2;
 	
@@ -183,7 +172,7 @@ public class RenderLight extends TileEntitySpecialRenderer implements ISimpleBlo
 	{
 		glPushMatrix();
 			glTranslated(x, y, z);
-			this.render(tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord), new Color(colors[((TileEntityLight)tile).color]));
+			this.render(tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord), new Color(TileEntityLight.colors[((TileEntityLight)tile).color]));
 		glPopMatrix();
 	}
 }
