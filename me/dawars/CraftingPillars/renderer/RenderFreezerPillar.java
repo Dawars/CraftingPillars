@@ -478,7 +478,9 @@ public class RenderFreezerPillar extends TileEntitySpecialRenderer implements IS
 		glRotatef(180F, 1F, 0F, 0F);
 		glRotatef(90F, 0F, 1F, 0F);
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_FREEZERPILLAR);
+		glEnable(GL_DEPTH_TEST);
 		render(0.0625F);
+		glDisable(GL_DEPTH_TEST);
 		glPopMatrix();
 	}
 	
