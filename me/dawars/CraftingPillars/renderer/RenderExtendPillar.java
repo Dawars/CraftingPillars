@@ -495,9 +495,10 @@ public class RenderExtendPillar extends TileEntitySpecialRenderer implements ISi
 		glTranslated(0, 1.0D, 0);
 		glRotatef(180F, 1F, 0F, 0F);
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_WORKPILLAR);
+		glPushAttrib(GL_ENABLE_BIT);
 		glEnable(GL_DEPTH_TEST);
 		render(0.0625F, false, false, false, false, false, false);
-		glDisable(GL_DEPTH_TEST);
+		glPopAttrib();
 		glPopMatrix();
 	}
 	

@@ -430,6 +430,8 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
 	{
 		glPushMatrix();
+		glPushAttrib(GL_ENABLE_BIT);
+			glEnable(GL_DEPTH_TEST);
 			glTranslatef(0, 1, 0);
 			glRotatef(180F, 1F, 0F, 0F);
 			
@@ -439,6 +441,7 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 				render(null, 1F);
 			glPopMatrix();
 			Valve2.render(0.0625F);
+		glPopAttrib();
 		glPopMatrix();
 	}
 	

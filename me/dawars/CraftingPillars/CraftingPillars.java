@@ -340,11 +340,10 @@ public class CraftingPillars
 		GameRegistry.addShapelessRecipe(new ItemStack(blockDiskPlayerPillar), new ItemStack(Block.jukebox), new ItemStack(blockBasePillar));
 		GameRegistry.addRecipe(new ItemStack(blockPotPillar), new Object[] { "S", "F", "P", Character.valueOf('S'), Block.dirt, Character.valueOf('P'), blockBasePillar , Character.valueOf('F'), Item.flowerPot});
 		GameRegistry.addShapelessRecipe(new ItemStack(Item.diamond), new ItemStack(itemRibbonDiamond));
-
+		
 		if(winter)
-		{	
+		{
 			GameRegistry.addShapelessRecipe(new ItemStack(itemRibbonDiamond), new ItemStack(Item.diamond));
-
 			// TODO sweet craftings
 		}
 	}
