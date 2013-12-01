@@ -128,7 +128,7 @@ public class RenderPresent extends TileEntitySpecialRenderer implements ISimpleB
 		glPushMatrix();
 		glTranslated(0, 1.0D, 0);
 		glRotatef(180F, 1F, 0F, 0F);
-		render(0.0625F, new Color(0x186a1b), new Color(0xc04340), false);
+		render(0.0625F, new Color(colors[0]), new Color(colors[1]), false);
 		glPopMatrix();
 	}
 
