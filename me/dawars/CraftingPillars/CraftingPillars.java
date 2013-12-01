@@ -45,7 +45,7 @@ import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-@Mod(name = CraftingPillars.name, version = CraftingPillars.version, useMetadata = false, modid = CraftingPillars.id, dependencies = "required-after:Forge@[8.9.0,)")
+@Mod(name = CraftingPillars.name, version = CraftingPillars.version, useMetadata = false, modid = CraftingPillars.id, dependencies = "required-after:Forge@[9.11.1.953,)")
 @NetworkMod(clientSideRequired = true, serverSideRequired = false, channels = {CraftingPillars.channelGame, CraftingPillars.channelGui, CraftingPillars.channelProps}, packetHandler = PillarPacketHandler.class)
 public class CraftingPillars
 {
