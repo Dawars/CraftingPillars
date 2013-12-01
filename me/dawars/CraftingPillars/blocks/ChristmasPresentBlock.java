@@ -13,6 +13,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class ChristmasPresentBlock extends BaseBlockContainer
@@ -42,6 +43,26 @@ public class ChristmasPresentBlock extends BaseBlockContainer
 		};
 	}
 	
+	public ChristmasPresentBlock(int id, Material mat)
+	{
+		super(id, mat);
+	}
+	
+	@Override
+	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
+	{
+		if(world.getBlockMetadata(x, y, z) == 1)
+			this.setBlockBounds(0F, 0F, 0F, 1F, 7/16F, 1F);
+		else
+			this.setBlockBounds(0F, 0F, 0F, 1F, 1F, 1F);
+	}
+	
+	@Override
+	public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int meta)
+	{
+		return world.rand.nextInt(2);
+	}
+	
 	@Override
 	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player)
 	{
@@ -54,11 +75,6 @@ public class ChristmasPresentBlock extends BaseBlockContainer
 			world.spawnEntityInWorld(item);
 			world.setBlock(x, y, z, 0);
 		}
-	}
-	
-	public ChristmasPresentBlock(int id, Material mat)
-	{
-		super(id, mat);
 	}
 
 	@Override

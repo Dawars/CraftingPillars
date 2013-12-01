@@ -28,10 +28,10 @@ public class RenderPresent extends TileEntitySpecialRenderer implements ISimpleB
 	private ResourceLocation TEXTURE_OVERLAY = new ResourceLocation(CraftingPillars.id + ":textures/models/presentOverlay.png");
 	
 	public static int[] colors = new int[]{
-		Color.green.getRGB(),
-		Color.red.getRGB(),
-		Color.blue.getRGB(),
-		Color.yellow.getRGB()
+		0x186a1b,
+		0xc04340,
+		0x105793,
+		0xdbdb24
 	};
 	
 	public static ModelBase model = new ModelBase()
@@ -62,15 +62,15 @@ public class RenderPresent extends TileEntitySpecialRenderer implements ISimpleB
 		PresentBottom.mirror = true;
 		setRotation(PresentBottom, 0F, 0F, 0F);
 		
-		PresentTop2 = new ModelRenderer(model, 1, 0);
-		PresentTop2.addBox(0F, 0F, 0F, 14, 2, 16);
-		PresentTop2.setRotationPoint(-7F, 17F, -8F);
+		PresentTop2 = new ModelRenderer(model, 0, 0);
+		PresentTop2.addBox(0F, 0F, 0F, 16, 2, 16);
+		PresentTop2.setRotationPoint(-8F, 17F, -8F);
 		PresentTop2.setTextureSize(64, 64);
 		PresentTop2.mirror = true;
 		setRotation(PresentTop2, 0F, 0F, 0F);
-		PresentBottom2 = new ModelRenderer(model, 7, 34);
-		PresentBottom2.addBox(0F, 0F, 0F, 12, 5, 14);
-		PresentBottom2.setRotationPoint(-6F, 19F, -7F);
+		PresentBottom2 = new ModelRenderer(model, 5, 34);
+		PresentBottom2.addBox(0F, 0F, 0F, 14, 5, 14);
+		PresentBottom2.setRotationPoint(-7F, 19F, -7F);
 		PresentBottom2.setTextureSize(64, 64);
 		PresentBottom2.mirror = true;
 		setRotation(PresentBottom2, 0F, 0F, 0F);
@@ -83,16 +83,32 @@ public class RenderPresent extends TileEntitySpecialRenderer implements ISimpleB
 		model.rotateAngleZ = z;
 	}
 	
-	public void render(float f, Color color1, Color color2)
+	public void render(float f, Color color1, Color color2, boolean model)
 	{
 		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
 		glColor3f((float)color1.getRed()/255F, (float)color1.getGreen()/255F, (float)color1.getBlue()/255F);
-		PresentBottom.render(f);
-		PresentTop.render(f);
+		if(model)
+		{
+			PresentBottom2.render(f);
+			PresentTop2.render(f);
+		}
+		else
+		{
+			PresentBottom.render(f);
+			PresentTop.render(f);
+		}
 		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_OVERLAY);
 		glColor3f((float)color2.getRed()/255F, (float)color2.getGreen()/255F, (float)color2.getBlue()/255F);
-		PresentBottom.render(f);
-		PresentTop.render(f);
+		if(model)
+		{
+			PresentBottom2.render(f);
+			PresentTop2.render(f);
+		}
+		else
+		{
+			PresentBottom.render(f);
+			PresentTop.render(f);
+		}
 	}
 	
 	@Override
@@ -102,7 +118,7 @@ public class RenderPresent extends TileEntitySpecialRenderer implements ISimpleB
 		glPushMatrix();
 		glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
 		glRotatef(180F, 1F, 0F, 0F);
-		render(0.0625F, new Color(colors[present.color*2]), new Color(colors[present.color*2+1]));
+		render(0.0625F, new Color(colors[present.color*2]), new Color(colors[present.color*2+1]), /*present.model*/present.getBlockMetadata() == 1);
 		glPopMatrix();
 	}
 	
@@ -112,7 +128,7 @@ public class RenderPresent extends TileEntitySpecialRenderer implements ISimpleB
 		glPushMatrix();
 		glTranslated(0, 1.0D, 0);
 		glRotatef(180F, 1F, 0F, 0F);
-		render(0.0625F, Color.green, Color.red);
+		render(0.0625F, Color.green, Color.red, false);
 		glPopMatrix();
 	}
 

@@ -218,7 +218,7 @@ public class CraftingPillars
 		LanguageRegistry.instance().addStringLocalization(blockChristmasPresent.getUnlocalizedName()+".name", "en_US", "Christmas Present");
 		
 		Property idChristmasLight = CraftingPillars.config.getBlock("ChristmasLight.id", BlockIds.idChristmasLight);
-		blockChristmasLight = (new ChristmasLightBlock(idChristmasLight.getInt(), Material.glass)).setHardness(0.05F).setStepSound(Block.soundGlassFootstep).setUnlocalizedName("christmas_light");
+		blockChristmasLight = (new ChristmasLightBlock(idChristmasLight.getInt(), Material.glass)).setHardness(0.1F).setStepSound(Block.soundGlassFootstep).setUnlocalizedName("christmas_light");
 		if(!winter)
 			blockChristmasLight.setCreativeTab(null);
 		registerBlock(blockChristmasLight);
