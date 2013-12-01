@@ -19,9 +19,12 @@ public class ChristmasPresentBlock extends BaseBlockContainer
 		// TODO presents
 		presents = new ItemStack[]{
 			new ItemStack(CraftingPillars.blockChristmasPresent, 1, 0),
-			new ItemStack(CraftingPillars.itemWinterFood2013, 16, 0),
+			new ItemStack(CraftingPillars.blockChristmasPresent, 1, 1),
+			new ItemStack(CraftingPillars.itemWinterFood2013, 16, 0),//more food
 			new ItemStack(CraftingPillars.itemElysiumLoreBook, 1, 0),
-			new ItemStack(CraftingPillars.blockCraftingPillar, 1, 0)
+			new ItemStack(CraftingPillars.blockCraftingPillar, 1, 0),
+			new ItemStack(CraftingPillars.itemRibbonDiamond, 2, 0),
+			new ItemStack(CraftingPillars.itemDiscElysium, 1, 0)
 		};
 	}
 	

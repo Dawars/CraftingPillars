@@ -85,7 +85,7 @@ public class ContainerAdventCalendar2013 extends BaseContainer implements IInven
 			new ItemStack(CraftingPillars.itemDiscElysium, 1, 0),
 			new ItemStack(CraftingPillars.itemRibbonDiamond, 3),
 			new ItemStack(CraftingPillars.itemWinterFood2013, 10, 7),
-			new ItemStack(Block.dirt.blockID, 1, 0),//TODO: Star - something else
+			new ItemStack(CraftingPillars.blockChristmasLight, 7, 0),
 			new ItemStack(Block.dirt.blockID, 1, 0)//TODO: coming soon text
 		};
 		
@@ -113,7 +113,7 @@ public class ContainerAdventCalendar2013 extends BaseContainer implements IInven
 			"Just take it!",
 			"Szaloncukor for everyone!",
 			"Put it everywhere!",
-			"Coming Soon!"
+			"Coming Soon - Please update the mod!"
 		};
 	}
 	

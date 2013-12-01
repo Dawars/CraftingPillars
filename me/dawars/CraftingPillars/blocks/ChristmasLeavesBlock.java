@@ -244,26 +244,14 @@ public class ChristmasLeavesBlock extends BaseLeavesBlock implements IShearable
 
 			if (world.rand.nextInt(chance) == 0)
 			{
-				int id = this.idDropped(meta, world.rand, bonus);
-				this.dropBlockAsItem_do(world, x, y, z, new ItemStack(id, 1, this.damageDropped(meta)));
+				if(world.rand.nextInt(2) == 0)
+				{
+					int id = this.idDropped(meta, world.rand, bonus);
+					this.dropBlockAsItem_do(world, x, y, z, new ItemStack(id, 1, this.damageDropped(meta)));
+				} else {
+					this.dropBlockAsItem_do(world, x, y, z, new ItemStack(CraftingPillars.blockChristmasLight, 1, 0));
+				}
 			}
-
-//			chance = 200;
-
-//			if (par7 > 0)
-//			{
-//				chance -= 10 << par7;
-//
-//				if (chance < 40)
-//				{
-//					chance = 40;
-//				}
-//			}
-			//light bulbkind of thing
-//			if ((par5 & 3) == 0 && par1World.rand.nextInt(j1) == 0)
-//			{
-//				this.dropBlockAsItem_do(par1World, par2, par3, par4, new ItemStack(Item.appleRed, 1, 0));
-//			}
 		}
 	}
 	

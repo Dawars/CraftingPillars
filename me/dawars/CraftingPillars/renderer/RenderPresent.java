@@ -20,7 +20,8 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 public class RenderPresent extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler
 {
 
-	private ResourceLocation TEXTURE_PRESENT = new ResourceLocation(CraftingPillars.id + ":textures/models/present.png");
+	private ResourceLocation TEXTURE_PRESENT_1 = new ResourceLocation(CraftingPillars.id + ":textures/models/present.png");
+	private ResourceLocation TEXTURE_PRESENT_2 = new ResourceLocation(CraftingPillars.id + ":textures/models/present2.png");
 	
 	public static ModelBase model = new ModelBase()
 	{
@@ -29,6 +30,9 @@ public class RenderPresent extends TileEntitySpecialRenderer implements ISimpleB
 
 	private ModelRenderer PresentTop;
 	private ModelRenderer PresentBottom;
+	
+	private ModelRenderer PresentTop2;
+	private ModelRenderer PresentBottom2;
 	
 	public RenderPresent(){
 		model.textureWidth = 64;
@@ -46,6 +50,19 @@ public class RenderPresent extends TileEntitySpecialRenderer implements ISimpleB
 		PresentBottom.setTextureSize(64, 64);
 		PresentBottom.mirror = true;
 		setRotation(PresentBottom, 0F, 0F, 0F);
+		
+		PresentTop2 = new ModelRenderer(model, 1, 0);
+		PresentTop2.addBox(0F, 0F, 0F, 14, 2, 16);
+		PresentTop2.setRotationPoint(-7F, 17F, -8F);
+		PresentTop2.setTextureSize(64, 64);
+		PresentTop2.mirror = true;
+		setRotation(PresentTop2, 0F, 0F, 0F);
+		PresentBottom2 = new ModelRenderer(model, 7, 34);
+		PresentBottom2.addBox(0F, 0F, 0F, 12, 5, 14);
+		PresentBottom2.setRotationPoint(-6F, 19F, -7F);
+		PresentBottom2.setTextureSize(64, 64);
+		PresentBottom2.mirror = true;
+		setRotation(PresentBottom2, 0F, 0F, 0F);
 	}
 	
 	private void setRotation(ModelRenderer model, float x, float y, float z)
@@ -55,10 +72,26 @@ public class RenderPresent extends TileEntitySpecialRenderer implements ISimpleB
 		model.rotateAngleZ = z;
 	}
 	
-	public void render(float f)
+	public void render(float f, int meta)
 	{
-		PresentBottom.render(f);
-		PresentTop.render(f);
+		switch (meta) {
+		case 0:
+			Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_PRESENT_1);
+
+			PresentBottom.render(f);
+			PresentTop.render(f);
+		break;
+		case 1:
+			Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_PRESENT_2);
+
+			PresentBottom2.render(f);
+			PresentTop2.render(f);
+		break;
+
+		default:
+			break;
+		}
+		
 	}
 	
 	@Override
@@ -67,8 +100,7 @@ public class RenderPresent extends TileEntitySpecialRenderer implements ISimpleB
 		glPushMatrix();
 		glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
 		glRotatef(180F, 1F, 0F, 0F);
-			Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_PRESENT);
-			render(0.0625F);
+			render(0.0625F, tile.getBlockMetadata());
 		glPopMatrix();
 	}
 	
@@ -77,8 +109,8 @@ public class RenderPresent extends TileEntitySpecialRenderer implements ISimpleB
 		glPushMatrix();
 		glTranslated(0, 1.0D, 0);
 		glRotatef(180F, 1F, 0F, 0F);
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_PRESENT);
-		render(0.0625F);
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_PRESENT_1);
+		render(0.0625F, 0);
 		glPopMatrix();
 	}
 

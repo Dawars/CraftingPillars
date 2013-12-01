@@ -218,7 +218,7 @@ public class CraftingPillars
 		LanguageRegistry.instance().addStringLocalization(blockChristmasPresent.getUnlocalizedName()+".name", "en_US", "Christmas Present");
 		
 		Property idChristmasLight = CraftingPillars.config.getBlock("ChristmasLight.id", BlockIds.idChristmasLight);
-		blockChristmasLight = (new ChristmasLightBlock(idChristmasLight.getInt(), Material.cloth)).setHardness(0.05F).setStepSound(Block.soundGlassFootstep).setUnlocalizedName("XmasLight");
+		blockChristmasLight = (new ChristmasLightBlock(idChristmasLight.getInt(), Material.glass)).setHardness(0.05F).setStepSound(Block.soundGlassFootstep).setUnlocalizedName("christmas_light");
 		if(!winter)
 			blockChristmasLight.setCreativeTab(null);
 		registerBlock(blockChristmasLight);
@@ -431,7 +431,7 @@ public class CraftingPillars
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			Date c = new Date();
 			Date v = format.parse(date);
-			return v.after(c);
+			return c.after(v);
 		}
 		catch(ParseException e)
 		{
