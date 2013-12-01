@@ -113,21 +113,6 @@ public class TileEntityTankPillar extends BaseTileEntity implements IFluidHandle
 	}
 	
 	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
-	{
-		NBTTagCompound nbt = pkt.data;
-		this.readFromNBT(nbt);
-	}
-	
-	@Override
-	public Packet getDescriptionPacket()
-	{
-		NBTTagCompound nbt = new NBTTagCompound();
-		this.writeToNBT(nbt);
-		return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 0, nbt);
-	}
-	
-	@Override
 	public void onInventoryChanged()
 	{
 		super.onInventoryChanged();

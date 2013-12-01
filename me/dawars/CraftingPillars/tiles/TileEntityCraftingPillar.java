@@ -100,23 +100,6 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 	}
 	
 	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
-	{
-		// System.out.println("receive: "+this.worldObj.isRemote);
-		NBTTagCompound nbt = pkt.data;
-		this.readFromNBT(nbt);
-	}
-	
-	@Override
-	public Packet getDescriptionPacket()
-	{
-		// System.out.println("send: "+this.worldObj.isRemote);
-		NBTTagCompound nbt = new NBTTagCompound();
-		this.writeToNBT(nbt);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, nbt);
-	}
-	
-	@Override
 	public void onInventoryChanged()
 	{
 		super.onInventoryChanged();

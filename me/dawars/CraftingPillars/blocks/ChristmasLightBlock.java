@@ -3,6 +3,7 @@ package me.dawars.CraftingPillars.blocks;
 import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.tiles.TileEntityLight;
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -13,6 +14,21 @@ public class ChristmasLightBlock extends BaseBlockContainer
 	{
 		super(id, mat);
 		this.setLightValue(1F);
+	}
+	
+	@Override
+	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player)
+	{
+		if(player.getCurrentEquippedItem() == null)
+			((TileEntityLight)world.getBlockTileEntity(x, y, z)).incrColorIndex(-1);
+	}
+	
+	@Override
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
+	{
+		if(player.getCurrentEquippedItem() == null)
+			((TileEntityLight)world.getBlockTileEntity(x, y, z)).incrColorIndex(1);
+		return player.getCurrentEquippedItem() == null;
 	}
 	
 	@Override

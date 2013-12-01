@@ -3,24 +3,30 @@ package me.dawars.CraftingPillars.tiles;
 import java.awt.Color;
 import java.util.Random;
 
+import me.dawars.CraftingPillars.CraftingPillars;
+import me.dawars.CraftingPillars.renderer.RenderLight;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
 public class TileEntityLight extends BaseTileEntity
 {
-	private static int[] colors = new int[]{
-		Color.red.getRGB(),
-		Color.green.getRGB(),
-		Color.blue.getRGB()
-	};
-	
 	public int color;
 	
 	public TileEntityLight()
 	{
-//		this.color = colors[new Random(System.currentTimeMillis()).nextInt(colors.length)];
-		this.color = new Random().nextInt(0xFFFFFF);
+		this.color = new Random(System.currentTimeMillis()).nextInt(RenderLight.colors.length);
+	}
+	
+	public void incrColorIndex(int i)
+	{
+		this.color += i;
+		if(this.color < 0)
+			this.color = RenderLight.colors.length-1;
+		if(this.color >= RenderLight.colors.length)
+			this.color = 0;
+		if(!this.worldObj.isRemote)
+			CraftingPillars.proxy.sendToPlayers(this.getDescriptionPacket(), this.worldObj, this.xCoord, this.yCoord, this.zCoord, 64);
 	}
 	
 	@Override

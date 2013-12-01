@@ -198,21 +198,6 @@ public class TileEntityFreezerPillar extends BaseTileEntity implements IInventor
 		nbt.setBoolean("showNum", this.showNum);
 		nbt.setBoolean("isEmpty", this.isEmpty);
 	}
-	
-	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
-	{
-		NBTTagCompound nbt = pkt.data;
-		this.readFromNBT(nbt);
-	}
-	
-	@Override
-	public Packet getDescriptionPacket()
-	{
-		NBTTagCompound nbt = new NBTTagCompound();
-		this.writeToNBT(nbt);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, nbt);
-	}
 
 	@Override
 	public void onInventoryChanged()

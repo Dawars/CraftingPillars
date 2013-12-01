@@ -324,6 +324,7 @@ public class CraftingPillars
 		GameRegistry.registerTileEntity(TileEntityFreezerPillar.class, "TileEntityFreezerPillar");
 		GameRegistry.registerTileEntity(TileEntityPotPillar.class, "TileEntityPotPillar");
 		GameRegistry.registerTileEntity(TileEntityChristmasPresent.class, "TileEntityPresent");
+		GameRegistry.registerTileEntity(TileEntityLight.class, "TileEntityLight");
 	}
 	
 	public void addCrafting()

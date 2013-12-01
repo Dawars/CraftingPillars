@@ -109,23 +109,13 @@ public class TileEntityPotPillar extends BaseTileEntity implements IInventory, I
 	@Override
 	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
 	{
-		NBTTagCompound nbt = pkt.data;
-		this.readFromNBT(nbt);
+		super.onDataPacket(net, pkt);
 		
-		if (this.worldObj.isRemote)
+		if(this.worldObj.isRemote)
         {
             Minecraft.getMinecraft().renderGlobal.markBlockForRenderUpdate(this.xCoord, this.yCoord, this.zCoord);
             this.worldObj.updateAllLightTypes(this.xCoord, this.yCoord, this.zCoord);
         }
-	}
-	
-	@Override
-	public Packet getDescriptionPacket()
-	{
-		// System.out.println("send: "+this.worldObj.isRemote);
-		NBTTagCompound nbt = new NBTTagCompound();
-		this.writeToNBT(nbt);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, nbt);
 	}
 	
 	@Override

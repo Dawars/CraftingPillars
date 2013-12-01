@@ -1,10 +1,15 @@
 package me.dawars.CraftingPillars.renderer;
 
+import static org.lwjgl.opengl.GL11.glColor3f;
 import static org.lwjgl.opengl.GL11.glPopMatrix;
 import static org.lwjgl.opengl.GL11.glPushMatrix;
 import static org.lwjgl.opengl.GL11.glRotatef;
 import static org.lwjgl.opengl.GL11.glTranslated;
+
+import java.awt.Color;
+
 import me.dawars.CraftingPillars.CraftingPillars;
+import me.dawars.CraftingPillars.tiles.TileEntityChristmasPresent;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
@@ -19,9 +24,15 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class RenderPresent extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler
 {
-
-	private ResourceLocation TEXTURE_PRESENT_1 = new ResourceLocation(CraftingPillars.id + ":textures/models/present.png");
-	private ResourceLocation TEXTURE_PRESENT_2 = new ResourceLocation(CraftingPillars.id + ":textures/models/present2.png");
+	private ResourceLocation TEXTURE = new ResourceLocation(CraftingPillars.id + ":textures/models/present.png");
+	private ResourceLocation TEXTURE_OVERLAY = new ResourceLocation(CraftingPillars.id + ":textures/models/presentOverlay.png");
+	
+	public static int[] colors = new int[]{
+		Color.green.getRGB(),
+		Color.red.getRGB(),
+		Color.blue.getRGB(),
+		Color.yellow.getRGB()
+	};
 	
 	public static ModelBase model = new ModelBase()
 	{
@@ -72,45 +83,36 @@ public class RenderPresent extends TileEntitySpecialRenderer implements ISimpleB
 		model.rotateAngleZ = z;
 	}
 	
-	public void render(float f, int meta)
+	public void render(float f, Color color1, Color color2)
 	{
-		switch (meta) {
-		case 0:
-			Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_PRESENT_1);
-
-			PresentBottom.render(f);
-			PresentTop.render(f);
-		break;
-		case 1:
-			Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_PRESENT_2);
-
-			PresentBottom2.render(f);
-			PresentTop2.render(f);
-		break;
-
-		default:
-			break;
-		}
-		
+		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE);
+		glColor3f((float)color1.getRed()/255F, (float)color1.getGreen()/255F, (float)color1.getBlue()/255F);
+		PresentBottom.render(f);
+		PresentTop.render(f);
+		Minecraft.getMinecraft().renderEngine.bindTexture(TEXTURE_OVERLAY);
+		glColor3f((float)color2.getRed()/255F, (float)color2.getGreen()/255F, (float)color2.getBlue()/255F);
+		PresentBottom.render(f);
+		PresentTop.render(f);
 	}
 	
 	@Override
 	public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f)
 	{
+		TileEntityChristmasPresent present = (TileEntityChristmasPresent)tile;
 		glPushMatrix();
 		glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
 		glRotatef(180F, 1F, 0F, 0F);
-			render(0.0625F, tile.getBlockMetadata());
+		render(0.0625F, new Color(colors[present.color*2]), new Color(colors[present.color*2+1]));
 		glPopMatrix();
 	}
 	
 	@Override
-	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
+	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
+	{
 		glPushMatrix();
 		glTranslated(0, 1.0D, 0);
 		glRotatef(180F, 1F, 0F, 0F);
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture(TEXTURE_PRESENT_1);
-		render(0.0625F, 0);
+		render(0.0625F, Color.green, Color.red);
 		glPopMatrix();
 	}
 
@@ -128,5 +130,4 @@ public class RenderPresent extends TileEntitySpecialRenderer implements ISimpleB
 	public int getRenderId() {
 		return CraftingPillars.PresentRenderID;
 	}
-
 }

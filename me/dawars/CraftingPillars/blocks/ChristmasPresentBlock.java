@@ -76,31 +76,4 @@ public class ChristmasPresentBlock extends BaseBlockContainer
 		TileEntityChristmasPresent tile = new TileEntityChristmasPresent();
 		return tile;
 	}
-
-    /**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
-	@SideOnly(Side.CLIENT)
-	@Override
-    public void getSubBlocks(int id, CreativeTabs tab, List list)
-    {
-        list.add(new ItemStack(id, 1, 0));
-        list.add(new ItemStack(id, 1, 1));
-    }
-	/**
-     * Determines the damage on the item the block drops. Used in cloth and wood.
-     */
-    public int damageDropped(int par1)
-    {
-        return par1;
-    }
-	/**
-     * Returns an item stack containing a single instance of the current block type. 'i' is the block's subtype/damage
-     * and is ignored for blocks which do not support subtypes. Blocks which cannot be harvested should return null.
-     */
-	@Override
-    protected ItemStack createStackedBlock(int par1)
-    {
-        return new ItemStack(this.blockID, 1, par1);
-    }
 }
