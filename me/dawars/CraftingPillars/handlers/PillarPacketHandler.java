@@ -8,6 +8,7 @@ import me.dawars.CraftingPillars.network.packets.PacketInGameClick;
 import me.dawars.CraftingPillars.network.packets.PacketInGuiClick;
 import me.dawars.CraftingPillars.properties.CalendarPlayerProps2013;
 import net.minecraft.block.Block;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -39,7 +40,9 @@ public class PillarPacketHandler implements IPacketHandler
 			ItemStack stack = ContainerAdventCalendar2013.getStackForDrop(click.slot);
 			if(stack != null)
 			{
-				entity.inventory.addItemStackToInventory(stack);
+				EntityItem item = new EntityItem(entity.worldObj, entity.posX, entity.posY, entity.posZ);
+				item.setEntityItemStack(stack);
+				entity.worldObj.spawnEntityInWorld(item);
 				CalendarPlayerProps2013.get(entity).setDiscovered(click.slot);
 			}
 		}
