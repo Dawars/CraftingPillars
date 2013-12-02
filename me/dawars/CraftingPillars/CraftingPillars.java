@@ -13,35 +13,42 @@ import me.dawars.CraftingPillars.client.gui.GuiHandler;
 import me.dawars.CraftingPillars.container.ContainerAdventCalendar2013;
 import me.dawars.CraftingPillars.handlers.*;
 import me.dawars.CraftingPillars.items.*;
-import me.dawars.CraftingPillars.tiles.*;
 import me.dawars.CraftingPillars.proxy.CommonProxy;
+import me.dawars.CraftingPillars.tiles.TileEntityAnvilPillar;
+import me.dawars.CraftingPillars.tiles.TileEntityBrewingPillar;
+import me.dawars.CraftingPillars.tiles.TileEntityChristmasPresent;
+import me.dawars.CraftingPillars.tiles.TileEntityCraftingPillar;
+import me.dawars.CraftingPillars.tiles.TileEntityDiskPlayerPillar;
+import me.dawars.CraftingPillars.tiles.TileEntityEnchantmentPillar;
+import me.dawars.CraftingPillars.tiles.TileEntityExtendPillar;
+import me.dawars.CraftingPillars.tiles.TileEntityFreezerPillar;
+import me.dawars.CraftingPillars.tiles.TileEntityFurnacePillar;
+import me.dawars.CraftingPillars.tiles.TileEntityLight;
+import me.dawars.CraftingPillars.tiles.TileEntityPotPillar;
+import me.dawars.CraftingPillars.tiles.TileEntityShowOffPillar;
+import me.dawars.CraftingPillars.tiles.TileEntityTankPillar;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFurnace;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemRecord;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
-import net.minecraft.stats.AchievementList;
 import net.minecraftforge.common.AchievementPage;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Property;
 import net.minecraftforge.oredict.OreDictionary;
-import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -68,6 +75,7 @@ public class CraftingPillars
 	
 	// The Handler For Opening Guis
     private GuiHandler guiHandler = new GuiHandler();
+	public static boolean modForestry = false;
 	
 	@SidedProxy(clientSide = "me.dawars.CraftingPillars.proxy.ClientProxy", serverSide = "me.dawars.CraftingPillars.proxy.CommonProxy")
 	public static CommonProxy proxy;
@@ -422,6 +430,11 @@ public class CraftingPillars
 		}
 	}
 	
+    @EventHandler
+    public void modsLoaded(FMLPostInitializationEvent evt){
+    	modForestry = Loader.isModLoaded("Forestry");
+    }
+    
 	public static void registerBlock(Block block)
 	{
 		GameRegistry.registerBlock(block, CraftingPillars.id + ":" + block.getUnlocalizedName().substring(5));

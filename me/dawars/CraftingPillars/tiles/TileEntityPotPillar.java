@@ -2,40 +2,21 @@ package me.dawars.CraftingPillars.tiles;
 
 import java.util.Random;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import me.dawars.CraftingPillars.CraftingPillars;
-import me.dawars.CraftingPillars.client.CustomParticle;
-import me.dawars.CraftingPillars.container.ContainerCraftingPillar;
-import me.dawars.CraftingPillars.tiles.BaseTileEntity;
 import me.dawars.CraftingPillars.world.gen.ChristmasTreeGen;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockFlower;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
-import net.minecraft.stats.AchievementList;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.IShearable;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
 public class TileEntityPotPillar extends BaseTileEntity implements IInventory, ISidedInventory
 {
@@ -245,7 +226,7 @@ public class TileEntityPotPillar extends BaseTileEntity implements IInventory, I
         {
             Block block = Block.blocksList[itemstack.getItem().itemID];
             
-            return block instanceof IPlantable || block instanceof IShearable;
+            return block instanceof IPlantable;
         }
 
         return false;
