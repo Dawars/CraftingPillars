@@ -133,7 +133,7 @@ public class CraftingPillars
 	public static boolean floatingItems = true;
 	public static boolean rayTrace = false;
 	public static boolean renderHitBoxes = true;
-	public static boolean winter, isChristmas;
+	public static boolean winter;
 	public static int maxTreeState;
 	
 	public static AchievementPage achievementPage;
@@ -401,7 +401,6 @@ public class CraftingPillars
 			maxTreeState++;
 		if(isAfter("2013-12-24"))
 			maxTreeState++;
-		isChristmas = isAfter("2013-12-24");
 		
 		try
 		{
