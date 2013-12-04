@@ -15,6 +15,9 @@ import java.util.Random;
 
 import javax.swing.JOptionPane;
 
+import net.minecraftforge.common.Property;
+
+import me.dawars.CraftingPillars.BlockIds;
 import me.dawars.CraftingPillars.CraftingPillars;
 
 public class VersionChecker
@@ -116,7 +119,23 @@ public class VersionChecker
 			}
 			br.close();
 			
-			if(update && JOptionPane.showConfirmDialog(new Frame(), "New update available for the Crafting Pillars mod! Do you want to check it out?") == JOptionPane.YES_OPTION)
+			Object[] buttons = {"Yes", "No"/*, "Notify me only for Major changes!"*/};
+
+			int n = JOptionPane.showOptionDialog(new Frame(),
+			    "New update available for the Crafting Pillars mod! Do you want to check it out?",
+			    "Update is available!",
+			    JOptionPane.DEFAULT_OPTION,
+			    JOptionPane.QUESTION_MESSAGE,
+			    null,
+			    buttons,
+			    buttons[0]);
+
+//			if(n == 2)
+//			{
+//				Property checkUpdates = CraftingPillars.config.;//config
+//
+//			}
+			if(update && n == 0)
 			{
 				System.out.println("[UPDATE] "+pline);
 				Desktop.getDesktop().browse(new URI(pline));
