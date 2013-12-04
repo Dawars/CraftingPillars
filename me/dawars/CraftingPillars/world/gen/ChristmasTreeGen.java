@@ -163,7 +163,7 @@ public class ChristmasTreeGen extends WorldGenerator
 	{
 	    int id = world.getBlockId(x, y, z);
 	    Block block = Block.blocksList[id];
-	    if(block == null || block.canBeReplacedByLeaves(world, x, y, z))
+	    if(block == null || block.canBeReplacedByLeaves(world, x, y, z) || block.isBlockReplaceable(world, x, y, z))
 	    {
 		    world.setBlock(x, y, z, leavesId);
 		    return true;
