@@ -110,36 +110,48 @@ public class VersionChecker
 			BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
 			boolean update = false;
 			String pline = "", line = br.readLine();
+			
 			while(line != null)
 			{
-				if(line.split(" ")[0].equals(CraftingPillars.proxy.getMinecraftVersion()) && new Version(CraftingPillars.version).less(new Version(line.split(" ")[1])))
-					update = true;
+				
+				if(CraftingPillars.checkUpdates.getBoolean(true))
+				{
+					if(line.split(" ")[0].equals(CraftingPillars.proxy.getMinecraftVersion()) && new Version(CraftingPillars.version).less(new Version(line.split(" ")[1])))
+					{
+						update = true;
+					}
+				} else {
+					//TODO: add check for major updates e.g for 1.5
+				}
+				
 				pline = line;
 				line = br.readLine();
 			}
 			br.close();
-			
-			Object[] buttons = {"Yes", "No"/*, "Notify me only for Major changes!"*/};
 
-			int n = JOptionPane.showOptionDialog(new Frame(),
-			    "New update available for the Crafting Pillars mod! Do you want to check it out?",
-			    "Update is available!",
-			    JOptionPane.DEFAULT_OPTION,
-			    JOptionPane.QUESTION_MESSAGE,
-			    null,
-			    buttons,
-			    buttons[0]);
-
-//			if(n == 2)
-//			{
-//				Property checkUpdates = CraftingPillars.config.;//config
-//
-//			}
-			if(update && n == 0)
+			if(update)
 			{
-				System.out.println("[UPDATE] "+pline);
-				Desktop.getDesktop().browse(new URI(pline));
-				System.exit(0);
+				Object[] buttons = {"Yes", "No", "Notify me only for Major changes!"};
+
+				int n = JOptionPane .showOptionDialog(
+						new Frame(),
+						"New update available for the Crafting Pillars mod! Do you want to check it out?",//Change for Elysium - ismod loaded
+						"Update is available!",
+						JOptionPane.DEFAULT_OPTION,
+						JOptionPane.QUESTION_MESSAGE, null, buttons,
+						buttons[0]);
+			
+				if(n == 0)
+				{
+					System.out.println("[UPDATE] "+pline);
+					Desktop.getDesktop().browse(new URI(pline));
+					System.exit(0);
+				}
+				
+				if(n == 2)
+				{
+					CraftingPillars.checkUpdates.set(false);
+				}
 			}
 		}
 		catch(Exception e)

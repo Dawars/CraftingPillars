@@ -64,7 +64,7 @@ public class CraftingPillars
 		return instance;
 	}
 	
-	public static final String version = "1.3";
+	public static final String version = "1.4.1";
 	public static final String name = "Crafting Pillars";
 	public static final String id = "craftingpillars";
 	public static final String channelGame = "PillarGameClick";
@@ -75,6 +75,7 @@ public class CraftingPillars
 	
 	// The Handler For Opening Guis
     private GuiHandler guiHandler = new GuiHandler();
+	public static Property checkUpdates;
 	public static boolean modForestry = false;
 	
 	@SidedProxy(clientSide = "me.dawars.CraftingPillars.proxy.ClientProxy", serverSide = "me.dawars.CraftingPillars.proxy.CommonProxy")
@@ -253,11 +254,13 @@ public class CraftingPillars
 		Property idRibbonDiamond = CraftingPillars.config.getItem("RibbonDiamond.id", BlockIds.idRibbonDiamond);
 		itemRibbonDiamond = new BaseItem(idRibbonDiamond.getInt()).setUnlocalizedName("RibbonDiamond");
 		LanguageRegistry.instance().addStringLocalization(itemRibbonDiamond.getUnlocalizedName() + ".name", "Ribbon Diamond");
-
+		if(!winter)
+			itemRibbonDiamond.setCreativeTab(null);
 		Property idVirgacs = CraftingPillars.config.getItem("Virgacs.id", BlockIds.idVirgacs);
 		itemVirgacs = new ItemVirgacs(idVirgacs.getInt()).setUnlocalizedName("Virgacs");
 		LanguageRegistry.instance().addStringLocalization(itemVirgacs.getUnlocalizedName() + ".name", "Virgacs");
-		
+		if(!winter)
+			itemVirgacs.setCreativeTab(null);
 		Property idLoreBook = CraftingPillars.config.getItem("LoreBook.id", BlockIds.idLoreBook);
 		itemElysiumLoreBook = new BookElysium(idLoreBook.getInt()).setUnlocalizedName("ElysiumLoreBook");
 		LanguageRegistry.instance().addStringLocalization(itemElysiumLoreBook.getUnlocalizedName() + ".name", "Elysium Lore Book");
@@ -416,7 +419,8 @@ public class CraftingPillars
 			this.addToOreDictionary();
 			this.initAPI();
 			this.registerHandlers();
-			
+			checkUpdates = CraftingPillars.config.get("default", "checkUpdate", true, "set this to false if you only want to get notified for major version");
+
 			proxy.init();
 			ChristmasPresentBlock.init();
 			ContainerAdventCalendar2013.init();

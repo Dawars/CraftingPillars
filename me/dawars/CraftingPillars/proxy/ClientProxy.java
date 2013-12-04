@@ -45,6 +45,7 @@ public class ClientProxy extends CommonProxy
 	public void init()
 	{
 		VersionChecker.check();
+		
 		MinecraftForge.EVENT_BUS.register(new PillarSoundHandler());
 		
 		CraftingPillars.extendPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
