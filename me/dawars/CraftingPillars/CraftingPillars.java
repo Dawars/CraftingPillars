@@ -77,7 +77,8 @@ public class CraftingPillars
     private GuiHandler guiHandler = new GuiHandler();
 	public static Property checkUpdates;
 	public static boolean modForestry = false;
-	
+	public static boolean modElysium = false;
+
 	@SidedProxy(clientSide = "me.dawars.CraftingPillars.proxy.ClientProxy", serverSide = "me.dawars.CraftingPillars.proxy.CommonProxy")
 	public static CommonProxy proxy;
 	
@@ -404,6 +405,8 @@ public class CraftingPillars
 			maxTreeState++;
 		if(isAfter("2013-12-24"))
 			maxTreeState++;
+		if(debug)
+			maxTreeState = 4;
 		
 		try
 		{
@@ -436,6 +439,7 @@ public class CraftingPillars
     @EventHandler
     public void modsLoaded(FMLPostInitializationEvent evt){
     	modForestry = Loader.isModLoaded("Forestry");
+    	modElysium = Loader.isModLoaded("elysium");
     }
     
 	public static void registerBlock(Block block)

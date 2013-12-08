@@ -5,6 +5,7 @@ import java.util.Random;
 import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.blocks.BaseFlowerBlock;
 import me.dawars.CraftingPillars.blocks.ChristmasTreeSapling;
+import mods.elysium.Elysium;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
@@ -165,7 +166,12 @@ public class ChristmasTreeGen extends WorldGenerator
 	    Block block = Block.blocksList[id];
 	    if(block == null || block.canBeReplacedByLeaves(world, x, y, z) || block.isBlockReplaceable(world, x, y, z))
 	    {
-		    world.setBlock(x, y, z, leavesId);
+	    	if(CraftingPillars.modElysium && world.provider.dimensionId == Elysium.DimensionID)
+			{
+				world.setBlock(x, y, z, Elysium.blockLeavesFostimber.blockID);
+			} else {
+				world.setBlock(x, y, z, this.leavesId);
+			}
 		    return true;
 	    }
 	    return false;
@@ -173,9 +179,15 @@ public class ChristmasTreeGen extends WorldGenerator
 	
 	private boolean addLog(World world, int x, int y, int z)
 	{
-		world.setBlock(x, y, z, this.logId);
-    	world.setBlockMetadataWithNotify(x, y, z, this.logMeta, 2);
-    	
+		System.out.println("dimID: "+world.provider.dimensionId);
+		if(CraftingPillars.modElysium && world.provider.dimensionId == Elysium.DimensionID)
+		{
+			world.setBlock(x, y, z, Elysium.blockLogFostimber.blockID);
+		} else {
+			world.setBlock(x, y, z, this.logId);
+	    	world.setBlockMetadataWithNotify(x, y, z, this.logMeta, 2);
+		}
+		
 	    return true;
 	}
 }
