@@ -23,8 +23,4 @@ public class PillarSoundHandler {
             }
         }
     }
-
-	public static String getRecordTitle(String unlocalised) {
-		return null;
-	}
 }
