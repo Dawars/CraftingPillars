@@ -1,23 +1,41 @@
 package me.dawars.CraftingPillars.handlers;
 
+import java.util.Random;
+
 import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.blocks.BaseBlock;
 import me.dawars.CraftingPillars.blocks.BaseBlockContainer;
 import me.dawars.CraftingPillars.properties.CalendarPlayerProps2013;
+import me.dawars.CraftingPillars.world.gen.ChristmasTreeGen;
+import mods.elysium.Elysium;
+import mods.elysium.block.ElysianBlockSaplingFostimber;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
+import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 
 public class PillarEventHandler
 {
+	@ForgeSubscribe
+	public void onUseBonemeal(BonemealEvent event) {
+		if (event.ID == CraftingPillars.blockChristmasTreeSapling.blockID) {
+			if (!event.world.isRemote) {
+				if(CraftingPillars.maxTreeState >= 4)
+				((ChristmasTreeGen) new ChristmasTreeGen(true, 4)).generate(event.world, new Random(), event.X, event.Y, event.Z);
+				event.setResult(Result.ALLOW);
+			}
+		}
+	}
+	
 	@ForgeSubscribe
 	public void onEntityConstructing(EntityConstructing event)
 	{

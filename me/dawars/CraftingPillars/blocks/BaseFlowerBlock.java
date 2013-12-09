@@ -39,4 +39,10 @@ public class BaseFlowerBlock extends BlockFlower implements IPlantable
 	{
 		this.blockIcon = itemIcon.registerIcon(CraftingPillars.id + ":" + getUnlocalizedName().substring(5));
 	}
+	
+	@SideOnly(Side.CLIENT)
+	public boolean canThisPlantGrowOnThisBlockID(int id)
+    {
+        return id == Block.grass.blockID || id == Block.dirt.blockID || id == Block.tilledField.blockID;
+    }
 }

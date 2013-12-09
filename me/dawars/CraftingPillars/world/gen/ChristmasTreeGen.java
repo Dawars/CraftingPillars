@@ -142,17 +142,22 @@ public class ChristmasTreeGen extends WorldGenerator
 	 		//lvl5
 	 		addLeaves(world, x, y+5, z);
 	
-	 		//System.out.println("gen");
 	 		for(int a = 0; a < 5; a++)
 	 		{
 	 			int i = x+random.nextInt(5)-2;
 	 			int k = z+random.nextInt(5)-2;
 	 			int j = y;
-	 			for(j = y-5; world.getBlockId(i, j, k) != 0; j++);
-	 			if(world.getBlockId(i, j-1, k) != this.leavesId)
+	 			
+	 			for(j = y-5; world.getBlockId(i, j, k) != 0; j++)
 	 			{
-	 				//System.out.println(i+" "+j+" "+k);
-	 				world.setBlock(i, j, k, CraftingPillars.blockChristmasPresent.blockID);
+
+		 		    int id = world.getBlockId(i, j, k);
+		 		    Block block = Block.blocksList[id];
+		 			if((block == null || block.canBeReplacedByLeaves(world, i, j, k) || block.isBlockReplaceable(world, i, j, k)) && world.getBlockId(i, j-1, k) != this.leavesId)
+		 			{
+		 				world.setBlock(i, j, k, CraftingPillars.blockChristmasPresent.blockID);
+		 		    	world.setBlockMetadataWithNotify(x, y, z, this.logMeta, random.nextInt(2));
+		 			}
 	 			}
 	 		}
 	 	}
@@ -179,7 +184,6 @@ public class ChristmasTreeGen extends WorldGenerator
 	
 	private boolean addLog(World world, int x, int y, int z)
 	{
-		System.out.println("dimID: "+world.provider.dimensionId);
 		if(CraftingPillars.modElysium && world.provider.dimensionId == Elysium.DimensionID)
 		{
 			world.setBlock(x, y, z, Elysium.blockLogFostimber.blockID);

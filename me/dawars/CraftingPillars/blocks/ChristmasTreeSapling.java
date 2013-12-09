@@ -7,6 +7,8 @@ import java.util.Random;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import me.dawars.CraftingPillars.CraftingPillars;
+import mods.elysium.Elysium;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -41,5 +43,16 @@ public class ChristmasTreeSapling extends BaseFlowerBlock
         {
             super.updateTick(world, x, y, z, rand);
         }
+    }
+    
+    /**
+     * Gets passed in the blockID of the block below and supposed to return true if its allowed to grow on the type of
+     * blockID passed in. Args: blockID
+     */
+    public boolean canThisPlantGrowOnThisBlockID(int id)
+    {
+    	if(CraftingPillars.modElysium)
+    		return id == Elysium.blockDirt.blockID || id == Elysium.blockGrass.blockID;
+        return id == Block.grass.blockID || id == Block.dirt.blockID;
     }
 }

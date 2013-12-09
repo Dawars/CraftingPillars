@@ -2,6 +2,8 @@ package me.dawars.CraftingPillars.tiles;
 
 import java.util.Random;
 
+import cpw.mods.fml.client.FMLClientHandler;
+
 import me.dawars.CraftingPillars.renderer.RenderPresent;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -20,7 +22,7 @@ public class TileEntityChristmasPresent extends BaseTileEntity
 	
 	public TileEntityChristmasPresent()
 	{
-		Random rand = new Random(System.currentTimeMillis());
+		Random rand = FMLClientHandler.instance().getClient().theWorld.rand;
 		this.color = rand.nextInt(colors.length/2);
 		//this.model = rand.nextBoolean();
 	}
