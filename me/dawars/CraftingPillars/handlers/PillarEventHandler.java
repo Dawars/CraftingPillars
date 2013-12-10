@@ -27,11 +27,13 @@ public class PillarEventHandler
 {
 	@ForgeSubscribe
 	public void onUseBonemeal(BonemealEvent event) {
-		if (event.ID == CraftingPillars.blockChristmasTreeSapling.blockID) {
-			if (!event.world.isRemote) {
+		if (!event.world.isRemote) {
+			if (event.ID == CraftingPillars.blockChristmasTreeSapling.blockID) {
 				if(CraftingPillars.maxTreeState >= 4)
-				((ChristmasTreeGen) new ChristmasTreeGen(true, 4)).generate(event.world, new Random(), event.X, event.Y, event.Z);
-				event.setResult(Result.ALLOW);
+				{
+					((ChristmasTreeGen) new ChristmasTreeGen(true, 4)).generate(event.world, event.world.rand, event.X, event.Y, event.Z);
+					event.setResult(Result.ALLOW);
+				}
 			}
 		}
 	}

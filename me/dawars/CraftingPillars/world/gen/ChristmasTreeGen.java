@@ -7,6 +7,7 @@ import me.dawars.CraftingPillars.blocks.BaseFlowerBlock;
 import me.dawars.CraftingPillars.blocks.ChristmasTreeSapling;
 import mods.elysium.Elysium;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenerator;
 
@@ -146,18 +147,26 @@ public class ChristmasTreeGen extends WorldGenerator
 	 		{
 	 			int i = x+random.nextInt(5)-2;
 	 			int k = z+random.nextInt(5)-2;
-	 			int j = y;
-	 			
-	 			for(j = y-5; world.getBlockId(i, j, k) != 0; j++)
-	 			{
+	 			int j = y - 5;
 
-		 		    int id = world.getBlockId(i, j, k);
-		 		    Block block = Block.blocksList[id];
-		 			if((block == null || block.canBeReplacedByLeaves(world, i, j, k) || block.isBlockReplaceable(world, i, j, k)) && world.getBlockId(i, j-1, k) != this.leavesId)
-		 			{
-		 				world.setBlock(i, j, k, CraftingPillars.blockChristmasPresent.blockID);
-		 		    	world.setBlockMetadataWithNotify(x, y, z, this.logMeta, random.nextInt(2));
-		 			}
+	 			while(j < y + 5)
+				{
+	 				int id = world.getBlockId(i, j, k);
+	 			    Block block = Block.blocksList[id];
+	 			    if((block == null || block.canBeReplacedByLeaves(world, i, j, k) || block.isBlockReplaceable(world, i, j, k)))
+	 			    {
+ 			    		break;
+	 			    } else {
+	 			    	j++;
+	 			    }
+				}
+	 		   
+	 			int id = world.getBlockId(i, j, k);
+	 		    Block block = Block.blocksList[id];
+	 			if(world.getBlockId(i, j-1, k) != this.leavesId)
+	 			{	 		
+	 				world.setBlock(i, j, k, CraftingPillars.blockChristmasPresent.blockID);
+	 		    	world.setBlockMetadataWithNotify(i, j, k, random.nextInt(2), 2);
 	 			}
 	 		}
 	 	}
