@@ -70,7 +70,7 @@ public class ChristmasPresentBlock extends BaseBlockContainer
 		if(!world.isRemote)
 		{
 			EntityItem item = new EntityItem(world, x+0.5D, y+0.5D, z+0.5D);
-			item.setEntityItemStack(presents[CraftingPillars.rand.nextInt(presents.length)].copy());
+			item.setEntityItemStack(presents[world.rand.nextInt(presents.length)].copy());
 			if(item.getEntityItem().itemID == CraftingPillars.blockChristmasPresent.blockID)
 				player.addStat(CraftingPillars.achievementRecursion3, 1);
 			world.spawnEntityInWorld(item);

@@ -12,6 +12,7 @@ public class BlockIds
 	public static int idDiskPillar = 3261;
 	public static int idFreezerPillar = 3262;
 	public static int idPotPillar = 3263;
+	public static int idSentryPillar = 3264;
 
 	public static int idChristmasLeaves = 3270;
 	public static int idChristmasTreeSapling = 3271;

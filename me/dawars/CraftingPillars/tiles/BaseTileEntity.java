@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
+import me.dawars.CraftingPillars.CraftingPillars;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
@@ -41,5 +42,16 @@ public abstract class BaseTileEntity extends TileEntity
 		NBTTagCompound nbt = new NBTTagCompound();
 		this.writeToNBT(nbt);
 		return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 0, nbt);
+	}
+	
+	@Override
+	public void onInventoryChanged()
+	{
+		super.onInventoryChanged();
+		
+		if(!this.worldObj.isRemote)
+		{
+			CraftingPillars.proxy.sendToPlayers(this.getDescriptionPacket(), this.worldObj, this.xCoord, this.yCoord, this.zCoord, 64);
+		}
 	}
 }

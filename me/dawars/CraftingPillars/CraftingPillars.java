@@ -25,6 +25,7 @@ import me.dawars.CraftingPillars.tiles.TileEntityFreezerPillar;
 import me.dawars.CraftingPillars.tiles.TileEntityFurnacePillar;
 import me.dawars.CraftingPillars.tiles.TileEntityLight;
 import me.dawars.CraftingPillars.tiles.TileEntityPotPillar;
+import me.dawars.CraftingPillars.tiles.TileEntitySentryPillar;
 import me.dawars.CraftingPillars.tiles.TileEntityShowOffPillar;
 import me.dawars.CraftingPillars.tiles.TileEntityTankPillar;
 import net.minecraft.block.Block;
@@ -104,9 +105,10 @@ public class CraftingPillars
 	public static int diskPlayerRenderID;
 	public static int freezerPillarRenderID;
 	public static int potPillarRenderID;
+	public static int sentryPillarRenderID;
+
 	public static int PresentRenderID;
 	public static int lightRenderID;
-	
 	public static int christmasLeavesRenderID;
 	
 	public static Block blockBasePillar;
@@ -119,6 +121,7 @@ public class CraftingPillars
 	public static Block blockDiskPlayerPillar;
 	public static Block blockFreezerPillar;
 	public static Block blockPotPillar;
+	public static Block blockSentryPillar;
 	
 	public static Block blockChristmasLeaves;
 	public static Block blockChristmasTreeSapling;
@@ -149,7 +152,7 @@ public class CraftingPillars
 	public static Achievement achievementDiamond;
 	public static Achievement achievementDisc;
 	public static Achievement achievementRecursion3;
-	public static boolean debug = true;
+	public static boolean debug = false;
 	
 	public void addItemsAndBlocks()
 	{
@@ -199,11 +202,16 @@ public class CraftingPillars
 		blockFreezerPillar = (new FreezerPillarBlock(idFreezerPillar.getInt(), Material.glass)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("freezerPillar");
 		registerBlock(blockFreezerPillar);
 		LanguageRegistry.instance().addStringLocalization(blockFreezerPillar.getUnlocalizedName()+".name", "Freezer Pillar");
-		
+
 		Property idPotPillar = CraftingPillars.config.getBlock("PotPillar.id", BlockIds.idPotPillar);
 		blockPotPillar = (new PotPillarBlock(idPotPillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("potPillar");
 		registerBlock(blockPotPillar);
 		LanguageRegistry.instance().addStringLocalization(blockPotPillar.getUnlocalizedName()+".name", "Pot Pillar");
+
+		Property idSentryPillar = CraftingPillars.config.getBlock("SentryPillar.id", BlockIds.idSentryPillar);
+		blockSentryPillar = (new SentryPillarBlock(idSentryPillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("sentryPillar");
+		registerBlock(blockSentryPillar);
+		LanguageRegistry.instance().addStringLocalization(blockSentryPillar.getUnlocalizedName()+".name", "Sentry Pillar");
 		
 		//Christmas
 		Property idChristmasLeaves = CraftingPillars.config.getBlock("ChristmasLeaves.id", BlockIds.idChristmasLeaves);
@@ -338,6 +346,8 @@ public class CraftingPillars
 		GameRegistry.registerTileEntity(TileEntityDiskPlayerPillar.class, "TileEntityDiskPlayerPillar");
 		GameRegistry.registerTileEntity(TileEntityFreezerPillar.class, "TileEntityFreezerPillar");
 		GameRegistry.registerTileEntity(TileEntityPotPillar.class, "TileEntityPotPillar");
+		GameRegistry.registerTileEntity(TileEntitySentryPillar.class, "TileEntitySentryPillar");
+		
 		GameRegistry.registerTileEntity(TileEntityChristmasPresent.class, "TileEntityPresent");
 		GameRegistry.registerTileEntity(TileEntityLight.class, "TileEntityLight");
 	}
