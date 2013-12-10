@@ -23,14 +23,19 @@ import net.minecraftforge.common.IShearable;
 
 public class ChristmasLeavesBlock extends BaseLeavesBlock implements IShearable
 {
-	public Icon[] iconArray = new Icon[2];
+	public static final String[] LEAF_TYPES = new String[]  {"spruce", "fostimber"};
+	public static final String[][] field_94396_b = new String[][] {{CraftingPillars.id + ":ChristmasTreeLeaves", "elysium:fostimber_leaves"}, {CraftingPillars.id + ":ChristmasTreeLeavesFast", "elysium:fostimber_leaves_fast"}};
+	
+	@SideOnly(Side.CLIENT)
+	/** 1 for fast graphic. 0 for fancy graphics. used in iconArray. */
+	public int iconType;
+	public Icon[][] iconArray = new Icon[2][];
 	public Icon glowing;
 	int[] adjacentTreeBlocks;
 	
 	public ChristmasLeavesBlock(int id, Material mat)
 	{
 		super(id, mat, true);
-		//this.setLightValue(0.1F);
 	}
 
 	@Override
@@ -39,6 +44,15 @@ public class ChristmasLeavesBlock extends BaseLeavesBlock implements IShearable
 		return CraftingPillars.christmasLeavesRenderID;
 	}
 
+	/**
+     * Called when a block is placed using its ItemBlock. Args: World, X, Y, Z, side, hitX, hitY, hitZ, block metadata
+     */
+	@Override
+    public int onBlockPlaced(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9)
+    {
+        return par9;
+    }
+    
 	/**
 	 * Called on server worlds only when the block has been replaced by a different block ID, or the same block with a
 	 * different metadata value, but before the new metadata value is set. Args: World, x, y, z, old block ID, old
@@ -255,6 +269,15 @@ public class ChristmasLeavesBlock extends BaseLeavesBlock implements IShearable
 		}
 	}
 	
+	/**
+     * Determines the damage on the item the block drops. Used in cloth and wood.
+     */
+    @Override
+	public int damageDropped(int meta)
+    {
+        return meta & 3;
+    }
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean isOpaqueCube()
@@ -262,21 +285,64 @@ public class ChristmasLeavesBlock extends BaseLeavesBlock implements IShearable
 		return !FMLClientHandler.instance().getClient().isFancyGraphicsEnabled();
 	}
 	
+    /**
+     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+     * is the only chance you get to register icons.
+     */
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister itemIcon)
-	{
-		this.iconArray[0] = itemIcon.registerIcon(CraftingPillars.id + ":ChristmasTreeLeavesFast");
-		this.iconArray[1] = itemIcon.registerIcon(CraftingPillars.id + ":ChristmasTreeLeaves");
-		this.glowing = itemIcon.registerIcon(CraftingPillars.id + ":ChristmasTreeLeavesOverlay");
-	}
+    public void registerIcons(IconRegister itemIcon)
+    {
+        for (int i = 0; i < field_94396_b.length; ++i)
+        {
+            this.iconArray[i] = new Icon[field_94396_b[i].length];
 
-	@Override
+            for (int j = 0; j < field_94396_b[i].length; ++j)
+            {
+                this.iconArray[i][j] = itemIcon.registerIcon(field_94396_b[i][j]);
+            }
+        }
+        
+        this.glowing = itemIcon.registerIcon(CraftingPillars.id + ":ChristmasTreeLeavesOverlay");
+
+    }
+    /**
+     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
+     */
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int par1, int par2)
-	{
-		return FMLClientHandler.instance().getClient().isFancyGraphicsEnabled() ? this.iconArray[1] : this.iconArray[0];
-	}
+    public void getSubBlocks(int id, CreativeTabs tab, List list)
+    {
+        list.add(new ItemStack(id, 1, 0));
+        list.add(new ItemStack(id, 1, 1));
+    }
+
+    /**
+     * Returns an item stack containing a single instance of the current block type. 'i' is the block's subtype/damage
+     * and is ignored for blocks which do not support subtypes. Blocks which cannot be harvested should return null.
+     */
+    protected ItemStack createStackedBlock(int meta)
+    {
+        return new ItemStack(this.blockID, 1, meta & 3);
+    }
+    /**
+     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
+     */
+	@SideOnly(Side.CLIENT)
+	@Override
+    public Icon getIcon(int id, int meta)
+    {
+        return (meta & 3) == 1 ? this.iconArray[this.iconType][1] : ((meta & 3) == 3 ? this.iconArray[this.iconType][3] : ((meta & 3) == 2 ? this.iconArray[this.iconType][2] : this.iconArray[this.iconType][0]));
+    }
+
+	@SideOnly(Side.CLIENT)
+    /**
+     * Pass true to draw this block using fancy graphics, or false for fast graphics.
+     */
+    public void setGraphicsLevel(boolean par1)
+    {
+        this.graphicsLevel = par1;
+        this.iconType = par1 ? 0 : 1;
+    }
 	
 	@Override
 	public boolean isShearable(ItemStack item, World world, int x, int y, int z)

@@ -26,7 +26,7 @@ public class RenderChristmasLeaves extends BlockRenderingHelper implements ISimp
 		block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
         renderer.setRenderBoundsFromBlock(block);
         
-        drawBlock(renderer, block, ((ChristmasLeavesBlock) block).iconArray[1]);
+        drawBlock(renderer, block, block.getIcon(block.blockID, metadata));
         drawBlock(renderer, block, ((ChristmasLeavesBlock) block).glowing);
     }
 

@@ -211,7 +211,8 @@ public class CraftingPillars
 		if(!winter)
 			blockChristmasLeaves.setCreativeTab(null);
 		registerBlock(blockChristmasLeaves);
-		LanguageRegistry.instance().addStringLocalization(blockChristmasLeaves.getUnlocalizedName()+".name", "en_US", "Christmas Leaves");
+		LanguageRegistry.instance().addStringLocalization("tile.xmasLeaves.spruce.name", "en_US", "Christmas Leaves");
+		LanguageRegistry.instance().addStringLocalization("tile.xmasLeaves.fostimber.name", "en_US", "Fostimber Christmas Leaves");
 
 		Property idChristmasTreeSapling = CraftingPillars.config.getBlock("ChristmasTreeSapling.id", BlockIds.idChristmasTreeSapling);
 		blockChristmasTreeSapling = (new ChristmasTreeSapling(idChristmasTreeSapling.getInt(), Material.plants)).setHardness(0.0F).setStepSound(Block.soundGrassFootstep).setUnlocalizedName("ChristmasTreeSapling");
@@ -234,7 +235,9 @@ public class CraftingPillars
 		registerBlock(blockChristmasLight);
 		LanguageRegistry.instance().addStringLocalization(blockChristmasLight.getUnlocalizedName()+".name", "en_US", "Christmas Light");
 		
+		GameRegistry.registerBlock(blockChristmasLeaves, ChristmasLeavesItemBlock.class, CraftingPillars.id);
 		
+		//Items
 		Property idDiscElysium = CraftingPillars.config.getItem("DiscElysium.id", BlockIds.idDiscElysium);
 		itemDiscElysium = new PillarRecord(idDiscElysium.getInt(), CraftingPillars.id + ":UranusParadiseShort").setUnlocalizedName("record").setTextureName(CraftingPillars.id + ":ElysiumDisk");
         LanguageRegistry.instance().addStringLocalization(CraftingPillars.id + ":UranusParadiseShort", "Elysium - Uranus Paradise Short");

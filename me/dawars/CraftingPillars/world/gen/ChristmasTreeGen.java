@@ -179,12 +179,12 @@ public class ChristmasTreeGen extends WorldGenerator
 	    int id = world.getBlockId(x, y, z);
 	    Block block = Block.blocksList[id];
 	    if(block == null || block.canBeReplacedByLeaves(world, x, y, z) || block.isBlockReplaceable(world, x, y, z))
-	    {
+	    {	
+	    	world.setBlock(x, y, z, this.leavesId);
+
 	    	if(CraftingPillars.modElysium && world.provider.dimensionId == Elysium.DimensionID)
 			{
-				world.setBlock(x, y, z, Elysium.blockLeavesFostimber.blockID);
-			} else {
-				world.setBlock(x, y, z, this.leavesId);
+	    		world.setBlockMetadataWithNotify(x, y, z, 1, 2);
 			}
 		    return true;
 	    }
