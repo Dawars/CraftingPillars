@@ -104,18 +104,20 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 			List list = this.worldObj.getLoadedEntityList();
 	    	
 			float closest = Float.MAX_VALUE;
-			EntityMob mob = null;
 			for (int i = 0; i < this.worldObj.loadedEntityList.size(); i++) {
 				if (this.worldObj.loadedEntityList.get(i) instanceof EntityMob)
 				{
-					float distance = (float) ((EntityMob) this.worldObj.loadedEntityList.get(i)).getDistanceSq(xCoord, yCoord, zCoord);
-					if (distance <= 256 && distance < closest*closest) {
-						closest = distance;
-						mob = (EntityMob) this.worldObj.loadedEntityList.get(i);
+					EntityMob currentMob = (EntityMob) this.worldObj.loadedEntityList.get(i);
+					if(!currentMob.isDead)
+					{
+						float distance = (float) currentMob.getDistanceSq(xCoord, yCoord, zCoord);
+						if (distance <= 256 && distance < closest*closest) {
+							closest = distance;
+							this.target = (EntityMob) this.worldObj.loadedEntityList.get(i);
+						}
 					}
 				}
 			}
-			this.target  = mob;
 		}
 		
 		super.updateEntity();

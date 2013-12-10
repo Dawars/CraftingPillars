@@ -15,7 +15,8 @@ import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.tiles.TileEntityCraftingPillar;
-import me.dawars.CraftingPillars.tiles.TileEntityShowOffPillar;
+import me.dawars.CraftingPillars.tiles.TileEntitySentryPillar;
+import me.dawars.CraftingPillars.tiles.TileEntitySentryPillar;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
@@ -394,7 +395,7 @@ public class RenderSentryPillar extends TileEntitySpecialRenderer implements ISi
 		render(0.0625F);
 		glPopMatrix();
 		
-		TileEntityShowOffPillar workTile = (TileEntityShowOffPillar) tile;
+		TileEntitySentryPillar workTile = (TileEntitySentryPillar) tile;
 		EntityItem citem = new EntityItem(tile.worldObj);
 		citem.hoverStart = CraftingPillars.floatingItems ? workTile.rot : 0F;
 		
@@ -441,6 +442,6 @@ public class RenderSentryPillar extends TileEntitySpecialRenderer implements ISi
 	@Override
 	public int getRenderId()
 	{
-		return CraftingPillars.showOffPillarRenderID;
+		return CraftingPillars.sentryPillarRenderID;
 	}
 }
