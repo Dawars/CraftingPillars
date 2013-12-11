@@ -2,38 +2,22 @@ package me.dawars.CraftingPillars.renderer;
 
 import static org.lwjgl.opengl.GL11.*;
 
-import java.awt.Color;
 import java.util.Random;
 
-import javax.swing.Renderer;
-
-import org.lwjgl.opengl.GL11;
-
-import com.google.common.primitives.SignedBytes;
-
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import me.dawars.CraftingPillars.CraftingPillars;
-import me.dawars.CraftingPillars.tiles.TileEntityCraftingPillar;
-import me.dawars.CraftingPillars.tiles.TileEntitySentryPillar;
 import me.dawars.CraftingPillars.tiles.TileEntitySentryPillar;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.ItemStack;
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class RenderSentryPillar extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler
 {
@@ -87,7 +71,6 @@ public class RenderSentryPillar extends TileEntitySpecialRenderer implements ISi
     private ModelRenderer Icicle11C;
     
 	private Random random;
-	private RenderingHelper.ItemRender itemRenderer;
 	private RenderingHelper.ItemRender resultRenderer;
 	
 	public RenderSentryPillar()
@@ -98,7 +81,6 @@ public class RenderSentryPillar extends TileEntitySpecialRenderer implements ISi
 			TEXTURE_SHOWOFFPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/showoffPillar.png");
 		
 		random = new Random();
-		itemRenderer = new RenderingHelper.ItemRender(false, true);
 		resultRenderer = new RenderingHelper.ItemRender(true, true);
 		
 		model.textureWidth = 128;

@@ -23,6 +23,7 @@ import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.inventory.InventoryCrafting;
@@ -55,47 +56,71 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 	@Override
 	public void updateEntity()
 	{
+		if(this.worldObj.isRemote)
+		{
+			this.rot += 0.1F;
+			if(this.rot >= 360F)
+				this.rot -= 360F;
+		}
+		
 		if(!worldObj.isRemote)
 		{
 			if(this.cooldown <= 0)
 			{
-				if(this.target != null)
+				if(this.target != null && this.getStackInSlot(0) != null)
 				{
 					System.out.println(target.getEntityName());
-
-//					ArrowLooseEvent event = new ArrowLooseEvent(par3EntityPlayer, par1ItemStack, j);
-//			        MinecraftForge.EVENT_BUS.post(event);
-//			        if (event.isCanceled())
-//			        {
-//			            return;
-//			        }
-
-			            EntityArrow entityarrow = new EntityArrow(worldObj, xCoord, yCoord+1, zCoord);
-			            entityarrow.setDamage(entityarrow.getDamage() + 1);
-			            
-
-			            entityarrow.posY = this.yCoord + 1;
-			            double d0 = this.target.posX - this.xCoord - 0.5F;
-			            double d1 = this.target.boundingBox.minY + (double)(this.target.height / 3.0F) - entityarrow.posY;
-			            double d2 = this.target.posZ - this.zCoord - 0.5F;
-			            double d3 = (double)MathHelper.sqrt_double(d0 * d0 + d2 * d2);
-
-			            if (d3 >= 1.0E-7D)
-			            {
-			                float f2 = (float)(Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
-			                float f3 = (float)(-(Math.atan2(d1, d3) * 180.0D / Math.PI));
-			                double d4 = d0 / d3;
-			                double d5 = d2 / d3;
-			                entityarrow.setLocationAndAngles(this.xCoord + 0.5F + d4, entityarrow.posY, this.zCoord + 0.5F + d5, f2, f3);
-			                entityarrow.yOffset = 0.0F;
-			                float f4 = (float)d3 * 0.2F;
-			                entityarrow.setThrowableHeading(d0, d1 + (double)f4, d2, 1.6F, (float)(14 - this.worldObj.difficultySetting * 4));
-			            }
-			            
-			            worldObj.spawnEntityInWorld(entityarrow);
-			            worldObj.playSoundAtEntity(this.target, "random.bow", 1.0F, 1.0F / (new Random().nextFloat() * 0.4F + 1.2F) + 0.5F);
-
-					this.cooldown = 20;
+					//FIXME: if target is in range
+					if(this.getStackInSlot(0) != null)
+					{
+						if((float) this.target.getDistanceSq(xCoord, yCoord, zCoord) < 64)
+						{
+							if(this.getStackInSlot(0).itemID == Item.arrow.itemID)//Add snowball and...?
+							{
+					            EntityArrow entityarrow = new EntityArrow(worldObj, xCoord, yCoord+1, zCoord);
+					            entityarrow.setDamage(entityarrow.getDamage() + 1);
+					            
+			
+					            entityarrow.posY = this.yCoord + 1.5F;
+					            double d0 = this.target.posX - this.xCoord - 0.5F;
+					            double d1 = this.target.boundingBox.minY + (double)(this.target.height / 3.0F) - entityarrow.posY;
+					            double d2 = this.target.posZ - this.zCoord - 0.5F;
+					            double d3 = (double)MathHelper.sqrt_double(d0 * d0 + d2 * d2);
+			
+					            if (d3 >= 1.0E-7D)
+					            {
+					                float f2 = (float)(Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
+					                float f3 = (float)(-(Math.atan2(d1, d3) * 180.0D / Math.PI));
+					                double d4 = d0 / d3;
+					                double d5 = d2 / d3;
+					                entityarrow.setLocationAndAngles(this.xCoord + 0.5F + d4, entityarrow.posY, this.zCoord + 0.5F + d5, f2, f3);
+					                entityarrow.yOffset = 0.0F;
+					                float f4 = (float)d3 * 0.2F;
+					                entityarrow.setThrowableHeading(d0, d1 + (double)f4, d2, 1.6F, (float)(14 - this.worldObj.difficultySetting * 4));
+					            }
+					            
+					            worldObj.spawnEntityInWorld(entityarrow);
+					            worldObj.playSoundAtEntity(this.target, "random.bow", 1.0F, 1.0F / (new Random().nextFloat() * 0.4F + 1.2F) + 0.5F);
+							}
+							
+							if(this.getStackInSlot(0).itemID == Item.snowball.itemID)//Add snowball and...?
+							{
+					            EntitySnowball entitysnowball = new EntitySnowball(worldObj, xCoord + 0.5F, yCoord + 1.5F, zCoord + 0.5F);
+					            
+					            double d0 = this.target.posX - this.xCoord - 0.5F;
+					            double d1 = this.target.posY + (double)this.target.getEyeHeight() - 1.100000023841858D - entitysnowball.posY;
+					            double d2 = this.target.posZ - this.zCoord - 0.5F;;
+					            float f1 = MathHelper.sqrt_double(d0 * d0 + d2 * d2) * 0.2F;
+					            entitysnowball.setThrowableHeading(d0, d1 + (double)f1, d2, 1.6F, 12.0F);
+					            entitysnowball.playSound("random.bow", 1.0F, 1.0F / (random.nextFloat() * 0.4F + 0.8F));
+					            entitysnowball.worldObj.spawnEntityInWorld(entitysnowball);
+							}
+							
+							
+				            this.decrStackSize(0, 1);
+				            this.cooldown = 20;
+						}
+					}
 				}
 			} else {
 				this.cooldown--;
@@ -111,7 +136,7 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 					if(!currentMob.isDead)
 					{
 						float distance = (float) currentMob.getDistanceSq(xCoord, yCoord, zCoord);
-						if (distance <= 256 && distance < closest*closest) {
+						if (distance <= 64 && distance < closest*closest) {
 							closest = distance;
 							this.target = (EntityMob) this.worldObj.loadedEntityList.get(i);
 						}
@@ -140,7 +165,6 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 		}
 		
 		this.showNum = nbt.getBoolean("showNum");
-		this.rot = nbt.getFloat("rot");
 	}
 	
 	@Override
@@ -160,7 +184,6 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 		}
 		nbt.setTag("Items", nbtlist);
 		nbt.setBoolean("showNum", this.showNum);
-		nbt.setFloat("rot", this.rot);
 	}
 
 	public void dropItemFromSlot(int slot, int amount, EntityPlayer player)
