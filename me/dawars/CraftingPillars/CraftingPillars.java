@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.Random;
 
 import me.dawars.CraftingPillars.api.CraftingPillarAPI;
+import me.dawars.CraftingPillars.api.sentry.SentryBehaviors;
 import me.dawars.CraftingPillars.blocks.*;
 import me.dawars.CraftingPillars.client.gui.GuiHandler;
 import me.dawars.CraftingPillars.container.ContainerAdventCalendar2013;
@@ -396,6 +397,8 @@ public class CraftingPillars
 		CraftingPillarAPI.addDiskTexture(Item.recordWard.itemID, CraftingPillars.id + ":textures/models/disk_ward.png");
 		CraftingPillarAPI.addDiskTexture(Item.record11.itemID, CraftingPillars.id + ":textures/models/disk_11.png");
 		CraftingPillarAPI.addDiskTexture(Item.recordWait.itemID, CraftingPillars.id + ":textures/models/disk_wait.png");
+		
+		SentryBehaviors.registerDispenserBehaviours();
 	}
 	
 	public void registerHandlers()
