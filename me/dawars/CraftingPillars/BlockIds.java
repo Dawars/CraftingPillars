@@ -26,5 +26,9 @@ public class BlockIds
 	public static int idLoreBook = 5153;
 	public static int idVirgacs = 5154;
 	public static int idWinterFood = 5155;
+	
+	//Settings
+	public static int sentryCooldown = 20;
+	public static float sentryRange = 256;
 
 }

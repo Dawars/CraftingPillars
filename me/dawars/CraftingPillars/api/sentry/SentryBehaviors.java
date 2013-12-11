@@ -17,5 +17,6 @@ public class SentryBehaviors {
 	public static void registerDispenserBehaviours()
 	{
 		sentryBehaviorRegistry.put(Item.arrow.itemID, new SentryBehaviorArrow());
+		sentryBehaviorRegistry.put(Item.snowball.itemID, new SentryBehaviorSnowball());
 	}
 }

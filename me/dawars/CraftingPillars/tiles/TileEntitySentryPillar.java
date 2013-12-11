@@ -2,6 +2,7 @@ package me.dawars.CraftingPillars.tiles;
 
 import java.util.List;
 
+import me.dawars.CraftingPillars.BlockIds;
 import me.dawars.CraftingPillars.api.sentry.IBehaviorSentryItem;
 import me.dawars.CraftingPillars.api.sentry.SentryBehaviors;
 import net.minecraft.block.BlockSourceImpl;
@@ -20,7 +21,7 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 	private ItemStack[] inventory = new ItemStack[this.getSizeInventory()];
 	
 	public float rot = 0F;
-	public int cooldown = 20;
+	public int cooldown = BlockIds.sentryCooldown;
 	public boolean showNum = false;
 
 	private EntityMob target = null;
@@ -37,7 +38,7 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 		
 		if(!worldObj.isRemote)
 		{
-
+			//TODO: optimize the code a LOT
 			List list = this.worldObj.getLoadedEntityList();
 	    	
 			float closest = Float.MAX_VALUE;
@@ -48,7 +49,7 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 					if(!currentMob.isDead)
 					{
 						float distance = (float) currentMob.getDistanceSq(xCoord, yCoord, zCoord);
-						if (distance <= 64 && distance < closest*closest) {
+						if (distance <= BlockIds.sentryRange && distance < closest*closest) {
 							closest = distance;
 							this.target = (EntityMob) this.worldObj.loadedEntityList.get(i);
 						}
@@ -58,7 +59,7 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 			
 			if(this.cooldown <= 0)
 			{
-				if(this.target != null && this.getStackInSlot(0) != null && this.target.getDistanceSq(xCoord, yCoord, zCoord) <= 64)
+				if(this.target != null && this.getStackInSlot(0) != null && this.target.getDistanceSq(xCoord, yCoord, zCoord) <= BlockIds.sentryRange)
 				{
 					System.out.println(target.getEntityName());
 
@@ -76,7 +77,7 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 		                    this.setInventorySlotContents(0, itemstack1.stackSize == 0 ? null : itemstack1);
 				        }
 				        
-			            this.cooldown = 20;
+			            this.cooldown = BlockIds.sentryCooldown;
 					}
 				}
 			} else {
