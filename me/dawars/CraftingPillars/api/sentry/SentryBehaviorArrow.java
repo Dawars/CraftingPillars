@@ -26,7 +26,7 @@ public class SentryBehaviorArrow extends SentryDefaultProjectile
 		int z = blockSource.getZInt();
 		
 		
-		EntityArrow entityarrow = new EntityArrow(world, x, y+1, z);
+		EntityArrow entityarrow = new EntityArrow(world, x + 0.5F, y + 1.5F, z + 0.5F);
         entityarrow.setDamage(entityarrow.getDamage() + 1);
         
 
@@ -45,7 +45,7 @@ public class SentryBehaviorArrow extends SentryDefaultProjectile
             entityarrow.setLocationAndAngles(x + 0.5F + d4, entityarrow.posY, z + 0.5F + d5, f2, f3);
             entityarrow.yOffset = 0.0F;
             float f4 = (float)d3 * 0.2F;
-            entityarrow.setThrowableHeading(d0, d1 + (double)f4, d2, 1.6F, (float)(14 - world.difficultySetting * 4));
+            entityarrow.setThrowableHeading(d0, d1 + (double)f4, d2, 1.6F, 5);
         }
 		return entityarrow;
 	}

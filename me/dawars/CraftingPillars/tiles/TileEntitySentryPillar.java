@@ -38,20 +38,23 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 		
 		if(!worldObj.isRemote)
 		{
-			//TODO: optimize the code a LOT
-			List list = this.worldObj.getLoadedEntityList();
-	    	
-			float closest = Float.MAX_VALUE;
-			for (int i = 0; i < this.worldObj.loadedEntityList.size(); i++) {
-				if (this.worldObj.loadedEntityList.get(i) instanceof EntityMob)
-				{
-					EntityMob currentMob = (EntityMob) this.worldObj.loadedEntityList.get(i);
-					if(!currentMob.isDead)
+			ItemStack ammo = this.getStackInSlot(0);
+			if(ammo != null && this.worldObj.loadedEntityList != null )
+			{
+				//TODO: optimize the code a LOT
+		    	
+				float closest = Float.MAX_VALUE;
+				for (int i = 0; i < this.worldObj.loadedEntityList.size(); i++) {
+					if (this.worldObj.loadedEntityList.get(i) instanceof EntityMob)
 					{
-						float distance = (float) currentMob.getDistanceSq(xCoord, yCoord, zCoord);
-						if (distance <= BlockIds.sentryRange && distance < closest*closest) {
-							closest = distance;
-							this.target = (EntityMob) this.worldObj.loadedEntityList.get(i);
+						EntityMob currentMob = (EntityMob) this.worldObj.loadedEntityList.get(i);
+						if(!currentMob.isDead)
+						{
+							float distance = (float) currentMob.getDistanceSq(xCoord, yCoord, zCoord);
+							if (distance <= BlockIds.sentryRange && distance < closest /*&& isVisible(x, y, z, mob)  */) {
+								closest = distance;
+								this.target = currentMob;
+							}
 						}
 					}
 				}
@@ -59,19 +62,17 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 			
 			if(this.cooldown <= 0)
 			{
-				if(this.target != null && this.getStackInSlot(0) != null && this.target.getDistanceSq(xCoord, yCoord, zCoord) <= BlockIds.sentryRange)
+				if(this.target != null && !this.target.isDead && this.target.getDistanceSq(xCoord, yCoord, zCoord) <= BlockIds.sentryRange && this.getStackInSlot(0) != null)
 				{
-					System.out.println(target.getEntityName());
+					System.out.println(target.getEntityName() + " Distance: " + this.target.getDistance(xCoord, yCoord, zCoord));
 
-					ItemStack ammo = this.getStackInSlot(0);
 					if(ammo != null)
 					{
 				        BlockSourceImpl blocksourceimpl = new BlockSourceImpl(worldObj, xCoord, yCoord, zCoord);
-				        IBehaviorSentryItem ibehaviorsentryitem = (IBehaviorSentryItem)SentryBehaviors.sentryBehaviorRegistry.get(ammo.itemID);
+				        IBehaviorSentryItem ibehaviorsentryitem = (IBehaviorSentryItem)SentryBehaviors.get(ammo.itemID);
 				        
 				        if(ibehaviorsentryitem != null)
 				        {
-				    		System.out.println("Starting dispense");
 
 				        	ItemStack itemstack1 = ibehaviorsentryitem.dispense(blocksourceimpl, this.target, ammo);
 		                    this.setInventorySlotContents(0, itemstack1.stackSize == 0 ? null : itemstack1);
@@ -238,7 +239,7 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack)
 	{
-		return true;
+		return (this.getStackInSlot(i) != null && this.getStackInSlot(i).isItemEqual(itemstack)) || SentryBehaviors.get(itemstack.itemID) != null;
 	}
 	
 	@Override

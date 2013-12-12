@@ -21,25 +21,14 @@ public class SentryBehaviorSnowball extends SentryDefaultProjectile
 		int z = blockSource.getZInt();
 		
 		
-		EntitySnowball entityarrow = new EntitySnowball(world, x, y+1, z);
+		EntitySnowball entityammo = new EntitySnowball(world, x + 0.5F, y + 1.5F, z + 0.5F);
 
-        entityarrow.posY = y + 1.5F;
-        double d0 = target.posX - x - 0.5F;
-        double d1 = target.boundingBox.minY + (double)(target.height / 3.0F) - entityarrow.posY;
-        double d2 = target.posZ - z - 0.5F;
-        double d3 = (double)MathHelper.sqrt_double(d0 * d0 + d2 * d2);
-
-        if (d3 >= 1.0E-7D)
-        {
-            float f2 = (float)(Math.atan2(d2, d0) * 180.0D / Math.PI) - 90.0F;
-            float f3 = (float)(-(Math.atan2(d1, d3) * 180.0D / Math.PI));
-            double d4 = d0 / d3;
-            double d5 = d2 / d3;
-            entityarrow.setLocationAndAngles(x + 0.5F + d4, entityarrow.posY, z + 0.5F + d5, f2, f3);
-            entityarrow.yOffset = 0.0F;
-            float f4 = (float)d3 * 0.2F;
-            entityarrow.setThrowableHeading(d0, d1 + (double)f4, d2, 1.6F, (float)(14 - world.difficultySetting * 4));
-        }
-		return entityarrow;
+		double d0 = target.posX - x - 0.5F;
+		double d1 = target.posY + (double)target.getEyeHeight() - 1.100000023841858D - entityammo.posY;
+		double d2 = target.posZ - z - 0.5F;;
+		float f1 = MathHelper.sqrt_double(d0 * d0 + d2 * d2) * 0.2F;
+		entityammo.setThrowableHeading(d0, d1 + (double)f1, d2, 1.6F, 1);
+		
+		return entityammo;
 	}
 }
