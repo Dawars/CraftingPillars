@@ -25,7 +25,7 @@ public class SentryBehaviorSnowball extends SentryDefaultProjectile
 
 		double d0 = target.posX - x - 0.5F;
 		double d1 = target.posY + (double)target.getEyeHeight() - 1.100000023841858D - entityammo.posY;
-		double d2 = target.posZ - z - 0.5F;;
+		double d2 = target.posZ - z - 0.5F;
 		float f1 = MathHelper.sqrt_double(d0 * d0 + d2 * d2) * 0.2F;
 		entityammo.setThrowableHeading(d0, d1 + (double)f1, d2, 1.6F, 1);
 		

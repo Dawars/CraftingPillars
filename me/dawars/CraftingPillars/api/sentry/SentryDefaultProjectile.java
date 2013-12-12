@@ -19,8 +19,8 @@ public abstract class SentryDefaultProjectile implements IBehaviorSentryItem
 	@Override
     public final ItemStack dispense(IBlockSource blockSource,  EntityMob target, ItemStack item)
     {
-        this.playDispenseSound(blockSource);
-        this.spawnDispenseParticles(blockSource);
+        this.playSound(blockSource);
+        this.spawnParticles(blockSource);
         this.spawnEntity(blockSource, target, item);
         return item;
     }
@@ -32,7 +32,8 @@ public abstract class SentryDefaultProjectile implements IBehaviorSentryItem
     public ItemStack spawnEntity(IBlockSource sourceblock, EntityMob target, ItemStack item)
     {
         IProjectile iprojectile = this.getProjectileEntity(target, sourceblock);
-        sourceblock.getWorld().spawnEntityInWorld((Entity)iprojectile);
+        if(iprojectile != null)
+        	sourceblock.getWorld().spawnEntityInWorld((Entity)iprojectile);
         item.splitStack(1);
         return item;
     }
@@ -40,7 +41,7 @@ public abstract class SentryDefaultProjectile implements IBehaviorSentryItem
     /**
      * Play the dispense sound from the specified block.
      */
-    protected void playDispenseSound(IBlockSource blockSource)
+    protected void playSound(IBlockSource blockSource)
     {
         blockSource.getWorld().playAuxSFX(1000, blockSource.getXInt(), blockSource.getYInt(), blockSource.getZInt(), 0);
     }
@@ -48,7 +49,7 @@ public abstract class SentryDefaultProjectile implements IBehaviorSentryItem
     /**
      * Order clients to display dispense particles from the specified block and facing.
      */
-    protected void spawnDispenseParticles(IBlockSource blockSource)
+    protected void spawnParticles(IBlockSource blockSource)
     {
         blockSource.getWorld().playAuxSFX(2000, blockSource.getXInt(), blockSource.getYInt(), blockSource.getZInt(), 6);
     }
@@ -57,13 +58,13 @@ public abstract class SentryDefaultProjectile implements IBehaviorSentryItem
      * Return the projectile entity spawned by this dispense behavior.
      */
     protected abstract IProjectile getProjectileEntity(EntityMob target, IBlockSource blockSource);
-
-    protected float func_82498_a()
+	
+    protected float getSpeed()
     {
         return 6.0F;
     }
-
-    protected float func_82500_b()
+    
+    protected float getAccuracy()
     {
         return 1.1F;
     }

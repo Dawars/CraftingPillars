@@ -15,6 +15,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.AxisAlignedBB;
 
 public class TileEntitySentryPillar extends BaseTileEntity implements IInventory, ISidedInventory
 {
@@ -88,6 +89,30 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 		
 		super.updateEntity();
 	}
+	
+	/**
+     * True if the ghast has an unobstructed line of travel to the waypoint.
+     */
+    private boolean isCourseTraversable(double par1, double par3, double par5, double par7)
+    {
+    	//TODO: try this
+//        double d4 = (this.waypointX - this.posX) / par7;
+//        double d5 = (this.waypointY - this.posY) / par7;
+//        double d6 = (this.waypointZ - this.posZ) / par7;
+//        AxisAlignedBB axisalignedbb = this.boundingBox.copy();
+//
+//        for (int i = 1; (double)i < par7; ++i)
+//        {
+//            axisalignedbb.offset(d4, d5, d6);
+//
+//            if (!this.worldObj.getCollidingBoundingBoxes(this, axisalignedbb).isEmpty())
+//            {
+//                return false;
+//            }
+//        }
+
+        return true;
+    }
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)

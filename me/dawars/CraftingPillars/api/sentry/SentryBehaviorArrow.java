@@ -45,8 +45,20 @@ public class SentryBehaviorArrow extends SentryDefaultProjectile
             entityarrow.setLocationAndAngles(x + 0.5F + d4, entityarrow.posY, z + 0.5F + d5, f2, f3);
             entityarrow.yOffset = 0.0F;
             float f4 = (float)d3 * 0.2F;
-            entityarrow.setThrowableHeading(d0, d1 + (double)f4, d2, 1.6F, 5);
+            entityarrow.setThrowableHeading(d0, d1 + (double)f4, d2, getSpeed(), getAccuracy());
         }
 		return entityarrow;
 	}
+	
+	@Override
+	protected float getSpeed()//or strength
+    {
+        return 1.6F;
+    }
+
+	@Override
+	protected float getAccuracy()
+    {
+        return 3F;
+    }
 }

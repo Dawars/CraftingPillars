@@ -5,9 +5,13 @@ import cpw.mods.fml.relauncher.SideOnly;
 import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.tiles.TileEntitySentryPillar;
 import me.dawars.CraftingPillars.tiles.TileEntitySentryPillar;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.boss.EntityDragon;
+import net.minecraft.entity.boss.EntityWither;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -109,7 +113,29 @@ public class SentryPillarBlock extends BaseBlockContainer
 		
 		super.breakBlock(world, x, y, z, par5, par6);
 	}
-	
+	/**
+     * Determines if this block is can be destroyed by the specified entities normal behavior.
+     *
+     * @param world The current world
+     * @param x X Position
+     * @param y Y Position
+     * @param z Z position
+     * @return True to allow the ender dragon to destroy this block
+     */
+    public boolean canEntityDestroy(World world, int x, int y, int z, Entity entity)
+    {
+        if (entity instanceof EntityWither)
+        {
+            return false;
+        }
+        else if (entity instanceof EntityDragon)
+        {
+            return false;
+        }
+
+        return true;
+    }
+    
 	@Override
 	public TileEntity createNewTileEntity(World world)
 	{

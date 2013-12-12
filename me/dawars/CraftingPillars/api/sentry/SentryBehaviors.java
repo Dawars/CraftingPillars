@@ -19,6 +19,7 @@ public class SentryBehaviors {
 	{
 		add(Item.arrow.itemID, new SentryBehaviorArrow());
 		add(Item.snowball.itemID, new SentryBehaviorSnowball());
+		add(Item.fireballCharge.itemID, new SentryBehaviorFireball());
 	}
 	
 	public static void add(int itemID, Object behavior)
