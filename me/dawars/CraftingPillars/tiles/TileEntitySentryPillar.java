@@ -1,12 +1,9 @@
 package me.dawars.CraftingPillars.tiles;
 
-import java.util.List;
-
 import me.dawars.CraftingPillars.BlockIds;
 import me.dawars.CraftingPillars.api.sentry.IBehaviorSentryItem;
 import me.dawars.CraftingPillars.api.sentry.SentryBehaviors;
 import net.minecraft.block.BlockSourceImpl;
-import net.minecraft.dispenser.IBehaviorDispenseItem;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,7 +12,6 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.AxisAlignedBB;
 
 public class TileEntitySentryPillar extends BaseTileEntity implements IInventory, ISidedInventory
 {
@@ -42,8 +38,6 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 			ItemStack ammo = this.getStackInSlot(0);
 			if(ammo != null && this.worldObj.loadedEntityList != null )
 			{
-				//TODO: optimize the code a LOT
-		    	
 				float closest = Float.MAX_VALUE;
 				for (int i = 0; i < this.worldObj.loadedEntityList.size(); i++) {
 					if (this.worldObj.loadedEntityList.get(i) instanceof EntityMob)
@@ -52,7 +46,7 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 						if(!currentMob.isDead)
 						{
 							float distance = (float) currentMob.getDistanceSq(xCoord, yCoord, zCoord);
-							if (distance <= BlockIds.sentryRange && distance < closest /*&& isVisible(x, y, z, mob)  */) {
+							if (distance <= BlockIds.sentryRange && distance < closest && isVisible(xCoord, yCoord, zCoord, currentMob)) {
 								closest = distance;
 								this.target = currentMob;
 							}
@@ -65,7 +59,7 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 			{
 				if(this.target != null && !this.target.isDead && this.target.getDistanceSq(xCoord, yCoord, zCoord) <= BlockIds.sentryRange && this.getStackInSlot(0) != null)
 				{
-					System.out.println(target.getEntityName() + " Distance: " + this.target.getDistance(xCoord, yCoord, zCoord));
+//					System.out.println(target.getEntityName() + " Distance: " + this.target.getDistance(xCoord, yCoord, zCoord));
 
 					if(ammo != null)
 					{
@@ -90,29 +84,12 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 		super.updateEntity();
 	}
 	
-	/**
-     * True if the ghast has an unobstructed line of travel to the waypoint.
-     */
-    private boolean isCourseTraversable(double par1, double par3, double par5, double par7)
-    {
-    	//TODO: try this
-//        double d4 = (this.waypointX - this.posX) / par7;
-//        double d5 = (this.waypointY - this.posY) / par7;
-//        double d6 = (this.waypointZ - this.posZ) / par7;
-//        AxisAlignedBB axisalignedbb = this.boundingBox.copy();
-//
-//        for (int i = 1; (double)i < par7; ++i)
-//        {
-//            axisalignedbb.offset(d4, d5, d6);
-//
-//            if (!this.worldObj.getCollidingBoundingBoxes(this, axisalignedbb).isEmpty())
-//            {
-//                return false;
-//            }
-//        }
-
-        return true;
-    }
+	private boolean isVisible(int x, int y, int z, EntityMob mob) {
+		//TODO: code here - FBalazs
+		
+		
+		return true;
+	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)
@@ -276,7 +253,7 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 	@Override
 	public boolean canInsertItem(int slot, ItemStack itemstack, int side)
 	{
-		return true;
+		return this.isItemValidForSlot(slot, itemstack);
 	}
 	
 	@Override
