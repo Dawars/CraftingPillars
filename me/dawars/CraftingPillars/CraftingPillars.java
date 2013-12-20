@@ -8,27 +8,14 @@ import java.util.Date;
 import java.util.Random;
 
 import me.dawars.CraftingPillars.api.CraftingPillarAPI;
-import me.dawars.CraftingPillars.api.sentry.SentryBehaviors;
+import me.dawars.CraftingPillars.api.sentry.*;
 import me.dawars.CraftingPillars.blocks.*;
 import me.dawars.CraftingPillars.client.gui.GuiHandler;
 import me.dawars.CraftingPillars.container.ContainerAdventCalendar2013;
 import me.dawars.CraftingPillars.handlers.*;
 import me.dawars.CraftingPillars.items.*;
 import me.dawars.CraftingPillars.proxy.CommonProxy;
-import me.dawars.CraftingPillars.tiles.TileEntityAnvilPillar;
-import me.dawars.CraftingPillars.tiles.TileEntityBrewingPillar;
-import me.dawars.CraftingPillars.tiles.TileEntityChristmasPresent;
-import me.dawars.CraftingPillars.tiles.TileEntityCraftingPillar;
-import me.dawars.CraftingPillars.tiles.TileEntityDiskPlayerPillar;
-import me.dawars.CraftingPillars.tiles.TileEntityEnchantmentPillar;
-import me.dawars.CraftingPillars.tiles.TileEntityExtendPillar;
-import me.dawars.CraftingPillars.tiles.TileEntityFreezerPillar;
-import me.dawars.CraftingPillars.tiles.TileEntityFurnacePillar;
-import me.dawars.CraftingPillars.tiles.TileEntityLight;
-import me.dawars.CraftingPillars.tiles.TileEntityPotPillar;
-import me.dawars.CraftingPillars.tiles.TileEntitySentryPillar;
-import me.dawars.CraftingPillars.tiles.TileEntityShowOffPillar;
-import me.dawars.CraftingPillars.tiles.TileEntityTankPillar;
+import me.dawars.CraftingPillars.tiles.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -398,7 +385,10 @@ public class CraftingPillars
 		CraftingPillarAPI.addDiskTexture(Item.record11.itemID, CraftingPillars.id + ":textures/models/disk_11.png");
 		CraftingPillarAPI.addDiskTexture(Item.recordWait.itemID, CraftingPillars.id + ":textures/models/disk_wait.png");
 		
-		SentryBehaviors.registerDispenserBehaviours();
+		SentryBehaviors.add(Item.arrow.itemID, new SentryBehaviorArrow());
+		SentryBehaviors.add(Item.snowball.itemID, new SentryBehaviorSnowball());
+		SentryBehaviors.add(Item.fireballCharge.itemID, new SentryBehaviorFireball());
+		SentryBehaviors.add(Item.potion.itemID, new SentryBehaviorPotion());
 	}
 	
 	public void registerHandlers()

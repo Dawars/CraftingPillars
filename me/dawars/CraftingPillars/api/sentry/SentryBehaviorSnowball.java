@@ -4,6 +4,7 @@ import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.projectile.EntitySnowball;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
@@ -13,7 +14,7 @@ public class SentryBehaviorSnowball extends SentryDefaultProjectile
      * Return the projectile entity spawned by this dispense behavior.
      */
 	@Override
-	protected IProjectile getProjectileEntity(EntityMob target, IBlockSource blockSource) {
+	protected IProjectile getProjectileEntity(EntityMob target, IBlockSource blockSource, ItemStack item) {
 		
 		World world = blockSource.getWorld();
 		int x = blockSource.getXInt();

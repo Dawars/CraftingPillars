@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 public interface IBehaviorSentryItem
 {
     /**
-     * Dispenses the specified ItemStack from a dispenser.
+     * Dispenses the specified ItemStack from a Sentry.
      */
     ItemStack dispense(IBlockSource iblocksource, EntityMob target, ItemStack itemstack);
 }

@@ -14,7 +14,7 @@ public abstract class SentryDefaultProjectile implements IBehaviorSentryItem
 {
 	
 	/**
-     * Dispenses the specified ItemStack from a dispenser.
+     * Returns the specified ItemStack to be removed from the pillar.
      */
 	@Override
     public final ItemStack dispense(IBlockSource blockSource,  EntityMob target, ItemStack item)
@@ -26,12 +26,14 @@ public abstract class SentryDefaultProjectile implements IBehaviorSentryItem
     }
 	
 	/**
-     * Dispense the specified stack, play the dispense sound and spawn particles.
-	 * @param target 
+     * Spawns the entity.
+	 * @param sourceblock - position info for the block
+	 * @param target - the target the Pillar is shooting at
+	 * @param item - the item placed into the pillar
      */
     public ItemStack spawnEntity(IBlockSource sourceblock, EntityMob target, ItemStack item)
     {
-        IProjectile iprojectile = this.getProjectileEntity(target, sourceblock);
+        IProjectile iprojectile = this.getProjectileEntity(target, sourceblock, item);
         if(iprojectile != null)
         	sourceblock.getWorld().spawnEntityInWorld((Entity)iprojectile);
         item.splitStack(1);
@@ -39,7 +41,7 @@ public abstract class SentryDefaultProjectile implements IBehaviorSentryItem
     }
 
     /**
-     * Play the dispense sound from the specified block.
+     * Play the appropriate sound for the shooting.
      */
     protected void playSound(IBlockSource blockSource)
     {
@@ -47,7 +49,7 @@ public abstract class SentryDefaultProjectile implements IBehaviorSentryItem
     }
 
     /**
-     * Order clients to display dispense particles from the specified block and facing.
+     * Order clients to display particles for shooting.
      */
     protected void spawnParticles(IBlockSource blockSource)
     {
@@ -55,9 +57,10 @@ public abstract class SentryDefaultProjectile implements IBehaviorSentryItem
     }
 
     /**
-     * Return the projectile entity spawned by this dispense behavior.
+     * Return the projectile entity spawned by the Sentry behavior.
+     * @param item 
      */
-    protected abstract IProjectile getProjectileEntity(EntityMob target, IBlockSource blockSource);
+    protected abstract IProjectile getProjectileEntity(EntityMob target, IBlockSource blockSource, ItemStack item);
 	
     protected float getSpeed()
     {

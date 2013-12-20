@@ -25,7 +25,7 @@ public class SentryBehaviorFireball extends SentryDefaultProjectile
      * Return the projectile entity spawned by this dispense behavior.
      */
 	@Override
-	protected IProjectile getProjectileEntity(EntityMob target, IBlockSource blockSource) {
+	protected IProjectile getProjectileEntity(EntityMob target, IBlockSource blockSource, ItemStack item) {
 		
 		World world = blockSource.getWorld();
 		int x = blockSource.getXInt();
@@ -41,13 +41,4 @@ public class SentryBehaviorFireball extends SentryDefaultProjectile
 		
         return null;
 	}
-            
-//    /**
-//     * Play the dispense sound from the specified block.
-//     */
-//    @Override
-//    protected void playSound(IBlockSource blockSource)
-//    {
-//        blockSource.getWorld().playAuxSFXAtEntity((EntityPlayer)null, 1008, blockSource.getXInt(), blockSource.getYInt(), blockSource.getZInt(), 0);
-//    }
 }

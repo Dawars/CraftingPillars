@@ -3,6 +3,7 @@ package me.dawars.CraftingPillars.tiles;
 import me.dawars.CraftingPillars.BlockIds;
 import me.dawars.CraftingPillars.api.sentry.IBehaviorSentryItem;
 import me.dawars.CraftingPillars.api.sentry.SentryBehaviors;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockSourceImpl;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
@@ -12,6 +13,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.world.World;
 
 public class TileEntitySentryPillar extends BaseTileEntity implements IInventory, ISidedInventory
 {
@@ -43,10 +45,10 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 					if (this.worldObj.loadedEntityList.get(i) instanceof EntityMob)
 					{
 						EntityMob currentMob = (EntityMob) this.worldObj.loadedEntityList.get(i);
-						if(!currentMob.isDead)
+						if(currentMob.isEntityAlive() && !currentMob.isInvisible())
 						{
 							float distance = (float) currentMob.getDistanceSq(xCoord, yCoord, zCoord);
-							if (distance <= BlockIds.sentryRange && distance < closest && isVisible(xCoord, yCoord, zCoord, currentMob)) {
+							if (distance < closest && isVisible(xCoord, yCoord, zCoord, currentMob)) {
 								closest = distance;
 								this.target = currentMob;
 							}
@@ -59,8 +61,6 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 			{
 				if(this.target != null && !this.target.isDead && this.target.getDistanceSq(xCoord, yCoord, zCoord) <= BlockIds.sentryRange && this.getStackInSlot(0) != null)
 				{
-//					System.out.println(target.getEntityName() + " Distance: " + this.target.getDistance(xCoord, yCoord, zCoord));
-
 					if(ammo != null)
 					{
 				        BlockSourceImpl blocksourceimpl = new BlockSourceImpl(worldObj, xCoord, yCoord, zCoord);
@@ -84,13 +84,43 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 		super.updateEntity();
 	}
 	
-	private boolean isVisible(int x, int y, int z, EntityMob mob) {
-		//TODO: code here - FBalazs
-		
-		
+	private boolean isVisible(int x, int y, int z, EntityMob mob)
+	{
+
+		double i = x;//block
+		double j = y + 1;
+		double k = z;
+		double distance = i*i+j*j+k*k;
+		double distanceSqrt = Math.sqrt(distance);
+
+		double dx = (mob.posX - i) / distanceSqrt;
+		double dy = (mob.posY + mob.getEyeHeight() - j) / distanceSqrt;
+		double dz = (mob.posZ - k) / distanceSqrt;
+
+		while(i*i+j*j+k*k < distance)
+		{
+			if (collide((int) i, (int) j, (int) k))
+			{
+				return false;
+			}
+			if (i == mob.posX && j == mob.posY+mob.getEyeHeight() && k == mob.posZ)
+			{
+				return true;
+			}
+			i += dx;
+			j += dy;
+			k += dz;
+		}
 		return true;
 	}
 	
+	private boolean collide(int i, int j, int k) {
+		 int id = worldObj.getBlockId(i, j, k);
+		    Block block = Block.blocksList[id];
+		    if(block == null) return false;
+		return !worldObj.isAirBlock(i, j, k) && !block.isBlockReplaceable(worldObj, i, j, k);
+	}
+
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)
 	{

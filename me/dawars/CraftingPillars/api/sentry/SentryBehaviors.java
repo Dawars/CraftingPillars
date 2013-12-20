@@ -15,13 +15,9 @@ public class SentryBehaviors {
 	/** Registry for all sentry behaviors. */
 	private static Map sentryBehaviorRegistry = new HashMap();
 	
-	public static void registerDispenserBehaviours()
-	{
-		add(Item.arrow.itemID, new SentryBehaviorArrow());
-		add(Item.snowball.itemID, new SentryBehaviorSnowball());
-		add(Item.fireballCharge.itemID, new SentryBehaviorFireball());
-	}
-	
+	/**
+     * Use this method to register a new behavior for an item/block.
+     */	
 	public static void add(int itemID, Object behavior)
 	{
 		if(behavior instanceof IBehaviorSentryItem)
