@@ -22,7 +22,7 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 	public float rot = 0F;
 	public int cooldown = BlockIds.sentryCooldown;
 	public boolean showNum = false;
-
+	
 	private EntityMob target = null;
 	
 	@Override
@@ -35,20 +35,22 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 				this.rot -= 360F;
 		}
 		
-		if(!worldObj.isRemote)
+		if(!this.worldObj.isRemote)
 		{
 			ItemStack ammo = this.getStackInSlot(0);
-			if(ammo != null && this.worldObj.loadedEntityList != null )
+			if(ammo != null && this.worldObj.loadedEntityList != null)
 			{
 				float closest = Float.MAX_VALUE;
-				for (int i = 0; i < this.worldObj.loadedEntityList.size(); i++) {
-					if (this.worldObj.loadedEntityList.get(i) instanceof EntityMob)
+				for(int i = 0; i < this.worldObj.loadedEntityList.size(); i++)
+				{
+					if(this.worldObj.loadedEntityList.get(i) instanceof EntityMob)
 					{
-						EntityMob currentMob = (EntityMob) this.worldObj.loadedEntityList.get(i);
+						EntityMob currentMob = (EntityMob)this.worldObj.loadedEntityList.get(i);
 						if(currentMob.isEntityAlive() && !currentMob.isInvisible())
 						{
-							float distance = (float) currentMob.getDistanceSq(xCoord, yCoord, zCoord);
-							if (distance < closest && isVisible(xCoord, yCoord, zCoord, currentMob)) {
+							float distance = (float)currentMob.getDistanceSq(xCoord, yCoord, zCoord);
+							if(distance < closest && isVisible(xCoord, yCoord, zCoord, currentMob))
+							{
 								closest = distance;
 								this.target = currentMob;
 							}
@@ -63,20 +65,22 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 				{
 					if(ammo != null)
 					{
-				        BlockSourceImpl blocksourceimpl = new BlockSourceImpl(worldObj, xCoord, yCoord, zCoord);
-				        IBehaviorSentryItem ibehaviorsentryitem = (IBehaviorSentryItem)SentryBehaviors.get(ammo.itemID);
-				        
-				        if(ibehaviorsentryitem != null)
-				        {
-
-				        	ItemStack itemstack1 = ibehaviorsentryitem.dispense(blocksourceimpl, this.target, ammo);
-		                    this.setInventorySlotContents(0, itemstack1.stackSize == 0 ? null : itemstack1);
-				        }
-				        
-			            this.cooldown = BlockIds.sentryCooldown;
+						BlockSourceImpl blocksourceimpl = new BlockSourceImpl(worldObj, xCoord, yCoord, zCoord);
+						IBehaviorSentryItem ibehaviorsentryitem = (IBehaviorSentryItem)SentryBehaviors.get(ammo.itemID);
+						
+						if(ibehaviorsentryitem != null)
+						{
+							
+							ItemStack itemstack1 = ibehaviorsentryitem.dispense(blocksourceimpl, this.target, ammo);
+							this.setInventorySlotContents(0, itemstack1.stackSize == 0 ? null : itemstack1);
+						}
+						
+						this.cooldown = BlockIds.sentryCooldown;
 					}
 				}
-			} else {
+			}
+			else
+			{
 				this.cooldown--;
 			}
 		}
@@ -86,27 +90,27 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 	
 	private boolean isVisible(int x, int y, int z, EntityMob mob)
 	{
-
-		double i = x;//block
-		double j = y + 1;
-		double k = z;
-		double distance = i*i+j*j+k*k;
+		double x1 = x+0.5D;
+		double y1 = y+1.5D;
+		double z1 = z+0.5D;
+		double x2 = mob.posX;
+		double y2 = mob.posY+mob.getEyeHeight();
+		double z2 = mob.posZ;
+		double distance = (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1) + (z2-z1)*(z2-z1);
 		double distanceSqrt = Math.sqrt(distance);
-
-		double dx = (mob.posX - i) / distanceSqrt;
-		double dy = (mob.posY + mob.getEyeHeight() - j) / distanceSqrt;
-		double dz = (mob.posZ - k) / distanceSqrt;
-
-		while(i*i+j*j+k*k < distance)
+		
+		double dx = (x2-x1)/distanceSqrt;
+		double dy = (y2-y1)/distanceSqrt;
+		double dz = (z2-z1)/distanceSqrt;
+		
+		double i = x1;
+		double j = y1;
+		double k = z1;
+		
+		while((i-x1)*(i-x1) + (j-y1)*(j-y1) + (k-z1)*(k-z1) < distance)
 		{
-			if (collide((int) i, (int) j, (int) k))
-			{
+			if(collide(i, j, k))
 				return false;
-			}
-			if (i == mob.posX && j == mob.posY+mob.getEyeHeight() && k == mob.posZ)
-			{
-				return true;
-			}
 			i += dx;
 			j += dy;
 			k += dz;
@@ -114,13 +118,24 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 		return true;
 	}
 	
-	private boolean collide(int i, int j, int k) {
-		 int id = worldObj.getBlockId(i, j, k);
-		    Block block = Block.blocksList[id];
-		    if(block == null) return false;
-		return !worldObj.isAirBlock(i, j, k) && !block.isBlockReplaceable(worldObj, i, j, k);
+	private boolean collide(double i, double j, double k)
+	{
+		Block block = Block.blocksList[this.worldObj.getBlockId((int)Math.floor(i), (int)Math.floor(j), (int)Math.floor(k))];
+		if(block == null)
+			return false;
+		System.out.println("Checking for collision at: "+(int)Math.floor(i)+" "+(int)Math.floor(j)+" "+(int)Math.floor(k));
+		i -= Math.floor(i);
+		j -= Math.floor(j);
+		k -= Math.floor(k);
+		System.out.println(i+" "+j+" "+k);
+		return block.getBlockBoundsMinX() <= i
+				&& i <= block.getBlockBoundsMaxX()
+				&& block.getBlockBoundsMinY() <= j
+				&& j <= block.getBlockBoundsMaxY()
+				&& block.getBlockBoundsMinZ() <= k
+				&& k <= block.getBlockBoundsMaxZ();
 	}
-
+	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)
 	{
@@ -130,7 +145,7 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 		NBTTagList nbtlist = nbt.getTagList("Items");
 		for(int i = 0; i < nbtlist.tagCount(); i++)
 		{
-			NBTTagCompound nbtslot = (NBTTagCompound) nbtlist.tagAt(i);
+			NBTTagCompound nbtslot = (NBTTagCompound)nbtlist.tagAt(i);
 			int j = nbtslot.getByte("Slot") & 255;
 			
 			if((j >= 0) && (j < this.getSizeInventory()))
@@ -150,7 +165,7 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 			if(this.inventory[i] != null)
 			{
 				NBTTagCompound nbtslot = new NBTTagCompound();
-				nbtslot.setByte("Slot", (byte) i);
+				nbtslot.setByte("Slot", (byte)i);
 				this.inventory[i].writeToNBT(nbtslot);
 				nbtlist.appendTag(nbtslot);
 			}
@@ -158,7 +173,7 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 		nbt.setTag("Items", nbtlist);
 		nbt.setBoolean("showNum", this.showNum);
 	}
-
+	
 	public void dropItemFromSlot(int slot, int amount, EntityPlayer player)
 	{
 		if(this.worldObj.isRemote)
@@ -277,7 +292,7 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side)
 	{
-		return new int[] {0};
+		return new int[]{0};
 	}
 	
 	@Override
