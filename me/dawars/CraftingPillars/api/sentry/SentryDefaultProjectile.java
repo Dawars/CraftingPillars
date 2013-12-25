@@ -51,10 +51,7 @@ public abstract class SentryDefaultProjectile implements IBehaviorSentryItem
     /**
      * Order clients to display particles for shooting.
      */
-    protected void spawnParticles(IBlockSource blockSource)
-    {
-        blockSource.getWorld().playAuxSFX(2000, blockSource.getXInt(), blockSource.getYInt(), blockSource.getZInt(), 6);
-    }
+    protected void spawnParticles(IBlockSource blockSource) {}
 
     /**
      * Return the projectile entity spawned by the Sentry behavior.

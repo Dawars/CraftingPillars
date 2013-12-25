@@ -8,6 +8,7 @@ public interface IBehaviorSentryItem
 {
     /**
      * Dispenses the specified ItemStack from a Sentry.
+     * @return - returns the ammo remaining in the Sentry
      */
     ItemStack dispense(IBlockSource iblocksource, EntityMob target, ItemStack itemstack);
 }

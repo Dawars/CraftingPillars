@@ -474,7 +474,7 @@ public class CraftingPillars
 		Calendar c = Calendar.getInstance();
 		if(debug)
 			return 24;
-		if(c.get(Calendar.YEAR) == year && c.get(Calendar.MONTH) == Calendar.DECEMBER && c.get(Calendar.DAY_OF_MONTH) <= 24)
+		if(c.get(Calendar.YEAR) == year && c.get(Calendar.MONTH) == Calendar.DECEMBER/* && c.get(Calendar.DAY_OF_MONTH) <= 24*/)
 			return c.get(Calendar.DAY_OF_MONTH);
 		else
 			return 0;
