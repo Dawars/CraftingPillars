@@ -77,6 +77,15 @@ public class VersionChecker
 				s += "."+this.digits[i];
 			return s;
 		}
+
+		public boolean lessMajor(Version v) {
+			for(int i = 0; i < 2 && i < v.digits.length; i++)
+				if(this.digits[i] < v.digits[i])
+					return true;
+				else if(this.digits[i] > v.digits[i])
+					return false;
+			return this.digits.length < v.digits.length;
+		}
 	}
 	
 	/*public static class MultiVersion
@@ -122,6 +131,10 @@ public class VersionChecker
 					}
 				} else {
 					//TODO: add check for major updates e.g for 1.5
+					if(line.split(" ")[0].equals(CraftingPillars.proxy.getMinecraftVersion()) && new Version(CraftingPillars.version).lessMajor(new Version(line.split(" ")[1])))
+					{
+						update = true;
+					}
 				}
 				
 				pline = line;
