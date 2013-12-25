@@ -20,17 +20,11 @@ public class TileEntityChristmasPresent extends BaseTileEntity
 		0xdbdb24
 	};
 	
-	public TileEntityChristmasPresent()
-	{
-		Random rand = FMLClientHandler.instance().getClient().theWorld.rand;
-		this.color = rand.nextInt(colors.length/2);
-		//this.model = rand.nextBoolean();
-	}
-	
 	@Override
 	public void setWorldObj(World world)
 	{
 		super.setWorldObj(world);
+		this.color = this.random.nextInt(colors.length/2);
 		//if(world != null)
 			//world.setBlockMetadataWithNotify(this.xCoord, this.yCoord, this.zCoord, (this.model ? 1 : 0), 2);
 	}

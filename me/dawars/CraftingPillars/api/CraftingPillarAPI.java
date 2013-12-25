@@ -5,9 +5,10 @@ import java.util.Map;
 
 import me.dawars.CraftingPillars.CraftingPillars;
 
-public class CraftingPillarAPI {
+public class CraftingPillarAPI
+{
 	private static Map diskTextures = new HashMap();
-
+	
 	public static void addDiskTexture(int id, String url)
 	{
 		diskTextures.put(id, url);
@@ -17,5 +18,4 @@ public class CraftingPillarAPI {
 	{
 		return (String) (diskTextures.get(id) != null ? diskTextures.get(id) : CraftingPillars.id + ":textures/models/disk_unknown.png");
 	}
-
 }
