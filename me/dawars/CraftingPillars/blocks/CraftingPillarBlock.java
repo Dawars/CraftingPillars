@@ -123,10 +123,12 @@ public class CraftingPillarBlock extends BaseBlockContainer
 				
 				if(workTile.getStackInSlot(i) == null)
 				{
+					
+					ItemStack in = player.getCurrentEquippedItem().copy();
 					if(!player.capabilities.isCreativeMode)
 						player.getCurrentEquippedItem().stackSize--;
 					
-					ItemStack in = new ItemStack(player.getCurrentEquippedItem().itemID, 1, player.getCurrentEquippedItem().getItemDamage());
+					in.stackSize = 1;
 					workTile.setInventorySlotContents(i, in);
 				}
 				else if((workTile.getStackInSlot(i).isItemEqual(player.getCurrentEquippedItem())) && (workTile.getStackInSlot(i).stackSize < workTile.getStackInSlot(i).getMaxStackSize()))

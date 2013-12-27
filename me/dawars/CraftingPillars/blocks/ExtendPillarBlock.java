@@ -19,7 +19,7 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 
-public class ExtendPillarBlock extends BaseBlockContainer
+public class ExtendPillarBlock extends BaseBlock
 {
 	public ExtendPillarBlock(int id, Material mat)
 	{
@@ -65,13 +65,13 @@ public class ExtendPillarBlock extends BaseBlockContainer
 		
 		return meta;
     }
-	
-	@Override
-	public TileEntity createNewTileEntity(World world)
-	{
-		TileEntityExtendPillar tile = new TileEntityExtendPillar();
-		return tile;
-	}
+//	
+//	@Override
+//	public TileEntity createNewTileEntity(World world)
+//	{
+//		TileEntityExtendPillar tile = new TileEntityExtendPillar();
+//		return tile;
+//	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)

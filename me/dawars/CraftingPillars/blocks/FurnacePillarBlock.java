@@ -148,7 +148,7 @@ public class FurnacePillarBlock extends BaseBlockContainer
 		
 		TileEntityFurnacePillar pillarTile = (TileEntityFurnacePillar) world.getBlockTileEntity(x, y, z);
 		
-		if(!player.isSneaking() && player.inventory.getCurrentItem() == null)
+		if(!player.isSneaking() && player.inventory.getCurrentItem() == null && hitY < 1F)
 		{
 			pillarTile.showNum = !pillarTile.showNum;
 			pillarTile.onInventoryChanged();
@@ -171,7 +171,8 @@ public class FurnacePillarBlock extends BaseBlockContainer
 			{
 				if(pillarTile.getStackInSlot(1) == null)
 				{
-					ItemStack in = new ItemStack(player.getCurrentEquippedItem().itemID, 1, player.getCurrentEquippedItem().getItemDamage());
+					ItemStack in = player.getCurrentEquippedItem().copy();
+					in.stackSize = 1;
 					if(TileEntityFurnace.isItemFuel(in))
 					{
 						pillarTile.setInventorySlotContents(1, in);
@@ -192,7 +193,8 @@ public class FurnacePillarBlock extends BaseBlockContainer
 			{
 				if(pillarTile.getStackInSlot(0) == null)
 				{
-					ItemStack in = new ItemStack(player.getCurrentEquippedItem().itemID, 1, player.getCurrentEquippedItem().getItemDamage());
+					ItemStack in = player.getCurrentEquippedItem().copy();
+					in.stackSize = 1;
 					if(FurnaceRecipes.smelting().getSmeltingResult(in) != null)
 					{
 						pillarTile.setInventorySlotContents(0, in);

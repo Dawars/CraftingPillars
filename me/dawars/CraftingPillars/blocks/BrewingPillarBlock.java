@@ -103,7 +103,8 @@ public class BrewingPillarBlock extends BaseBlockContainer
 			{
 				if(pillarTile.getStackInSlot(sideSlot) == null)
 				{
-					ItemStack in = new ItemStack(player.getCurrentEquippedItem().itemID, 1, player.getCurrentEquippedItem().getItemDamage());
+					ItemStack in = player.getCurrentEquippedItem().copy();
+					in.stackSize = 1;
 					if(in.getItem() instanceof ItemPotion || in.itemID == Item.glassBottle.itemID)
 					{
 						pillarTile.setInventorySlotContents(sideSlot, in);
@@ -117,7 +118,8 @@ public class BrewingPillarBlock extends BaseBlockContainer
 			{
 				if(pillarTile.getStackInSlot(topSlot) == null)
 				{
-					ItemStack in = new ItemStack(player.getCurrentEquippedItem().itemID, 1, player.getCurrentEquippedItem().getItemDamage());
+					ItemStack in = player.getCurrentEquippedItem().copy();
+					in.stackSize = 1;
 					if(Item.itemsList[in.itemID].isPotionIngredient())
 					{
 						pillarTile.setInventorySlotContents(topSlot, in);

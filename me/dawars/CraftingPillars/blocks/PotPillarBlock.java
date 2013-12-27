@@ -112,7 +112,8 @@ public class PotPillarBlock extends BaseBlockContainer
 						if(!player.capabilities.isCreativeMode)
 							player.getCurrentEquippedItem().stackSize--;
 						
-						ItemStack in = new ItemStack(player.getCurrentEquippedItem().itemID, 1, player.getCurrentEquippedItem().getItemDamage());
+						ItemStack in = player.getCurrentEquippedItem().copy();
+						in.stackSize = 1;
 						pillarTile.setInventorySlotContents(0, in);
 					}
 				}
