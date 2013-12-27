@@ -322,6 +322,6 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 	}
 
 	public int getLightLevel() {
-		return this.burnTime > 0 ? 1 : 0;
+		return this.burnTime > 0 ? 14 : 0;
 	}
 }
