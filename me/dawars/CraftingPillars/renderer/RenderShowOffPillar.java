@@ -406,8 +406,18 @@ public class RenderShowOffPillar extends TileEntitySpecialRenderer implements IS
 			glPushMatrix();
 			citem.hoverStart = -workTile.rot;
 			citem.setEntityItemStack(workTile.getStackInSlot(0));
-			resultRenderer.render(citem, 0.5F, 1.3F, 0.5F, workTile.showNum);
+			resultRenderer.render(citem, 0.5F, 1.3F, 0.5F, false);
 			glPopMatrix();
+			
+			if(workTile.getStackInSlot(0) != null)
+	        {
+				if(workTile.showNum)
+				{
+					glDisable(GL_LIGHTING);
+					RenderingHelper.renderFloatingTextWithBackground(0.5F, 1.9F, 0.5F, 0.2F, workTile.getStackInSlot(0).getDisplayName(), Color.WHITE.getRGB(), new Color(0F, 0F, 0F, 0.5F));
+					glEnable(GL_LIGHTING);
+				}
+	        }
 		}
 		glPopMatrix();
 	}

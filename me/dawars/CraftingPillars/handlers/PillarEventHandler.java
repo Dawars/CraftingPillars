@@ -1,5 +1,6 @@
 package me.dawars.CraftingPillars.handlers;
 
+import java.util.Calendar;
 import java.util.Random;
 
 import me.dawars.CraftingPillars.CraftingPillars;
@@ -50,6 +51,18 @@ public class PillarEventHandler
 	@ForgeSubscribe
 	public void onEntityJoinWorld(EntityJoinWorldEvent event)
 	{
+		Calendar c = Calendar.getInstance();
+		Calendar e = Calendar.getInstance();
+		e.set(Calendar.YEAR, 2013);
+		e.set(Calendar.MONTH, Calendar.DECEMBER);
+		e.set(Calendar.DAY_OF_MONTH, 26);
+		e.set(Calendar.HOUR_OF_DAY, 0);
+		e.set(Calendar.MINUTE, 0);
+		e.set(Calendar.MILLISECOND, 0);
+		
+		if(c.after(e))
+			return;
+			
 		if(event.entity instanceof EntityPlayer)
 		{
 			EntityPlayer player = (EntityPlayer)event.entity;

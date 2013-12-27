@@ -58,11 +58,11 @@ public class FreezerPillarBlock extends BaseBlockContainer
 		ItemStack current = entityplayer.inventory.getCurrentItem();
 		TileEntityFreezerPillar tank = (TileEntityFreezerPillar) world.getBlockTileEntity(i, j, k);
 
-		if(current == null && !entityplayer.isSneaking())
+		if((current == null || FluidContainerRegistry.getFluidForFilledItem(current) == null) && !entityplayer.isSneaking())
 		{
 			tank.showNum = !tank.showNum;
 			tank.onInventoryChanged();
-		} else {
+		} else if(hitY < 1.0F) {
 			FluidStack fluid = FluidContainerRegistry.getFluidForFilledItem(current);
 			
 			

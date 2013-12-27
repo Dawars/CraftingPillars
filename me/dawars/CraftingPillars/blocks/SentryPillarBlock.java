@@ -3,6 +3,7 @@ package me.dawars.CraftingPillars.blocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import me.dawars.CraftingPillars.CraftingPillars;
+import me.dawars.CraftingPillars.api.sentry.SentryBehaviors;
 import me.dawars.CraftingPillars.tiles.TileEntitySentryPillar;
 import me.dawars.CraftingPillars.tiles.TileEntitySentryPillar;
 import net.minecraft.block.Block;
@@ -69,21 +70,24 @@ public class SentryPillarBlock extends BaseBlockContainer
 			}
 			else if(player.getCurrentEquippedItem() != null)
 			{//put in
-				if(player.getCurrentEquippedItem().itemID == this.blockID)
-					player.addStat(CraftingPillars.achievementShowoff, 1);
-				if(pillarTile.getStackInSlot(0) == null)
+				ItemStack equipped = player.getCurrentEquippedItem();
+				ItemStack itemstack = pillarTile.getStackInSlot(0);
+				if(itemstack == null)
 				{//slot empty
-					if(!player.capabilities.isCreativeMode)
-						player.getCurrentEquippedItem().stackSize--;
-					
-					ItemStack in = player.getCurrentEquippedItem().copy();
-					in.stackSize = 1;
-					pillarTile.setInventorySlotContents(0, in);
+					if(SentryBehaviors.get(equipped.itemID) != null)
+					{
+						ItemStack in = equipped.copy();
+						in.stackSize = 1;
+						pillarTile.setInventorySlotContents(0, in);
+						
+						if(!player.capabilities.isCreativeMode)
+							equipped.stackSize--;
+					}
 				}
-				else if((pillarTile.getStackInSlot(0).isItemEqual(player.getCurrentEquippedItem())) && (pillarTile.getStackInSlot(0).stackSize < pillarTile.getStackInSlot(0).getMaxStackSize()))
+				else if(itemstack.isItemEqual(equipped) && itemstack.stackSize < itemstack.getMaxStackSize())
 				{//slot not empty
 					if(!player.capabilities.isCreativeMode)
-						player.getCurrentEquippedItem().stackSize--;
+						equipped.stackSize--;
 					
 					pillarTile.decrStackSize(0, -1);
 					pillarTile.onInventoryChanged();

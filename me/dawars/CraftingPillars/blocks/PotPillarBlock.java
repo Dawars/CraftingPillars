@@ -89,7 +89,7 @@ public class PotPillarBlock extends BaseBlockContainer
 		
 		TileEntityPotPillar pillarTile = (TileEntityPotPillar) world.getBlockTileEntity(x, y, z);
 
-		if(hitY < 1F && !player.isSneaking() && player.getCurrentEquippedItem() == null)
+		if(hitY < 1F && !player.isSneaking() /*&& player.getCurrentEquippedItem() == null*/)
 		{
 			pillarTile.showNum = !pillarTile.showNum;
 			pillarTile.onInventoryChanged();

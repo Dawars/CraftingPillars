@@ -86,7 +86,7 @@ public class ContainerAdventCalendar2013 extends BaseContainer implements IInven
 			new ItemStack(CraftingPillars.itemRibbonDiamond, 3),
 			new ItemStack(CraftingPillars.itemWinterFood2013, 10, 7),
 			new ItemStack(CraftingPillars.blockChristmasLight, 7, 0),
-			new ItemStack(Block.dirt.blockID, 1, 0)//TODO: coming soon text
+			new ItemStack(CraftingPillars.blockSentryPillar.blockID, 1, 0)
 		};
 		
 		tooltips = new String[]{
@@ -113,7 +113,7 @@ public class ContainerAdventCalendar2013 extends BaseContainer implements IInven
 			"Just take it!",
 			"Szaloncukor for everyone!",
 			"Put it everywhere!",
-			"Coming Soon - Please update the mod!"
+			"Defend your house efficiently!"
 		};
 	}
 	

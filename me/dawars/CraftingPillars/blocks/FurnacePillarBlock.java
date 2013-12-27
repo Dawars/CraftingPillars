@@ -2,13 +2,8 @@ package me.dawars.CraftingPillars.blocks;
 
 import java.util.Random;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import me.dawars.CraftingPillars.CraftingPillars;
-import me.dawars.CraftingPillars.tiles.TileEntityCraftingPillar;
 import me.dawars.CraftingPillars.tiles.TileEntityFurnacePillar;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLivingBase;
@@ -24,7 +19,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class FurnacePillarBlock extends BaseBlockContainer
 {
@@ -148,7 +147,7 @@ public class FurnacePillarBlock extends BaseBlockContainer
 		
 		TileEntityFurnacePillar pillarTile = (TileEntityFurnacePillar) world.getBlockTileEntity(x, y, z);
 		
-		if(!player.isSneaking() && player.inventory.getCurrentItem() == null && hitY < 1F)
+		if(!player.isSneaking() && hitY < 1F && (player.inventory.getCurrentItem() == null || !TileEntityFurnace.isItemFuel(player.inventory.getCurrentItem())))
 		{
 			pillarTile.showNum = !pillarTile.showNum;
 			pillarTile.onInventoryChanged();
@@ -265,6 +264,17 @@ public class FurnacePillarBlock extends BaseBlockContainer
 			world.spawnParticle("flame", rx, ry, rz, 0D, 0D, 0D);
 		}
 	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+    public int getLightValue(IBlockAccess world, int x, int y, int z) {
+            TileEntity tile = world.getBlockTileEntity(x, y, z);
+            if (tile instanceof TileEntityFurnacePillar) {
+            	TileEntityFurnacePillar workPillar = (TileEntityFurnacePillar) tile;
+                    return workPillar.getLightLevel();
+            }
+            return super.getLightValue(world, x, y, z);
+    }
 	
 	@Override
 	@SideOnly(Side.CLIENT)

@@ -79,7 +79,8 @@ public class BrewingPillarBlock extends BaseBlockContainer
 		int topSlot = 4;
 		int sideSlot = side-2;
 		
-		if(!player.isSneaking() && player.inventory.getCurrentItem() == null)
+		if(!player.isSneaking() && hitY < 1.0F && (player.inventory.getCurrentItem() == null ||
+				!(player.inventory.getCurrentItem().getItem() instanceof ItemPotion || player.inventory.getCurrentItem().itemID == Item.glassBottle.itemID)))
 		{
 			pillarTile.showNum = !pillarTile.showNum;
 			pillarTile.onInventoryChanged();

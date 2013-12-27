@@ -255,7 +255,8 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 		glPushMatrix();
 		
 			glTranslated(x+0.5D, y, z+0.5D);
-
+			glRotatef(90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
+			
 			//Input
 			if(pillarTile.getStackInSlot(0) != null)
 			{

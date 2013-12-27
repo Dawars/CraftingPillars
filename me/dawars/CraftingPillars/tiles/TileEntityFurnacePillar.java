@@ -1,41 +1,16 @@
 package me.dawars.CraftingPillars.tiles;
 
-import java.util.Random;
-
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import me.dawars.CraftingPillars.CraftingPillars;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockFurnace;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.item.ItemTool;
-import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
-import net.minecraft.stats.AchievementList;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
+import net.minecraft.world.EnumSkyBlock;
 
 public class TileEntityFurnacePillar extends BaseTileEntity implements IInventory, ISidedInventory
 {
@@ -46,6 +21,8 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 	public float rot = 0F;
 	public boolean showNum = false;
 
+    private int prevLightValue = 0;
+    
 	@Override
 	public void updateEntity()
 	{
@@ -56,6 +33,12 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 			this.rot += 0.1F;
 			if(this.rot >= 360F)
 				this.rot -= 360F;
+			
+            int lightValue = getLightLevel();
+            if (prevLightValue != lightValue) {
+                    prevLightValue = lightValue;
+                    worldObj.updateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
+            }
 		}
 		
 		if(this.burnTime > 0)
@@ -336,5 +319,9 @@ public class TileEntityFurnacePillar extends BaseTileEntity implements IInventor
 		if(this.inventory[1].stackSize <= 0)
 			this.inventory[1] = null;
 		this.onInventoryChanged();
+	}
+
+	public int getLightLevel() {
+		return this.burnTime > 0 ? 1 : 0;
 	}
 }
