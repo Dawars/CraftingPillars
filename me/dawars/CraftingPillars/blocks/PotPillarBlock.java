@@ -103,8 +103,6 @@ public class PotPillarBlock extends BaseBlockContainer
 			}
 			else if(player.getCurrentEquippedItem() != null)
 			{//put in
-				if(player.getCurrentEquippedItem().itemID == this.blockID)
-					player.addStat(CraftingPillars.achievementShowoff, 1);
 				if(pillarTile.getStackInSlot(0) == null)
 				{//slot empty
 					if(pillarTile.isItemValidForSlot(0, player.getCurrentEquippedItem()))
