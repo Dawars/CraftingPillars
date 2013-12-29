@@ -2,6 +2,8 @@ package me.dawars.CraftingPillars.renderer;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import java.awt.Color;
+
 import javax.swing.Renderer;
 
 import org.lwjgl.opengl.GL11;
@@ -263,7 +265,7 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 				glPushMatrix();
 					citem.hoverStart = 0F;
 					citem.setEntityItemStack(pillarTile.getStackInSlot(0));
-					resultRenderer.render(citem, 0F, 1.125F, 0F, pillarTile.showNum);
+					resultRenderer.render(citem, 0F, 1.125F, 0F, false);
 				glPopMatrix();
 			}
 		
@@ -274,7 +276,7 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 					glTranslatef(0F, 1.75F, 0F);
 					citem.hoverStart = 0F;
 					citem.setEntityItemStack(pillarTile.getStackInSlot(2));
-					resultRenderer.render(citem, 0F, 0F, 0F, pillarTile.showNum);
+					resultRenderer.render(citem, 0F, 0F, 0F, false);
 				glPopMatrix();
 			}
 			
@@ -294,9 +296,35 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 			{
 				citem.hoverStart = 0F;
 				citem.setEntityItemStack(pillarTile.getStackInSlot(1));
-				itemRenderer.render(citem, 0F, 0.3F, 0F, pillarTile.showNum);
+				itemRenderer.render(citem, 0F, 0.3F, 0F, false);
 			}
 		glPopMatrix();
+		
+		if(pillarTile.showNum)
+		{
+			glPushMatrix();
+			glTranslated(x + 0.5D, y, z + 0.5D);
+
+			if(pillarTile.getStackInSlot(0) != null)
+			{
+				glDisable(GL_LIGHTING);
+				RenderingHelper.renderFloatingTextWithBackground(0, 1.425F, 0, 0.4F, ""+pillarTile.getStackInSlot(0).stackSize, Color.white.getRGB(), new Color(0F, 0F, 0F, 0.5F));
+				glEnable(GL_LIGHTING);
+			}
+			if(pillarTile.getStackInSlot(1) != null)
+			{
+				glDisable(GL_LIGHTING);
+				RenderingHelper.renderFloatingTextWithBackground(0, 0.7F, 0, 0.4F, ""+pillarTile.getStackInSlot(1).stackSize, Color.white.getRGB(), new Color(0F, 0F, 0F, 0.5F));
+				glEnable(GL_LIGHTING);
+			}
+			if(pillarTile.getStackInSlot(2) != null)
+			{
+				glDisable(GL_LIGHTING);
+				RenderingHelper.renderFloatingTextWithBackground(0, 2.15F, 0, 0.4F, ""+pillarTile.getStackInSlot(2).stackSize, Color.white.getRGB(), new Color(0F, 0F, 0F, 0.5F));
+				glEnable(GL_LIGHTING);
+			}
+			glPopMatrix();
+		}
 	}
 	
 	@Override

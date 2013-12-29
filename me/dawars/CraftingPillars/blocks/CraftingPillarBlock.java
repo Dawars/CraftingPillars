@@ -80,6 +80,34 @@ public class CraftingPillarBlock extends BaseBlockContainer
 		
 		TileEntityCraftingPillar workTile = (TileEntityCraftingPillar) world.getBlockTileEntity(x, y, z);
 
+		ItemStack equipped = player.getCurrentEquippedItem();
+		
+		//Thaumcraft start
+		if(CraftingPillars.modThaumcraft)
+		{
+			if(hitY < 1F && hitY > 0F)
+			{
+				if(!player.isSneaking())
+				{
+					if(equipped != null && workTile.getStackInSlot(10) == null && workTile.isItemValidForSlot(10, equipped))
+					{
+						ItemStack in = equipped.copy();
+						if(!player.capabilities.isCreativeMode)
+							equipped.stackSize--;
+						
+						in.stackSize = 1;
+						workTile.setInventorySlotContents(10, in);
+						return true;
+					}
+				} else {
+					if(workTile.getStackInSlot(10) != null)
+						workTile.dropItemFromSlot(10, player);
+					return true;
+				}
+			}
+		}
+		//Thaumcraft end
+		
 		if(hitY < 1F && !player.isSneaking())
 		{
 			workTile.showNum = !workTile.showNum;
@@ -106,7 +134,7 @@ public class CraftingPillarBlock extends BaseBlockContainer
 				if(workTile.getStackInSlot(i) != null)
 					workTile.dropItemFromSlot(i, player);
 			}
-			else if(player.getCurrentEquippedItem() != null)
+			else if(equipped != null)
 			{
 				hitX = (int) Math.floor(hitX / 0.33F);
 				if(hitX > 2)
@@ -124,17 +152,17 @@ public class CraftingPillarBlock extends BaseBlockContainer
 				if(workTile.getStackInSlot(i) == null)
 				{
 					
-					ItemStack in = player.getCurrentEquippedItem().copy();
+					ItemStack in = equipped.copy();
 					if(!player.capabilities.isCreativeMode)
-						player.getCurrentEquippedItem().stackSize--;
+						equipped.stackSize--;
 					
 					in.stackSize = 1;
 					workTile.setInventorySlotContents(i, in);
 				}
-				else if((workTile.getStackInSlot(i).isItemEqual(player.getCurrentEquippedItem())) && (workTile.getStackInSlot(i).stackSize < workTile.getStackInSlot(i).getMaxStackSize()))
+				else if((workTile.getStackInSlot(i).isItemEqual(equipped)) && (workTile.getStackInSlot(i).stackSize < workTile.getStackInSlot(i).getMaxStackSize()))
 				{
 					if(!player.capabilities.isCreativeMode)
-						player.getCurrentEquippedItem().stackSize--;
+						equipped.stackSize--;
 					
 					workTile.decrStackSize(i, -1);
 				}

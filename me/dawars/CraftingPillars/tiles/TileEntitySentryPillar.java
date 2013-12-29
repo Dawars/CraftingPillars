@@ -123,11 +123,11 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 		Block block = Block.blocksList[this.worldObj.getBlockId((int)Math.floor(i), (int)Math.floor(j), (int)Math.floor(k))];
 		if(block == null)
 			return false;
-		System.out.println("Checking for collision at: "+(int)Math.floor(i)+" "+(int)Math.floor(j)+" "+(int)Math.floor(k));
+//		System.out.println("Checking for collision at: "+(int)Math.floor(i)+" "+(int)Math.floor(j)+" "+(int)Math.floor(k));
 		i -= Math.floor(i);
 		j -= Math.floor(j);
 		k -= Math.floor(k);
-		System.out.println(i+" "+j+" "+k);
+//		System.out.println(i+" "+j+" "+k);
 		return block.getBlockBoundsMinX() <= i
 				&& i <= block.getBlockBoundsMaxX()
 				&& block.getBlockBoundsMinY() <= j

@@ -7,6 +7,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
+import thaumcraft.api.ItemApi;
+
 import me.dawars.CraftingPillars.api.CraftingPillarAPI;
 import me.dawars.CraftingPillars.api.sentry.*;
 import me.dawars.CraftingPillars.blocks.*;
@@ -65,8 +67,12 @@ public class CraftingPillars
 	// The Handler For Opening Guis
     private GuiHandler guiHandler = new GuiHandler();
 	public static Property checkUpdates;
+	
 	public static boolean modForestry = false;
 	public static boolean modElysium = false;
+	public static boolean modThaumcraft = false;
+	
+	public static ItemStack itemWandThaumcraft;
 
 	@SidedProxy(clientSide = "me.dawars.CraftingPillars.proxy.ClientProxy", serverSide = "me.dawars.CraftingPillars.proxy.CommonProxy")
 	public static CommonProxy proxy;
@@ -351,16 +357,10 @@ public class CraftingPillars
 		GameRegistry.addShapelessRecipe(new ItemStack(blockFurnacePillar), new ItemStack(Block.furnaceIdle), new ItemStack(blockBasePillar));
 		GameRegistry.addShapelessRecipe(new ItemStack(blockBrewingPillar), new ItemStack(Item.brewingStand), new ItemStack(blockBasePillar));
 		GameRegistry.addShapelessRecipe(new ItemStack(blockDiskPlayerPillar), new ItemStack(Block.jukebox), new ItemStack(blockBasePillar));
-		GameRegistry.addShapelessRecipe(new ItemStack(blockSentryPillar), new ItemStack(Block.dispenser), new ItemStack(blockSentryPillar));
+		GameRegistry.addShapelessRecipe(new ItemStack(blockSentryPillar), new ItemStack(Block.dispenser), new ItemStack(blockBasePillar));
 		GameRegistry.addRecipe(new ItemStack(blockPotPillar), new Object[] { "S", "F", "P", Character.valueOf('S'), Block.dirt, Character.valueOf('P'), blockBasePillar , Character.valueOf('F'), Item.flowerPot});
 		GameRegistry.addRecipe(new ItemStack(blockChristmasLight, 3), new Object[] { "G", "L", Character.valueOf('G'), Item.ingotGold, Character.valueOf('L'), Block.glowStone});
 		GameRegistry.addShapelessRecipe(new ItemStack(Item.diamond), new ItemStack(itemRibbonDiamond));
-		
-		if(winter)
-		{
-			GameRegistry.addShapelessRecipe(new ItemStack(itemRibbonDiamond), new ItemStack(Item.diamond));
-			// TODO sweet craftings
-		}
 	}
 	
 	public void addToOreDictionary()
@@ -448,6 +448,18 @@ public class CraftingPillars
     public void modsLoaded(FMLPostInitializationEvent evt){
     	modForestry = Loader.isModLoaded("Forestry");
     	modElysium = Loader.isModLoaded("elysium");
+    	modThaumcraft = Loader.isModLoaded("Thaumcraft");
+    	
+    	if(modThaumcraft)
+    	{
+    		System.out.println("Loading Thaumcraft 4 wand...");
+    		itemWandThaumcraft = ItemApi.getItem("itemWandCasting", 0);
+    		if(itemWandThaumcraft == null){
+    			modThaumcraft = false;
+    			System.out.println("Thaumcraft compatibility disabled...");
+
+    		}
+    	}
     }
     
 	public static void registerBlock(Block block)

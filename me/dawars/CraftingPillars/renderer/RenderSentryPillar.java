@@ -2,6 +2,7 @@ package me.dawars.CraftingPillars.renderer;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import java.awt.Color;
 import java.util.Random;
 
 import me.dawars.CraftingPillars.CraftingPillars;
@@ -16,6 +17,7 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
@@ -76,9 +78,9 @@ public class RenderSentryPillar extends TileEntitySpecialRenderer implements ISi
 	public RenderSentryPillar()
 	{
 		if(CraftingPillars.winter)
-			TEXTURE_SHOWOFFPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/showoffPillarFrozen.png");
+			TEXTURE_SHOWOFFPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/sentryPillarFrozen.png");
 		else
-			TEXTURE_SHOWOFFPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/showoffPillar.png");
+			TEXTURE_SHOWOFFPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/sentryPillar.png");
 		
 		random = new Random();
 		resultRenderer = new RenderingHelper.ItemRender(true, true);
@@ -390,6 +392,19 @@ public class RenderSentryPillar extends TileEntitySpecialRenderer implements ISi
 			citem.hoverStart = -workTile.rot;
 			citem.setEntityItemStack(workTile.getStackInSlot(0));
 			resultRenderer.render(citem, 0.5F, 1.3F, 0.5F, workTile.showNum);
+			
+			if(workTile.showNum)
+			{
+				glPushMatrix();
+				glTranslated(0.5D, 1, 0.5D);
+					
+					glDisable(GL_LIGHTING);
+					RenderingHelper.renderFloatingTextWithBackground(0, 0.1F, 0, 0.3F, workTile.getStackInSlot(0).getDisplayName(), Color.WHITE.getRGB(), new Color(0F, 0F, 0F, 0.5F));
+					glEnable(GL_LIGHTING);
+	
+				glPopMatrix();
+			}
+			
 			glPopMatrix();
 		}
 		glPopMatrix();

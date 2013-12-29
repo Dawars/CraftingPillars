@@ -34,11 +34,9 @@ import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 public class TileEntityCraftingPillar extends BaseTileEntity implements IInventory, ISidedInventory
 {
 	public ContainerCraftingPillar container = new ContainerCraftingPillar();
-	private ItemStack[] inventory = new ItemStack[this.getSizeInventory() + 1];
-	
-	// @SideOnly(Side.CLIENT)
+	private ItemStack[] inventory = new ItemStack[this.getSizeInventory() + 2];//11th - thaumcraft wand
+
 	public float rot = 0F;
-	
 	public boolean showNum = false;
 	
 	@Override
@@ -61,7 +59,7 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 		
 		super.readFromNBT(nbt);
 		
-		this.inventory = new ItemStack[this.getSizeInventory() + 1];
+		this.inventory = new ItemStack[this.getSizeInventory() + 2];
 		NBTTagList nbtlist = nbt.getTagList("Items");
 		
 		for(int i = 0; i < nbtlist.tagCount(); i++)
@@ -69,7 +67,7 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 			NBTTagCompound nbtslot = (NBTTagCompound) nbtlist.tagAt(i);
 			int j = nbtslot.getByte("Slot") & 255;
 			
-			if((j >= 0) && (j < this.getSizeInventory() + 1))
+			if((j >= 0) && (j < this.getSizeInventory() + 2))
 				this.inventory[j] = ItemStack.loadItemStackFromNBT(nbtslot);
 		}
 		this.showNum = nbt.getBoolean("showNum");
@@ -84,7 +82,7 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 		
 		NBTTagList nbtlist = new NBTTagList();
 		
-		for(int i = 0; i < this.getSizeInventory() + 1; i++)
+		for(int i = 0; i < this.getSizeInventory() + 2; i++)
 		{
 			if(this.inventory[i] != null)
 			{
@@ -358,27 +356,29 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 	}
 	
 	@Override
-	public boolean isItemValidForSlot(int i, ItemStack itemstack)
+	public boolean isItemValidForSlot(int slot, ItemStack itemstack)
 	{
-		return false;
+		if(!CraftingPillars.modThaumcraft)
+			return false;
+		return slot == 10 && itemstack.itemID == CraftingPillars.itemWandThaumcraft.itemID;
 	}
 	
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side)
 	{
-		return new int[] {};
+		return new int[] {10};
 	}
 	
 	@Override
 	public boolean canInsertItem(int slot, ItemStack itemstack, int side)
 	{
-		return false;
+		return isItemValidForSlot(slot, itemstack);
 	}
 	
 	@Override
 	public boolean canExtractItem(int slot, ItemStack itemstack, int side)
 	{
-		return false;
+		return isItemValidForSlot(slot, itemstack);
 	}
 	
 }

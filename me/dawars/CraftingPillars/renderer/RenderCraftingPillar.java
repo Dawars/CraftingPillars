@@ -434,7 +434,7 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 				}
 			}
 		}
-		
+
 		if(workTile.getStackInSlot(workTile.getSizeInventory()) != null)
 		{
 			glPushMatrix();
@@ -443,6 +443,31 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 			resultRenderer.render(citem, 0.5F, 1.5F, 0.5F, workTile.showNum);
 			glPopMatrix();
 		}
+		
+
+		if(CraftingPillars.modThaumcraft && workTile.getStackInSlot(10) != null)
+		{
+			glPushMatrix();
+				citem.hoverStart = 0;
+				
+				glTranslated(0.5D, 0.5D, 0.5D);
+				glRotatef(-90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
+				
+				if(CraftingPillars.winter)
+					glTranslatef(0, -0.05F, 0.47F);
+				else
+					glTranslatef(0, 0, 0.4F);
+
+				glRotatef(-45, 0, 0, 1);
+				glScalef(1.1F, 1.1F, 1.1F);
+				
+				glTranslatef(0, -0.28F, 0);
+				
+				citem.setEntityItemStack(workTile.getStackInSlot(10));
+				resultRenderer.render(citem, 0F, 0F, 0F, false);
+			glPopMatrix();
+		}
+		
 		glPopMatrix();
 	}
 	
