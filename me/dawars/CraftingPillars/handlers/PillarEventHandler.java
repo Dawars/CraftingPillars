@@ -8,8 +8,6 @@ import me.dawars.CraftingPillars.blocks.BaseBlock;
 import me.dawars.CraftingPillars.blocks.BaseBlockContainer;
 import me.dawars.CraftingPillars.properties.CalendarPlayerProps2013;
 import me.dawars.CraftingPillars.world.gen.ChristmasTreeGen;
-import mods.elysium.Elysium;
-import mods.elysium.block.ElysianBlockSaplingFostimber;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;

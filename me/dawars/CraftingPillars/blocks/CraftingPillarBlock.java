@@ -3,6 +3,7 @@ package me.dawars.CraftingPillars.blocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import me.dawars.CraftingPillars.CraftingPillars;
+import me.dawars.CraftingPillars.tiles.TileEntityBrewingPillar;
 import me.dawars.CraftingPillars.tiles.TileEntityCraftingPillar;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -176,21 +177,37 @@ public class CraftingPillarBlock extends BaseBlockContainer
 	{
 		if(!world.isRemote)
 		{
-			TileEntityCraftingPillar workTile = (TileEntityCraftingPillar) world.getBlockTileEntity(x, y, z);
-			for(int i = 0; i < 3; i++)
+//			TileEntityCraftingPillar workTile = (TileEntityCraftingPillar) world.getBlockTileEntity(x, y, z);
+//			for(int i = 0; i < 3; i++)
+//			{
+//				for(int k = 0; k < 3; k++)
+//				{
+//					if(workTile.getStackInSlot(i * 3 + k) != null)
+//					{
+//						EntityItem itemDropped = new EntityItem(world, x + 0.1875D + i * 0.3125D, y + 1D, z + 0.1875D + k * 0.3125D, workTile.getStackInSlot(i * 3 + k));
+//						itemDropped.motionX = itemDropped.motionY = itemDropped.motionZ = 0D;
+//						
+//						if(workTile.getStackInSlot(i * 3 + k).hasTagCompound())
+//							itemDropped.getEntityItem().setTagCompound((NBTTagCompound) workTile.getStackInSlot(i * 3 + k).getTagCompound().copy());
+//						
+//						world.spawnEntityInWorld(itemDropped);
+//					}
+//				}
+//			}
+			
+			TileEntityCraftingPillar pillarTile = (TileEntityCraftingPillar) world.getBlockTileEntity(x, y, z);
+			
+			for(int i = 0; i < pillarTile.getSizeInventory() + 2; i++)
 			{
-				for(int k = 0; k < 3; k++)
+				if(pillarTile.getStackInSlot(i) != null)
 				{
-					if(workTile.getStackInSlot(i * 3 + k) != null)
-					{
-						EntityItem itemDropped = new EntityItem(world, x + 0.1875D + i * 0.3125D, y + 1D, z + 0.1875D + k * 0.3125D, workTile.getStackInSlot(i * 3 + k));
-						itemDropped.motionX = itemDropped.motionY = itemDropped.motionZ = 0D;
-						
-						if(workTile.getStackInSlot(i * 3 + k).hasTagCompound())
-							itemDropped.getEntityItem().setTagCompound((NBTTagCompound) workTile.getStackInSlot(i * 3 + k).getTagCompound().copy());
-						
-						world.spawnEntityInWorld(itemDropped);
-					}
+					EntityItem itemDropped = new EntityItem(world, x + 0.5D, y, z + 0.5D, pillarTile.getStackInSlot(i));
+					itemDropped.motionX = itemDropped.motionY = itemDropped.motionZ = 0D;
+					
+					if(pillarTile.getStackInSlot(i).hasTagCompound())
+						itemDropped.getEntityItem().setTagCompound((NBTTagCompound) pillarTile.getStackInSlot(i).getTagCompound().copy());
+					
+					world.spawnEntityInWorld(itemDropped);
 				}
 			}
 		}

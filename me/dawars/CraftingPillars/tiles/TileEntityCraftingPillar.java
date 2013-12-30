@@ -1,41 +1,35 @@
 package me.dawars.CraftingPillars.tiles;
 
-import java.util.Random;
+import java.lang.reflect.Method;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import thaumcraft.api.ThaumcraftApiHelper;
+import thaumcraft.api.aspects.AspectList;
 
 import me.dawars.CraftingPillars.CraftingPillars;
-import me.dawars.CraftingPillars.client.CustomParticle;
+import me.dawars.CraftingPillars.apiHelper.Thaumcraft;
 import me.dawars.CraftingPillars.container.ContainerCraftingPillar;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.stats.AchievementList;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TileEntityCraftingPillar extends BaseTileEntity implements IInventory, ISidedInventory
 {
 	public ContainerCraftingPillar container = new ContainerCraftingPillar();
 	private ItemStack[] inventory = new ItemStack[this.getSizeInventory() + 2];//11th - thaumcraft wand
-
+	
 	public float rot = 0F;
 	public boolean showNum = false;
 	
@@ -105,7 +99,41 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 		if(!this.worldObj.isRemote)
 		{
 			rotateCraftingGrid();
+			
 			this.inventory[this.getSizeInventory()] = CraftingManager.getInstance().findMatchingRecipe(this.container.craftMatrix, this.worldObj);
+			
+			if(CraftingPillars.modThaumcraft)
+			{
+				EntityPlayer playerForResearch = null;
+				
+				if(this.worldObj.loadedEntityList != null)
+				{
+					float closest = Float.MAX_VALUE;
+					for(int i = 0; i < this.worldObj.loadedEntityList.size(); i++)
+					{
+						if(this.worldObj.loadedEntityList.get(i) instanceof EntityPlayer)
+						{
+							EntityPlayer currentPlayer = (EntityPlayer)this.worldObj.loadedEntityList.get(i);
+							if(currentPlayer.isEntityAlive() && !currentPlayer.isInvisible())
+							{
+								float distance = (float)currentPlayer.getDistanceSq(xCoord, yCoord, zCoord);
+								if(distance < closest)
+								{
+									closest = distance;
+									playerForResearch = currentPlayer;
+								}
+							}
+						}
+					}
+				}
+			
+				if(playerForResearch != null)
+				{
+//					FMLLog.warning("Checking Recipe");
+		            this.inventory[this.getSizeInventory()] = (ItemStack) Thaumcraft.findMatchingArcaneRecipe(this.container.craftMatrix, playerForResearch);
+				}
+				    
+			}
 			CraftingPillars.proxy.sendToPlayers(this.getDescriptionPacket(), this.worldObj, this.xCoord, this.yCoord, this.zCoord, 64);
 		}
 	}
@@ -158,6 +186,40 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 			itemEntity.setEntityItemStack(this.inventory[this.getSizeInventory()]);
 			this.worldObj.spawnEntityInWorld(itemEntity);
 			this.onCrafting(player, this.inventory[this.getSizeInventory()]);
+			
+			if(CraftingPillars.modThaumcraft)
+			{
+				if (this.inventory[this.getSizeInventory()] != null)
+	            {
+	            	FMLLog.warning(this.inventory[this.getSizeInventory()].getDisplayName());
+				
+		            AspectList aspects = Thaumcraft.findMatchingArcaneRecipeAspects(this.container.craftMatrix, player);
+		            if(aspects != null)
+		            {
+						if ((aspects.size() > 0) && (this.getStackInSlot(10) != null)) {
+							Class ItemWandCasting = null;
+							try {
+								ItemWandCasting = Class.forName("thaumcraft.common.items.wands.ItemWandCasting");
+								if(this.getStackInSlot(10).getClass().isInstance(CraftingPillars.itemWandThaumcraft))
+								{
+									Object wand = ItemWandCasting.cast(this.getStackInSlot(10));
+									FMLLog.warning("instance wand!!");
+									Method consumealLVisCrafting = ItemWandCasting.getMethod("consumealLVisCrafting", ItemStack.class, EntityPlayer.class, AspectList.class, Boolean.class);
+									consumealLVisCrafting.invoke(wand, player, aspects, true);
+						    
+								}
+							} catch (Exception e) {
+								FMLLog.warning("[CraftingPillars] Could not cast to thaumcraft.common.items.wands.ItemWandCasting");
+							}
+							  
+							for(int i = 0; i < aspects.size(); i++)
+							{
+								FMLLog.warning(aspects.getAspects()[i].getName() + ": " + aspects.getAmount(aspects.getAspects()[i]));
+							}
+					    }
+		            }
+	            }
+			}
 			
 			for(int i = 0; i < this.getSizeInventory(); i++)
 			{
@@ -380,5 +442,4 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 	{
 		return isItemValidForSlot(slot, itemstack);
 	}
-	
 }

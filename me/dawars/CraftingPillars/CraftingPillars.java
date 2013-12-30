@@ -43,7 +43,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-@Mod(name = CraftingPillars.name, version = CraftingPillars.version, useMetadata = false, modid = CraftingPillars.id, dependencies = "required-after:Forge@[9.11.1.953,)")
+@Mod(name = CraftingPillars.name, version = CraftingPillars.version, useMetadata = false, modid = CraftingPillars.id, dependencies = "required-after:Forge@[9.11.1.953,);after:Thaumcraft")
 @NetworkMod(clientSideRequired = true, serverSideRequired = false, channels = {CraftingPillars.channelGame, CraftingPillars.channelGui, CraftingPillars.channelProps}, packetHandler = PillarPacketHandler.class)
 public class CraftingPillars
 {
@@ -147,6 +147,7 @@ public class CraftingPillars
 	public static Achievement achievementDisc;
 	public static Achievement achievementRecursion3;
 	public static boolean debug = false;
+	
 	
 	public void addItemsAndBlocks()
 	{
