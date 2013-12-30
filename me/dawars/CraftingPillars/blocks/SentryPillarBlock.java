@@ -78,6 +78,8 @@ public class SentryPillarBlock extends BaseBlockContainer
 					{
 						ItemStack in = equipped.copy();
 						in.stackSize = 1;
+						setSentryOwner(pillarTile, player);
+
 						pillarTile.setInventorySlotContents(0, in);
 						
 						if(!player.capabilities.isCreativeMode)
@@ -90,6 +92,8 @@ public class SentryPillarBlock extends BaseBlockContainer
 						equipped.stackSize--;
 					
 					pillarTile.decrStackSize(0, -1);
+					setSentryOwner(pillarTile, player);
+
 					pillarTile.onInventoryChanged();
 				}
 			}
@@ -97,6 +101,10 @@ public class SentryPillarBlock extends BaseBlockContainer
 		return true;
 	}
 	
+	private void setSentryOwner(TileEntitySentryPillar pillarTile, EntityPlayer player) {
+		pillarTile.setOwnerEntity(player);
+	}
+
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int par5, int par6)
 	{
@@ -140,7 +148,18 @@ public class SentryPillarBlock extends BaseBlockContainer
 
         return true;
     }
-    
+    /**
+     * Called when the block is placed in the world.
+     */
+    @Override
+    public void onBlockPlacedBy(World world, int i, int j, int k, EntityLivingBase entity, ItemStack ItemStack)
+    {
+    	if(world.getBlockTileEntity(i, j, k) instanceof TileEntitySentryPillar && entity instanceof EntityPlayer)
+    	{
+    		((TileEntitySentryPillar) world.getBlockTileEntity(i, j, k)).setOwnerEntity((EntityPlayer) entity);
+    	}
+    }
+
 	@Override
 	public TileEntity createNewTileEntity(World world)
 	{

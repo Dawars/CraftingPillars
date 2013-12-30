@@ -1,14 +1,11 @@
 package me.dawars.CraftingPillars.api.sentry;
 
-import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.IBlockSource;
-import net.minecraft.dispenser.IPosition;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.World;
 
 public abstract class SentryDefaultProjectile implements IBehaviorSentryItem
 {
@@ -17,11 +14,11 @@ public abstract class SentryDefaultProjectile implements IBehaviorSentryItem
      * Returns the specified ItemStack to be removed from the pillar.
      */
 	@Override
-    public final ItemStack dispense(IBlockSource blockSource,  EntityMob target, ItemStack item)
+    public final ItemStack dispense(IBlockSource blockSource,  EntityMob target, EntityPlayer owner, ItemStack item)
     {
         this.playSound(blockSource);
         this.spawnParticles(blockSource);
-        this.spawnEntity(blockSource, target, item);
+        this.spawnEntity(blockSource, target, owner, item);
         return item;
     }
 	
@@ -31,9 +28,9 @@ public abstract class SentryDefaultProjectile implements IBehaviorSentryItem
 	 * @param target - the target the Pillar is shooting at
 	 * @param item - the item placed into the pillar
      */
-    public ItemStack spawnEntity(IBlockSource sourceblock, EntityMob target, ItemStack item)
+    public ItemStack spawnEntity(IBlockSource sourceblock, EntityMob target, EntityPlayer owner, ItemStack item)
     {
-        IProjectile iprojectile = this.getProjectileEntity(target, sourceblock, item);
+        IProjectile iprojectile = this.getProjectileEntity(target, owner, sourceblock, item);
         if(iprojectile != null)
         	sourceblock.getWorld().spawnEntityInWorld((Entity)iprojectile);
         item.splitStack(1);
@@ -57,7 +54,7 @@ public abstract class SentryDefaultProjectile implements IBehaviorSentryItem
      * Return the projectile entity spawned by the Sentry behavior.
      * @param item 
      */
-    protected abstract IProjectile getProjectileEntity(EntityMob target, IBlockSource blockSource, ItemStack item);
+    protected abstract IProjectile getProjectileEntity(EntityMob target, EntityPlayer owner, IBlockSource blockSource, ItemStack item);
 	
     protected float getSpeed()
     {

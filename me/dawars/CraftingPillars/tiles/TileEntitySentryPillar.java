@@ -1,5 +1,7 @@
 package me.dawars.CraftingPillars.tiles;
 
+import javax.swing.text.html.parser.Entity;
+
 import me.dawars.CraftingPillars.BlockIds;
 import me.dawars.CraftingPillars.api.sentry.IBehaviorSentryItem;
 import me.dawars.CraftingPillars.api.sentry.SentryBehaviors;
@@ -22,6 +24,7 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 	public float rot = 0F;
 	public int cooldown = BlockIds.sentryCooldown;
 	public boolean showNum = false;
+	private String owner = "";
 	
 	private EntityMob target = null;
 	
@@ -71,7 +74,7 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 						if(ibehaviorsentryitem != null)
 						{
 							
-							ItemStack itemstack1 = ibehaviorsentryitem.dispense(blocksourceimpl, this.target, ammo);
+							ItemStack itemstack1 = ibehaviorsentryitem.dispense(blocksourceimpl, this.target, this.worldObj.getPlayerEntityByName(owner), ammo);
 							this.setInventorySlotContents(0, itemstack1.stackSize == 0 ? null : itemstack1);
 						}
 						
@@ -153,6 +156,7 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 		}
 		
 		this.showNum = nbt.getBoolean("showNum");
+		this.owner = nbt.getString("owner");
 	}
 	
 	@Override
@@ -172,6 +176,7 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 		}
 		nbt.setTag("Items", nbtlist);
 		nbt.setBoolean("showNum", this.showNum);
+		nbt.setString("owner", this.owner);
 	}
 	
 	public void dropItemFromSlot(int slot, int amount, EntityPlayer player)
@@ -305,6 +310,26 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 	public boolean canExtractItem(int slot, ItemStack itemstack, int side)
 	{
 		return true;
+	}
+
+	public void setOwner(String owner)
+	{
+		this.owner = owner;
+	}
+	
+	public void setOwnerEntity(EntityPlayer owner)
+	{
+		this.owner = owner.username;
+	}
+
+	public String getOwner()
+	{
+		return this.owner;
+	}
+	
+	public EntityPlayer getOwnerEntity()
+	{
+		return this.worldObj.getPlayerEntityByName(owner);
 	}
 	
 }

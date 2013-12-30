@@ -1,22 +1,11 @@
 package me.dawars.CraftingPillars.api.sentry;
 
-import java.util.Random;
-
-import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.IBlockSource;
-import net.minecraft.dispenser.IPosition;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.entity.projectile.EntityLargeFireball;
 import net.minecraft.entity.projectile.EntitySmallFireball;
-import net.minecraft.entity.projectile.EntitySnowball;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
 public class SentryBehaviorFireball extends SentryDefaultProjectile
@@ -25,7 +14,7 @@ public class SentryBehaviorFireball extends SentryDefaultProjectile
      * Return the projectile entity spawned by this dispense behavior.
      */
 	@Override
-	protected IProjectile getProjectileEntity(EntityMob target, IBlockSource blockSource, ItemStack item) {
+	protected IProjectile getProjectileEntity(EntityMob target,EntityPlayer owner, IBlockSource blockSource, ItemStack item) {
 		
 		World world = blockSource.getWorld();
 		int x = blockSource.getXInt();

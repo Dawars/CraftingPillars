@@ -3,20 +3,17 @@ package me.dawars.CraftingPillars.api.sentry;
 import java.util.Iterator;
 import java.util.List;
 
-import net.minecraft.block.BlockDispenser;
 import net.minecraft.dispenser.IBlockSource;
-import net.minecraft.dispenser.IPosition;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityPotion;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
@@ -26,7 +23,7 @@ public class SentryBehaviorPotion extends SentryDefaultProjectile
      * Return the projectile entity spawned by this dispense behavior.
      */
 	@Override
-	protected IProjectile getProjectileEntity(EntityMob target, IBlockSource blockSource, ItemStack item) {
+	protected IProjectile getProjectileEntity(EntityMob target, EntityPlayer owner, IBlockSource blockSource, ItemStack item) {
 		
 		if(!ItemPotion.isSplash(item.getItemDamage()))
 		{
@@ -99,9 +96,9 @@ public class SentryBehaviorPotion extends SentryDefaultProjectile
 	 * @param item - the item placed into the pillar
      */
 	@Override
-    public ItemStack spawnEntity(IBlockSource sourceblock, EntityMob target, ItemStack item)
+    public ItemStack spawnEntity(IBlockSource sourceblock, EntityMob target, EntityPlayer owner, ItemStack item)
     {
-        IProjectile iprojectile = this.getProjectileEntity(target, sourceblock, item);
+        IProjectile iprojectile = this.getProjectileEntity(target, owner, sourceblock, item);
         if(iprojectile != null)
         {
         	sourceblock.getWorld().spawnEntityInWorld((Entity)iprojectile);
