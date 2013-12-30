@@ -16,7 +16,7 @@ public class PillarCraftingHandler implements ICraftingHandler
 			player.addStat(CraftingPillars.achievementGettingStarted, 1);
 		if(item.itemID == CraftingPillars.blockFreezerPillar.blockID)
 			player.addStat(CraftingPillars.achievementCompressingLiquids, 1);
-		
+
 		if(item.itemID == Item.diamond.itemID)
 		{
 			for(int i = 0; i < craftMatrix.getSizeInventory(); i++)
@@ -28,10 +28,10 @@ public class PillarCraftingHandler implements ICraftingHandler
 			}
 		}
 	}
-	
+
 	@Override
 	public void onSmelting(EntityPlayer player, ItemStack item)
 	{
-		
+
 	}
 }

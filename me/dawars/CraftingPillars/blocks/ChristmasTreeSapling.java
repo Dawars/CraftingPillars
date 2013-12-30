@@ -10,32 +10,34 @@ public class ChristmasTreeSapling extends BaseFlowerBlock
 {
 
 	public static boolean isChristmas = false;
-	
+
 	public ChristmasTreeSapling(int id, Material mat) {
 		super(id, mat);
 		float f = 0.3F;
-        this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 0.9F, 0.5F + f);
+		this.setBlockBounds(0.5F - f, 0.0F, 0.5F - f, 0.5F + f, 0.9F, 0.5F + f);
 	}
 
-    /**
-     * Ticks the block if it's been scheduled
-     */
-    public void updateTick(World world, int x, int y, int z, Random rand)
-    {
-        if (!world.isRemote)
-        {
-            super.updateTick(world, x, y, z, rand);
-        }
-    }
-    
-    /**
-     * Gets passed in the blockID of the block below and supposed to return true if its allowed to grow on the type of
-     * blockID passed in. Args: blockID
-     */
-    public boolean canThisPlantGrowOnThisBlockID(int id)
-    {
-//    	if(CraftingPillars.modElysium)
-//    		return id == Elysium.blockDirt.blockID || id == Elysium.blockGrass.blockID;
-        return id == Block.grass.blockID || id == Block.dirt.blockID;
-    }
+	/**
+	 * Ticks the block if it's been scheduled
+	 */
+	@Override
+	public void updateTick(World world, int x, int y, int z, Random rand)
+	{
+		if (!world.isRemote)
+		{
+			super.updateTick(world, x, y, z, rand);
+		}
+	}
+
+	/**
+	 * Gets passed in the blockID of the block below and supposed to return true if its allowed to grow on the type of
+	 * blockID passed in. Args: blockID
+	 */
+	@Override
+	public boolean canThisPlantGrowOnThisBlockID(int id)
+	{
+		//    	if(CraftingPillars.modElysium)
+		//    		return id == Elysium.blockDirt.blockID || id == Elysium.blockGrass.blockID;
+		return id == Block.grass.blockID || id == Block.dirt.blockID;
+	}
 }

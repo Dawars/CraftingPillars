@@ -15,16 +15,16 @@ public class AdventCalendar2013 extends BaseItem
 	{
 		super(id);
 	}
-	
+
 	@Override
 	/**
-     * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
-     */
-    public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player)
-    {
+	 * Called whenever this item is equipped and the right mouse button is pressed. Args: itemStack, world, entityPlayer
+	 */
+	public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player)
+	{
 		if(!world.isRemote)
 			CraftingPillars.proxy.sendToPlayer((EntityPlayerMP)player, new PacketCalendarProps(CalendarPlayerProps2013.get(player).data).pack());
 		player.openGui(CraftingPillars.getInstance(), GuiIds.ADVENT_CALENDAR, world, (int) player.posX, (int) player.posY, (int) player.posZ);
-        return item;
-    }
+		return item;
+	}
 }

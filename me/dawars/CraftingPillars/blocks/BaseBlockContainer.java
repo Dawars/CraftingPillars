@@ -11,7 +11,7 @@ public abstract class BaseBlockContainer extends BaseBlock implements ITileEntit
 	{
 		super(id, mat);
 	}
-	
+
 	@Override
 	/**
 	 * ejects contained items into the world, and notifies neighbours of an update, as appropriate
@@ -21,7 +21,7 @@ public abstract class BaseBlockContainer extends BaseBlock implements ITileEntit
 		super.breakBlock(world, x, y, z, par5, par6);
 		world.removeBlockTileEntity(x, y, z);
 	}
-	
+
 	@Override
 	/**
 	 * Called when the block receives a BlockEvent - see World.addBlockEvent. By default, passes it on to the tile

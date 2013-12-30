@@ -10,14 +10,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 import me.dawars.CraftingPillars.CraftingPillars;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import net.minecraft.world.ColorizerFoliage;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
 
@@ -25,14 +22,14 @@ public class ChristmasLeavesBlock extends BaseLeavesBlock implements IShearable
 {
 	public static final String[] LEAF_TYPES = new String[]  {"spruce", "fostimber"};
 	public static final String[][] field_94396_b = new String[][] {{CraftingPillars.id + ":ChristmasTreeLeaves", "elysium:fostimber_leaves"}, {CraftingPillars.id + ":ChristmasTreeLeavesFast", "elysium:fostimber_leaves_fast"}};
-	
+
 	@SideOnly(Side.CLIENT)
 	/** 1 for fast graphic. 0 for fancy graphics. used in iconArray. */
 	public int iconType;
 	public Icon[][] iconArray = new Icon[2][];
 	public Icon glowing;
 	int[] adjacentTreeBlocks;
-	
+
 	public ChristmasLeavesBlock(int id, Material mat)
 	{
 		super(id, mat, true);
@@ -45,19 +42,20 @@ public class ChristmasLeavesBlock extends BaseLeavesBlock implements IShearable
 	}
 
 	/**
-     * Called when a block is placed using its ItemBlock. Args: World, X, Y, Z, side, hitX, hitY, hitZ, block metadata
-     */
+	 * Called when a block is placed using its ItemBlock. Args: World, X, Y, Z, side, hitX, hitY, hitZ, block metadata
+	 */
 	@Override
-    public int onBlockPlaced(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9)
-    {
-        return par9;
-    }
-    
+	public int onBlockPlaced(World par1World, int par2, int par3, int par4, int par5, float par6, float par7, float par8, int par9)
+	{
+		return par9;
+	}
+
 	/**
 	 * Called on server worlds only when the block has been replaced by a different block ID, or the same block with a
 	 * different metadata value, but before the new metadata value is set. Args: World, x, y, z, old block ID, old
 	 * metadata
 	 */
+	@Override
 	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
 	{
 		byte b0 = 1;
@@ -86,6 +84,7 @@ public class ChristmasLeavesBlock extends BaseLeavesBlock implements IShearable
 	/**
 	 * Ticks the block if it's been scheduled
 	 */
+	@Override
 	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
 	{
 		if (!par1World.isRemote)
@@ -208,9 +207,9 @@ public class ChristmasLeavesBlock extends BaseLeavesBlock implements IShearable
 	{
 		if (par1World.canLightningStrikeAt(par2, par3 + 1, par4) && !par1World.doesBlockHaveSolidTopSurface(par2, par3 - 1, par4) && par5Random.nextInt(15) == 1)
 		{
-			double d0 = (double)((float)par2 + par5Random.nextFloat());
-			double d1 = (double)par3 - 0.05D;
-			double d2 = (double)((float)par4 + par5Random.nextFloat());
+			double d0 = par2 + par5Random.nextFloat();
+			double d1 = par3 - 0.05D;
+			double d2 = par4 + par5Random.nextFloat();
 			par1World.spawnParticle("dripWater", d0, d1, d2, 0.0D, 0.0D, 0.0D);
 		}
 	}
@@ -224,6 +223,7 @@ public class ChristmasLeavesBlock extends BaseLeavesBlock implements IShearable
 	/**
 	 * Returns the quantity of items to drop on block destruction.
 	 */
+	@Override
 	public int quantityDropped(Random par1Random)
 	{
 		return par1Random.nextInt(20) == 0 ? 1 : 0;
@@ -232,6 +232,7 @@ public class ChristmasLeavesBlock extends BaseLeavesBlock implements IShearable
 	/**
 	 * Returns the ID of the items to drop on destruction.
 	 */
+	@Override
 	public int idDropped(int par1, Random par2Random, int par3)
 	{
 		return CraftingPillars.blockChristmasTreeSapling.blockID;
@@ -240,6 +241,7 @@ public class ChristmasLeavesBlock extends BaseLeavesBlock implements IShearable
 	/**
 	 * Drops the block items with a specified chance of dropping the specified items
 	 */
+	@Override
 	public void dropBlockAsItemWithChance(World world, int x, int y, int z, int meta, float par6, int bonus)
 	{
 		if (!world.isRemote)
@@ -268,82 +270,85 @@ public class ChristmasLeavesBlock extends BaseLeavesBlock implements IShearable
 			}
 		}
 	}
-	
+
 	/**
-     * Determines the damage on the item the block drops. Used in cloth and wood.
-     */
-    @Override
+	 * Determines the damage on the item the block drops. Used in cloth and wood.
+	 */
+	@Override
 	public int damageDropped(int meta)
-    {
-        return meta & 3;
-    }
-	
+	{
+		return meta & 3;
+	}
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean isOpaqueCube()
 	{
-		return !FMLClientHandler.instance().getClient().isFancyGraphicsEnabled();
+		FMLClientHandler.instance().getClient();
+		return !Minecraft.isFancyGraphicsEnabled();
 	}
-	
-    /**
-     * When this method is called, your block should register all the icons it needs with the given IconRegister. This
-     * is the only chance you get to register icons.
-     */
+
+	/**
+	 * When this method is called, your block should register all the icons it needs with the given IconRegister. This
+	 * is the only chance you get to register icons.
+	 */
 	@Override
 	@SideOnly(Side.CLIENT)
-    public void registerIcons(IconRegister itemIcon)
-    {
-        for (int i = 0; i < field_94396_b.length; ++i)
-        {
-            this.iconArray[i] = new Icon[field_94396_b[i].length];
+	public void registerIcons(IconRegister itemIcon)
+	{
+		for (int i = 0; i < field_94396_b.length; ++i)
+		{
+			this.iconArray[i] = new Icon[field_94396_b[i].length];
 
-            for (int j = 0; j < field_94396_b[i].length; ++j)
-            {
-                this.iconArray[i][j] = itemIcon.registerIcon(field_94396_b[i][j]);
-            }
-        }
-        
-        this.glowing = itemIcon.registerIcon(CraftingPillars.id + ":ChristmasTreeLeavesOverlay");
+			for (int j = 0; j < field_94396_b[i].length; ++j)
+			{
+				this.iconArray[i][j] = itemIcon.registerIcon(field_94396_b[i][j]);
+			}
+		}
 
-    }
-    /**
-     * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
-     */
+		this.glowing = itemIcon.registerIcon(CraftingPillars.id + ":ChristmasTreeLeavesOverlay");
+
+	}
+	/**
+	 * returns a list of blocks with the same ID, but different meta (eg: wood returns 4 blocks)
+	 */
+	@Override
 	@SideOnly(Side.CLIENT)
-    public void getSubBlocks(int id, CreativeTabs tab, List list)
-    {
-        list.add(new ItemStack(id, 1, 0));
-        list.add(new ItemStack(id, 1, 1));
-    }
+	public void getSubBlocks(int id, CreativeTabs tab, List list)
+	{
+		list.add(new ItemStack(id, 1, 0));
+		list.add(new ItemStack(id, 1, 1));
+	}
 
-    /**
-     * Returns an item stack containing a single instance of the current block type. 'i' is the block's subtype/damage
-     * and is ignored for blocks which do not support subtypes. Blocks which cannot be harvested should return null.
-     */
-    protected ItemStack createStackedBlock(int meta)
-    {
-        return new ItemStack(this.blockID, 1, meta & 3);
-    }
-    /**
-     * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
-     */
+	/**
+	 * Returns an item stack containing a single instance of the current block type. 'i' is the block's subtype/damage
+	 * and is ignored for blocks which do not support subtypes. Blocks which cannot be harvested should return null.
+	 */
+	@Override
+	protected ItemStack createStackedBlock(int meta)
+	{
+		return new ItemStack(this.blockID, 1, meta & 3);
+	}
+	/**
+	 * From the specified side and block metadata retrieves the blocks texture. Args: side, metadata
+	 */
 	@SideOnly(Side.CLIENT)
 	@Override
-    public Icon getIcon(int id, int meta)
-    {
-        return (meta & 3) == 1 ? this.iconArray[this.iconType][1] : ((meta & 3) == 3 ? this.iconArray[this.iconType][3] : ((meta & 3) == 2 ? this.iconArray[this.iconType][2] : this.iconArray[this.iconType][0]));
-    }
+	public Icon getIcon(int id, int meta)
+	{
+		return (meta & 3) == 1 ? this.iconArray[this.iconType][1] : ((meta & 3) == 3 ? this.iconArray[this.iconType][3] : ((meta & 3) == 2 ? this.iconArray[this.iconType][2] : this.iconArray[this.iconType][0]));
+	}
 
 	@SideOnly(Side.CLIENT)
-    /**
-     * Pass true to draw this block using fancy graphics, or false for fast graphics.
-     */
-    public void setGraphicsLevel(boolean par1)
-    {
-        this.graphicsLevel = par1;
-        this.iconType = par1 ? 0 : 1;
-    }
-	
+	/**
+	 * Pass true to draw this block using fancy graphics, or false for fast graphics.
+	 */
+	public void setGraphicsLevel(boolean par1)
+	{
+		this.graphicsLevel = par1;
+		this.iconType = par1 ? 0 : 1;
+	}
+
 	@Override
 	public boolean isShearable(ItemStack item, World world, int x, int y, int z)
 	{

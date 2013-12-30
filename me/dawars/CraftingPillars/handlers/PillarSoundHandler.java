@@ -9,18 +9,18 @@ public class PillarSoundHandler {
 
 	public static String[] soundFiles = {"UranusParadiseShort.ogg"};
 
-    @ForgeSubscribe
-    public void onSoundLoad(SoundLoadEvent event) {
+	@ForgeSubscribe
+	public void onSoundLoad(SoundLoadEvent event) {
 
-        for (String soundFile : soundFiles) {
-            try {
-                event.manager.soundPoolStreaming.addSound(SOUND_RESOURCE_LOCATION + soundFile);
-                System.out.println("Sound file loaded: " + soundFile);
+		for (String soundFile : soundFiles) {
+			try {
+				event.manager.soundPoolStreaming.addSound(SOUND_RESOURCE_LOCATION + soundFile);
+				System.out.println("Sound file loaded: " + soundFile);
 
-            }
-            catch (Exception e) {
-                System.out.println("Failed loading sound file: " + soundFile);
-            }
-        }
-    }
+			}
+			catch (Exception e) {
+				System.out.println("Failed loading sound file: " + soundFile);
+			}
+		}
+	}
 }

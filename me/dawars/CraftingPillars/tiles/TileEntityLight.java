@@ -4,15 +4,12 @@ import java.awt.Color;
 import java.util.Random;
 
 import me.dawars.CraftingPillars.CraftingPillars;
-import me.dawars.CraftingPillars.renderer.RenderLight;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 
 public class TileEntityLight extends BaseTileEntity
 {
 	public int color;
-	
+
 	public static int[] colors = new int[]{
 		Color.red.getRGB(),
 		Color.green.getRGB(),
@@ -23,12 +20,12 @@ public class TileEntityLight extends BaseTileEntity
 		Color.magenta.getRGB(),
 		Color.yellow.getRGB(),
 	};
-	
+
 	public TileEntityLight()
 	{
 		this.color = new Random(System.currentTimeMillis()).nextInt(colors.length);
 	}
-	
+
 	public void incrColorIndex(int i)
 	{
 		this.color += i;
@@ -39,14 +36,14 @@ public class TileEntityLight extends BaseTileEntity
 		if(!this.worldObj.isRemote)
 			CraftingPillars.proxy.sendToPlayers(this.getDescriptionPacket(), this.worldObj, this.xCoord, this.yCoord, this.zCoord, 64);
 	}
-	
+
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
 		this.color = nbt.getInteger("color");
 	}
-	
+
 	@Override
 	public void writeToNBT(NBTTagCompound nbt)
 	{

@@ -9,9 +9,9 @@ public class Blobs
 	public int strength;
 
 	public static int scale = 2;
-	
+
 	private Random random = new Random();
-	
+
 	public Blobs(float x, float y, float z, int strength)
 	{
 		this.x = x;
@@ -20,32 +20,32 @@ public class Blobs
 		this.strength = strength;
 		this.setVelocity();
 	}
-	
+
 	public void setVelocity(float velX, float velY, float velZ)
 	{
 		this.velX = velX;
 		this.velY = velY;
 		this.velZ = velZ;
 	}
-	
+
 	public void setVelocity()
 	{
 		if(Math.abs(this.strength) > 4)
 		{
-			this.velX = (random.nextInt(20)+1)/10;
-			this.velY = (random.nextInt(20)+1)/10;
-			this.velZ = (random.nextInt(20)+1)/10;
+			this.velX = (this.random.nextInt(20)+1)/10;
+			this.velY = (this.random.nextInt(20)+1)/10;
+			this.velZ = (this.random.nextInt(20)+1)/10;
 		} else {
-			this.velX = (random.nextInt(50)+1)/10;
-			this.velY = (random.nextInt(50)+1)/10;
-			this.velZ = (random.nextInt(50)+1)/10;
+			this.velX = (this.random.nextInt(50)+1)/10;
+			this.velY = (this.random.nextInt(50)+1)/10;
+			this.velZ = (this.random.nextInt(50)+1)/10;
 		}
-		
-		if(random.nextBoolean())
+
+		if(this.random.nextBoolean())
 			this.velX *= -1F;
-		if(random.nextBoolean())
+		if(this.random.nextBoolean())
 			this.velY *= -1F;
-		if(random.nextBoolean())
+		if(this.random.nextBoolean())
 			this.velZ *= -1F;
 	}
 
@@ -53,37 +53,37 @@ public class Blobs
 	{
 		this.update(1F);
 	}
-	
+
 	public void update(float speed)
 	{
 		if(this.x > 13F || this.x < 1F)
 			this.velX *= -1F;
-		
+
 		if(this.z > 13F || this.z < 1F)
 			this.velZ *= -1F;
-		
+
 		if(this.y > 13F || this.y < 3F)
 			this.velY *= -1F;
-		
+
 		this.x += speed * this.velX;
 		this.y += speed * this.velY;
 		this.z += speed * this.velZ;
 	}
-	
+
 	private static float f(float r, int strength)
 	{
 		return strength/r;
 	}
-	
+
 	private static float f(float r)
 	{
 		return f(r, 3);
 	}
-	
+
 	public static float[][][] fieldStrength(List<Blobs> blobs)
 	{
 		float result[][][] = new float[16*scale][16*scale][16*scale];
-		
+
 		for(int x = 0; x < 16; x++)
 		{
 			for(int y = 0; y < 16; y++)
@@ -104,7 +104,7 @@ public class Blobs
 				}
 			}
 		}
-		
+
 		return result;
 	}
 }

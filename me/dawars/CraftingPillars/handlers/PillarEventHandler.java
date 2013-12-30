@@ -1,25 +1,19 @@
 package me.dawars.CraftingPillars.handlers;
 
 import java.util.Calendar;
-import java.util.Random;
-
 import me.dawars.CraftingPillars.CraftingPillars;
-import me.dawars.CraftingPillars.blocks.BaseBlock;
 import me.dawars.CraftingPillars.blocks.BaseBlockContainer;
 import me.dawars.CraftingPillars.properties.CalendarPlayerProps2013;
 import me.dawars.CraftingPillars.world.gen.ChristmasTreeGen;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 
 public class PillarEventHandler
@@ -30,22 +24,22 @@ public class PillarEventHandler
 			if (event.ID == CraftingPillars.blockChristmasTreeSapling.blockID) {
 				if(CraftingPillars.maxTreeState >= 4)
 				{
-					((ChristmasTreeGen) new ChristmasTreeGen(true, 4)).generate(event.world, event.world.rand, event.X, event.Y, event.Z);
+					new ChristmasTreeGen(true, 4).generate(event.world, event.world.rand, event.X, event.Y, event.Z);
 					event.setResult(Result.ALLOW);
 				}
 			}
 		}
 	}
-	
+
 	@ForgeSubscribe
 	public void onEntityConstructing(EntityConstructing event)
 	{
-		if(event.entity instanceof EntityPlayer && CalendarPlayerProps2013.get((EntityPlayer)event.entity) == null)
+		if(event.entity instanceof EntityPlayer && CalendarPlayerProps2013.get(event.entity) == null)
 		{
-			CalendarPlayerProps2013.register((EntityPlayer)event.entity);
+			CalendarPlayerProps2013.register(event.entity);
 		}
 	}
-	
+
 	@ForgeSubscribe
 	public void onEntityJoinWorld(EntityJoinWorldEvent event)
 	{
@@ -57,10 +51,10 @@ public class PillarEventHandler
 		e.set(Calendar.HOUR_OF_DAY, 0);
 		e.set(Calendar.MINUTE, 0);
 		e.set(Calendar.MILLISECOND, 0);
-		
+
 		if(c.after(e))
 			return;
-			
+
 		if(event.entity instanceof EntityPlayer)
 		{
 			EntityPlayer player = (EntityPlayer)event.entity;
@@ -71,7 +65,7 @@ public class PillarEventHandler
 			}
 		}
 	}
-	
+
 	@ForgeSubscribe
 	public void onBreakBlock(BreakEvent event)
 	{
@@ -81,7 +75,7 @@ public class PillarEventHandler
 			event.block.onBlockClicked(event.world, event.x, event.y, event.z, event.getPlayer());
 		}
 	}
-	
+
 	@ForgeSubscribe
 	public void onPlayerInterract(PlayerInteractEvent event)
 	{

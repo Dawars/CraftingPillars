@@ -1,54 +1,47 @@
 package me.dawars.CraftingPillars.blocks;
 
-import java.util.List;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import me.dawars.CraftingPillars.CraftingPillars;
-import me.dawars.CraftingPillars.tiles.TileEntityPotPillar;
 import me.dawars.CraftingPillars.tiles.TileEntityChristmasPresent;
 import net.minecraft.block.material.Material;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class ChristmasPresentBlock extends BaseBlockContainer
 {
 	private static ItemStack[] presents;
-	
+
 	public static void init()
 	{
 		// TODO presents
 		presents = new ItemStack[]{
-			new ItemStack(CraftingPillars.blockChristmasPresent, 1, 0),
-			new ItemStack(CraftingPillars.blockChristmasPresent, 1, 1),
-			new ItemStack(CraftingPillars.itemWinterFood2013, 2, 0),
-			new ItemStack(CraftingPillars.itemWinterFood2013, 3, 1),
-			new ItemStack(CraftingPillars.itemWinterFood2013, 4, 2),
-			new ItemStack(CraftingPillars.itemWinterFood2013, 3, 3),
-			new ItemStack(CraftingPillars.itemWinterFood2013, 5, 4),
-			new ItemStack(CraftingPillars.itemWinterFood2013, 4, 5),
-			new ItemStack(CraftingPillars.itemWinterFood2013, 2, 6),
-			new ItemStack(CraftingPillars.itemWinterFood2013, 1, 7),
-			new ItemStack(CraftingPillars.itemWinterFood2013, 4, 8),
-			new ItemStack(CraftingPillars.itemElysiumLoreBook, 1, 0),
-			new ItemStack(CraftingPillars.blockCraftingPillar, 1, 0),
-			new ItemStack(CraftingPillars.blockBasePillar, 3, 0),
-			new ItemStack(CraftingPillars.itemRibbonDiamond, 2, 0),
-			new ItemStack(CraftingPillars.itemDiscElysium, 1, 0)
+				new ItemStack(CraftingPillars.blockChristmasPresent, 1, 0),
+				new ItemStack(CraftingPillars.blockChristmasPresent, 1, 1),
+				new ItemStack(CraftingPillars.itemWinterFood2013, 2, 0),
+				new ItemStack(CraftingPillars.itemWinterFood2013, 3, 1),
+				new ItemStack(CraftingPillars.itemWinterFood2013, 4, 2),
+				new ItemStack(CraftingPillars.itemWinterFood2013, 3, 3),
+				new ItemStack(CraftingPillars.itemWinterFood2013, 5, 4),
+				new ItemStack(CraftingPillars.itemWinterFood2013, 4, 5),
+				new ItemStack(CraftingPillars.itemWinterFood2013, 2, 6),
+				new ItemStack(CraftingPillars.itemWinterFood2013, 1, 7),
+				new ItemStack(CraftingPillars.itemWinterFood2013, 4, 8),
+				new ItemStack(CraftingPillars.itemElysiumLoreBook, 1, 0),
+				new ItemStack(CraftingPillars.blockCraftingPillar, 1, 0),
+				new ItemStack(CraftingPillars.blockBasePillar, 3, 0),
+				new ItemStack(CraftingPillars.itemRibbonDiamond, 2, 0),
+				new ItemStack(CraftingPillars.itemDiscElysium, 1, 0)
 		};
 	}
-	
+
 	public ChristmasPresentBlock(int id, Material mat)
 	{
 		super(id, mat);
 	}
-	
+
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
 	{
@@ -57,13 +50,13 @@ public class ChristmasPresentBlock extends BaseBlockContainer
 		else
 			this.setBlockBounds(0F, 0F, 0F, 1F, 1F, 1F);
 	}
-	
+
 	@Override
 	public int onBlockPlaced(World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int meta)
 	{
 		return world.rand.nextInt(2);
 	}
-	
+
 	@Override
 	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player)
 	{
@@ -83,13 +76,13 @@ public class ChristmasPresentBlock extends BaseBlockContainer
 	{
 		return CraftingPillars.PresentRenderID;
 	}
-	
+
 	@Override
 	public boolean renderAsNormalBlock()
 	{
 		return false;
 	}
-	
+
 	@Override
 	public boolean isOpaqueCube()
 	{

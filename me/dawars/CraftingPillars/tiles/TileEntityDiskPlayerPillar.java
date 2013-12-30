@@ -3,9 +3,6 @@ package me.dawars.CraftingPillars.tiles;
 import me.dawars.CraftingPillars.CraftingPillars;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
 
 public class TileEntityDiskPlayerPillar extends BaseTileEntity
 {
@@ -25,10 +22,11 @@ public class TileEntityDiskPlayerPillar extends BaseTileEntity
 				this.rot -= 360F;
 		}
 	}
-	
+
 	/**
 	 * Reads a tile entity from NBT.
 	 */
+	@Override
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
@@ -47,6 +45,7 @@ public class TileEntityDiskPlayerPillar extends BaseTileEntity
 	/**
 	 * Writes a tile entity to NBT.
 	 */
+	@Override
 	public void writeToNBT(NBTTagCompound nbt)
 	{
 		super.writeToNBT(nbt);
@@ -67,7 +66,7 @@ public class TileEntityDiskPlayerPillar extends BaseTileEntity
 			CraftingPillars.proxy.sendToPlayers(this.getDescriptionPacket(),
 					this.worldObj, this.xCoord, this.yCoord, this.zCoord, 64);
 	}
-	
+
 	public ItemStack getDisk()
 	{
 		return this.record;

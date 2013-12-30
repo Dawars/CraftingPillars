@@ -15,15 +15,15 @@ import net.minecraft.network.packet.Packet132TileEntityData;
 public abstract class BaseTileEntityPillar extends BaseTileEntity implements IInventory, ISidedInventory
 {
 	protected ItemStack[] inventory = new ItemStack[this.getSizeInventory()];
-	
+
 	public abstract boolean isOnlyDisplaySlot(int i);
-	
+
 	@Override
 	public abstract int getSizeInventory();
-	
+
 	@Override
 	public abstract String getInvName();
-	
+
 	public void dropItemFromSlot(int slot, int amount, EntityPlayer player)
 	{
 		if(!this.worldObj.isRemote && this.getStackInSlot(slot) != null)
@@ -34,7 +34,7 @@ public abstract class BaseTileEntityPillar extends BaseTileEntity implements IIn
 			this.onInventoryChanged();
 		}
 	}
-	
+
 	@Override
 	public void onInventoryChanged()
 	{
@@ -42,29 +42,29 @@ public abstract class BaseTileEntityPillar extends BaseTileEntity implements IIn
 		if(!this.worldObj.isRemote)
 			CraftingPillars.proxy.sendToPlayers(this.getDescriptionPacket(), this.worldObj, this.xCoord, this.yCoord, this.zCoord, 64);
 	}
-	
+
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
-		
+
 		this.inventory = new ItemStack[this.getSizeInventory()];
 		NBTTagList nbtlist = nbt.getTagList("Items");
 		for(int i = 0; i < nbtlist.tagCount(); i++)
 		{
 			NBTTagCompound nbtslot = (NBTTagCompound) nbtlist.tagAt(i);
 			int j = nbtslot.getByte("Slot") & 255;
-			
+
 			if((j >= 0) && (j < this.getSizeInventory()))
 				this.inventory[j] = ItemStack.loadItemStackFromNBT(nbtslot);
 		}
 	}
-	
+
 	@Override
 	public void writeToNBT(NBTTagCompound nbt)
 	{
 		super.writeToNBT(nbt);
-		
+
 		NBTTagList nbtlist = new NBTTagList();
 		for(int i = 0; i < this.getSizeInventory(); i++)
 		{
@@ -78,14 +78,14 @@ public abstract class BaseTileEntityPillar extends BaseTileEntity implements IIn
 		}
 		nbt.setTag("Items", nbtlist);
 	}
-	
+
 	@Override
 	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
 	{
 		NBTTagCompound nbt = pkt.data;
 		this.readFromNBT(nbt);
 	}
-	
+
 	@Override
 	public Packet getDescriptionPacket()
 	{
@@ -93,13 +93,13 @@ public abstract class BaseTileEntityPillar extends BaseTileEntity implements IIn
 		this.writeToNBT(nbt);
 		return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 0, nbt);
 	}
-	
+
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side)
 	{
 		return null;
 	}
-	
+
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack)
 	{
@@ -123,7 +123,7 @@ public abstract class BaseTileEntityPillar extends BaseTileEntity implements IIn
 	{
 		return this.inventory[i];
 	}
-	
+
 	@Override
 	public void setInventorySlotContents(int i, ItemStack stack)
 	{
@@ -148,7 +148,7 @@ public abstract class BaseTileEntityPillar extends BaseTileEntity implements IIn
 		}
 		return null;
 	}
-	
+
 	@Override
 	public ItemStack decrStackSize(int i, int amount)
 	{
@@ -170,7 +170,7 @@ public abstract class BaseTileEntityPillar extends BaseTileEntity implements IIn
 		}
 		return stack;
 	}
-	
+
 	public boolean insertStack(int i, ItemStack stack, int side)
 	{
 		if(this.canInsertItem(i, stack, side))
@@ -205,12 +205,12 @@ public abstract class BaseTileEntityPillar extends BaseTileEntity implements IIn
 	@Override
 	public void openChest()
 	{
-		
+
 	}
 
 	@Override
 	public void closeChest()
 	{
-		
+
 	}
 }

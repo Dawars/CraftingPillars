@@ -14,7 +14,7 @@ public class FakeSentryPlayer extends EntityPlayer
 
 	@Override
 	public void sendChatToPlayer(ChatMessageComponent chatmessagecomponent) {
-		
+
 	}
 
 	@Override

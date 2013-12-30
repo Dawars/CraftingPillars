@@ -3,7 +3,6 @@ package me.dawars.CraftingPillars.client;
 import static org.lwjgl.opengl.GL11.*;
 
 import cpw.mods.fml.client.FMLClientHandler;
-import me.dawars.CraftingPillars.CraftingPillars;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.util.ResourceLocation;
@@ -13,7 +12,7 @@ public class CustomParticle extends EntityFX
 {
 	ResourceLocation resource = null;
 	int brightness = 200;
-	
+
 	public CustomParticle(World world, double x, double y, double z, double mx, double my, double mz)
 	{
 		super(world, x, y, z, mx, my, mz);
@@ -24,12 +23,12 @@ public class CustomParticle extends EntityFX
 		this.motionZ = mz;
 		this.setParticleTextureIndex(-1);
 	}
-	
+
 	public void setTextureFile(ResourceLocation resource)
 	{
 		this.resource = resource;
 	}
-	
+
 	/**
 	 * Sets the particles brightness for rendering. The maximum value is about
 	 * 240.
@@ -40,20 +39,20 @@ public class CustomParticle extends EntityFX
 	{
 		this.brightness = amount;
 	}
-	
+
 	@Override
 	public void renderParticle(Tessellator tessellator, float tick, float rotationX, float rotationXZ, float rotationZ, float rotationYZ, float rotationXY)
 	{
 		if(this.resource != null)
-			FMLClientHandler.instance().getClient().renderEngine.bindTexture(resource);
+			FMLClientHandler.instance().getClient().renderEngine.bindTexture(this.resource);
 		else
 			FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation("textures/particle/particles.png"));
-		
-		float textureCoordX1 = (float) this.particleTextureIndexX / 16.0F;
+
+		float textureCoordX1 = this.particleTextureIndexX / 16.0F;
 		float textureCoordX2 = textureCoordX1 + 0.0624375F;
-		float textureCoordY1 = (float) this.particleTextureIndexY / 16.0F;
+		float textureCoordY1 = this.particleTextureIndexY / 16.0F;
 		float textureCoordY2 = textureCoordY1 + 0.0624375F;
-		
+
 		if(this.particleTextureIndexX < 0)
 		{
 			textureCoordX1 = 0F;
@@ -61,7 +60,7 @@ public class CustomParticle extends EntityFX
 			textureCoordY1 = 0F;
 			textureCoordY2 = 1F;
 		}
-		
+
 		if(this.particleIcon != null)
 		{
 			textureCoordX1 = this.particleIcon.getMinU();
@@ -69,11 +68,11 @@ public class CustomParticle extends EntityFX
 			textureCoordY1 = this.particleIcon.getMinV();
 			textureCoordY2 = this.particleIcon.getMaxV();
 		}
-		
-		float x = (float) (this.prevPosX + (this.posX - this.prevPosX) * (double) tick - this.interpPosX);
-		float y = (float) (this.prevPosY + (this.posY - this.prevPosY) * (double) tick - this.interpPosY);
-		float z = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * (double) tick - this.interpPosZ);
-		
+
+		float x = (float) (this.prevPosX + (this.posX - this.prevPosX) * tick - EntityFX.interpPosX);
+		float y = (float) (this.prevPosY + (this.posY - this.prevPosY) * tick - EntityFX.interpPosY);
+		float z = (float) (this.prevPosZ + (this.posZ - this.prevPosZ) * tick - EntityFX.interpPosZ);
+
 		/*
 		 * tessellator.setBrightness(this.brightness); if(this.particleRed >= 0)
 		 * tessellator.setColorRGBA_F(this.particleRed * colorMultiplier,
@@ -96,9 +95,9 @@ public class CustomParticle extends EntityFX
 		 * (double)(z + rotationZ * scaleAmount - rotationXY * scaleAmount),
 		 * (double)textureCoordX1, (double)textureCoordY2);
 		 */
-		
+
 		glColor4f(this.particleRed, this.particleGreen, this.particleBlue, this.particleAlpha);
-		
+
 		glBegin(GL_QUADS);
 		glTexCoord2f(textureCoordX2, textureCoordY2);
 		glVertex3f(x - rotationX * this.particleScale - rotationYZ * this.particleScale, y - rotationXZ * this.particleScale, z - rotationZ * this.particleScale - rotationXY * this.particleScale);
@@ -109,8 +108,8 @@ public class CustomParticle extends EntityFX
 		glTexCoord2f(textureCoordX1, textureCoordY2);
 		glVertex3f(x + rotationX * this.particleScale - rotationYZ * this.particleScale, y - rotationXZ * this.particleScale, z + rotationZ * this.particleScale - rotationXY * this.particleScale);
 		glEnd();
-		
-		if(resource != null)
+
+		if(this.resource != null)
 			FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation("textures/particle/particles.png"));
 	}
 }

@@ -6,18 +6,17 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-import me.dawars.CraftingPillars.CraftingPillars;
 import net.minecraft.network.packet.Packet250CustomPayload;
 
 public abstract class PillarPacket
 {
 	public String channel;
-	
+
 	public PillarPacket(String channel)
 	{
 		this.channel = channel;
 	}
-	
+
 	public Packet250CustomPayload pack()
 	{
 		try
@@ -33,7 +32,7 @@ public abstract class PillarPacket
 			return null;
 		}
 	}
-	
+
 	public void receive(Packet250CustomPayload packet)
 	{
 		try
@@ -45,10 +44,10 @@ public abstract class PillarPacket
 			e.printStackTrace();
 		}
 	}
-	
+
 	public abstract void writePacketData(DataOutputStream out) throws IOException;
-	
+
 	public abstract void readPacketData(DataInputStream in) throws IOException;
-	
+
 	public abstract int getSize();
 }

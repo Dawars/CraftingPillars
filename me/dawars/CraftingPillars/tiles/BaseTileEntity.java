@@ -1,7 +1,5 @@
 package me.dawars.CraftingPillars.tiles;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 import me.dawars.CraftingPillars.CraftingPillars;
@@ -16,26 +14,26 @@ import net.minecraft.world.World;
 public abstract class BaseTileEntity extends TileEntity
 {
 	protected Random random;
-	
+
 	@Override
 	public void setWorldObj(World world)
 	{
 		this.worldObj = world;
 		this.random = new Random(this.worldObj.getSeed());
 	}
-	
+
 	public boolean isUseableByPlayer(EntityPlayer player)
 	{
-		return worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) < 6;
+		return this.worldObj.getBlockTileEntity(this.xCoord, this.yCoord, this.zCoord) == this && player.getDistanceSq(this.xCoord + 0.5D, this.yCoord + 0.5D, this.zCoord + 0.5D) < 6;
 	}
-	
+
 	@Override
 	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
 	{
 		NBTTagCompound nbt = pkt.data;
 		this.readFromNBT(nbt);
 	}
-	
+
 	@Override
 	public Packet getDescriptionPacket()
 	{
@@ -43,12 +41,12 @@ public abstract class BaseTileEntity extends TileEntity
 		this.writeToNBT(nbt);
 		return new Packet132TileEntityData(this.xCoord, this.yCoord, this.zCoord, 0, nbt);
 	}
-	
+
 	@Override
 	public void onInventoryChanged()
 	{
 		super.onInventoryChanged();
-		
+
 		if(!this.worldObj.isRemote)
 		{
 			CraftingPillars.proxy.sendToPlayers(this.getDescriptionPacket(), this.worldObj, this.xCoord, this.yCoord, this.zCoord, 64);

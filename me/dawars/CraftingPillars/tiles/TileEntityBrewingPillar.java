@@ -1,48 +1,25 @@
 package me.dawars.CraftingPillars.tiles;
 
 import java.util.List;
-import java.util.Random;
-
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import me.dawars.CraftingPillars.CraftingPillars;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockFurnace;
-import net.minecraft.block.material.Material;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
-import net.minecraft.item.ItemTool;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.potion.PotionHelper;
-import net.minecraft.stats.AchievementList;
-import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.brewing.PotionBrewedEvent;
-import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
 public class TileEntityBrewingPillar extends BaseTileEntity implements
-		IInventory, ISidedInventory {
+IInventory, ISidedInventory {
 	private ItemStack[] inventory = new ItemStack[5];
 
 	// @SideOnly(Side.CLIENT)
@@ -66,16 +43,16 @@ public class TileEntityBrewingPillar extends BaseTileEntity implements
 			this.rot += 0.1F;
 			if (this.rot >= 360F)
 				this.rot -= 360F;
-			
+
 			if (this.brewTime > 0) {
 				--this.brewTime;
 			} else {
 				this.brewTime = 350;
 			}
 		}
-		
 
-		if (!worldObj.isRemote) {
+
+		if (!this.worldObj.isRemote) {
 			if (this.brewTime > 0) {
 				--this.brewTime;
 
@@ -115,7 +92,7 @@ public class TileEntityBrewingPillar extends BaseTileEntity implements
 					if (this.inventory[i] != null
 							&& this.inventory[i].getItem() instanceof ItemPotion) {
 						int j = this.inventory[i].getItemDamage();
-						int k = this.getPotionResult(j, itemstack);
+						int k = TileEntityBrewingPillar.getPotionResult(j, itemstack);
 
 						if (!ItemPotion.isSplash(j) && ItemPotion.isSplash(k)) {
 							flag = true;
@@ -127,7 +104,7 @@ public class TileEntityBrewingPillar extends BaseTileEntity implements
 
 						if ((j <= 0 || list != list1)
 								&& (list == null || !list.equals(list1)
-										&& list1 != null) && j != k) {
+								&& list1 != null) && j != k) {
 							flag = true;
 							break;
 						}
@@ -142,57 +119,57 @@ public class TileEntityBrewingPillar extends BaseTileEntity implements
 	}
 
 	private void brewPotions()
-    {
-        if (this.canBrew())
-        {
-            ItemStack itemstack = this.inventory[4];
+	{
+		if (this.canBrew())
+		{
+			ItemStack itemstack = this.inventory[4];
 
-            for (int i = 0; i < 4; ++i)
-            {
-                if (this.inventory[i] != null && this.inventory[i].getItem() instanceof ItemPotion)
-                {
-                    int j = this.inventory[i].getItemDamage();
-                    int k = this.getPotionResult(j, itemstack);
-                    List list = Item.potion.getEffects(j);
-                    List list1 = Item.potion.getEffects(k);
+			for (int i = 0; i < 4; ++i)
+			{
+				if (this.inventory[i] != null && this.inventory[i].getItem() instanceof ItemPotion)
+				{
+					int j = this.inventory[i].getItemDamage();
+					int k = TileEntityBrewingPillar.getPotionResult(j, itemstack);
+					List list = Item.potion.getEffects(j);
+					List list1 = Item.potion.getEffects(k);
 
-                    if ((j <= 0 || list != list1) && (list == null || !list.equals(list1) && list1 != null))
-                    {
-                        if (j != k)
-                        {
-                            this.inventory[i].setItemDamage(k);
-                        }
-                    }
-                    else if (!ItemPotion.isSplash(j) && ItemPotion.isSplash(k))
-                    {
-                        this.inventory[i].setItemDamage(k);
-                    }
-                }
-            }
+					if ((j <= 0 || list != list1) && (list == null || !list.equals(list1) && list1 != null))
+					{
+						if (j != k)
+						{
+							this.inventory[i].setItemDamage(k);
+						}
+					}
+					else if (!ItemPotion.isSplash(j) && ItemPotion.isSplash(k))
+					{
+						this.inventory[i].setItemDamage(k);
+					}
+				}
+			}
 
-            if (Item.itemsList[itemstack.itemID].hasContainerItem())
-            {
-                this.inventory[4] = Item.itemsList[itemstack.itemID].getContainerItemStack(inventory[4]);
-            }
-            else
-            {
-                --this.inventory[4].stackSize;
+			if (Item.itemsList[itemstack.itemID].hasContainerItem())
+			{
+				this.inventory[4] = Item.itemsList[itemstack.itemID].getContainerItemStack(this.inventory[4]);
+			}
+			else
+			{
+				--this.inventory[4].stackSize;
 
-                if (this.inventory[4].stackSize <= 0)
-                {
-                    this.inventory[4] = null;
-                }
-            }
-            
-            MinecraftForge.EVENT_BUS.post(new PotionBrewedEvent(inventory));
-        }
-    }
+				if (this.inventory[4].stackSize <= 0)
+				{
+					this.inventory[4] = null;
+				}
+			}
+
+			MinecraftForge.EVENT_BUS.post(new PotionBrewedEvent(this.inventory));
+		}
+	}
 
 	/**
 	 * The result of brewing a potion of the specified damage value with an
 	 * ingredient itemstack.
 	 */
-	public static int getPotionResult(int par1, ItemStack par2ItemStack) {
+	 public static int getPotionResult(int par1, ItemStack par2ItemStack) {
 		return par2ItemStack == null ? par1 : (Item.itemsList[par2ItemStack.itemID].isPotionIngredient() ?
 				PotionHelper.applyIngredient(par1, Item.itemsList[par2ItemStack.itemID].getPotionEffect()) : par1);
 	}
@@ -263,7 +240,7 @@ public class TileEntityBrewingPillar extends BaseTileEntity implements
 
 	@Override
 	public int getSizeInventory() {
-		return inventory.length;
+		return this.inventory.length;
 	}
 
 	@Override
@@ -307,7 +284,7 @@ public class TileEntityBrewingPillar extends BaseTileEntity implements
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slot) {
-		ItemStack stack = getStackInSlot(slot);
+		ItemStack stack = this.getStackInSlot(slot);
 		if (stack != null) {
 			this.setInventorySlotContents(slot, null);
 		}
@@ -319,6 +296,7 @@ public class TileEntityBrewingPillar extends BaseTileEntity implements
 	 * Returns an array containing the indices of the slots that can be accessed
 	 * by automation on the given side of this block.
 	 */
+	@Override
 	public int[] getAccessibleSlotsFromSide(int par1) {
 		return new int[] { 0, 1, 2, 3, 4 };
 	}
@@ -340,6 +318,7 @@ public class TileEntityBrewingPillar extends BaseTileEntity implements
 	 * Returns true if automation can extract the given item in the given slot
 	 * from the given side. Args: Slot, item, side
 	 */
+	@Override
 	public boolean canExtractItem(int slot, ItemStack item, int side) {
 		if(slot == 4 && (side == 0 || side == 1)/*DOWN*/)
 			return true;

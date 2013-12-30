@@ -12,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import thaumcraft.api.ThaumcraftApi;
-import thaumcraft.api.ThaumcraftApiHelper;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.IArcaneRecipe;
 import thaumcraft.api.crafting.ShapedArcaneRecipe;
@@ -56,9 +55,9 @@ public class Thaumcraft {
 	}
 
 	public static boolean matches(IInventory inv, World world, EntityPlayer player, IArcaneRecipe recipe) {
-//		if (recipe.getResearch().length() > 0 && !ThaumcraftApiHelper.isResearchComplete(player.username, recipe.getResearch())) {
-//			return false;
-//		}
+		//		if (recipe.getResearch().length() > 0 && !ThaumcraftApiHelper.isResearchComplete(player.username, recipe.getResearch())) {
+		//			return false;
+		//		}
 
 		if (recipe instanceof ShapedArcaneRecipe) {
 			ShapedArcaneRecipe arcaneRecipe = (ShapedArcaneRecipe) recipe;
@@ -71,9 +70,9 @@ public class Thaumcraft {
 			}
 		} else if (recipe instanceof ShapelessArcaneRecipe) {
 			ShapelessArcaneRecipe arcaneRecipe = (ShapelessArcaneRecipe) recipe;
-//			if (arcaneRecipe.getResearch().length() > 0 && !ThaumcraftApiHelper.isResearchComplete(player.username, arcaneRecipe.getResearch())) {
-//				return false;
-//			}
+			//			if (arcaneRecipe.getResearch().length() > 0 && !ThaumcraftApiHelper.isResearchComplete(player.username, arcaneRecipe.getResearch())) {
+			//				return false;
+			//			}
 
 			ArrayList required = new ArrayList(arcaneRecipe.getInput());
 
@@ -159,9 +158,9 @@ public class Thaumcraft {
 		}
 		return (target.itemID == input.itemID
 				&& (!target.hasTagCompound() || ItemStack
-				.areItemStackTagsEqual(target, input)) && (target
-				.getItemDamage() == OreDictionary.WILDCARD_VALUE || target
-				.getItemDamage() == input.getItemDamage()));
+						.areItemStackTagsEqual(target, input)) && (target
+								.getItemDamage() == OreDictionary.WILDCARD_VALUE || target
+								.getItemDamage() == input.getItemDamage()));
 	}
 
 	public static ItemStack getStackInRowAndColumn(IInventory inv, int par1, int par2) {

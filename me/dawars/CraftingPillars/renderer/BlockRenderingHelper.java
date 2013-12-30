@@ -13,7 +13,7 @@ public class BlockRenderingHelper {
 	public static void drawBlock(Tessellator t, RenderBlocks renderblocks, Block block, Icon icon) {
 		drawFaces(t, renderblocks, block, icon, icon, icon, icon, icon, icon);
 	}
-	
+
 	public static void drawBlock(RenderBlocks renderblocks, Block block, Icon icon) {
 		drawFaces(renderblocks, block, icon, icon, icon, icon, icon, icon);
 	}
@@ -51,7 +51,7 @@ public class BlockRenderingHelper {
 		tessellator.draw();
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 	}
-	
+
 	public static void drawFaces(Tessellator tessellator, RenderBlocks renderblocks, Block block, Icon i1, Icon i2, Icon i3, Icon i4, Icon i5, Icon i6) {
 		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 		tessellator.startDrawingQuads();
@@ -91,9 +91,9 @@ public class BlockRenderingHelper {
 		float f = 1.0F;
 
 		int l = block.colorMultiplier(blockAccess, i, j, k);
-		float f1 = (float) (l >> 16 & 255) / 255.0F;
-		float f2 = (float) (l >> 8 & 255) / 255.0F;
-		float f3 = (float) (l & 255) / 255.0F;
+		float f1 = (l >> 16 & 255) / 255.0F;
+		float f2 = (l >> 8 & 255) / 255.0F;
+		float f3 = (l & 255) / 255.0F;
 		float f4;
 
 		if (EntityRenderer.anaglyphEnable) {

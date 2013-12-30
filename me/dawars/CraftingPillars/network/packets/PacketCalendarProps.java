@@ -10,13 +10,13 @@ import me.dawars.CraftingPillars.CraftingPillars;
 public class PacketCalendarProps extends PillarPacket
 {
 	public int data;
-	
+
 	public PacketCalendarProps(Packet250CustomPayload packet)
 	{
 		super(CraftingPillars.channelProps);
 		this.receive(packet);
 	}
-	
+
 	public PacketCalendarProps(int data)
 	{
 		super(CraftingPillars.channelProps);

@@ -7,7 +7,7 @@ public class BlockIds
 	public static int idCraftingPillar = 3257;
 	public static int idFurnacePillar = 3258;
 	public static int idAnvilPillar = 3259;
-//	public static int idTankPillar = 3260;
+	//	public static int idTankPillar = 3260;
 	public static int idBrewingPillar = 3260;
 	public static int idDiskPillar = 3261;
 	public static int idFreezerPillar = 3262;
@@ -26,7 +26,7 @@ public class BlockIds
 	public static int idLoreBook = 5153;
 	public static int idVirgacs = 5154;
 	public static int idWinterFood = 5155;
-	
+
 	//Settings
 	public static int sentryCooldown = 20;
 	public static float sentryRange = 16*16;

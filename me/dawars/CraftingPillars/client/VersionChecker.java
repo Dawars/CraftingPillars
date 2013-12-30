@@ -2,22 +2,12 @@ package me.dawars.CraftingPillars.client;
 
 import java.awt.Desktop;
 import java.awt.Frame;
-import java.awt.Toolkit;
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Random;
-
 import javax.swing.JOptionPane;
 
-import net.minecraftforge.common.Property;
-
-import me.dawars.CraftingPillars.BlockIds;
 import me.dawars.CraftingPillars.CraftingPillars;
 
 public class VersionChecker
@@ -25,7 +15,7 @@ public class VersionChecker
 	public static class Version
 	{
 		public int[] digits;
-		
+
 		public Version(String text)
 		{
 			String[] split = text.split("\\.");
@@ -33,7 +23,7 @@ public class VersionChecker
 			for(int i = 0; i < split.length; i++)
 				this.digits[i] = Integer.parseInt(split[i]);
 		}
-		
+
 		public boolean greater(Version v)
 		{
 			for(int i = 0; i < this.digits.length && i < v.digits.length; i++)
@@ -43,7 +33,7 @@ public class VersionChecker
 					return false;
 			return this.digits.length > v.digits.length;
 		}
-		
+
 		public boolean less(Version v)
 		{
 			for(int i = 0; i < this.digits.length && i < v.digits.length; i++)
@@ -53,13 +43,13 @@ public class VersionChecker
 					return false;
 			return this.digits.length < v.digits.length;
 		}
-		
+
 		@Override
 		public boolean equals(Object o)
 		{
 			if(!(o instanceof Version))
 				return false;
-			
+
 			Version v = (Version) o;
 			if(v.digits.length != this.digits.length)
 				return false;
@@ -68,7 +58,7 @@ public class VersionChecker
 					return false;
 			return true;
 		}
-		
+
 		@Override
 		public String toString()
 		{
@@ -87,11 +77,11 @@ public class VersionChecker
 			return this.digits.length < v.digits.length;
 		}
 	}
-	
+
 	/*public static class MultiVersion
 	{
 		public Version[] versions;
-		
+
 		public MultiVersion(String text)
 		{
 			String[] split = text.replace(" ", "").split(",");
@@ -99,7 +89,7 @@ public class VersionChecker
 			for(int i = 0; i < split.length; i++)
 				this.versions[i] = new Version(split[i]);
 		}
-		
+
 		@Override
 		public String toString()
 		{
@@ -109,7 +99,7 @@ public class VersionChecker
 			return s;
 		}
 	}*/
-	
+
 	public static void check()
 	{
 		try
@@ -119,10 +109,10 @@ public class VersionChecker
 			BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
 			boolean update = false;
 			String pline = "", line = br.readLine();
-			
+
 			while(line != null)
 			{
-				
+
 				if(CraftingPillars.checkUpdates.getBoolean(true))
 				{
 					if(line.split(" ")[0].equals(CraftingPillars.proxy.getMinecraftVersion()) && new Version(CraftingPillars.version).less(new Version(line.split(" ")[1])))
@@ -136,7 +126,7 @@ public class VersionChecker
 						update = true;
 					}
 				}
-				
+
 				pline = line;
 				line = br.readLine();
 			}
@@ -153,14 +143,14 @@ public class VersionChecker
 						JOptionPane.DEFAULT_OPTION,
 						JOptionPane.QUESTION_MESSAGE, null, buttons,
 						buttons[0]);
-			
+
 				if(n == 0)
 				{
 					System.out.println("[UPDATE] "+pline);
 					Desktop.getDesktop().browse(new URI(pline));
 					System.exit(0);
 				}
-				
+
 				if(n == 2)
 				{
 					CraftingPillars.checkUpdates.set(false);
