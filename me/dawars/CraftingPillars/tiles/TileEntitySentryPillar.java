@@ -73,9 +73,12 @@ public class TileEntitySentryPillar extends BaseTileEntity implements IInventory
 
 							ItemStack itemstack1 = ibehaviorsentryitem.dispense(blocksourceimpl, this.target, this.worldObj.getPlayerEntityByName(this.owner), ammo);
 							this.setInventorySlotContents(0, itemstack1.stackSize == 0 ? null : itemstack1);
+							this.cooldown = ibehaviorsentryitem.reloadSpeed(ammo);
+
+						} else {
+							this.cooldown = BlockIds.sentryCooldown;
 						}
 
-						this.cooldown = BlockIds.sentryCooldown;
 					}
 				}
 			}

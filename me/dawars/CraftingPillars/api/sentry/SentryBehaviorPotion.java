@@ -3,6 +3,7 @@ package me.dawars.CraftingPillars.api.sentry;
 import java.util.Iterator;
 import java.util.List;
 
+import me.dawars.CraftingPillars.entity.FakeSentryPlayer;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
@@ -20,7 +21,11 @@ import net.minecraft.world.World;
 public class SentryBehaviorPotion extends SentryDefaultProjectile
 {
 	/**
-	 * Return the projectile entity spawned by this dispense behavior.
+	 * Return the projectile entity spawned by this Sentry behavior.
+	 * @param target - the target of the Sentry
+	 * @param owner - owner of the Sentry - use it only when the weapon needs to consume "energy" from the player
+	 * @param blockSource - the Sentry block
+	 * @param item - Weapon or projectile placed into the Sentry (this is registered to the 
 	 */
 	@Override
 	protected IProjectile getProjectileEntity(EntityMob target, EntityPlayer owner, IBlockSource blockSource, ItemStack item) {
@@ -64,8 +69,8 @@ public class SentryBehaviorPotion extends SentryDefaultProjectile
 		if(!hasPotionEffect)
 		{
 
-			EntityPotion entitypotion = new EntityPotion(world, x + 0.5F, y + 1.5F, z + 0.5F, item.copy());
-
+			EntityPotion entitypotion = new EntityPotion(world, new FakeSentryPlayer(world, "Sentry"), item.copy());
+			entitypotion.setPosition(x + 0.5F, y + 1.5F, z + 0.5F);
 
 			entitypotion.posY = y + 1.5F;
 			double d0 = target.posX - x - 0.5F;
@@ -82,7 +87,7 @@ public class SentryBehaviorPotion extends SentryDefaultProjectile
 				entitypotion.setLocationAndAngles(x + 0.5F + d4, entitypotion.posY, z + 0.5F + d5, f2, f3);
 				entitypotion.yOffset = 0.0F;
 				float f4 = (float)d3 * 0.2F;
-				entitypotion.setThrowableHeading(d0, d1 + f4, d2, this.getSpeed(), this.getAccuracy());
+				entitypotion.setThrowableHeading(d0, d1 + f4, d2, 1.6F, 3F);
 			}
 			return entitypotion;
 		}
@@ -106,22 +111,15 @@ public class SentryBehaviorPotion extends SentryDefaultProjectile
 		}
 		return item;
 	}
-
+	
 	/**
-	 * Return the speed/strength of the projectile entity - Doesn't used by default.
+	 * Returns the reload speed of the projectile
+	 * @param itemstack - current weapon or projectile
+	 * @return - time to reload in ticks - default: 20
 	 */
 	@Override
-	protected float getSpeed()
-	{
-		return 1.6F;
+	public int reloadSpeed(ItemStack itemstack) {
+		return 20;
 	}
 
-	/**
-	 * Return the accuracy of the projectile entity - Doesn't used by default.
-	 */
-	@Override
-	protected float getAccuracy()
-	{
-		return 3F;
-	}
 }

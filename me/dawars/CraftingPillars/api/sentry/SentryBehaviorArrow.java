@@ -13,7 +13,11 @@ import net.minecraft.world.World;
 public class SentryBehaviorArrow extends SentryDefaultProjectile
 {
 	/**
-	 * Return the projectile entity spawned by this dispense behavior.
+	 * Return the projectile entity spawned by this Sentry behavior.
+	 * @param target - the target of the Sentry
+	 * @param owner - owner of the Sentry - use it only when the weapon needs to consume "energy" from the player
+	 * @param blockSource - the Sentry block
+	 * @param item - Weapon or projectile placed into the Sentry (this is registered to the 
 	 */
 	@Override
 	protected IProjectile getProjectileEntity(EntityMob target, EntityPlayer owner, IBlockSource blockSource, ItemStack item) {
@@ -25,7 +29,7 @@ public class SentryBehaviorArrow extends SentryDefaultProjectile
 
 
 		//		EntityArrow entityammo = new EntityArrow(world, x + 0.5F, y + 1.5F, z + 0.5F);
-		EntityArrow entityammo = new EntityArrow(world, new FakeSentryPlayer(world, "Sentry"), target, this.getSpeed(), this.getAccuracy());
+		EntityArrow entityammo = new EntityArrow(world, new FakeSentryPlayer(world, "Sentry"), target, 1.6F, 3F);
 		entityammo.setDamage(entityammo.getDamage() + 1);
 
 		entityammo.setPosition(x + 0.5F, y + 1.5F, z + 0.5F);
@@ -45,26 +49,18 @@ public class SentryBehaviorArrow extends SentryDefaultProjectile
 			entityammo.setLocationAndAngles(x + 0.5F + d4, entityammo.posY, z + 0.5F + d5, f2, f3);
 			entityammo.yOffset = 0.0F;
 			float f4 = (float)d3 * 0.2F;
-			entityammo.setThrowableHeading(d0, d1 + f4, d2, this.getSpeed(), this.getAccuracy());
+			entityammo.setThrowableHeading(d0, d1 + f4, d2, 1.6F, 3F);
 		}
 		return entityammo;
 	}
-
+	
 	/**
-	 * Return the speed/strength of the projectile entity - Doesn't used by default.
+	 * Returns the reload speed of the projectile
+	 * @param itemstack - current weapon or projectile
+	 * @return - time to reload in ticks - default: 20
 	 */
 	@Override
-	protected float getSpeed()
-	{
-		return 1.6F;
-	}
-
-	/**
-	 * Return the accuracy of the projectile entity - Doesn't used by default.
-	 */
-	@Override
-	protected float getAccuracy()
-	{
-		return 3F;
+	public int reloadSpeed(ItemStack itemstack) {
+		return 20;
 	}
 }

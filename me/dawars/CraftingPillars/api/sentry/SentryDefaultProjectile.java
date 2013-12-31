@@ -1,5 +1,6 @@
 package me.dawars.CraftingPillars.api.sentry;
 
+import me.dawars.CraftingPillars.entity.FakeSentryPlayer;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.IProjectile;
@@ -11,7 +12,12 @@ public abstract class SentryDefaultProjectile implements IBehaviorSentryItem
 {
 
 	/**
-	 * Returns the specified ItemStack to be removed from the pillar.
+	 * Returns the specified ItemStack remaining in the Sentry.
+	 * @param sourceblock - position info for the block
+	 * @param target - the target the Sentry is shooting at
+	 * @param owner - owner of the Sentry - use {@link FakeSentryPlayer} instead
+	 * @param item - the item placed into the pillar
+	 * @return itemstack remaining in the Sentry after a shoot
 	 */
 	@Override
 	public final ItemStack dispense(IBlockSource blockSource,  EntityMob target, EntityPlayer owner, ItemStack item)
@@ -25,8 +31,9 @@ public abstract class SentryDefaultProjectile implements IBehaviorSentryItem
 	/**
 	 * Spawns the entity.
 	 * @param sourceblock - position info for the block
-	 * @param target - the target the Pillar is shooting at
+	 * @param target - the target the Sentry is shooting at
 	 * @param item - the item placed into the pillar
+	 * @return - modified itemstack after shooting
 	 */
 	public ItemStack spawnEntity(IBlockSource sourceblock, EntityMob target, EntityPlayer owner, ItemStack item)
 	{
@@ -51,19 +58,11 @@ public abstract class SentryDefaultProjectile implements IBehaviorSentryItem
 	protected void spawnParticles(IBlockSource blockSource) {}
 
 	/**
-	 * Return the projectile entity spawned by the Sentry behavior.
-	 * @param item 
+	 * Return the projectile entity spawned by this Sentry behavior.
+	 * @param target - the target of the Sentry
+	 * @param owner - owner of the Sentry - use it only when the weapon needs to consume "energy" from the player
+	 * @param blockSource - the Sentry block
+	 * @param item - Weapon or projectile placed into the Sentry (this is registered to the 
 	 */
 	protected abstract IProjectile getProjectileEntity(EntityMob target, EntityPlayer owner, IBlockSource blockSource, ItemStack item);
-
-	protected float getSpeed()
-	{
-		return 6.0F;
-	}
-
-	protected float getAccuracy()
-	{
-		return 1.1F;
-	}
-
 }

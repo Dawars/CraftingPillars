@@ -13,7 +13,11 @@ import net.minecraft.world.World;
 public class SentryBehaviorSnowball extends SentryDefaultProjectile
 {
 	/**
-	 * Return the projectile entity spawned by this dispense behavior.
+	 * Return the projectile entity spawned by this Sentry behavior.
+	 * @param target - the target of the Sentry
+	 * @param owner - owner of the Sentry - use it only when the weapon needs to consume "energy" from the player
+	 * @param blockSource - the Sentry block
+	 * @param item - Weapon or projectile placed into the Sentry (this is registered to the 
 	 */
 	@Override
 	protected IProjectile getProjectileEntity(EntityMob target, EntityPlayer owner, IBlockSource blockSource, ItemStack item) {
@@ -25,7 +29,6 @@ public class SentryBehaviorSnowball extends SentryDefaultProjectile
 
 
 		EntitySnowball entityammo = new EntitySnowball(world, new FakeSentryPlayer(world, "Sentry"));
-		//		EntitySnowball entityammo = new EntitySnowball(world, x + 0.5F, y + 1.5F, z + 0.5F);
 
 		entityammo.setPosition(x + 0.5F, y + 1.5F, z + 0.5F);
 		double d0 = target.posX - x - 0.5F;
@@ -35,5 +38,15 @@ public class SentryBehaviorSnowball extends SentryDefaultProjectile
 		entityammo.setThrowableHeading(d0, d1 + f1, d2, 1.6F, 1);
 
 		return entityammo;
+	}
+	
+	/**
+	 * Returns the reload speed of the projectile
+	 * @param itemstack - current weapon or projectile
+	 * @return - time to reload in ticks - default: 20
+	 */
+	@Override
+	public int reloadSpeed(ItemStack itemstack) {
+		return 20;
 	}
 }

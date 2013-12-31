@@ -374,7 +374,7 @@ public class CraftingPillars
 	public void initAPI()
 	{
 		CraftingPillarAPI.addDiskTexture(itemDiscElysium.itemID, CraftingPillars.id + ":textures/models/disk_elysium.png");
-
+		
 		CraftingPillarAPI.addDiskTexture(Item.record13.itemID, CraftingPillars.id + ":textures/models/disk_13.png");
 		CraftingPillarAPI.addDiskTexture(Item.recordCat.itemID, CraftingPillars.id + ":textures/models/disk_cat.png");
 		CraftingPillarAPI.addDiskTexture(Item.recordBlocks.itemID, CraftingPillars.id + ":textures/models/disk_blocks.png");
