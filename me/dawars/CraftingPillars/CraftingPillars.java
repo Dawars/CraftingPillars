@@ -7,8 +7,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
-import thaumcraft.api.ItemApi;
-
 import me.dawars.CraftingPillars.api.CraftingPillarAPI;
 import me.dawars.CraftingPillars.api.sentry.*;
 import me.dawars.CraftingPillars.blocks.*;
@@ -29,6 +27,7 @@ import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.Property;
 import net.minecraftforge.oredict.OreDictionary;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -455,7 +454,21 @@ public class CraftingPillars
 		{
 			System.out.println("Loading Thaumcraft 4 wand...");
 			//this.getClass().getClassLoader().loadClass("thaumcraft.api.ItemApi").getDeclaredMethod("getItem", parameterTypes)
-			itemWandThaumcraft = ItemApi.getItem("itemWandCasting", 0);
+			
+
+			try {
+				String itemClass = "thaumcraft.common.config.ConfigItems";
+				Object obj = Class.forName(itemClass).getField("itemWandCasting").get(null);
+				if (obj instanceof Item) {
+					itemWandThaumcraft = new ItemStack((Item) obj,1, 0);
+				} else if (obj instanceof ItemStack) {
+					itemWandThaumcraft = (ItemStack) obj;
+				}
+			} catch (Exception ex) {
+				FMLLog.warning("[Thaumcraft] Could not retrieve item identified by: itemWandCasting");
+				modThaumcraft = false;
+			}
+			
 			if(itemWandThaumcraft == null)
 			{
 				modThaumcraft = false;
