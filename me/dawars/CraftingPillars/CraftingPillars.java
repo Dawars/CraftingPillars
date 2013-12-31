@@ -7,8 +7,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
-import thaumcraft.api.ItemApi;
-
 import me.dawars.CraftingPillars.api.CraftingPillarAPI;
 import me.dawars.CraftingPillars.api.sentry.*;
 import me.dawars.CraftingPillars.blocks.*;
@@ -213,7 +211,8 @@ public class CraftingPillars
 		blockChristmasLeaves = (new ChristmasLeavesBlock(idChristmasLeaves.getInt(), Material.leaves)).setHardness(0.2F).setLightOpacity(1).setStepSound(Block.soundGrassFootstep).setUnlocalizedName("xmasLeaves");
 		if(!winter)
 			blockChristmasLeaves.setCreativeTab(null);
-		registerBlock(blockChristmasLeaves);
+		//registerBlock(blockChristmasLeaves);
+		GameRegistry.registerBlock(blockChristmasLeaves, ChristmasLeavesItemBlock.class, CraftingPillars.id);
 		LanguageRegistry.instance().addStringLocalization("tile.xmasLeaves.spruce.name", "en_US", "Christmas Leaves");
 		LanguageRegistry.instance().addStringLocalization("tile.xmasLeaves.fostimber.name", "en_US", "Fostimber Christmas Leaves");
 
@@ -237,9 +236,7 @@ public class CraftingPillars
 			blockChristmasLight.setCreativeTab(null);
 		registerBlock(blockChristmasLight);
 		LanguageRegistry.instance().addStringLocalization(blockChristmasLight.getUnlocalizedName()+".name", "en_US", "Christmas Light");
-
-		GameRegistry.registerBlock(blockChristmasLeaves, ChristmasLeavesItemBlock.class, CraftingPillars.id);
-
+		
 		//Items
 		Property idDiscElysium = CraftingPillars.config.getItem("DiscElysium.id", BlockIds.idDiscElysium);
 		itemDiscElysium = new PillarRecord(idDiscElysium.getInt(), CraftingPillars.id + ":UranusParadiseShort").setUnlocalizedName("record").setTextureName(CraftingPillars.id + ":ElysiumDisk");
@@ -446,7 +443,8 @@ public class CraftingPillars
 	}
 
 	@EventHandler
-	public void modsLoaded(FMLPostInitializationEvent evt){
+	public void modsLoaded(FMLPostInitializationEvent evt)
+	{
 		modForestry = Loader.isModLoaded("Forestry");
 		modElysium = Loader.isModLoaded("elysium");
 		modThaumcraft = Loader.isModLoaded("Thaumcraft");
@@ -454,11 +452,12 @@ public class CraftingPillars
 		if(modThaumcraft)
 		{
 			System.out.println("Loading Thaumcraft 4 wand...");
-			itemWandThaumcraft = ItemApi.getItem("itemWandCasting", 0);
-			if(itemWandThaumcraft == null){
+			//this.getClass().getClassLoader().loadClass("thaumcraft.api.ItemApi").getDeclaredMethod("getItem", parameterTypes)
+			//itemWandThaumcraft = ItemApi.getItem("itemWandCasting", 0);
+			if(itemWandThaumcraft == null)
+			{
 				modThaumcraft = false;
 				System.out.println("Thaumcraft compatibility disabled...");
-
 			}
 		}
 	}
