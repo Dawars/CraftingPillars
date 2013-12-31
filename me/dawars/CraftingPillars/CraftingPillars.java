@@ -7,6 +7,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
+import thaumcraft.api.ItemApi;
+
 import me.dawars.CraftingPillars.api.CraftingPillarAPI;
 import me.dawars.CraftingPillars.api.sentry.*;
 import me.dawars.CraftingPillars.blocks.*;
@@ -453,7 +455,7 @@ public class CraftingPillars
 		{
 			System.out.println("Loading Thaumcraft 4 wand...");
 			//this.getClass().getClassLoader().loadClass("thaumcraft.api.ItemApi").getDeclaredMethod("getItem", parameterTypes)
-			//itemWandThaumcraft = ItemApi.getItem("itemWandCasting", 0);
+			itemWandThaumcraft = ItemApi.getItem("itemWandCasting", 0);
 			if(itemWandThaumcraft == null)
 			{
 				modThaumcraft = false;
