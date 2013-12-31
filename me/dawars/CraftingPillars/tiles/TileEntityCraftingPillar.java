@@ -125,10 +125,11 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 					}
 				}
 
-				if(playerForResearch != null)
+				if(playerForResearch != null && this.getStackInSlot(10) != null)
 				{
-					//					FMLLog.warning("Checking Recipe");
-					this.inventory[this.getSizeInventory()] = Thaumcraft.findMatchingArcaneRecipe(this.container.craftMatrix, playerForResearch);
+					ItemStack result = Thaumcraft.findMatchingArcaneRecipe(this.container.craftMatrix, playerForResearch);
+					if(result != null)
+						this.inventory[this.getSizeInventory()] = result;
 				}
 
 			}
