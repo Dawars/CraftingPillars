@@ -1,10 +1,13 @@
 package me.dawars.CraftingPillars.renderer;
 
 import java.awt.Color;
+
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.util.ResourceLocation;
 import static org.lwjgl.opengl.GL11.*;
 
 public class RenderingHelper
@@ -109,6 +112,31 @@ public class RenderingHelper
 		glDisable(GL_BLEND);
 
 		fontRenderer.drawString(text, -fontRenderer.getStringWidth(text)/2, -fontRenderer.FONT_HEIGHT/2, color);
+		glPopMatrix();
+	}
+	
+	public static void renderFacingQuad(float x, float y, float z, float scale, ResourceLocation texture, Color bgColor)
+	{
+		glPushMatrix();
+		glTranslatef(x, y, z);
+		applyFloatingRotations();
+		glRotatef(180F, 0.0F, 0.0F, 1.0F);
+		glScalef(0.05F*scale, 0.05F*scale, 1F);
+
+		int h = 16;
+		int w = 16;
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glColor4f(bgColor.getRed()/256F, bgColor.getGreen()/256F, bgColor.getBlue()/256F, bgColor.getAlpha()/256F);
+		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+		glBegin(GL_QUADS);
+		glVertex3f(-w-1, -h-1, 0.001F);
+		glVertex3f(-w-1, h, 0.001F);
+		glVertex3f(w, h, 0.001F);
+		glVertex3f(w, -h-1, 0.001F);
+		glEnd();
+		glDisable(GL_BLEND);
+
 		glPopMatrix();
 	}
 }

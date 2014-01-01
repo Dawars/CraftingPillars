@@ -17,14 +17,43 @@ import thaumcraft.api.crafting.IArcaneRecipe;
 import thaumcraft.api.crafting.ShapedArcaneRecipe;
 import thaumcraft.api.crafting.ShapelessArcaneRecipe;
 
-public class Thaumcraft {
+public class ThaumcraftHelper {
 
-	static Method isResearchComplete;
-	static Method getObjectTags;
-	static Method getBonusTags;
-	static Method generateTags;
+	static Method consumAllVisCrafting;
+	public static boolean consumAllVisCrafting(ItemStack is, EntityPlayer player, AspectList aspects, boolean doit) {
+		boolean ot = false;
+	    try {
+	        if(consumAllVisCrafting == null) {
+	            Class fake = Class.forName("thaumcraft.common.items.wands.ItemWandCasting");
+	            consumAllVisCrafting = fake.getMethod("consumAllVisCrafting", ItemStack.class, EntityPlayer.class, AspectList.class, boolean.class);
+	        }
+	        ot = (Boolean) consumAllVisCrafting.invoke(is, player, aspects, doit);
+	    } catch(Exception ex) { 
+	    	FMLLog.warning("[CraftingPillars] Could not invoke thaumcraft.common.items.wands.ItemWandCasting method consumAllVisCrafting");
+	    }
+		return ot;
+	}
 
 	public static ItemStack findMatchingArcaneRecipe(IInventory inv, EntityPlayer player) {
+		
+		int i = 0;
+	    ItemStack itemstack = null;
+	    ItemStack itemstack1 = null;
+
+		for (int j = 0; j < 9; j++) {
+			ItemStack itemstack2 = inv.getStackInSlot(j);
+
+			if (itemstack2 != null) {
+				if (i == 0) {
+					itemstack = itemstack2;
+				}
+				if (i == 1) {
+					itemstack1 = itemstack2;
+				}
+				i++;
+			}
+		}
+		
 		IArcaneRecipe recipe = null;
 		for (Iterator i$ = ThaumcraftApi.getCraftingRecipes().iterator(); i$.hasNext();) {
 			Object currentRecipe = i$.next();
@@ -41,6 +70,25 @@ public class Thaumcraft {
 	}
 
 	public static AspectList findMatchingArcaneRecipeAspects(IInventory inv, EntityPlayer player) {
+		
+		int i = 0;
+	    ItemStack itemstack = null;
+	    ItemStack itemstack1 = null;
+
+		for (int j = 0; j < 9; j++) {
+			ItemStack itemstack2 = inv.getStackInSlot(j);
+
+			if (itemstack2 != null) {
+				if (i == 0) {
+					itemstack = itemstack2;
+				}
+				if (i == 1) {
+					itemstack1 = itemstack2;
+				}
+				i++;
+			}
+		}
+		
 		IArcaneRecipe recipe = null;
 		for (Iterator iterator = ThaumcraftApi.getCraftingRecipes().iterator(); iterator.hasNext();) {
 			Object currentRecipe = iterator.next();

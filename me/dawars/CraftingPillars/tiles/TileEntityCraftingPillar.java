@@ -1,11 +1,13 @@
 package me.dawars.CraftingPillars.tiles;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 
+import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 
 import me.dawars.CraftingPillars.CraftingPillars;
-import me.dawars.CraftingPillars.apiHelper.Thaumcraft;
+import me.dawars.CraftingPillars.apiHelper.ThaumcraftHelper;
 import me.dawars.CraftingPillars.container.ContainerCraftingPillar;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
@@ -30,6 +32,7 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 
 	public float rot = 0F;
 	public boolean showNum = false;
+	public AspectList aspects;
 
 	@Override
 	public void updateEntity()
@@ -127,9 +130,21 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 
 				if(playerForResearch != null && this.getStackInSlot(10) != null)
 				{
-					ItemStack result = Thaumcraft.findMatchingArcaneRecipe(this.container.craftMatrix, playerForResearch);
+					ItemStack result = ThaumcraftHelper.findMatchingArcaneRecipe(this.container.craftMatrix, playerForResearch);
 					if(result != null)
+					{
 						this.inventory[this.getSizeInventory()] = result;
+						aspects = ThaumcraftHelper.findMatchingArcaneRecipeAspects(this.container.craftMatrix, playerForResearch);
+						
+						for(int i = 0; i < aspects.size(); i++)
+						{
+							FMLLog.warning(aspects.getAspects()[i].getName() + ": " + aspects.getAmount(aspects.getAspects()[i]));
+						}
+						
+					}
+//					else {
+//						aspects = null;
+//					}
 				}
 
 			}
@@ -190,26 +205,14 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 			{
 				if (this.inventory[this.getSizeInventory()] != null)
 				{
-					FMLLog.warning(this.inventory[this.getSizeInventory()].getDisplayName());
+//					FMLLog.warning(this.inventory[this.getSizeInventory()].getDisplayName());
 
-					AspectList aspects = Thaumcraft.findMatchingArcaneRecipeAspects(this.container.craftMatrix, player);
+					AspectList aspects = ThaumcraftHelper.findMatchingArcaneRecipeAspects(this.container.craftMatrix, player);
 					if(aspects != null)
 					{
 						if ((aspects.size() > 0) && (this.getStackInSlot(10) != null)) {
-							Class ItemWandCasting = null;
-							try {
-								ItemWandCasting = Class.forName("thaumcraft.common.items.wands.ItemWandCasting");
-								if(this.getStackInSlot(10).getClass().isInstance(CraftingPillars.itemWandThaumcraft))
-								{
-									Object wand = ItemWandCasting.cast(this.getStackInSlot(10));
-									FMLLog.warning("instance wand!!");
-									Method consumealLVisCrafting = ItemWandCasting.getMethod("consumealLVisCrafting", ItemStack.class, EntityPlayer.class, AspectList.class, Boolean.class);
-									consumealLVisCrafting.invoke(wand, player, aspects, true);
-
-								}
-							} catch (Exception e) {
-								FMLLog.warning("[CraftingPillars] Could not cast to thaumcraft.common.items.wands.ItemWandCasting");
-							}
+							ItemStack wand = this.getStackInSlot(10);
+							ThaumcraftHelper.consumAllVisCrafting(wand, player, aspects, true);
 
 							for(int i = 0; i < aspects.size(); i++)
 							{
@@ -440,5 +443,10 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 	public boolean canExtractItem(int slot, ItemStack itemstack, int side)
 	{
 		return this.isItemValidForSlot(slot, itemstack);
+	}
+
+	public AspectList getAspects() {
+		if(this.getStackInSlot(10) == null) return null;
+		return aspects;
 	}
 }

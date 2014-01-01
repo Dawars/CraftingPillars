@@ -2,11 +2,15 @@ package me.dawars.CraftingPillars.renderer;
 
 import static org.lwjgl.opengl.GL11.*;
 
+import java.awt.Color;
 import java.util.Random;
+
+import thaumcraft.api.aspects.AspectList;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import me.dawars.CraftingPillars.CraftingPillars;
+import me.dawars.CraftingPillars.apiHelper.ThaumcraftHelper;
 import me.dawars.CraftingPillars.tiles.TileEntityCraftingPillar;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
@@ -451,6 +455,15 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 
 			citem.setEntityItemStack(workTile.getStackInSlot(10));
 			this.resultRenderer.render(citem, 0F, 0F, 0F, false);
+			
+//			AspectList aspects = Thaumcraft.findMatchingArcaneRecipeAspects(workTile.container.craftMatrix, FMLClientHandler.instance().getClient().thePlayer);
+//			
+//			if(aspects != null && aspects.getAspects()[0] != null)
+//			{
+//				RenderingHelper.renderFacingQuad(0, 0, 0, 1F, new ResourceLocation("thaumcraft:textures/aspects/" + aspects.getAspects()[0].getName().toLowerCase() + ".png"), new Color(1, 1, 1, 1));
+//				System.out.println("render aspects");
+//			}
+			
 			glPopMatrix();
 		}
 
