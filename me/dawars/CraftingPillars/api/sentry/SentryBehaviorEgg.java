@@ -5,11 +5,12 @@ import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.entity.projectile.EntityEgg;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
-public class SentryBehaviorArrow extends SentryDefaultProjectile
+public class SentryBehaviorEgg extends SentryDefaultProjectile
 {
 	/**
 	 * Return the projectile entity spawned by this Sentry behavior.
@@ -27,9 +28,8 @@ public class SentryBehaviorArrow extends SentryDefaultProjectile
 		int z = blockSource.getZInt();
 
 
-		//		EntityArrow entityammo = new EntityArrow(world, x + 0.5F, y + 1.5F, z + 0.5F);
-		EntityArrow entityammo = new EntityArrow(world, new FakeSentryPlayer(world, "Sentry"), target, 1.6F, 3F);
-		entityammo.setDamage(entityammo.getDamage() + 1);
+		
+		EntityEgg entityammo = new EntityEgg(world, new FakeSentryPlayer(world, "Sentry"));
 
 		entityammo.setPosition(x + 0.5F, y + 1.5F, z + 0.5F);
 

@@ -1,4 +1,4 @@
-package me.dawars.CraftingPillars.apiHelper;
+package thaumcraft.api;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -6,12 +6,13 @@ import java.util.Iterator;
 
 import cpw.mods.fml.common.FMLLog;
 
+import me.dawars.CraftingPillars.CraftingPillars;
+import me.dawars.CraftingPillars.api.CraftingPillarAPI;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
-import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.crafting.IArcaneRecipe;
 import thaumcraft.api.crafting.ShapedArcaneRecipe;
@@ -25,10 +26,10 @@ public class ThaumcraftHelper {
 	    try {
 	        if(consumAllVisCrafting == null) {
 	            Class fake = Class.forName("thaumcraft.common.items.wands.ItemWandCasting");
-	            consumAllVisCrafting = fake.getMethod("consumAllVisCrafting", ItemStack.class, EntityPlayer.class, AspectList.class, boolean.class);
+	            consumAllVisCrafting = fake.getDeclaredMethod("consumAllVisCrafting", ItemStack.class, EntityPlayer.class, AspectList.class, boolean.class);
 	        }
 	        ot = (Boolean) consumAllVisCrafting.invoke(is, player, aspects, doit);
-	    } catch(Exception ex) { 
+	    } catch(Exception e) { 
 	    	FMLLog.warning("[CraftingPillars] Could not invoke thaumcraft.common.items.wands.ItemWandCasting method consumAllVisCrafting");
 	    }
 		return ot;

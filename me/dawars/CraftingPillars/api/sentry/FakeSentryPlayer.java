@@ -1,4 +1,4 @@
-package me.dawars.CraftingPillars.entity;
+package me.dawars.CraftingPillars.api.sentry;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChatMessageComponent;

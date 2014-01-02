@@ -5,12 +5,12 @@ import static org.lwjgl.opengl.GL11.*;
 import java.awt.Color;
 import java.util.Random;
 
+import thaumcraft.api.ThaumcraftHelper;
 import thaumcraft.api.aspects.AspectList;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import me.dawars.CraftingPillars.CraftingPillars;
-import me.dawars.CraftingPillars.apiHelper.ThaumcraftHelper;
 import me.dawars.CraftingPillars.tiles.TileEntityCraftingPillar;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;

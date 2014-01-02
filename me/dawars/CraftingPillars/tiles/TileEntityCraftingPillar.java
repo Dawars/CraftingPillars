@@ -3,11 +3,11 @@ package me.dawars.CraftingPillars.tiles;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
+import thaumcraft.api.ThaumcraftHelper;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 
 import me.dawars.CraftingPillars.CraftingPillars;
-import me.dawars.CraftingPillars.apiHelper.ThaumcraftHelper;
 import me.dawars.CraftingPillars.container.ContainerCraftingPillar;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;

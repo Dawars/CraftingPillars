@@ -1,6 +1,5 @@
 package me.dawars.CraftingPillars.api.sentry;
 
-import me.dawars.CraftingPillars.entity.FakeSentryPlayer;
 import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.entity.IProjectile;
 import net.minecraft.entity.monster.EntityMob;

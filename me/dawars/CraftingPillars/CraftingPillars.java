@@ -1,11 +1,15 @@
 package me.dawars.CraftingPillars;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
+
+import thaumcraft.api.ItemApi;
+import thaumcraft.api.ThaumcraftApi;
 
 import me.dawars.CraftingPillars.api.CraftingPillarAPI;
 import me.dawars.CraftingPillars.api.sentry.*;
@@ -42,7 +46,7 @@ import cpw.mods.fml.common.registry.LanguageRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-@Mod(name = CraftingPillars.name, version = CraftingPillars.version, useMetadata = false, modid = CraftingPillars.id, dependencies = "required-after:Forge@[9.11.1.953,);after:Thaumcraft")
+@Mod(name = CraftingPillars.name, version = CraftingPillars.version, useMetadata = false, modid = CraftingPillars.id/*, dependencies = "required-after:Forge@[9.11.1.953,)"*/)
 @NetworkMod(clientSideRequired = true, serverSideRequired = false, channels = {CraftingPillars.channelGame, CraftingPillars.channelGui, CraftingPillars.channelProps}, packetHandler = PillarPacketHandler.class)
 public class CraftingPillars
 {
@@ -65,6 +69,7 @@ public class CraftingPillars
 
 	// The Handler For Opening Guis
 	private GuiHandler guiHandler = new GuiHandler();
+	private File configPath;
 	public static Property checkUpdates;
 
 	public static boolean modForestry = false;
@@ -372,18 +377,12 @@ public class CraftingPillars
 	public void initAPI()
 	{
 		CraftingPillarAPI.addDiskTexture(itemDiscElysium.itemID, CraftingPillars.id + ":textures/models/disk_elysium.png");
-
-		CraftingPillarAPI.addDiskTexture(Item.record13.itemID, CraftingPillars.id + ":textures/models/disk_aether.png");
-		CraftingPillarAPI.addDiskTexture(Item.recordCat.itemID, CraftingPillars.id + ":textures/models/disk_aether_moa.png");
-		CraftingPillarAPI.addDiskTexture(Item.recordBlocks.itemID, CraftingPillars.id + ":textures/models/disk_aether_valkyrie.png");
-		CraftingPillarAPI.addDiskTexture(Item.recordChirp.itemID, CraftingPillars.id + ":textures/models/disk_aether_aerwhale.png");
-		CraftingPillarAPI.addDiskTexture(Item.recordFar.itemID, CraftingPillars.id + ":textures/models/disk_aether_labyrinth.png");
 		
-//		CraftingPillarAPI.addDiskTexture(Item.record13.itemID, CraftingPillars.id + ":textures/models/disk_13.png");
-//		CraftingPillarAPI.addDiskTexture(Item.recordCat.itemID, CraftingPillars.id + ":textures/models/disk_cat.png");
-//		CraftingPillarAPI.addDiskTexture(Item.recordBlocks.itemID, CraftingPillars.id + ":textures/models/disk_blocks.png");
-//		CraftingPillarAPI.addDiskTexture(Item.recordChirp.itemID, CraftingPillars.id + ":textures/models/disk_chirp.png");
-//		CraftingPillarAPI.addDiskTexture(Item.recordFar.itemID, CraftingPillars.id + ":textures/models/disk_far.png");
+		CraftingPillarAPI.addDiskTexture(Item.record13.itemID, CraftingPillars.id + ":textures/models/disk_13.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordCat.itemID, CraftingPillars.id + ":textures/models/disk_cat.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordBlocks.itemID, CraftingPillars.id + ":textures/models/disk_blocks.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordChirp.itemID, CraftingPillars.id + ":textures/models/disk_chirp.png");
+		CraftingPillarAPI.addDiskTexture(Item.recordFar.itemID, CraftingPillars.id + ":textures/models/disk_far.png");
 		CraftingPillarAPI.addDiskTexture(Item.recordMall.itemID, CraftingPillars.id + ":textures/models/disk_mall.png");
 		CraftingPillarAPI.addDiskTexture(Item.recordMellohi.itemID, CraftingPillars.id + ":textures/models/disk_mellohi.png");
 		CraftingPillarAPI.addDiskTexture(Item.recordStal.itemID, CraftingPillars.id + ":textures/models/disk_stal.png");
@@ -396,12 +395,15 @@ public class CraftingPillars
 		SentryBehaviors.add(Item.snowball.itemID, new SentryBehaviorSnowball());
 		SentryBehaviors.add(Item.fireballCharge.itemID, new SentryBehaviorFireball());
 		SentryBehaviors.add(Item.potion.itemID, new SentryBehaviorPotion());
+		SentryBehaviors.add(Item.egg.itemID, new SentryBehaviorEgg());
 	}
 
 	public void registerHandlers()
 	{
 		NetworkRegistry.instance().registerGuiHandler(this, this.guiHandler);
 		MinecraftForge.EVENT_BUS.register(new PillarEventHandler());
+		if(proxy.getMinecraftVersion() != "1.6.2" || (proxy.getMinecraftVersion() == "1.6.4" && Integer.parseInt(Loader.instance().getFMLVersionString().replaceAll(".", "")) >= 6445953))
+			MinecraftForge.EVENT_BUS.register(new PillarEventHandlerNew());
 	}
 
 	@EventHandler
@@ -423,7 +425,8 @@ public class CraftingPillars
 
 		try
 		{
-			config = new Configuration(new File(evt.getModConfigurationDirectory(), "CraftingPillars.cfg"));
+			configPath = evt.getModConfigurationDirectory();
+			config = new Configuration(new File(configPath, "CraftingPillars.cfg"));
 			config.load();
 
 			winter = isWinterTime() && config.get("default", "enableWinter", true).getBoolean(true);
@@ -455,32 +458,54 @@ public class CraftingPillars
 		modForestry = Loader.isModLoaded("Forestry");
 		modElysium = Loader.isModLoaded("elysium");
 		modThaumcraft = Loader.isModLoaded("Thaumcraft");
-
+		
 		if(modThaumcraft)
 		{
-			System.out.println("Loading Thaumcraft 4 wand...");
-			//this.getClass().getClassLoader().loadClass("thaumcraft.api.ItemApi").getDeclaredMethod("getItem", parameterTypes)
-			
+			FMLLog.info("Loading Thaumcraft 4 wand...");
 
-			try {
-				String itemClass = "thaumcraft.common.config.ConfigItems";
-				Object obj = Class.forName(itemClass).getField("itemWandCasting").get(null);
-				if (obj instanceof Item) {
-					itemWandThaumcraft = new ItemStack((Item) obj,1, 0);
-				} else if (obj instanceof ItemStack) {
-					itemWandThaumcraft = (ItemStack) obj;
-				}
-			} catch (Exception ex) {
-				FMLLog.warning("[Thaumcraft] Could not retrieve item identified by: itemWandCasting");
-				modThaumcraft = false;
-			}
+			itemWandThaumcraft = ItemApi.getItem("itemWandCasting", 0);
 			
 			if(itemWandThaumcraft == null)
 			{
 				modThaumcraft = false;
-				System.out.println("Thaumcraft compatibility disabled...");
+				FMLLog.warning("Thaumcraft compatibility disabled...");
 			}
 		}
+		
+		Configuration configMod;
+		
+		if(Loader.isModLoaded("ChristmasCraft"))
+		{
+			configMod = new Configuration(new File(configPath, "ChristmasCraft.cfg"));
+			configMod.load();
+			FMLLog.info("[CraftingPillasr API] Loading Christmas Craft discs with id " + configMod.getItem("recordWishIndex", 25128).getInt());
+			CraftingPillarAPI.addDiskTexture(configMod.getItem("recordWishIndex", 25128).getInt() + 256, CraftingPillars.id + ":textures/models/disk_christmas_wish.png");
+			CraftingPillarAPI.addDiskTexture(configMod.getItem("recordCarolIndex", 25129).getInt() + 256, CraftingPillars.id + ":textures/models/disk_christmas_carol.png");
+			CraftingPillarAPI.addDiskTexture(configMod.getItem("recordJingleIndex", 25130).getInt() + 256, CraftingPillars.id + ":textures/models/disk_christmas_jingle.png");
+		}
+		if(Loader.isModLoaded("Aether II"))
+		{
+			configMod = new Configuration(new File(configPath, "Aether II.cfg"));
+			configMod.load();
+
+			CraftingPillarAPI.addDiskTexture(configMod.getItem("AetherMusicDisk", 17003).getInt() + 256, CraftingPillars.id + ":textures/models/disk_aether.png");
+			CraftingPillarAPI.addDiskTexture(configMod.getItem("MoaMusicDisk", 17116).getInt() + 256, CraftingPillars.id + ":textures/models/disk_aether_moa.png");
+			CraftingPillarAPI.addDiskTexture(configMod.getItem("ValkyrieMusicDisk", 17101).getInt() + 256, CraftingPillars.id + ":textures/models/disk_aether_valkyrie.png");
+			CraftingPillarAPI.addDiskTexture(configMod.getItem("AerwhaleMusicDisk", 17117).getInt() + 256, CraftingPillars.id + ":textures/models/disk_aether_aerwhale.png");
+			CraftingPillarAPI.addDiskTexture(configMod.getItem("LabyrinthMusicDisk", 17115).getInt() + 256, CraftingPillars.id + ":textures/models/disk_aether_labyrinth.png");
+		}
+
+		if(Loader.isModLoaded("PortalGun"))
+		{//FIXME: read id fix
+			configMod = new Configuration(new File(configPath, "PortalGun.cfg"));
+			configMod.load();
+			int recordIdIndex = configMod.getItem("ids", "recordIdIndex", 17003).getInt() + 256;
+			FMLLog.info("[CraftingPillasr API] Loading Portal discs with id " + recordIdIndex);
+			CraftingPillarAPI.addDiskTexture(recordIdIndex, CraftingPillars.id + ":textures/models/disk_portal_stillalive.png");
+			CraftingPillarAPI.addDiskTexture(recordIdIndex + 1, CraftingPillars.id + ":textures/models/disk_portal_radioloop.png");
+			CraftingPillarAPI.addDiskTexture(recordIdIndex + 2, CraftingPillars.id + ":textures/models/disk_portal_wantyougone.png");
+		}
+		
 	}
 
 	public static void registerBlock(Block block)

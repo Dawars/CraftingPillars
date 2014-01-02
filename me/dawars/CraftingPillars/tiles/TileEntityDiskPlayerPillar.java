@@ -3,6 +3,7 @@ package me.dawars.CraftingPillars.tiles;
 import me.dawars.CraftingPillars.CraftingPillars;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 
 public class TileEntityDiskPlayerPillar extends BaseTileEntity
 {
@@ -30,13 +31,19 @@ public class TileEntityDiskPlayerPillar extends BaseTileEntity
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
-		if(nbt.hasKey("RecordItem"))
+		NBTTagList nbtlist = nbt.getTagList("Items");
+
+		for(int i = 0; i < nbtlist.tagCount(); i++)
 		{
-			this.setDisk(ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("RecordItem")));
-		}
-		else if(nbt.getInteger("Record") > 0)
-		{
-			this.setDisk(new ItemStack(nbt.getInteger("Record"), 1, 0));
+			NBTTagCompound nbtslot = (NBTTagCompound) nbtlist.tagAt(i);
+			int j = nbtslot.getByte("Slot") & 255;
+
+			if((j >= 0))
+			{
+				this.record = ItemStack.loadItemStackFromNBT(nbtslot);
+				if(this.record != null) this.isEmpty = false;
+				else this.isEmpty = true;
+			}
 		}
 		this.isEmpty = nbt.getBoolean("isEmpty");
 		this.showNum = nbt.getBoolean("showNum");
@@ -49,11 +56,17 @@ public class TileEntityDiskPlayerPillar extends BaseTileEntity
 	public void writeToNBT(NBTTagCompound nbt)
 	{
 		super.writeToNBT(nbt);
+		NBTTagList nbtlist = new NBTTagList();
+
 		if(this.getDisk() != null)
 		{
-			nbt.setCompoundTag("RecordItem", this.getDisk().writeToNBT(new NBTTagCompound()));
-			nbt.setInteger("Record", this.getDisk().itemID);
+			NBTTagCompound nbtslot = new NBTTagCompound();
+			nbtslot.setByte("Slot", (byte) 0);
+			this.getDisk().writeToNBT(nbtslot);
+			nbtlist.appendTag(nbtslot);
 		}
+
+		nbt.setTag("Items", nbtlist);
 		nbt.setBoolean("isEmpty", this.isEmpty);
 		nbt.setBoolean("showNum", this.showNum);
 	}
