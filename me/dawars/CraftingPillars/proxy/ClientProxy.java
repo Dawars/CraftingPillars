@@ -20,6 +20,11 @@ public class ClientProxy extends CommonProxy
 		return FMLClientHandler.instance().getClient();
 	}
 
+	public Object getPlayer()
+	{
+		return FMLClientHandler.instance().getClient().thePlayer;
+	}
+
 	@Override
 	public World getClientWorld()
 	{
@@ -44,6 +49,7 @@ public class ClientProxy extends CommonProxy
 		CraftingPillars.freezerPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
 		CraftingPillars.potPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
 		CraftingPillars.sentryPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
+		CraftingPillars.trashPillarRenderID = RenderingRegistry.getNextAvailableRenderId();
 
 		CraftingPillars.christmasLeavesRenderID = RenderingRegistry.getNextAvailableRenderId();
 		CraftingPillars.PresentRenderID = RenderingRegistry.getNextAvailableRenderId();
@@ -60,6 +66,7 @@ public class ClientProxy extends CommonProxy
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityFreezerPillar.class, new RenderFreezerPillar());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPotPillar.class, new RenderPotPillar());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySentryPillar.class, new RenderSentryPillar());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTrashPillar.class, new RenderTrashPillar());
 
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityChristmasPresent.class, new RenderPresent());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLight.class, new RenderLight());
@@ -75,6 +82,7 @@ public class ClientProxy extends CommonProxy
 		RenderingRegistry.registerBlockHandler(new RenderFreezerPillar());
 		RenderingRegistry.registerBlockHandler(new RenderPotPillar());
 		RenderingRegistry.registerBlockHandler(new RenderSentryPillar());
+		RenderingRegistry.registerBlockHandler(new RenderTrashPillar());
 
 		RenderingRegistry.registerBlockHandler(new RenderChristmasLeaves());
 		RenderingRegistry.registerBlockHandler(new RenderPresent());

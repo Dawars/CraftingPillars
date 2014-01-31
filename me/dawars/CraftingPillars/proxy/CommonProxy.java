@@ -23,6 +23,11 @@ public class CommonProxy
 	{
 		return null;
 	}
+	
+	public Object getPlayer()
+	{
+		return null;
+	}
 
 	public World getClientWorld()
 	{

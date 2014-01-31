@@ -1,5 +1,6 @@
 package thaumcraft.api;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -23,15 +24,22 @@ public class ThaumcraftHelper {
 	static Method consumAllVisCrafting;
 	public static boolean consumAllVisCrafting(ItemStack is, EntityPlayer player, AspectList aspects, boolean doit) {
 		boolean ot = false;
-	    try {
-	        if(consumAllVisCrafting == null) {
-	            Class fake = Class.forName("thaumcraft.common.items.wands.ItemWandCasting");
-	            consumAllVisCrafting = fake.getDeclaredMethod("consumAllVisCrafting", ItemStack.class, EntityPlayer.class, AspectList.class, boolean.class);
-	        }
-	        ot = (Boolean) consumAllVisCrafting.invoke(is, player, aspects, doit);
-	    } catch(Exception e) { 
-	    	FMLLog.warning("[CraftingPillars] Could not invoke thaumcraft.common.items.wands.ItemWandCasting method consumAllVisCrafting");
-	    }
+	        
+		try
+		{
+			Class fake = null;
+	        	if(consumAllVisCrafting == null) {
+		            fake = Class.forName("thaumcraft.common.items.wands.ItemWandCasting");
+		            consumAllVisCrafting = fake.getDeclaredMethod("consumAllVisCrafting", ItemStack.class, EntityPlayer.class, AspectList.class, boolean.class);
+		        }
+	        	FMLLog.info("new instance: " + fake.newInstance().toString());
+				ot = (Boolean) consumAllVisCrafting.invoke(fake.newInstance(), is, player, aspects, doit);
+			} catch (Exception e)
+			{
+				FMLLog.info("[CraftingPillarsAPI] error during consuming vis");
+				FMLLog.info("[CraftingPillarsAPI] " + e.getMessage());
+				FMLLog.info("[CraftingPillarsAPI] " + e.getCause());
+			}
 		return ot;
 	}
 

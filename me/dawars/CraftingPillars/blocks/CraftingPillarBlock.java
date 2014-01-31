@@ -197,7 +197,7 @@ public class CraftingPillarBlock extends BaseBlockContainer
 
 			for(int i = 0; i < pillarTile.getSizeInventory() + 2; i++)
 			{
-				if(pillarTile.getStackInSlot(i) != null)
+				if(pillarTile.getStackInSlot(i) != null && i != 9)
 				{
 					EntityItem itemDropped = new EntityItem(world, x + 0.5D, y, z + 0.5D, pillarTile.getStackInSlot(i));
 					itemDropped.motionX = itemDropped.motionY = itemDropped.motionZ = 0D;

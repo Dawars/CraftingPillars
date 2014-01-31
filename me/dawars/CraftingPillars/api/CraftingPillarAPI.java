@@ -14,11 +14,6 @@ public class CraftingPillarAPI
 	public static void addDiskTexture(int id, String url)
 	{
 		diskTextures.put(id, url);
-		for(int i = 0; i < 26000; i++)
-		{
-			if(diskTextures.get(i) != null)
-				FMLLog.info("Read disk textures: " + i + " " + diskTextures.get(i));
-		}
 	}
 
 	public static String getDiskTexture(int id)

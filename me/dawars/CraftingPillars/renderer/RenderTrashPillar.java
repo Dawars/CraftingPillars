@@ -3,44 +3,41 @@ package me.dawars.CraftingPillars.renderer;
 import static org.lwjgl.opengl.GL11.*;
 
 import java.awt.Color;
+import java.nio.FloatBuffer;
 import java.util.Random;
 
-import thaumcraft.api.ThaumcraftApiHelper;
-import thaumcraft.api.ThaumcraftHelper;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
+import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.common.FMLLog;
 import me.dawars.CraftingPillars.CraftingPillars;
-import me.dawars.CraftingPillars.tiles.TileEntityCraftingPillar;
+import me.dawars.CraftingPillars.api.CraftingPillarAPI;
+import me.dawars.CraftingPillars.tiles.TileEntityDiskPlayerPillar;
+import me.dawars.CraftingPillars.tiles.TileEntityTrashPillar;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.ActiveRenderInfo;
+import net.minecraft.client.renderer.GLAllocation;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityEndPortal;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.model.AdvancedModelLoader;
+import net.minecraftforge.client.model.IModelCustom;
 
-public class RenderCraftingPillar extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler
+public class RenderTrashPillar extends TileEntitySpecialRenderer implements ISimpleBlockRenderingHandler
 {
-	private ResourceLocation TEXTURE_WORKPILLAR;
+	private ResourceLocation TEXTURE_TRASHPILLAR;
 
 	public static ModelBase model = new ModelBase()
 	{
 
 	};
-
-	private ModelRenderer bottom;
-	private ModelRenderer pillarbottom;
-	private ModelRenderer pillar;
-	private ModelRenderer pillartop;
-	private ModelRenderer top;
 
 	private ModelRenderer Icicle1A;
 	private ModelRenderer Icicle1B;
@@ -65,30 +62,31 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 	private ModelRenderer Icicle8B;
 	private ModelRenderer Icicle8C;
 	private ModelRenderer Icicle8D;
-	private ModelRenderer WreathA;
-	private ModelRenderer WreathB;
-	private ModelRenderer WreathC;
-	private ModelRenderer WreathD;
-	private ModelRenderer WreathE;
-	private ModelRenderer WreathF;
-	private ModelRenderer WreathG;
-	private ModelRenderer WreathH;
-	private ModelRenderer WreathI;
-	private ModelRenderer WreathJ;
-	private ModelRenderer Bow;
 
-	private ModelRenderer pillarBottom;
+	private ModelRenderer Icicle9A;
+	private ModelRenderer Icicle9B;
+	private ModelRenderer Icicle10A;
+	private ModelRenderer Icicle10B;
+	private ModelRenderer Icicle10C;
+	private ModelRenderer Icicle11A;
+	private ModelRenderer Icicle11B;
+	private ModelRenderer Icicle11C;
 
 	private Random random;
 	private RenderingHelper.ItemRender itemRenderer;
 	private RenderingHelper.ItemRender resultRenderer;
 
-	public RenderCraftingPillar()
+	public IModelCustom trash;
+
+	public RenderTrashPillar()
 	{
-		if(CraftingPillars.winter)
-			this.TEXTURE_WORKPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/craftingPillarFrozen.png");
+		if (CraftingPillars.winter)
+			this.TEXTURE_TRASHPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/showoffPillarFrozen.png");
 		else
-			this.TEXTURE_WORKPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/craftingPillar.png");
+			this.TEXTURE_TRASHPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/showoffPillar.png");
+
+		this.trash = AdvancedModelLoader.loadModel("/assets/" + CraftingPillars.id + "/textures/models/trashPillar.obj");
+
 		this.random = new Random();
 		this.itemRenderer = new RenderingHelper.ItemRender(false, true);
 		this.resultRenderer = new RenderingHelper.ItemRender(true, true);
@@ -96,45 +94,7 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 		model.textureWidth = 128;
 		model.textureHeight = 64;
 
-		this.pillarBottom = new ModelRenderer(model, 0, 33);
-		this.pillarBottom.addBox(0F, 0F, 0F, 12, 3, 12);
-		this.pillarBottom.setRotationPoint(-6F, 21F, 6F);
-		this.pillarBottom.setTextureSize(128, 64);
-		this.pillarBottom.mirror = true;
-		this.setRotation(this.pillarBottom, 0F, 1.570796F, 0F);
-
-		this.bottom = new ModelRenderer(model, 0, 0);
-		this.bottom.addBox(-8F, -1F, -8F, 16, 2, 16);
-		this.bottom.setRotationPoint(0F, 23F, 0F);
-		this.bottom.setTextureSize(128, 64);
-		this.bottom.mirror = true;
-		this.setRotation(this.bottom, 0F, 0F, 0F);
-		this.pillarbottom = new ModelRenderer(model, 0, 18);
-		this.pillarbottom.addBox(-7F, 0F, -7F, 14, 1, 14);
-		this.pillarbottom.setRotationPoint(0F, 21F, 0F);
-		this.pillarbottom.setTextureSize(128, 64);
-		this.pillarbottom.mirror = true;
-		this.setRotation(this.pillarbottom, 0F, 0F, 0F);
-		this.pillar = new ModelRenderer(model, 0, 33);
-		this.pillar.addBox(-6F, 0F, -6F, 12, 10, 12);
-		this.pillar.setRotationPoint(0F, 11F, 0F);
-		this.pillar.setTextureSize(128, 64);
-		this.pillar.mirror = true;
-		this.setRotation(this.pillar, 0F, 0F, 0F);
-		this.pillartop = new ModelRenderer(model, 0, 18);
-		this.pillartop.addBox(-7F, 0F, -7F, 14, 1, 14);
-		this.pillartop.setRotationPoint(0F, 10F, 0F);
-		this.pillartop.setTextureSize(128, 64);
-		this.pillartop.mirror = true;
-		this.setRotation(this.pillartop, 0F, 0F, 0F);
-		this.top = new ModelRenderer(model, 64, 0);
-		this.top.addBox(-8F, -1F, -8F, 16, 2, 16);
-		this.top.setRotationPoint(0F, 9F, 0F);
-		this.top.setTextureSize(128, 64);
-		this.top.mirror = true;
-		this.setRotation(this.top, 0F, 0F, 0F);
-
-		//Winter
+		// Winter TODO:
 		this.Icicle1A = new ModelRenderer(model, 122, 60);
 		this.Icicle1A.addBox(0F, 0F, 0F, 1, 2, 2);
 		this.Icicle1A.setRotationPoint(6F, 11F, -5F);
@@ -273,77 +233,60 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 		this.Icicle8D.setTextureSize(128, 64);
 		this.Icicle8D.mirror = true;
 		this.setRotation(this.Icicle8D, 0F, 0F, 0F);
-		this.WreathA = new ModelRenderer(model, 86, 62);
-		this.WreathA.addBox(0F, 0F, 0F, 4, 1, 1);
-		this.WreathA.setRotationPoint(-2F, 12F, -7F);
-		this.WreathA.setTextureSize(128, 64);
-		this.WreathA.mirror = true;
-		this.setRotation(this.WreathA, 0F, 0F, 0F);
-		this.WreathB = new ModelRenderer(model, 82, 60);
-		this.WreathB.addBox(0F, 0F, 0F, 6, 1, 1);
-		this.WreathB.setRotationPoint(-3F, 13F, -7F);
-		this.WreathB.setTextureSize(128, 64);
-		this.WreathB.mirror = true;
-		this.setRotation(this.WreathB, 0F, 0F, 0F);
-		this.WreathC = new ModelRenderer(model, 88, 51);
-		this.WreathC.addBox(0F, 0F, 0F, 2, 4, 1);
-		this.WreathC.setRotationPoint(-4F, 14F, -7F);
-		this.WreathC.setTextureSize(128, 64);
-		this.WreathC.mirror = true;
-		this.setRotation(this.WreathC, 0F, 0F, 0F);
-		this.WreathD = new ModelRenderer(model, 90, 54);
-		this.WreathD.addBox(0F, 0F, 0F, 2, 4, 1);
-		this.WreathD.setRotationPoint(2F, 14F, -7F);
-		this.WreathD.setTextureSize(128, 64);
-		this.WreathD.mirror = true;
-		this.setRotation(this.WreathD, 0F, 0F, 0F);
-		this.WreathE = new ModelRenderer(model, 82, 46);
-		this.WreathE.addBox(0F, 0F, 0F, 6, 1, 1);
-		this.WreathE.setRotationPoint(-3F, 18F, -7F);
-		this.WreathE.setTextureSize(128, 64);
-		this.WreathE.mirror = true;
-		this.setRotation(this.WreathE, 0F, 0F, 0F);
-		this.WreathF = new ModelRenderer(model, 86, 49);
-		this.WreathF.addBox(0F, 0F, 0F, 4, 1, 1);
-		this.WreathF.setRotationPoint(-2F, 19F, -7F);
-		this.WreathF.setTextureSize(128, 64);
-		this.WreathF.mirror = true;
-		this.setRotation(this.WreathF, 0F, 0F, 0F);
-		this.WreathG = new ModelRenderer(model, 88, 38);
-		this.WreathG.addBox(0F, 0F, 0F, 1, 1, 1);
-		this.WreathG.setRotationPoint(-2F, 14F, -7F);
-		this.WreathG.setTextureSize(128, 64);
-		this.WreathG.mirror = true;
-		this.setRotation(this.WreathG, 0F, 0F, 0F);
-		this.WreathH = new ModelRenderer(model, 88, 38);
-		this.WreathH.addBox(0F, 0F, 0F, 1, 1, 1);
-		this.WreathH.setRotationPoint(1F, 14F, -7F);
-		this.WreathH.setTextureSize(128, 64);
-		this.WreathH.mirror = true;
-		this.setRotation(this.WreathH, 0F, 0F, 0F);
-		this.WreathI = new ModelRenderer(model, 88, 38);
-		this.WreathI.addBox(0F, 0F, 0F, 1, 1, 1);
-		this.WreathI.setRotationPoint(-2F, 17F, -7F);
-		this.WreathI.setTextureSize(128, 64);
-		this.WreathI.mirror = true;
-		this.setRotation(this.WreathI, 0F, 0F, 0F);
-		this.WreathJ = new ModelRenderer(model, 88, 38);
-		this.WreathJ.addBox(0F, 0F, 0F, 1, 1, 1);
-		this.WreathJ.setRotationPoint(1F, 17F, -7F);
-		this.WreathJ.setTextureSize(128, 64);
-		this.WreathJ.mirror = true;
-		this.setRotation(this.WreathJ, 0F, 0F, 0F);
-		this.Bow = new ModelRenderer(model, 120, 28);
-		this.Bow.addBox(0F, -1F, -2F, 2, 2, 2);
-		this.Bow.setRotationPoint(-1F, 14F, -6F);
-		this.Bow.setTextureSize(128, 64);
-		this.Bow.mirror = true;
-		this.setRotation(this.Bow, 0F, 0F, 0F);
+
+		this.Icicle9A = new ModelRenderer(model, 122, 38);
+		this.Icicle9A.addBox(0F, 0F, 0F, 2, 1, 1);
+		this.Icicle9A.setRotationPoint(3F, 11F, -7F);
+		this.Icicle9A.setTextureSize(128, 64);
+		this.Icicle9A.mirror = true;
+		this.setRotation(this.Icicle9A, 0F, 0F, 0F);
+		this.Icicle9B = new ModelRenderer(model, 124, 36);
+		this.Icicle9B.addBox(0F, 0F, 0F, 1, 1, 1);
+		this.Icicle9B.setRotationPoint(4F, 12F, -7F);
+		this.Icicle9B.setTextureSize(128, 64);
+		this.Icicle9B.mirror = true;
+		this.setRotation(this.Icicle9B, 0F, 0F, 0F);
+		this.Icicle10A = new ModelRenderer(model, 114, 61);
+		this.Icicle10A.addBox(0F, 0F, 0F, 3, 2, 1);
+		this.Icicle10A.setRotationPoint(-1F, 11F, -7F);
+		this.Icicle10A.setTextureSize(128, 64);
+		this.Icicle10A.mirror = true;
+		this.setRotation(this.Icicle10A, 0F, 0F, 0F);
+		this.Icicle10B = new ModelRenderer(model, 116, 59);
+		this.Icicle10B.addBox(0F, 0F, 0F, 2, 1, 1);
+		this.Icicle10B.setRotationPoint(-1F, 13F, -7F);
+		this.Icicle10B.setTextureSize(128, 64);
+		this.Icicle10B.mirror = true;
+		this.setRotation(this.Icicle10B, 0F, 0F, 0F);
+		this.Icicle10C = new ModelRenderer(model, 120, 56);
+		this.Icicle10C.addBox(0F, 0F, 0F, 1, 2, 1);
+		this.Icicle10C.setRotationPoint(0F, 14F, -7F);
+		this.Icicle10C.setTextureSize(128, 64);
+		this.Icicle10C.mirror = true;
+		this.setRotation(this.Icicle10C, 0F, 0F, 0F);
+		this.Icicle11A = new ModelRenderer(model, 114, 54);
+		this.Icicle11A.addBox(0F, 0F, 0F, 4, 1, 1);
+		this.Icicle11A.setRotationPoint(-5F, 11F, -7F);
+		this.Icicle11A.setTextureSize(128, 64);
+		this.Icicle11A.mirror = true;
+		this.setRotation(this.Icicle11A, 0F, 0F, 0F);
+		this.Icicle11B = new ModelRenderer(model, 116, 52);
+		this.Icicle11B.addBox(0F, 0F, 0F, 2, 1, 1);
+		this.Icicle11B.setRotationPoint(-4F, 12F, -7F);
+		this.Icicle11B.setTextureSize(128, 64);
+		this.Icicle11B.mirror = true;
+		this.setRotation(this.Icicle11B, 0F, 0F, 0F);
+		this.Icicle11C = new ModelRenderer(model, 118, 50);
+		this.Icicle11C.addBox(0F, 0F, 0F, 1, 1, 1);
+		this.Icicle11C.setRotationPoint(-4F, 13F, -7F);
+		this.Icicle11C.setTextureSize(128, 64);
+		this.Icicle11C.mirror = true;
+		this.setRotation(this.Icicle11C, 0F, 0F, 0F);
 	}
 
 	public void render(float f)
 	{
-		if(CraftingPillars.winter)
+		if (CraftingPillars.winter)
 		{
 			this.Icicle1A.render(f);
 			this.Icicle1B.render(f);
@@ -368,24 +311,16 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 			this.Icicle8B.render(f);
 			this.Icicle8C.render(f);
 			this.Icicle8D.render(f);
-			this.WreathA.render(f);
-			this.WreathB.render(f);
-			this.WreathC.render(f);
-			this.WreathD.render(f);
-			this.WreathE.render(f);
-			this.WreathF.render(f);
-			this.WreathG.render(f);
-			this.WreathH.render(f);
-			this.WreathI.render(f);
-			this.WreathJ.render(f);
-			this.Bow.render(f);
-		}
 
-		this.bottom.render(f);
-		this.pillarbottom.render(f);
-		this.pillar.render(f);
-		this.pillartop.render(f);
-		this.top.render(f);
+			this.Icicle9A.render(f);
+			this.Icicle9B.render(f);
+			this.Icicle10A.render(f);
+			this.Icicle10B.render(f);
+			this.Icicle10C.render(f);
+			this.Icicle11A.render(f);
+			this.Icicle11B.render(f);
+			this.Icicle11C.render(f);
+		}
 	}
 
 	private void setRotation(ModelRenderer model, float x, float y, float z)
@@ -398,110 +333,148 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 	@Override
 	public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f)
 	{
+
 		glPushMatrix();
-		glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
+		TileEntityTrashPillar workTile = (TileEntityTrashPillar) tile;
+
+		glTranslated(x, y + 1.5D, z);
+		if (workTile.isOpen)
+			renderEndPortal(0, -1.5F, 0);
+		
+		glTranslated(0.5D, 0, 0.5D);
 		glRotatef(180F, 1F, 0F, 0F);
-		glRotatef(90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
-
-		Minecraft.getMinecraft().renderEngine.bindTexture(this.TEXTURE_WORKPILLAR);
+		Minecraft.getMinecraft().renderEngine.bindTexture(this.TEXTURE_TRASHPILLAR);
 		this.render(0.0625F);
-		glPopMatrix();
-
-		TileEntityCraftingPillar workTile = (TileEntityCraftingPillar) tile;
-		EntityItem citem = new EntityItem(tile.worldObj);
-		citem.hoverStart = CraftingPillars.floatingItems ? workTile.rot : 0F;
-
-		glPushMatrix();
-		glTranslated(x, y, z);
-		for(int i = 0; i < 3; i++)
-		{
-			for(int k = 0; k < 3; k++)
-			{
-				if(workTile.getStackInSlot(i * 3 + k) != null)
-				{
-					citem.setEntityItemStack(workTile.getStackInSlot(i * 3 + k));
-					glPushMatrix();
-					glTranslated(0.1875D + i * 0.3125D, 1D + 0.1875D / 3D, 0.1875D + k * 0.3125D);
-					glScalef(0.5F, 0.5F, 0.5F);
-					this.itemRenderer.render(citem, 0F, 0F, 0F, workTile.showNum);
-					glPopMatrix();
-				}
-			}
-		}
-
-		if(workTile.getStackInSlot(workTile.getSizeInventory()) != null)
-		{
-			glPushMatrix();
-			citem.hoverStart = -workTile.rot;
-			citem.setEntityItemStack(workTile.getStackInSlot(workTile.getSizeInventory()));
-			this.resultRenderer.render(citem, 0.5F, 1.5F, 0.5F, workTile.showNum);
-			glPopMatrix();
-		}
 		
 		glPopMatrix();
 
-		if(CraftingPillars.modThaumcraft && workTile.getStackInSlot(10) != null)
-		{
-			glPushMatrix();
-				citem.hoverStart = 0;
-	
-				glTranslated(x, y, z);
-				glTranslated(0.5D, 0.5D, 0.5D);
-				glRotatef(-90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
-	
-				if(CraftingPillars.winter)
-					glTranslatef(0, -0.05F, 0.47F);
-				else
-					glTranslatef(0, 0, 0.4F);
-	
-				glRotatef(-45, 0, 0, 1);
-				glScalef(1.1F, 1.1F, 1.1F);
-	
-				glTranslatef(0, -0.28F, 0);
-	
-				citem.setEntityItemStack(workTile.getStackInSlot(10));
-				this.resultRenderer.render(citem, 0F, 0F, 0F, false);
-	
-			glPopMatrix();
+		glPushMatrix();
+		glTranslated(x + 0.5F, y, z + 0.5F);
+		float scale = 0.0255F;
+		glScalef(scale, scale, scale);
+		// glDisable(GL_LIGHTING);
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(this.TEXTURE_TRASHPILLAR);
+		this.trash.renderPart("TrashPillar");
+		if (workTile.isOpen)
+			this.trash.renderPart("DoorsOpen");
+		else
+			this.trash.renderPart("DoorsClosed");
+		
+		// glEnable(GL_LIGHTING);
+		glPopMatrix();
+	}
 
-			if(workTile.getStackInSlot(workTile.getSizeInventory()) != null)
+	private static final ResourceLocation enderPortalEndSkyTextures = new ResourceLocation("textures/environment/end_sky.png");
+	private static final ResourceLocation endPortalTextures = new ResourceLocation("textures/entity/end_portal.png");
+	private static final Random field_110644_e = new Random(31100L);
+	FloatBuffer field_76908_a = GLAllocation.createDirectFloatBuffer(16);
+
+	/**
+	 * Renders the End Portal.
+	 */
+	private void renderEndPortal(double x, double y, double z)
+	{
+		float f1 = (float) this.tileEntityRenderer.playerX;
+		float f2 = (float) this.tileEntityRenderer.playerY;
+		float f3 = (float) this.tileEntityRenderer.playerZ;
+		GL11.glDisable(GL11.GL_LIGHTING);
+		field_110644_e.setSeed(31100L);
+		float f4 = 11F / 16F;
+
+		for (int i = 0; i < 16; ++i)
+		{
+			GL11.glPushMatrix();
+			float f5 = (float) (16 - i);
+			float f6 = 0.0625F;
+			float f7 = 1.0F / (f5 + 1.0F);
+
+			if (i == 0)
 			{
-				glPushMatrix();
-					glTranslated(x, y + 1F, z);
-					
-					float r = 0.6F;
-					
-//					AspectList aspectsRecipe = workTile.aspectsForRecipe;
-//		
-//					if(aspectsRecipe != null)
-//					{
-						glDisable(GL_LIGHTING);
-						for(int i = 0; i < Aspect.getPrimalAspects().size(); i++)
-						{	
-							Aspect aspect = Aspect.getPrimalAspects().get(i);
-//							for(int j = 0; j < aspectsRecipe.size(); j++)
-//							{
-//								if(aspectsRecipe.getAspects()[j] != null)
-//								{
-//									FMLLog.info("is " + aspectsRecipe.getAspects()[j].getName() + " equals " + aspect.getName());
-//									if(aspectsRecipe.getAspects()[j].getName().equals(aspect.getName()))
-//									{
-										float theta = 2.0f * 3.1415926f * (float)i / (float)Aspect.getPrimalAspects().size();//get the current angle 
-						
-										float xC = (float) (r * Math.cos(theta));//calculate the x component 
-										float zC = (float) (r * Math.sin(theta));//calculate the z component 
-										
-										RenderingHelper.renderFacingQuad(0.5F + xC, 0.5F, 0.5F + zC, 1F, aspect.getImage(), new Color(aspect.getColor()));
-//										break;
-//									}
-//								}
-//							}
-						}
-						glEnable(GL_LIGHTING);
-//					}
-				glPopMatrix();
+				this.bindTexture(enderPortalEndSkyTextures);
+				f7 = 0.1F;
+				f5 = 65.0F;
+				f6 = 0.125F;
+				GL11.glEnable(GL11.GL_BLEND);
+				GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 			}
+
+			if (i == 1)
+			{
+				this.bindTexture(endPortalTextures);
+				GL11.glEnable(GL11.GL_BLEND);
+				GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
+				f6 = 0.5F;
+			}
+
+			float f8 = (float) (-(y + (double) f4));
+			float f9 = f8 + ActiveRenderInfo.objectY;
+			float f10 = f8 + f5 + ActiveRenderInfo.objectY;
+			float f11 = f9 / f10;
+			f11 += (float) (y + (double) f4);
+			GL11.glTranslatef(f1, f11, f3);
+			GL11.glTexGeni(GL11.GL_S, GL11.GL_TEXTURE_GEN_MODE, GL11.GL_OBJECT_LINEAR);
+			GL11.glTexGeni(GL11.GL_T, GL11.GL_TEXTURE_GEN_MODE, GL11.GL_OBJECT_LINEAR);
+			GL11.glTexGeni(GL11.GL_R, GL11.GL_TEXTURE_GEN_MODE, GL11.GL_OBJECT_LINEAR);
+			GL11.glTexGeni(GL11.GL_Q, GL11.GL_TEXTURE_GEN_MODE, GL11.GL_EYE_LINEAR);
+			GL11.glTexGen(GL11.GL_S, GL11.GL_OBJECT_PLANE, this.func_76907_a(1.0F, 0.0F, 0.0F, 0.0F));
+			GL11.glTexGen(GL11.GL_T, GL11.GL_OBJECT_PLANE, this.func_76907_a(0.0F, 0.0F, 1.0F, 0.0F));
+			GL11.glTexGen(GL11.GL_R, GL11.GL_OBJECT_PLANE, this.func_76907_a(0.0F, 0.0F, 0.0F, 1.0F));
+			GL11.glTexGen(GL11.GL_Q, GL11.GL_EYE_PLANE, this.func_76907_a(0.0F, 1.0F, 0.0F, 0.0F));
+			GL11.glEnable(GL11.GL_TEXTURE_GEN_S);
+			GL11.glEnable(GL11.GL_TEXTURE_GEN_T);
+			GL11.glEnable(GL11.GL_TEXTURE_GEN_R);
+			GL11.glEnable(GL11.GL_TEXTURE_GEN_Q);
+			GL11.glPopMatrix();
+			GL11.glMatrixMode(GL11.GL_TEXTURE);
+			GL11.glPushMatrix();
+			GL11.glLoadIdentity();
+			GL11.glTranslatef(0.0F, (float) (Minecraft.getSystemTime() % 700000L) / 700000.0F, 0.0F);
+			GL11.glScalef(f6, f6, f6);
+			GL11.glTranslatef(0.5F, 0.5F, 0.0F);
+			GL11.glRotatef((float) (i * i * 4321 + i * 9) * 2.0F, 0.0F, 0.0F, 1.0F);
+			GL11.glTranslatef(-0.5F, -0.5F, 0.0F);
+			GL11.glTranslatef(-f1, -f3, -f2);
+			f9 = f8 + ActiveRenderInfo.objectY;
+			GL11.glTranslatef(ActiveRenderInfo.objectX * f5 / f9, ActiveRenderInfo.objectZ * f5 / f9, -f2);
+			glBegin(GL_QUADS);
+			f11 = field_110644_e.nextFloat() * 0.5F + 0.1F;
+			float f12 = field_110644_e.nextFloat() * 0.5F + 0.4F;
+			float f13 = field_110644_e.nextFloat() * 0.5F + 0.5F;
+
+			if (i == 0)
+			{
+				f13 = 1.0F;
+				f12 = 1.0F;
+				f11 = 1.0F;
+			}
+
+			glColor4f(f11 * f7, f12 * f7, f13 * f7, 1.0F);
+			glVertex3d(x + 3/16F, y + (double) f4, z + 3/16F);
+			glVertex3d(x + 3/16F, y + (double) f4, z + 1.0D - 3/16F);
+			glVertex3d(x + 1.0D - 3/16F, y + (double) f4, z + 1.0D - 3/16F);
+			glVertex3d(x + 1.0D - 3/16F, y + (double) f4, z + 3/16F);
+
+			glEnd();
+			glColor4f(1, 1, 1, 1);
+			GL11.glPopMatrix();
+			GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		}
+
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glDisable(GL11.GL_TEXTURE_GEN_S);
+		GL11.glDisable(GL11.GL_TEXTURE_GEN_T);
+		GL11.glDisable(GL11.GL_TEXTURE_GEN_R);
+		GL11.glDisable(GL11.GL_TEXTURE_GEN_Q);
+		GL11.glEnable(GL11.GL_LIGHTING);
+
+	}
+
+	private FloatBuffer func_76907_a(float par1, float par2, float par3, float par4)
+	{
+		this.field_76908_a.clear();
+		this.field_76908_a.put(par1).put(par2).put(par3).put(par4);
+		this.field_76908_a.flip();
+		return this.field_76908_a;
 	}
 
 	@Override
@@ -510,10 +483,15 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 		glPushMatrix();
 		glPushAttrib(GL_ENABLE_BIT);
 		glEnable(GL_DEPTH_TEST);
-		glTranslated(0, 1.0D, 0);
-		glRotatef(180F, 1F, 0F, 0F);
-		FMLClientHandler.instance().getClient().renderEngine.bindTexture(this.TEXTURE_WORKPILLAR);
+		glTranslated(0, -1F, 0);
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(this.TEXTURE_TRASHPILLAR);
 		this.render(0.0625F);
+
+		glTranslated(0, 0.56F, 0);
+		float scale = 0.0255F;
+		glScalef(scale, scale, scale);
+
+		this.trash.renderPart("TrashPillar");
 		glPopAttrib();
 		glPopMatrix();
 	}
@@ -533,6 +511,6 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 	@Override
 	public int getRenderId()
 	{
-		return CraftingPillars.craftingPillarRenderID;
+		return CraftingPillars.trashPillarRenderID;
 	}
 }

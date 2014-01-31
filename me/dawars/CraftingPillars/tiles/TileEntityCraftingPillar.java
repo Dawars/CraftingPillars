@@ -29,11 +29,12 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 {
 	public ContainerCraftingPillar container = new ContainerCraftingPillar();
 	private ItemStack[] inventory = new ItemStack[this.getSizeInventory() + 2];//11th - thaumcraft wand
-
+	public EntityPlayer closestPlayer = null;
+	
 	public float rot = 0F;
 	public boolean showNum = false;
-	public AspectList aspects;
-
+	public AspectList aspectsForRecipe;
+	
 	@Override
 	public void updateEntity()
 	{
@@ -105,8 +106,6 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 
 			if(CraftingPillars.modThaumcraft)
 			{
-				EntityPlayer playerForResearch = null;
-
 				if(this.worldObj.loadedEntityList != null)
 				{
 					float closest = Float.MAX_VALUE;
@@ -121,25 +120,25 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 								if(distance < closest)
 								{
 									closest = distance;
-									playerForResearch = currentPlayer;
+									this.closestPlayer = currentPlayer;
 								}
 							}
 						}
 					}
 				}
 
-				if(playerForResearch != null && this.getStackInSlot(10) != null)
+				if(this.closestPlayer != null && this.getStackInSlot(10) != null)
 				{
-					ItemStack result = ThaumcraftHelper.findMatchingArcaneRecipe(this.container.craftMatrix, playerForResearch);
+					ItemStack result = ThaumcraftHelper.findMatchingArcaneRecipe(this.container.craftMatrix, this.closestPlayer);
 					if(result != null)
 					{
 						this.inventory[this.getSizeInventory()] = result;
-						aspects = ThaumcraftHelper.findMatchingArcaneRecipeAspects(this.container.craftMatrix, playerForResearch);
+						aspectsForRecipe = ThaumcraftHelper.findMatchingArcaneRecipeAspects(this.container.craftMatrix, this.closestPlayer);
 						
-						for(int i = 0; i < aspects.size(); i++)
-						{
-							FMLLog.warning(aspects.getAspects()[i].getName() + ": " + aspects.getAmount(aspects.getAspects()[i]));
-						}
+//						for(int i = 0; i < aspectsForRecipe.size(); i++)
+//						{
+//							FMLLog.warning(aspectsForRecipe.getAspects()[i].getName() + ": " + aspectsForRecipe.getAmount(aspectsForRecipe.getAspects()[i]));
+//						}
 						
 					}
 //					else {
@@ -213,11 +212,11 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 						if ((aspects.size() > 0) && (this.getStackInSlot(10) != null)) {
 							ItemStack wand = this.getStackInSlot(10);
 							ThaumcraftHelper.consumAllVisCrafting(wand, player, aspects, true);
-
-							for(int i = 0; i < aspects.size(); i++)
-							{
-								FMLLog.warning(aspects.getAspects()[i].getName() + ": " + aspects.getAmount(aspects.getAspects()[i]));
-							}
+							
+//							for(int i = 0; i < aspects.size(); i++)
+//							{
+//								FMLLog.warning(aspects.getAspects()[i].getName() + ": " + aspects.getAmount(aspects.getAspects()[i]));
+//							}
 						}
 					}
 				}
@@ -443,10 +442,5 @@ public class TileEntityCraftingPillar extends BaseTileEntity implements IInvento
 	public boolean canExtractItem(int slot, ItemStack itemstack, int side)
 	{
 		return this.isItemValidForSlot(slot, itemstack);
-	}
-
-	public AspectList getAspects() {
-		if(this.getStackInSlot(10) == null) return null;
-		return aspects;
 	}
 }

@@ -58,7 +58,7 @@ public class CraftingPillars
 		return instance;
 	}
 
-	public static final String version = "1.4.3";
+	public static final String version = "1.4.5";
 	public static final String name = "Crafting Pillars";
 	public static final String id = "craftingpillars";
 	public static final String channelGame = "PillarGameClick";
@@ -104,6 +104,7 @@ public class CraftingPillars
 	public static int freezerPillarRenderID;
 	public static int potPillarRenderID;
 	public static int sentryPillarRenderID;
+	public static int trashPillarRenderID;
 
 	public static int PresentRenderID;
 	public static int lightRenderID;
@@ -120,6 +121,7 @@ public class CraftingPillars
 	public static Block blockFreezerPillar;
 	public static Block blockPotPillar;
 	public static Block blockSentryPillar;
+	public static Block blockTrashPillar;
 
 	public static Block blockChristmasLeaves;
 	public static Block blockChristmasTreeSapling;
@@ -212,6 +214,12 @@ public class CraftingPillars
 		registerBlock(blockSentryPillar);
 		LanguageRegistry.instance().addStringLocalization(blockSentryPillar.getUnlocalizedName()+".name", "Sentry Pillar");
 
+		Property idTrashPillar = CraftingPillars.config.getBlock("TrashPillar.id", BlockIds.idTrashPillar);
+		blockTrashPillar = (new TrashPillarBlock(idTrashPillar.getInt(), Material.rock)).setHardness(1.5F).setResistance(10.0F).setStepSound(Block.soundStoneFootstep).setUnlocalizedName("trashPillar");
+		registerBlock(blockTrashPillar);
+		LanguageRegistry.instance().addStringLocalization(blockTrashPillar.getUnlocalizedName()+".name", "Trash Pillar");
+
+		
 		//Christmas
 		Property idChristmasLeaves = CraftingPillars.config.getBlock("ChristmasLeaves.id", BlockIds.idChristmasLeaves);
 		blockChristmasLeaves = (new ChristmasLeavesBlock(idChristmasLeaves.getInt(), Material.leaves)).setHardness(0.2F).setLightOpacity(1).setStepSound(Block.soundGrassFootstep).setUnlocalizedName("xmasLeaves");
@@ -345,6 +353,7 @@ public class CraftingPillars
 		GameRegistry.registerTileEntity(TileEntityFreezerPillar.class, "TileEntityFreezerPillar");
 		GameRegistry.registerTileEntity(TileEntityPotPillar.class, "TileEntityPotPillar");
 		GameRegistry.registerTileEntity(TileEntitySentryPillar.class, "TileEntitySentryPillar");
+		GameRegistry.registerTileEntity(TileEntityTrashPillar.class, "TileEntityTrashPillar");
 
 		GameRegistry.registerTileEntity(TileEntityChristmasPresent.class, "TileEntityPresent");
 		GameRegistry.registerTileEntity(TileEntityLight.class, "TileEntityLight");
@@ -402,7 +411,7 @@ public class CraftingPillars
 	{
 		NetworkRegistry.instance().registerGuiHandler(this, this.guiHandler);
 		MinecraftForge.EVENT_BUS.register(new PillarEventHandler());
-		if(proxy.getMinecraftVersion() != "1.6.2" || (proxy.getMinecraftVersion() == "1.6.4" && Integer.parseInt(Loader.instance().getFMLVersionString().replaceAll(".", "")) >= 6445953))
+		if(proxy.getMinecraftVersion() != "1.6.2" || ((proxy.getMinecraftVersion() == "1.6.4" && Integer.parseInt(Loader.instance().getFMLVersionString().replaceAll(".", "")) >= 6445953)))
 			MinecraftForge.EVENT_BUS.register(new PillarEventHandlerNew());
 	}
 

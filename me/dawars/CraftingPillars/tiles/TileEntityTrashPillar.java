@@ -10,25 +10,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
-public class TileEntityShowOffPillar extends BaseTileEntity implements IInventory, ISidedInventory
+public class TileEntityTrashPillar extends BaseTileEntity implements IInventory, ISidedInventory
 {
 	private ItemStack[] inventory = new ItemStack[this.getSizeInventory()];
 
-	// @SideOnly(Side.CLIENT)
-	public float rot = 0F;
-
 	public boolean showNum = false;
+	public boolean isOpen = false;
 
 	@Override
 	public void updateEntity()
 	{
-		if(this.worldObj.isRemote)
-		{
-			this.rot += 0.1F;
-			if(this.rot >= 360F)
-				this.rot -= 360F;
-		}
-
 		super.updateEntity();
 	}
 
@@ -49,6 +40,7 @@ public class TileEntityShowOffPillar extends BaseTileEntity implements IInventor
 		}
 
 		this.showNum = nbt.getBoolean("showNum");
+		this.isOpen = nbt.getBoolean("isOpen");
 	}
 
 	@Override
@@ -68,6 +60,7 @@ public class TileEntityShowOffPillar extends BaseTileEntity implements IInventor
 		}
 		nbt.setTag("Items", nbtlist);
 		nbt.setBoolean("showNum", this.showNum);
+		nbt.setBoolean("isOpen", this.isOpen);
 	}
 
 	@Override
@@ -175,7 +168,7 @@ public class TileEntityShowOffPillar extends BaseTileEntity implements IInventor
 	@Override
 	public String getInvName()
 	{
-		return "Showcase Pillar";
+		return "Trash Pillar";
 	}
 
 	@Override
@@ -221,7 +214,7 @@ public class TileEntityShowOffPillar extends BaseTileEntity implements IInventor
 	@Override
 	public boolean canExtractItem(int slot, ItemStack itemstack, int side)
 	{
-		return true;
+		return false;
 	}
 
 }

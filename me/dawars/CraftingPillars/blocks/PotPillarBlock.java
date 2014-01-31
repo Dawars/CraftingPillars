@@ -42,21 +42,6 @@ public class PotPillarBlock extends BaseBlockContainer
 		return false;
 	}
 
-	/**
-	 * Used during tree growth to determine if newly generated leaves can replace this block.
-	 *
-	 * @param world The current world
-	 * @param x X Position
-	 * @param y Y Position
-	 * @param z Z Position
-	 * @return true if this block can be replaced by growing leaves.
-	 */
-	@Override
-	public boolean canBeReplacedByLeaves(World world, int x, int y, int z)
-	{
-		return false;
-	}
-
 	@Override
 	@SideOnly(Side.CLIENT)
 	/**

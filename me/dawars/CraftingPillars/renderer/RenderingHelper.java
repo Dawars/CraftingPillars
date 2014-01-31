@@ -2,6 +2,8 @@ package me.dawars.CraftingPillars.renderer;
 
 import java.awt.Color;
 
+import cpw.mods.fml.client.FMLClientHandler;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.entity.RenderItem;
@@ -70,7 +72,7 @@ public class RenderingHelper
 
 	public static void renderFloatingRect(float x, float y, float z, float w, float h, Color c)
 	{
-		FontRenderer fontRenderer = RenderManager.instance.getFontRenderer();
+//		FontRenderer fontRenderer = RenderManager.instance.getFontRenderer();
 		glPushMatrix();
 		glTranslatef(x, y, z);
 		applyFloatingRotations();
@@ -115,28 +117,34 @@ public class RenderingHelper
 		glPopMatrix();
 	}
 	
-	public static void renderFacingQuad(float x, float y, float z, float scale, ResourceLocation texture, Color bgColor)
+	public static void renderFacingQuad(float x, float y, float z, float scale, ResourceLocation texture, Color c)
 	{
 		glPushMatrix();
 		glTranslatef(x, y, z);
 		applyFloatingRotations();
-		glRotatef(180F, 0.0F, 0.0F, 1.0F);
-		glScalef(0.05F*scale, 0.05F*scale, 1F);
+		glScalef(0.1F * scale, 0.1F * scale, 1F);
 
-		int h = 16;
-		int w = 16;
+		int h = 1;
+		int w = 1;
+		glDisable(GL_LIGHTING);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glColor4f(bgColor.getRed()/256F, bgColor.getGreen()/256F, bgColor.getBlue()/256F, bgColor.getAlpha()/256F);
-		Minecraft.getMinecraft().renderEngine.bindTexture(texture);
+		glColor4f(c.getRed()/256F, c.getGreen()/256F, c.getBlue()/256F, 0.75F);
+		
+		RenderManager.instance.renderEngine.bindTexture(texture);
+		
 		glBegin(GL_QUADS);
-		glVertex3f(-w-1, -h-1, 0.001F);
-		glVertex3f(-w-1, h, 0.001F);
+		glTexCoord2f(0F, 1F);
+		glVertex3f(-w, -h, 0.001F);
+		glTexCoord2f(0F, 0F);
+		glVertex3f(-w, h, 0.001F);
+		glTexCoord2f(1F, 0F);
 		glVertex3f(w, h, 0.001F);
-		glVertex3f(w, -h-1, 0.001F);
+		glTexCoord2f(1F, 1F);
+		glVertex3f(w, -h, 0.001F);
 		glEnd();
 		glDisable(GL_BLEND);
-
+		glEnable(GL_LIGHTING);
 		glPopMatrix();
 	}
 }
