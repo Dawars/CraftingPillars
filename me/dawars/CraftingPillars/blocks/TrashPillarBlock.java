@@ -121,7 +121,6 @@ public class TrashPillarBlock extends BaseBlockContainer
 
 		if (pillarTile.isOpen)
 		{
-
 			double d0 = (double) ((float) x + rand.nextFloat());
 			double d1 = (double) ((float) y + 0.8F);
 			double d2 = (double) ((float) z + rand.nextFloat());

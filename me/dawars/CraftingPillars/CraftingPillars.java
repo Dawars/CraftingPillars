@@ -373,6 +373,7 @@ public class CraftingPillars
 		GameRegistry.addShapelessRecipe(new ItemStack(blockSentryPillar), new ItemStack(Block.dispenser), new ItemStack(blockBasePillar));
 		GameRegistry.addRecipe(new ItemStack(blockPotPillar), new Object[] { "S", "F", "P", Character.valueOf('S'), Block.dirt, Character.valueOf('P'), blockBasePillar , Character.valueOf('F'), Item.flowerPot});
 		GameRegistry.addRecipe(new ItemStack(blockChristmasLight, 3), new Object[] { "G", "L", Character.valueOf('G'), Item.ingotGold, Character.valueOf('L'), Block.glowStone});
+		GameRegistry.addRecipe(new ItemStack(blockTrashPillar, 1), new Object[] { "SSS", "SLS", "SSS", Character.valueOf('S'), Block.stone, Character.valueOf('L'), Item.enderPearl});
 		GameRegistry.addShapelessRecipe(new ItemStack(Item.diamond), new ItemStack(itemRibbonDiamond));
 	}
 
@@ -438,7 +439,7 @@ public class CraftingPillars
 			config = new Configuration(new File(configPath, "CraftingPillars.cfg"));
 			config.load();
 
-			winter = isWinterTime() && config.get("default", "enableWinter", true).getBoolean(true);
+			winter = (isWinterTime() && config.get("default", "enableWinter", true).getBoolean(false)) || config.get("default", "forceWinter", false).getBoolean(false);
 
 			this.addItemsAndBlocks();
 			this.addAchievementsAndCreativeTab();

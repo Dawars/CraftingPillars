@@ -483,11 +483,14 @@ public class RenderTrashPillar extends TileEntitySpecialRenderer implements ISim
 		glPushMatrix();
 		glPushAttrib(GL_ENABLE_BIT);
 		glEnable(GL_DEPTH_TEST);
-		glTranslated(0, -1F, 0);
+		glTranslated(0, 1.0D, 0);
+		glRotatef(180F, 1F, 0F, 0F);
+
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(this.TEXTURE_TRASHPILLAR);
 		this.render(0.0625F);
-
-		glTranslated(0, 0.56F, 0);
+		glRotatef(180F, 1F, 0F, 0F);
+		
+		glTranslated(0, -1.5F, 0);
 		float scale = 0.0255F;
 		glScalef(scale, scale, scale);
 

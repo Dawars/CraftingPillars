@@ -1,5 +1,5 @@
 # 3ds Max Wavefront OBJ Exporter v0.97b - (c)2007 guruware
-# File Created: 31.01.2014 17:43:12
+# File Created: 01.02.2014 00:19:53
 
 newmtl 01___Default
 	Ns 10.0000
@@ -12,5 +12,5 @@ newmtl 01___Default
 	Kd 0.5882 0.5882 0.5882
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka E:\Documents\GitHub\CraftingPillar\assets\craftingpillars\textures\models\showoffPillar.png
-	map_Kd E:\Documents\GitHub\CraftingPillar\assets\craftingpillars\textures\models\showoffPillar.png
+	map_Ka E:\Documents\GitHub\CraftingPillar\assets\craftingpillars\textures\models\showoffPillarFrozen.png
+	map_Kd E:\Documents\GitHub\CraftingPillar\assets\craftingpillars\textures\models\showoffPillarFrozen.png
