@@ -126,6 +126,8 @@ public class RenderEnchantmentPillar extends TileEntitySpecialRenderer implement
 		citem.hoverStart = CraftingPillars.floatingItems ? workTile.rot : 0F;
 
 		glPushMatrix();
+		glRotatef(90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
+
 		glTranslated(x, y, z);
 
 		if(workTile.getStackInSlot(0) != null)

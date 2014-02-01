@@ -139,6 +139,7 @@ public class CraftingPillars
 	public static boolean rayTrace = false;
 	public static boolean renderHitBoxes = true;
 	public static boolean winter;
+	public static boolean easter;
 	public static int maxTreeState;
 
 	public static AchievementPage achievementPage;
@@ -440,6 +441,7 @@ public class CraftingPillars
 			config.load();
 
 			winter = (isWinterTime() && config.get("default", "enableWinter", true).getBoolean(false)) || config.get("default", "forceWinter", false).getBoolean(false);
+			easter = (isEasterTime() && config.get("default", "enableEaster", true).getBoolean(false)) || config.get("default", "forceEaster", false).getBoolean(false);
 
 			this.addItemsAndBlocks();
 			this.addAchievementsAndCreativeTab();
@@ -563,6 +565,24 @@ public class CraftingPillars
 		e.set(Calendar.YEAR, c.get(Calendar.YEAR)+1);
 		e.set(Calendar.MONTH, Calendar.JANUARY);
 		e.set(Calendar.DAY_OF_MONTH, 15);
+		e.set(Calendar.HOUR_OF_DAY, 0);
+		e.set(Calendar.MINUTE, 0);
+		e.set(Calendar.MILLISECOND, 0);
+		return c.after(b) && c.before(e);
+	}
+	
+	public static boolean isEasterTime()
+	{
+		Calendar c = Calendar.getInstance();
+		Calendar b = Calendar.getInstance();
+		b.set(Calendar.MONTH, Calendar.APRIL);
+		b.set(Calendar.DAY_OF_MONTH, 19);
+		b.set(Calendar.HOUR_OF_DAY, 0);
+		b.set(Calendar.MINUTE, 0);
+		b.set(Calendar.MILLISECOND, 0);
+		Calendar e = Calendar.getInstance();
+		e.set(Calendar.MONTH, Calendar.APRIL);
+		e.set(Calendar.DAY_OF_MONTH, 25);
 		e.set(Calendar.HOUR_OF_DAY, 0);
 		e.set(Calendar.MINUTE, 0);
 		e.set(Calendar.MILLISECOND, 0);

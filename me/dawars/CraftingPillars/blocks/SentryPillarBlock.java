@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class SentryPillarBlock extends BaseBlockContainer
@@ -155,8 +156,13 @@ public class SentryPillarBlock extends BaseBlockContainer
 		{
 			((TileEntitySentryPillar) world.getBlockTileEntity(i, j, k)).setOwnerEntity((EntityPlayer) entity);
 		}
+		world.setBlockMetadataWithNotify(i, j, k, determineOrientation(world, i, j, k, entity), 0);
 	}
 
+	public static int determineOrientation(World world, int x, int y, int z, EntityLivingBase entity)
+	{
+		return MathHelper.floor_double(entity.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+	}
 	@Override
 	public TileEntity createNewTileEntity(World world)
 	{

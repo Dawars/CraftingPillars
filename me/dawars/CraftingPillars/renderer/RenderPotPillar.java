@@ -40,6 +40,11 @@ public class RenderPotPillar extends TileEntitySpecialRenderer implements ISimpl
 
 	private ModelRenderer pillarBottom;
 
+	private ModelRenderer BunnyTail1;
+	private ModelRenderer BunnyTail2;
+	private ModelRenderer BunnyTail3;
+	private ModelRenderer BunnyEar1;
+	private ModelRenderer BunnyEar2;
 
 	private ModelRenderer Icicle1A;
 	private ModelRenderer Icicle1B;
@@ -80,7 +85,7 @@ public class RenderPotPillar extends TileEntitySpecialRenderer implements ISimpl
 
 	public RenderPotPillar()
 	{
-		if(CraftingPillars.winter)
+		if (CraftingPillars.winter)
 			this.TEXTURE_SHOWOFFPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/showoffPillarFrozen.png");
 		else
 			this.TEXTURE_SHOWOFFPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/showoffPillar.png");
@@ -137,7 +142,41 @@ public class RenderPotPillar extends TileEntitySpecialRenderer implements ISimpl
 		this.pot.mirror = true;
 		this.setRotation(this.pot, 0F, 0F, 0F);
 
-		//Winter
+		if (CraftingPillars.easter)
+		{
+			BunnyTail1 = new ModelRenderer(model, 0, 35);
+			BunnyTail1.addBox(0F, 0F, 0F, 2, 4, 2);
+			BunnyTail1.setRotationPoint(-1F, 18F, 7F);
+			BunnyTail1.setTextureSize(128, 64);
+			BunnyTail1.mirror = true;
+			setRotation(BunnyTail1, 0F, 0F, 0F);
+			BunnyTail2 = new ModelRenderer(model, 0, 33);
+			BunnyTail2.addBox(0F, 0F, 0F, 4, 2, 2);
+			BunnyTail2.setRotationPoint(-2F, 19F, 7F);
+			BunnyTail2.setTextureSize(128, 64);
+			BunnyTail2.mirror = true;
+			setRotation(BunnyTail2, 0F, 0F, 0F);
+			BunnyTail3 = new ModelRenderer(model, 0, 36);
+			BunnyTail3.addBox(0F, 0F, 0F, 2, 2, 4);
+			BunnyTail3.setRotationPoint(-1F, 19F, 6F);
+			BunnyTail3.setTextureSize(128, 64);
+			BunnyTail3.mirror = true;
+			setRotation(BunnyTail3, 0F, 0F, 0F);
+			BunnyEar1 = new ModelRenderer(model, 1, 18);
+			BunnyEar1.addBox(-1.5F, -9F, -1F, 3, 10, 1);
+			BunnyEar1.setRotationPoint(3.5F, 9F, 9F);
+			BunnyEar1.setTextureSize(128, 64);
+			BunnyEar1.mirror = true;
+			setRotation(BunnyEar1, 0F, 0F, 0F);
+			BunnyEar2 = new ModelRenderer(model, 1, 18);
+			BunnyEar2.addBox(-1.5F, -9F, -1F, 3, 10, 1);
+			BunnyEar2.setRotationPoint(-3.5F, 9F, 9F);
+			BunnyEar2.setTextureSize(128, 64);
+			BunnyEar2.mirror = true;
+			setRotation(BunnyEar2, 0F, 0F, 0F);
+		}
+
+		// Winter
 		this.Icicle1A = new ModelRenderer(model, 122, 60);
 		this.Icicle1A.addBox(0F, 0F, 0F, 1, 2, 2);
 		this.Icicle1A.setRotationPoint(6F, 11F, -5F);
@@ -277,7 +316,6 @@ public class RenderPotPillar extends TileEntitySpecialRenderer implements ISimpl
 		this.Icicle8D.mirror = true;
 		this.setRotation(this.Icicle8D, 0F, 0F, 0F);
 
-
 		this.Icicle9A = new ModelRenderer(model, 122, 38);
 		this.Icicle9A.addBox(0F, 0F, 0F, 2, 1, 1);
 		this.Icicle9A.setRotationPoint(3F, 11F, -7F);
@@ -331,7 +369,7 @@ public class RenderPotPillar extends TileEntitySpecialRenderer implements ISimpl
 	public void render(float f)
 	{
 
-		if(CraftingPillars.winter)
+		if (CraftingPillars.winter)
 		{
 			this.Icicle1A.render(f);
 			this.Icicle1B.render(f);
@@ -393,21 +431,39 @@ public class RenderPotPillar extends TileEntitySpecialRenderer implements ISimpl
 		this.render(0.0625F);
 		glPopMatrix();
 
-		TileEntityPotPillar pillarTile = (TileEntityPotPillar)tile;
+		TileEntityPotPillar pillarTile = (TileEntityPotPillar) tile;
 
-		if(pillarTile.getStackInSlot(0) != null)
+		if (pillarTile.getStackInSlot(0) != null)
 		{
-			if(pillarTile.showNum)
+			if (pillarTile.showNum)
 			{
 				glPushMatrix();
 				glTranslated(x + 0.5D, y + 1, z + 0.5D);
 
 				glDisable(GL_LIGHTING);
-				RenderingHelper.renderFloatingTextWithBackground(0, 0.9F, 0, 0.2F, pillarTile.getStackInSlot(0).getDisplayName(), Color.WHITE.getRGB(), new Color(0F, 0F, 0F, 0.5F));
+				RenderingHelper
+						.renderFloatingTextWithBackground(0, 0.9F, 0, 0.2F, pillarTile.getStackInSlot(0).getDisplayName(), Color.WHITE.getRGB(), new Color(0F, 0F, 0F, 0.5F));
 				glEnable(GL_LIGHTING);
 
 				glPopMatrix();
 			}
+		}
+
+		if (CraftingPillars.easter)
+		{
+			glPushMatrix();
+			glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
+			glRotatef(-90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
+
+			glRotatef(180F, 1F, 0F, 0F);
+
+			f = 0.0625F;
+			BunnyTail1.render(f);
+			BunnyTail2.render(f);
+			BunnyTail3.render(f);
+			BunnyEar1.render(f);
+			BunnyEar2.render(f);
+			glPopMatrix();
 		}
 	}
 
@@ -428,10 +484,10 @@ public class RenderPotPillar extends TileEntitySpecialRenderer implements ISimpl
 	@Override
 	public boolean renderWorldBlock(IBlockAccess blockAccess, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
 	{
-		TileEntityPotPillar tile = (TileEntityPotPillar)blockAccess.getBlockTileEntity(x, y, z);
+		TileEntityPotPillar tile = (TileEntityPotPillar) blockAccess.getBlockTileEntity(x, y, z);
 		renderer.renderAllFaces = true;
 
-		if(tile.getStackInSlot(0) != null)
+		if (tile.getStackInSlot(0) != null)
 		{
 			Block plantBlock = Block.blocksList[tile.getStackInSlot(0).itemID];
 			int metadata = tile.getStackInSlot(0).getItemDamage();
@@ -450,19 +506,20 @@ public class RenderPotPillar extends TileEntitySpecialRenderer implements ISimpl
 			if (plantBlock == Block.plantRed || plantBlock == Block.plantYellow || plantBlock == Block.mushroomRed || plantBlock == Block.mushroomBrown)
 				renderScale = 1.0F;
 
-			renderer.drawCrossedSquares(plantBlock, metadata, x, y+1.2, z, renderScale);
+			renderer.drawCrossedSquares(plantBlock, metadata, x, y + 1.2, z, renderScale);
 		}
 
 		renderer.renderAllFaces = false;
 
 		return true;
 	}
-	private int setBrightness(IBlockAccess world, int x, int y, int z, Block block) {
+
+	private int setBrightness(IBlockAccess world, int x, int y, int z, Block block)
+	{
 		int brightness = block.getMixedBrightnessForBlock(world, x, y, z);
 
 		Tessellator tessellator = Tessellator.instance;
-		tessellator.setBrightness(block.getMixedBrightnessForBlock(world,
-				x, y, z));
+		tessellator.setBrightness(block.getMixedBrightnessForBlock(world, x, y, z));
 
 		float f = 1.0F;
 
@@ -472,7 +529,8 @@ public class RenderPotPillar extends TileEntitySpecialRenderer implements ISimpl
 		float f3 = (l & 255) / 255.0F;
 		float f4;
 
-		if (EntityRenderer.anaglyphEnable) {
+		if (EntityRenderer.anaglyphEnable)
+		{
 			float f5 = (f1 * 30.0F + f2 * 59.0F + f3 * 11.0F) / 100.0F;
 			f4 = (f1 * 30.0F + f2 * 70.0F) / 100.0F;
 			float f6 = (f1 * 30.0F + f3 * 70.0F) / 100.0F;

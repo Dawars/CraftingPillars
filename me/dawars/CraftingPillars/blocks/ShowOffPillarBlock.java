@@ -6,12 +6,14 @@ import me.dawars.CraftingPillars.CraftingPillars;
 import me.dawars.CraftingPillars.tiles.TileEntityShowOffPillar;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class ShowOffPillarBlock extends BaseBlockContainer
@@ -39,6 +41,17 @@ public class ShowOffPillarBlock extends BaseBlockContainer
 		return false;
 	}
 
+	@Override
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase entity, ItemStack stack)
+	{
+		world.setBlockMetadataWithNotify(x, y, z, determineOrientation(world, x, y, z, entity), 0);
+	}
+
+	public static int determineOrientation(World world, int x, int y, int z, EntityLivingBase entity)
+	{
+		return MathHelper.floor_double(entity.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+	}
+	
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
 	{

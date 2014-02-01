@@ -38,6 +38,12 @@ public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimp
 	private ModelRenderer top;
 	private ModelRenderer Nail;
 
+	private ModelRenderer BunnyTail1;
+	private ModelRenderer BunnyTail2;
+	private ModelRenderer BunnyTail3;
+	private ModelRenderer BunnyEar1;
+	private ModelRenderer BunnyEar2;
+
 	private ModelRenderer Icicle1A;
 	private ModelRenderer Icicle1B;
 	private ModelRenderer Icicle1C;
@@ -79,7 +85,7 @@ public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimp
 
 	public RenderDiskPillar()
 	{
-		if(CraftingPillars.winter)
+		if (CraftingPillars.winter)
 			this.TEXTURE_DISKPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/diskPillarFrozen.png");
 		else
 			this.TEXTURE_DISKPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/diskPillar.png");
@@ -131,7 +137,7 @@ public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimp
 		this.Nail.mirror = true;
 		this.setRotation(this.Nail, 0F, 0F, 0F);
 
-		//Winter
+		// Winter
 		this.Icicle1A = new ModelRenderer(model, 122, 60);
 		this.Icicle1A.addBox(0F, 0F, 0F, 1, 2, 2);
 		this.Icicle1A.setRotationPoint(6F, 11F, -5F);
@@ -323,7 +329,7 @@ public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimp
 
 	public void render(float f)
 	{
-		if(CraftingPillars.winter)
+		if (CraftingPillars.winter)
 		{
 			this.Icicle1A.render(f);
 			this.Icicle1B.render(f);
@@ -387,7 +393,7 @@ public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimp
 
 		TileEntityDiskPlayerPillar workTile = (TileEntityDiskPlayerPillar) tile;
 
-		if(workTile.getDisk() != null && !workTile.isEmpty)
+		if (workTile.getDisk() != null && !workTile.isEmpty)
 		{
 			glPushMatrix();
 			glTranslated(x + 0.5F, y + 1.02F, z + 0.5F);
@@ -398,17 +404,36 @@ public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimp
 			this.disk.renderAll();
 			glEnable(GL_LIGHTING);
 			glPopMatrix();
-			if(workTile.showNum)
+			if (workTile.showNum)
 			{
 				glPushMatrix();
 				glTranslated(x + 0.5F, y + 1.02F, z + 0.5F);
 
 				glDisable(GL_LIGHTING);
-				RenderingHelper.renderFloatingTextWithBackground(0, 0.6F, 0, 0.4F, workTile.getDisk().getTooltip(FMLClientHandler.instance().getClient().thePlayer, true).get(1).toString(), Color.WHITE.getRGB(), new Color(0F, 0F, 0F, 0.5F));
+				RenderingHelper.renderFloatingTextWithBackground(0, 0.6F, 0, 0.4F, workTile.getDisk().getTooltip(FMLClientHandler.instance().getClient().thePlayer, true).get(1)
+						.toString(), Color.WHITE.getRGB(), new Color(0F, 0F, 0F, 0.5F));
 				glEnable(GL_LIGHTING);
 
 				glPopMatrix();
 			}
+		}
+
+		if (CraftingPillars.easter)
+		{
+			glPushMatrix();
+			glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
+			glRotatef(-90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
+
+			glRotatef(180F, 1F, 0F, 0F);
+			Minecraft.getMinecraft().renderEngine.bindTexture(this.TEXTURE_DISKPILLAR);
+
+			f = 0.0625F;
+			BunnyTail1.render(f);
+			BunnyTail2.render(f);
+			BunnyTail3.render(f);
+			BunnyEar1.render(f);
+			BunnyEar2.render(f);
+			glPopMatrix();
 		}
 	}
 

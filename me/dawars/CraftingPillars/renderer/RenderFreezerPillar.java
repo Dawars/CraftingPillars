@@ -51,6 +51,11 @@ public class RenderFreezerPillar extends TileEntitySpecialRenderer implements IS
 
 	private ModelRenderer Valve;
 
+	private ModelRenderer BunnyTail1;
+	private ModelRenderer BunnyTail2;
+	private ModelRenderer BunnyTail3;
+	private ModelRenderer BunnyEar1;
+	private ModelRenderer BunnyEar2;
 
 	private ModelRenderer Icicle1A;
 	private ModelRenderer Icicle1B;
@@ -65,17 +70,16 @@ public class RenderFreezerPillar extends TileEntitySpecialRenderer implements IS
 	private ModelRenderer Icicle4A;
 	private ModelRenderer Icicle4B;
 
-
 	private RenderingHelper.ItemRender itemRenderer;
 	private RenderingHelper.ItemRender resultRenderer;
 
 	public RenderFreezerPillar()
 	{
-		if(CraftingPillars.winter)
-			this.TEXTURE_FREEZERPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/freezerPillarFrozen.png");
-		else
-			this.TEXTURE_FREEZERPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/freezerPillar.png");
-
+		// if(CraftingPillars.winter)
+		this.TEXTURE_FREEZERPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/freezerPillarFrozen.png");
+		// else
+		// this.TEXTURE_FREEZERPILLAR = new ResourceLocation(CraftingPillars.id
+		// + ":textures/models/freezerPillar.png");
 
 		this.itemRenderer = new RenderingHelper.ItemRender(false, true);
 		this.resultRenderer = new RenderingHelper.ItemRender(false, false);
@@ -157,6 +161,40 @@ public class RenderFreezerPillar extends TileEntitySpecialRenderer implements IS
 		this.GlassPane3.mirror = true;
 		this.setRotation(this.GlassPane3, 0F, 1.570796F, 0F);
 
+		if (CraftingPillars.easter)
+		{
+			BunnyTail1 = new ModelRenderer(model, 0, 35);
+			BunnyTail1.addBox(0F, 0F, 0F, 2, 4, 2);
+			BunnyTail1.setRotationPoint(-1F, 18F, 7F);
+			BunnyTail1.setTextureSize(128, 64);
+			BunnyTail1.mirror = true;
+			setRotation(BunnyTail1, 0F, 0F, 0F);
+			BunnyTail2 = new ModelRenderer(model, 0, 33);
+			BunnyTail2.addBox(0F, 0F, 0F, 4, 2, 2);
+			BunnyTail2.setRotationPoint(-2F, 19F, 7F);
+			BunnyTail2.setTextureSize(128, 64);
+			BunnyTail2.mirror = true;
+			setRotation(BunnyTail2, 0F, 0F, 0F);
+			BunnyTail3 = new ModelRenderer(model, 0, 36);
+			BunnyTail3.addBox(0F, 0F, 0F, 2, 2, 4);
+			BunnyTail3.setRotationPoint(-1F, 19F, 6F);
+			BunnyTail3.setTextureSize(128, 64);
+			BunnyTail3.mirror = true;
+			setRotation(BunnyTail3, 0F, 0F, 0F);
+			BunnyEar1 = new ModelRenderer(model, 1, 18);
+			BunnyEar1.addBox(-1.5F, -9F, -1F, 3, 10, 1);
+			BunnyEar1.setRotationPoint(3.5F, 9F, 9F);
+			BunnyEar1.setTextureSize(128, 64);
+			BunnyEar1.mirror = true;
+			setRotation(BunnyEar1, 0F, 0F, 0F);
+			BunnyEar2 = new ModelRenderer(model, 1, 18);
+			BunnyEar2.addBox(-1.5F, -9F, -1F, 3, 10, 1);
+			BunnyEar2.setRotationPoint(-3.5F, 9F, 9F);
+			BunnyEar2.setTextureSize(128, 64);
+			BunnyEar2.mirror = true;
+			setRotation(BunnyEar2, 0F, 0F, 0F);
+		}
+
 		this.Icicle1A = new ModelRenderer(model, 122, 38);
 		this.Icicle1A.addBox(0F, 0F, 0F, 2, 1, 1);
 		this.Icicle1A.setRotationPoint(6F, 10F, 7F);
@@ -233,23 +271,20 @@ public class RenderFreezerPillar extends TileEntitySpecialRenderer implements IS
 
 	public void render(float f)
 	{
-		if(CraftingPillars.winter)
-		{
-			FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(CraftingPillars.id + ":textures/models/furnacePillarFrozen.png"));
-			this.Icicle1A.render(f);
-			this.Icicle1B.render(f);
-			this.Icicle1C.render(f);
-			this.Icicle2A.render(f);
-			this.Icicle2C.render(f);
-			this.Icicle2B.render(f);
-			this.Icicle3A.render(f);
-			this.Icicle3B.render(f);
-			this.Icicle3C.render(f);
-			this.Icicle3D.render(f);
-			this.Icicle4A.render(f);
-			this.Icicle4B.render(f);
-			FMLClientHandler.instance().getClient().renderEngine.bindTexture(this.TEXTURE_FREEZERPILLAR);
-		}
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(new ResourceLocation(CraftingPillars.id + ":textures/models/furnacePillarFrozen.png"));
+		this.Icicle1A.render(f);
+		this.Icicle1B.render(f);
+		this.Icicle1C.render(f);
+		this.Icicle2A.render(f);
+		this.Icicle2C.render(f);
+		this.Icicle2B.render(f);
+		this.Icicle3A.render(f);
+		this.Icicle3B.render(f);
+		this.Icicle3C.render(f);
+		this.Icicle3D.render(f);
+		this.Icicle4A.render(f);
+		this.Icicle4B.render(f);
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(this.TEXTURE_FREEZERPILLAR);
 
 		this.pillarbottom.render(f);
 		this.pillartop.render(f);
@@ -278,13 +313,23 @@ public class RenderFreezerPillar extends TileEntitySpecialRenderer implements IS
 	public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f)
 	{
 		glPushMatrix();
-		glTranslated(x, y, z);
-		glTranslatef(0.5F, 1.5F, 0.5F);
-		glScalef(0.0625F, 0.0625F, 0.0625F);
+		glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
 		glRotatef(180F, 1F, 0F, 0F);
 
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(this.TEXTURE_FREEZERPILLAR);
-		this.render(1F);
+		this.render(0.0625F);
+
+		if (CraftingPillars.easter)
+		{
+			glRotatef(-90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
+
+			f = 0.0625F;
+			BunnyTail1.render(f);
+			BunnyTail2.render(f);
+			BunnyTail3.render(f);
+			BunnyEar1.render(f);
+			BunnyEar2.render(f);
+		}
 		glPopMatrix();
 
 		TileEntityFreezerPillar tank = ((TileEntityFreezerPillar) tile);
@@ -292,10 +337,11 @@ public class RenderFreezerPillar extends TileEntitySpecialRenderer implements IS
 		EntityItem citem = new EntityItem(tile.worldObj);
 
 		glPushMatrix();
-		glTranslated(x+0.5D, y, z+0.5D);
+		glTranslated(x + 0.5D, y, z + 0.5D);
+		glRotatef(90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
 
-		//Output
-		if(tank.getStackInSlot(0) != null)
+		// Output
+		if (tank.getStackInSlot(0) != null)
 		{
 			glPushMatrix();
 			glTranslatef(0F, 1.75F, 0F);
@@ -305,11 +351,11 @@ public class RenderFreezerPillar extends TileEntitySpecialRenderer implements IS
 			glPopMatrix();
 		}
 
-		//processed item
-		if(tank.canFreeze() && tank.freezingTime > 0 && !tank.isEmpty)
+		// processed item
+		if (tank.canFreeze() && tank.freezingTime > 0 && !tank.isEmpty)
 		{
 			glPushMatrix();
-			glTranslatef(0F, 1.75F - tank.freezingTime/150F, 0F);
+			glTranslatef(0F, 1.75F - tank.freezingTime / 150F, 0F);
 			citem.hoverStart = 0F;
 			citem.setEntityItemStack(new ItemStack(Block.ice, 1));
 			this.resultRenderer.render(citem, 0.01F, 0F, 0.01F, false);
@@ -317,23 +363,25 @@ public class RenderFreezerPillar extends TileEntitySpecialRenderer implements IS
 		}
 		glPopMatrix();
 
-		if(tank.showNum && !tank.isEmpty)
+		if (tank.showNum && !tank.isEmpty)
 		{
 			glPushMatrix();
 			glTranslated(x + 0.5D, y + 1, z + 0.5D);
 
 			glDisable(GL_LIGHTING);
-			RenderingHelper.renderFloatingTextWithBackground(0, 0.35F, 0, 0.3F, tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid.getFluid().getLocalizedName(), Color.WHITE.getRGB(), new Color(0F, 0F, 0F, 0.5F));
-			RenderingHelper.renderFloatingTextWithBackground(0, 0.2F, 0, 0.2F, tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid.amount + " Unit", Color.WHITE.getRGB(), new Color(0F, 0F, 0F, 0.5F));
+			RenderingHelper.renderFloatingTextWithBackground(0, 0.35F, 0, 0.3F, tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid.getFluid().getLocalizedName(),
+					Color.WHITE.getRGB(), new Color(0F, 0F, 0F, 0.5F));
+			RenderingHelper.renderFloatingTextWithBackground(0, 0.2F, 0, 0.2F, tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid.amount + " Unit", Color.WHITE.getRGB(), new Color(
+					0F, 0F, 0F, 0.5F));
 			glEnable(GL_LIGHTING);
 			glPopMatrix();
 
 		}
 
-		if(tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid == null || tank.isEmpty)
+		if (tank.getTankInfo(ForgeDirection.UNKNOWN)[0].fluid == null || tank.isEmpty)
 			return;
 		EntityClientPlayerMP player = FMLClientHandler.instance().getClient().thePlayer;
-		if(player.getDistanceSq(tile.xCoord, tile.yCoord, tile.zCoord) < 128)
+		if (player.getDistanceSq(tile.xCoord, tile.yCoord, tile.zCoord) < 128)
 		{
 			glPushMatrix();
 			glTranslated(x, y, z);
@@ -342,18 +390,13 @@ public class RenderFreezerPillar extends TileEntitySpecialRenderer implements IS
 			glTranslatef(0.005F, 0.005F, 0.005F);
 			glScalef(0.99F, 0.99F, 0.99F);
 
-
 			float[][][] field = Blobs.fieldStrength(tank.blobs);
-			for(int i = 0; i < 16; i++)
-				for(int j = 0; j < 16; j++)
-					for(int k = 0; k < 16; k++)
-						if((int)field[i][j][k] > 0 &&
-								(i != 0 && (int)field[i-1][j][k] != 0
-								&& i != 15 && (int)field[i+1][j][k] != 0
-								&& j != 0 && (int)field[i][j-1][k] != 0
-								&& j != 15 && (int)field[i][j+1][k] != 0
-								&& k != 0 && (int)field[i][j][k-1] != 0
-								&& k != 15 && (int)field[i][j][k+1] != 0))
+			for (int i = 0; i < 16; i++)
+				for (int j = 0; j < 16; j++)
+					for (int k = 0; k < 16; k++)
+						if ((int) field[i][j][k] > 0
+								&& (i != 0 && (int) field[i - 1][j][k] != 0 && i != 15 && (int) field[i + 1][j][k] != 0 && j != 0 && (int) field[i][j - 1][k] != 0 && j != 15
+										&& (int) field[i][j + 1][k] != 0 && k != 0 && (int) field[i][j][k - 1] != 0 && k != 15 && (int) field[i][j][k + 1] != 0))
 						{
 							field[i][j][k] = 0F;
 						}
@@ -362,91 +405,92 @@ public class RenderFreezerPillar extends TileEntitySpecialRenderer implements IS
 
 			glBegin(GL_QUADS);
 
-			for(int i = 0; i < 16; i++)
-				for(int j = 0; j < 16; j++)
-					for(int k = 0; k < 16; k++)
-						if((int)field[i][j][k] > 0)
+			for (int i = 0; i < 16; i++)
+				for (int j = 0; j < 16; j++)
+					for (int k = 0; k < 16; k++)
+						if ((int) field[i][j][k] > 0)
 						{
-							int tx = tank.texIndieces[i][j][k]%16;
-							int ty = tank.texIndieces[i][j][k]/16;
+							int tx = tank.texIndieces[i][j][k] % 16;
+							int ty = tank.texIndieces[i][j][k] / 16;
 
-							if(j == 15 || (int)field[i][j+1][k] == 0)
+							if (j == 15 || (int) field[i][j + 1][k] == 0)
 							{
-								glTexCoord2f((tx)/16F, (ty)/256F);
-								glVertex3f((i)/16F, (j+1)/16F, (k)/16F);
-								glTexCoord2f((tx)/16F, (ty+1)/256F);
-								glVertex3f((i)/16F, (j+1)/16F, (k+1)/16F);
-								glTexCoord2f((tx+1)/16F, (ty+1)/256F);
-								glVertex3f((i+1)/16F, (j+1)/16F, (k+1)/16F);
-								glTexCoord2f((tx+1)/16F, (ty)/256F);
-								glVertex3f((i+1)/16F, (j+1)/16F, (k)/16F);
+								glTexCoord2f((tx) / 16F, (ty) / 256F);
+								glVertex3f((i) / 16F, (j + 1) / 16F, (k) / 16F);
+								glTexCoord2f((tx) / 16F, (ty + 1) / 256F);
+								glVertex3f((i) / 16F, (j + 1) / 16F, (k + 1) / 16F);
+								glTexCoord2f((tx + 1) / 16F, (ty + 1) / 256F);
+								glVertex3f((i + 1) / 16F, (j + 1) / 16F, (k + 1) / 16F);
+								glTexCoord2f((tx + 1) / 16F, (ty) / 256F);
+								glVertex3f((i + 1) / 16F, (j + 1) / 16F, (k) / 16F);
 							}
 
-							if(j == 0 || (int)field[i][j-1][k] == 0)
+							if (j == 0 || (int) field[i][j - 1][k] == 0)
 							{
-								glTexCoord2f((tx)/16F, (ty)/256F);
-								glVertex3f((i)/16F, (j)/16F, (k+1)/16F);
-								glTexCoord2f((tx)/16F, (ty+1)/256F);
-								glVertex3f((i)/16F, (j)/16F, (k)/16F);
-								glTexCoord2f((tx+1)/16F, (ty+1)/256F);
-								glVertex3f((i+1)/16F, (j)/16F, (k)/16F);
-								glTexCoord2f((tx+1)/16F, (ty)/256F);
-								glVertex3f((i+1)/16F, (j)/16F, (k+1)/16F);
+								glTexCoord2f((tx) / 16F, (ty) / 256F);
+								glVertex3f((i) / 16F, (j) / 16F, (k + 1) / 16F);
+								glTexCoord2f((tx) / 16F, (ty + 1) / 256F);
+								glVertex3f((i) / 16F, (j) / 16F, (k) / 16F);
+								glTexCoord2f((tx + 1) / 16F, (ty + 1) / 256F);
+								glVertex3f((i + 1) / 16F, (j) / 16F, (k) / 16F);
+								glTexCoord2f((tx + 1) / 16F, (ty) / 256F);
+								glVertex3f((i + 1) / 16F, (j) / 16F, (k + 1) / 16F);
 							}
 
-							if(k == 15 || (int)field[i][j][k+1] == 0)
+							if (k == 15 || (int) field[i][j][k + 1] == 0)
 							{
-								glTexCoord2f((tx)/16F, (ty)/256F);
-								glVertex3f((i)/16F, (j+1)/16F, (k+1)/16F);
-								glTexCoord2f((tx)/16F, (ty+1)/256F);
-								glVertex3f((i)/16F, (j)/16F, (k+1)/16F);
-								glTexCoord2f((tx+1)/16F, (ty+1)/256F);
-								glVertex3f((i+1)/16F, (j)/16F, (k+1)/16F);
-								glTexCoord2f((tx+1)/16F, (ty)/256F);
-								glVertex3f((i+1)/16F, (j+1)/16F, (k+1)/16F);
+								glTexCoord2f((tx) / 16F, (ty) / 256F);
+								glVertex3f((i) / 16F, (j + 1) / 16F, (k + 1) / 16F);
+								glTexCoord2f((tx) / 16F, (ty + 1) / 256F);
+								glVertex3f((i) / 16F, (j) / 16F, (k + 1) / 16F);
+								glTexCoord2f((tx + 1) / 16F, (ty + 1) / 256F);
+								glVertex3f((i + 1) / 16F, (j) / 16F, (k + 1) / 16F);
+								glTexCoord2f((tx + 1) / 16F, (ty) / 256F);
+								glVertex3f((i + 1) / 16F, (j + 1) / 16F, (k + 1) / 16F);
 							}
 
-							if(k == 0 || (int)field[i][j][k-1] == 0)
+							if (k == 0 || (int) field[i][j][k - 1] == 0)
 							{
-								glTexCoord2f((tx)/16F, (ty)/256F);
-								glVertex3f((i+1)/16F, (j+1)/16F, (k)/16F);
-								glTexCoord2f((tx)/16F, (ty+1)/256F);
-								glVertex3f((i+1)/16F, (j)/16F, (k)/16F);
-								glTexCoord2f((tx+1)/16F, (ty+1)/256F);
-								glVertex3f((i)/16F, (j)/16F, (k)/16F);
-								glTexCoord2f((tx+1)/16F, (ty)/256F);
-								glVertex3f((i)/16F, (j+1)/16F, (k)/16F);
+								glTexCoord2f((tx) / 16F, (ty) / 256F);
+								glVertex3f((i + 1) / 16F, (j + 1) / 16F, (k) / 16F);
+								glTexCoord2f((tx) / 16F, (ty + 1) / 256F);
+								glVertex3f((i + 1) / 16F, (j) / 16F, (k) / 16F);
+								glTexCoord2f((tx + 1) / 16F, (ty + 1) / 256F);
+								glVertex3f((i) / 16F, (j) / 16F, (k) / 16F);
+								glTexCoord2f((tx + 1) / 16F, (ty) / 256F);
+								glVertex3f((i) / 16F, (j + 1) / 16F, (k) / 16F);
 							}
 
-							if(i == 15 || (int)field[i+1][j][k] == 0)
+							if (i == 15 || (int) field[i + 1][j][k] == 0)
 							{
-								glTexCoord2f((tx)/16F, (ty)/256F);
-								glVertex3f((i+1)/16F, (j+1)/16F, (k+1)/16F);
-								glTexCoord2f((tx)/16F, (ty+1)/256F);
-								glVertex3f((i+1)/16F, (j)/16F, (k+1)/16F);
-								glTexCoord2f((tx+1)/16F, (ty+1)/256F);
-								glVertex3f((i+1)/16F, (j)/16F, (k)/16F);
-								glTexCoord2f((tx+1)/16F, (ty)/256F);
-								glVertex3f((i+1)/16F, (j+1)/16F, (k)/16F);
+								glTexCoord2f((tx) / 16F, (ty) / 256F);
+								glVertex3f((i + 1) / 16F, (j + 1) / 16F, (k + 1) / 16F);
+								glTexCoord2f((tx) / 16F, (ty + 1) / 256F);
+								glVertex3f((i + 1) / 16F, (j) / 16F, (k + 1) / 16F);
+								glTexCoord2f((tx + 1) / 16F, (ty + 1) / 256F);
+								glVertex3f((i + 1) / 16F, (j) / 16F, (k) / 16F);
+								glTexCoord2f((tx + 1) / 16F, (ty) / 256F);
+								glVertex3f((i + 1) / 16F, (j + 1) / 16F, (k) / 16F);
 							}
 
-							if(i == 0 || (int)field[i-1][j][k] == 0)
+							if (i == 0 || (int) field[i - 1][j][k] == 0)
 							{
-								glTexCoord2f((tx)/16F, (ty)/256F);
-								glVertex3f((i)/16F, (j)/16F, (k+1)/16F);
-								glTexCoord2f((tx)/16F, (ty+1)/256F);
-								glVertex3f((i)/16F, (j+1)/16F, (k+1)/16F);
-								glTexCoord2f((tx+1)/16F, (ty+1)/256F);
-								glVertex3f((i)/16F, (j+1)/16F, (k)/16F);
-								glTexCoord2f((tx+1)/16F, (ty)/256F);
-								glVertex3f((i)/16F, (j)/16F, (k)/16F);
+								glTexCoord2f((tx) / 16F, (ty) / 256F);
+								glVertex3f((i) / 16F, (j) / 16F, (k + 1) / 16F);
+								glTexCoord2f((tx) / 16F, (ty + 1) / 256F);
+								glVertex3f((i) / 16F, (j + 1) / 16F, (k + 1) / 16F);
+								glTexCoord2f((tx + 1) / 16F, (ty + 1) / 256F);
+								glVertex3f((i) / 16F, (j + 1) / 16F, (k) / 16F);
+								glTexCoord2f((tx + 1) / 16F, (ty) / 256F);
+								glVertex3f((i) / 16F, (j) / 16F, (k) / 16F);
 							}
 						}
 
 			glEnd();
 			glPopAttrib();
 			glPopMatrix();
-		} else {
+		} else
+		{
 
 		}
 	}
@@ -468,7 +512,8 @@ public class RenderFreezerPillar extends TileEntitySpecialRenderer implements IS
 
 	@Override
 	// No TileEntity here can't use
-	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
+			public
+			boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
 	{
 
 		return false;

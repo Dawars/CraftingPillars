@@ -37,6 +37,13 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 	private ModelRenderer Pillar2;
 	private ModelRenderer Pillar3;
 	private ModelRenderer Pillar4;
+
+	private ModelRenderer BunnyTail1;
+	private ModelRenderer BunnyTail2;
+	private ModelRenderer BunnyTail3;
+	private ModelRenderer BunnyEar1;
+	private ModelRenderer BunnyEar2;
+
 	private ModelRenderer Icicle1A;
 	private ModelRenderer Icicle1B;
 	private ModelRenderer Icicle1C;
@@ -50,17 +57,15 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 	private ModelRenderer Icicle4A;
 	private ModelRenderer Icicle4B;
 
-
 	private RenderingHelper.ItemRender itemRenderer;
 	private RenderingHelper.ItemRender resultRenderer;
 
 	public RenderFurnacePillar()
 	{
-		if(CraftingPillars.winter)
+		if (CraftingPillars.winter)
 			this.TEXTURE_FURNACEPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/furnacePillarFrozen.png");
 		else
 			this.TEXTURE_FURNACEPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/furnacePillar.png");
-
 
 		this.itemRenderer = new RenderingHelper.ItemRender(false, true);
 		this.resultRenderer = new RenderingHelper.ItemRender(false, false);
@@ -116,6 +121,40 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 		this.Pillar4.setTextureSize(128, 64);
 		this.Pillar4.mirror = true;
 		this.setRotation(this.Pillar4, 0F, 0F, 0F);
+
+		if (CraftingPillars.easter)
+		{
+			BunnyTail1 = new ModelRenderer(model, 0, 35);
+			BunnyTail1.addBox(0F, 0F, 0F, 2, 4, 2);
+			BunnyTail1.setRotationPoint(-1F, 18F, 7F);
+			BunnyTail1.setTextureSize(128, 64);
+			BunnyTail1.mirror = true;
+			setRotation(BunnyTail1, 0F, 0F, 0F);
+			BunnyTail2 = new ModelRenderer(model, 0, 33);
+			BunnyTail2.addBox(0F, 0F, 0F, 4, 2, 2);
+			BunnyTail2.setRotationPoint(-2F, 19F, 7F);
+			BunnyTail2.setTextureSize(128, 64);
+			BunnyTail2.mirror = true;
+			setRotation(BunnyTail2, 0F, 0F, 0F);
+			BunnyTail3 = new ModelRenderer(model, 0, 36);
+			BunnyTail3.addBox(0F, 0F, 0F, 2, 2, 4);
+			BunnyTail3.setRotationPoint(-1F, 19F, 6F);
+			BunnyTail3.setTextureSize(128, 64);
+			BunnyTail3.mirror = true;
+			setRotation(BunnyTail3, 0F, 0F, 0F);
+			BunnyEar1 = new ModelRenderer(model, 1, 18);
+			BunnyEar1.addBox(-1.5F, -9F, -1F, 3, 10, 1);
+			BunnyEar1.setRotationPoint(3.5F, 9F, 9F);
+			BunnyEar1.setTextureSize(128, 64);
+			BunnyEar1.mirror = true;
+			setRotation(BunnyEar1, 0F, 0F, 0F);
+			BunnyEar2 = new ModelRenderer(model, 1, 18);
+			BunnyEar2.addBox(-1.5F, -9F, -1F, 3, 10, 1);
+			BunnyEar2.setRotationPoint(-3.5F, 9F, 9F);
+			BunnyEar2.setTextureSize(128, 64);
+			BunnyEar2.mirror = true;
+			setRotation(BunnyEar2, 0F, 0F, 0F);
+		}
 
 		this.Icicle1A = new ModelRenderer(model, 122, 38);
 		this.Icicle1A.addBox(0F, 0F, 0F, 2, 1, 1);
@@ -193,7 +232,7 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 
 	public void render(float f)
 	{
-		if(CraftingPillars.winter)
+		if (CraftingPillars.winter)
 		{
 			this.Icicle1A.render(f);
 			this.Icicle1B.render(f);
@@ -242,11 +281,11 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 
 		glPushMatrix();
 
-		glTranslated(x+0.5D, y, z+0.5D);
+		glTranslated(x + 0.5D, y, z + 0.5D);
 		glRotatef(90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
 
-		//Input
-		if(pillarTile.getStackInSlot(0) != null)
+		// Input
+		if (pillarTile.getStackInSlot(0) != null)
 		{
 			glPushMatrix();
 			citem.hoverStart = 0F;
@@ -255,8 +294,8 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 			glPopMatrix();
 		}
 
-		//Output
-		if(pillarTile.getStackInSlot(2) != null)
+		// Output
+		if (pillarTile.getStackInSlot(2) != null)
 		{
 			glPushMatrix();
 			glTranslatef(0F, 1.75F, 0F);
@@ -266,19 +305,19 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 			glPopMatrix();
 		}
 
-		//processed item
-		if(pillarTile.canSmelt() && pillarTile.burnTime > 0)
+		// processed item
+		if (pillarTile.canSmelt() && pillarTile.burnTime > 0)
 		{
 			glPushMatrix();
-			glTranslatef(0F, 1.75F - pillarTile.cookTime/150F, 0F);
+			glTranslatef(0F, 1.75F - pillarTile.cookTime / 150F, 0F);
 			citem.hoverStart = 0F;
 			citem.setEntityItemStack(FurnaceRecipes.smelting().getSmeltingResult(pillarTile.getStackInSlot(0)));
 			this.resultRenderer.render(citem, 0.01F, 0F, 0.01F, false);
 			glPopMatrix();
 		}
 
-		//Fuel
-		if(pillarTile.getStackInSlot(1) != null)
+		// Fuel
+		if (pillarTile.getStackInSlot(1) != null)
 		{
 			citem.hoverStart = 0F;
 			citem.setEntityItemStack(pillarTile.getStackInSlot(1));
@@ -286,29 +325,47 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 		}
 		glPopMatrix();
 
-		if(pillarTile.showNum)
+		if (pillarTile.showNum)
 		{
 			glPushMatrix();
 			glTranslated(x + 0.5D, y, z + 0.5D);
 
-			if(pillarTile.getStackInSlot(0) != null)
+			if (pillarTile.getStackInSlot(0) != null)
 			{
 				glDisable(GL_LIGHTING);
-				RenderingHelper.renderFloatingTextWithBackground(0, 1.425F, 0, 0.4F, ""+pillarTile.getStackInSlot(0).stackSize, Color.white.getRGB(), new Color(0F, 0F, 0F, 0.5F));
+				RenderingHelper
+						.renderFloatingTextWithBackground(0, 1.425F, 0, 0.4F, "" + pillarTile.getStackInSlot(0).stackSize, Color.white.getRGB(), new Color(0F, 0F, 0F, 0.5F));
 				glEnable(GL_LIGHTING);
 			}
-			if(pillarTile.getStackInSlot(1) != null)
+			if (pillarTile.getStackInSlot(1) != null)
 			{
 				glDisable(GL_LIGHTING);
-				RenderingHelper.renderFloatingTextWithBackground(0, 0.7F, 0, 0.4F, ""+pillarTile.getStackInSlot(1).stackSize, Color.white.getRGB(), new Color(0F, 0F, 0F, 0.5F));
+				RenderingHelper.renderFloatingTextWithBackground(0, 0.7F, 0, 0.4F, "" + pillarTile.getStackInSlot(1).stackSize, Color.white.getRGB(), new Color(0F, 0F, 0F, 0.5F));
 				glEnable(GL_LIGHTING);
 			}
-			if(pillarTile.getStackInSlot(2) != null)
+			if (pillarTile.getStackInSlot(2) != null)
 			{
 				glDisable(GL_LIGHTING);
-				RenderingHelper.renderFloatingTextWithBackground(0, 2.15F, 0, 0.4F, ""+pillarTile.getStackInSlot(2).stackSize, Color.white.getRGB(), new Color(0F, 0F, 0F, 0.5F));
+				RenderingHelper.renderFloatingTextWithBackground(0, 2.15F, 0, 0.4F, "" + pillarTile.getStackInSlot(2).stackSize, Color.white.getRGB(), new Color(0F, 0F, 0F, 0.5F));
 				glEnable(GL_LIGHTING);
 			}
+			glPopMatrix();
+		}
+
+		if (CraftingPillars.easter)
+		{
+			glPushMatrix();
+			glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
+			glRotatef(-90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
+
+			glRotatef(180F, 1F, 0F, 0F);
+
+			f = 0.0625F;
+			BunnyTail1.render(f);
+			BunnyTail2.render(f);
+			BunnyTail3.render(f);
+			BunnyEar1.render(f);
+			BunnyEar2.render(f);
 			glPopMatrix();
 		}
 	}
@@ -330,7 +387,8 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 
 	@Override
 	// No TileEntity here can't use
-	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
+			public
+			boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
 	{
 
 		return false;

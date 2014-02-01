@@ -291,127 +291,24 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 
 		if(tile.worldObj.getBlockTileEntity(tile.xCoord, tile.yCoord, tile.zCoord + 1) != null &&
 				// (
-				tile.worldObj.getBlockTileEntity(tile.xCoord, tile.yCoord, tile.zCoord + 1) instanceof IFluidTank /*
-				 * ||
-				 * tile
-				 * .
-				 * worldObj
-				 * .
-				 * getBlockTileEntity
-				 * (
-				 * tile
-				 * .
-				 * xCoord
-				 * ,
-				 * tile
-				 * .
-				 * yCoord
-				 * ,
-				 * tile
-				 * .
-				 * zCoord
-				 * +
-				 * 1
-				 * )
-				 * instanceof
-				 * ITankContainer
-				 * )
-				 */)
+				tile.worldObj.getBlockTileEntity(tile.xCoord, tile.yCoord, tile.zCoord + 1) instanceof IFluidTank )
 		{
 			this.Valve2.render(1.0F);
 		}
 
-		if(tile.worldObj.getBlockTileEntity(tile.xCoord + 1, tile.yCoord, tile.zCoord) != null && /*
-		 * (
-		 * tile
-		 * .
-		 * worldObj
-		 * .
-		 * getBlockTileEntity
-		 * (
-		 * tile
-		 * .
-		 * xCoord
-		 * +
-		 * 1
-		 * ,
-		 * tile
-		 * .
-		 * yCoord
-		 * ,
-		 * tile
-		 * .
-		 * zCoord
-		 * )
-		 * instanceof
-		 * ITankContainer
-		 * ||
-		 */tile.worldObj.getBlockTileEntity(tile.xCoord + 1, tile.yCoord, tile.zCoord) instanceof IFluidTank
-		 // )
+		if(tile.worldObj.getBlockTileEntity(tile.xCoord + 1, tile.yCoord, tile.zCoord) != null && tile.worldObj.getBlockTileEntity(tile.xCoord + 1, tile.yCoord, tile.zCoord) instanceof IFluidTank
 				)
 		{
 			this.Valve3.render(1.0F);
 		}
 
-		if(tile.worldObj.getBlockTileEntity(tile.xCoord, tile.yCoord, tile.zCoord - 1) != null && /*
-		 * (
-		 * tile
-		 * .
-		 * worldObj
-		 * .
-		 * getBlockTileEntity
-		 * (
-		 * tile
-		 * .
-		 * xCoord
-		 * ,
-		 * tile
-		 * .
-		 * yCoord
-		 * ,
-		 * tile
-		 * .
-		 * zCoord
-		 * -
-		 * 1
-		 * )
-		 * instanceof
-		 * ITankContainer
-		 * ||
-		 */
-				tile.worldObj.getBlockTileEntity(tile.xCoord, tile.yCoord, tile.zCoord - 1) instanceof IFluidTank)
+		if(tile.worldObj.getBlockTileEntity(tile.xCoord, tile.yCoord, tile.zCoord - 1) != null && tile.worldObj.getBlockTileEntity(tile.xCoord, tile.yCoord, tile.zCoord - 1) instanceof IFluidTank)
 			// )
 		{
 			this.Valve4.render(1.0F);
 		}
 
-		if(tile.worldObj.getBlockTileEntity(tile.xCoord - 1, tile.yCoord, tile.zCoord) != null && /*
-		 * (
-		 * tile
-		 * .
-		 * worldObj
-		 * .
-		 * getBlockTileEntity
-		 * (
-		 * tile
-		 * .
-		 * xCoord
-		 * -
-		 * 1
-		 * ,
-		 * tile
-		 * .
-		 * yCoord
-		 * ,
-		 * tile
-		 * .
-		 * zCoord
-		 * )
-		 * instanceof
-		 * ITankContainer
-		 * ||
-		 */tile.worldObj.getBlockTileEntity(tile.xCoord - 1, tile.yCoord, tile.zCoord) instanceof IFluidTank
-		 // )
+		if(tile.worldObj.getBlockTileEntity(tile.xCoord - 1, tile.yCoord, tile.zCoord) != null && tile.worldObj.getBlockTileEntity(tile.xCoord - 1, tile.yCoord, tile.zCoord) instanceof IFluidTank
 				)
 		{
 			this.Valve1.render(1.0F);
@@ -460,6 +357,8 @@ public class RenderTankPillar extends TileEntitySpecialRenderer implements ISimp
 
 
 		glPushMatrix();
+		glRotatef(90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
+
 		glTranslated(x, y, z);
 		glPushAttrib(GL_ENABLE_BIT);
 		glDisable(GL_LIGHTING);

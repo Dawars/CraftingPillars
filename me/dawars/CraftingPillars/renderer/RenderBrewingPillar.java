@@ -343,7 +343,7 @@ public class RenderBrewingPillar extends TileEntitySpecialRenderer implements IS
 				this.itemRenderer.render(citem, 0, 0.45F, 0, false);
 
 				//processed item
-				if (pillarTile.canBrew() && pillarTile.getBrewTime() > 0) {
+				if (pillarTile.canBrew() && pillarTile.getBrewTime() > 0  && !pillarTile.getStackInSlot(i).isItemEqual(new ItemStack(Item.glassBottle))) {
 					int j = pillarTile.getStackInSlot(i).getItemDamage();
 					int k = TileEntityBrewingPillar.getPotionResult(j, pillarTile.getStackInSlot(4));
 					List list = Item.potion.getEffects(j);

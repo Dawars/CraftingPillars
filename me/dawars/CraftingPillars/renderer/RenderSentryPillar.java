@@ -37,6 +37,11 @@ public class RenderSentryPillar extends TileEntitySpecialRenderer implements ISi
 
 	private ModelRenderer pillarBottom;
 
+	private ModelRenderer BunnyTail1;
+	private ModelRenderer BunnyTail2;
+	private ModelRenderer BunnyTail3;
+	private ModelRenderer BunnyEar1;
+	private ModelRenderer BunnyEar2;
 
 	private ModelRenderer Icicle1A;
 	private ModelRenderer Icicle1B;
@@ -76,7 +81,7 @@ public class RenderSentryPillar extends TileEntitySpecialRenderer implements ISi
 
 	public RenderSentryPillar()
 	{
-		if(CraftingPillars.winter)
+		if (CraftingPillars.winter)
 			this.TEXTURE_SHOWOFFPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/sentryPillarFrozen.png");
 		else
 			this.TEXTURE_SHOWOFFPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/sentryPillar.png");
@@ -125,7 +130,41 @@ public class RenderSentryPillar extends TileEntitySpecialRenderer implements ISi
 		this.top.mirror = true;
 		this.setRotation(this.top, 0F, 0F, 0F);
 
-		//Winter
+		if (CraftingPillars.easter)
+		{
+			BunnyTail1 = new ModelRenderer(model, 0, 35);
+			BunnyTail1.addBox(0F, 0F, 0F, 2, 4, 2);
+			BunnyTail1.setRotationPoint(-1F, 18F, 7F);
+			BunnyTail1.setTextureSize(128, 64);
+			BunnyTail1.mirror = true;
+			setRotation(BunnyTail1, 0F, 0F, 0F);
+			BunnyTail2 = new ModelRenderer(model, 0, 33);
+			BunnyTail2.addBox(0F, 0F, 0F, 4, 2, 2);
+			BunnyTail2.setRotationPoint(-2F, 19F, 7F);
+			BunnyTail2.setTextureSize(128, 64);
+			BunnyTail2.mirror = true;
+			setRotation(BunnyTail2, 0F, 0F, 0F);
+			BunnyTail3 = new ModelRenderer(model, 0, 36);
+			BunnyTail3.addBox(0F, 0F, 0F, 2, 2, 4);
+			BunnyTail3.setRotationPoint(-1F, 19F, 6F);
+			BunnyTail3.setTextureSize(128, 64);
+			BunnyTail3.mirror = true;
+			setRotation(BunnyTail3, 0F, 0F, 0F);
+			BunnyEar1 = new ModelRenderer(model, 1, 18);
+			BunnyEar1.addBox(-1.5F, -9F, -1F, 3, 10, 1);
+			BunnyEar1.setRotationPoint(3.5F, 9F, 9F);
+			BunnyEar1.setTextureSize(128, 64);
+			BunnyEar1.mirror = true;
+			setRotation(BunnyEar1, 0F, 0F, 0F);
+			BunnyEar2 = new ModelRenderer(model, 1, 18);
+			BunnyEar2.addBox(-1.5F, -9F, -1F, 3, 10, 1);
+			BunnyEar2.setRotationPoint(-3.5F, 9F, 9F);
+			BunnyEar2.setTextureSize(128, 64);
+			BunnyEar2.mirror = true;
+			setRotation(BunnyEar2, 0F, 0F, 0F);
+		}
+
+		// Winter
 		this.Icicle1A = new ModelRenderer(model, 122, 60);
 		this.Icicle1A.addBox(0F, 0F, 0F, 1, 2, 2);
 		this.Icicle1A.setRotationPoint(6F, 11F, -5F);
@@ -265,7 +304,6 @@ public class RenderSentryPillar extends TileEntitySpecialRenderer implements ISi
 		this.Icicle8D.mirror = true;
 		this.setRotation(this.Icicle8D, 0F, 0F, 0F);
 
-
 		this.Icicle9A = new ModelRenderer(model, 122, 38);
 		this.Icicle9A.addBox(0F, 0F, 0F, 2, 1, 1);
 		this.Icicle9A.setRotationPoint(3F, 11F, -7F);
@@ -318,7 +356,7 @@ public class RenderSentryPillar extends TileEntitySpecialRenderer implements ISi
 
 	public void render(float f)
 	{
-		if(CraftingPillars.winter)
+		if (CraftingPillars.winter)
 		{
 			this.Icicle1A.render(f);
 			this.Icicle1B.render(f);
@@ -383,16 +421,18 @@ public class RenderSentryPillar extends TileEntitySpecialRenderer implements ISi
 		citem.hoverStart = CraftingPillars.floatingItems ? workTile.rot : 0F;
 
 		glPushMatrix();
+		glRotatef(90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
+
 		glTranslated(x, y, z);
 
-		if(workTile.getStackInSlot(0) != null)
+		if (workTile.getStackInSlot(0) != null)
 		{
 			glPushMatrix();
 			citem.hoverStart = -workTile.rot;
 			citem.setEntityItemStack(workTile.getStackInSlot(0));
 			this.resultRenderer.render(citem, 0.5F, 1.3F, 0.5F, workTile.showNum);
 
-			if(workTile.showNum)
+			if (workTile.showNum)
 			{
 				glPushMatrix();
 				glTranslated(0.5D, 1, 0.5D);
@@ -407,6 +447,23 @@ public class RenderSentryPillar extends TileEntitySpecialRenderer implements ISi
 			glPopMatrix();
 		}
 		glPopMatrix();
+		
+		if (CraftingPillars.easter)
+		{
+			glPushMatrix();
+			glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
+			glRotatef(-90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
+
+			glRotatef(180F, 1F, 0F, 0F);
+
+			f = 0.0625F;
+			BunnyTail1.render(f);
+			BunnyTail2.render(f);
+			BunnyTail3.render(f);
+			BunnyEar1.render(f);
+			BunnyEar2.render(f);
+			glPopMatrix();
+		}
 	}
 
 	@Override
