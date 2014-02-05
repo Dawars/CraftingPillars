@@ -137,6 +137,40 @@ public class RenderDiskPillar extends TileEntitySpecialRenderer implements ISimp
 		this.Nail.mirror = true;
 		this.setRotation(this.Nail, 0F, 0F, 0F);
 
+		if (CraftingPillars.easter)
+		{
+			BunnyTail1 = new ModelRenderer(model, 0, 35);
+			BunnyTail1.addBox(0F, 0F, 0F, 2, 4, 2);
+			BunnyTail1.setRotationPoint(-1F, 18F, 7F);
+			BunnyTail1.setTextureSize(128, 64);
+			BunnyTail1.mirror = true;
+			setRotation(BunnyTail1, 0F, 0F, 0F);
+			BunnyTail2 = new ModelRenderer(model, 0, 33);
+			BunnyTail2.addBox(0F, 0F, 0F, 4, 2, 2);
+			BunnyTail2.setRotationPoint(-2F, 19F, 7F);
+			BunnyTail2.setTextureSize(128, 64);
+			BunnyTail2.mirror = true;
+			setRotation(BunnyTail2, 0F, 0F, 0F);
+			BunnyTail3 = new ModelRenderer(model, 0, 36);
+			BunnyTail3.addBox(0F, 0F, 0F, 2, 2, 4);
+			BunnyTail3.setRotationPoint(-1F, 19F, 6F);
+			BunnyTail3.setTextureSize(128, 64);
+			BunnyTail3.mirror = true;
+			setRotation(BunnyTail3, 0F, 0F, 0F);
+			BunnyEar1 = new ModelRenderer(model, 1, 18);
+			BunnyEar1.addBox(-1.5F, -9F, -1F, 3, 10, 1);
+			BunnyEar1.setRotationPoint(3.5F, 9F, 9F);
+			BunnyEar1.setTextureSize(128, 64);
+			BunnyEar1.mirror = true;
+			setRotation(BunnyEar1, 0F, 0F, 0F);
+			BunnyEar2 = new ModelRenderer(model, 1, 18);
+			BunnyEar2.addBox(-1.5F, -9F, -1F, 3, 10, 1);
+			BunnyEar2.setRotationPoint(-3.5F, 9F, 9F);
+			BunnyEar2.setTextureSize(128, 64);
+			BunnyEar2.mirror = true;
+			setRotation(BunnyEar2, 0F, 0F, 0F);
+		}
+
 		// Winter
 		this.Icicle1A = new ModelRenderer(model, 122, 60);
 		this.Icicle1A.addBox(0F, 0F, 0F, 1, 2, 2);

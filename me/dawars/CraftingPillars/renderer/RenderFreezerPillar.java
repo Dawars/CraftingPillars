@@ -321,7 +321,7 @@ public class RenderFreezerPillar extends TileEntitySpecialRenderer implements IS
 
 		if (CraftingPillars.easter)
 		{
-			glRotatef(-90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
+			glRotatef(90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
 
 			f = 0.0625F;
 			BunnyTail1.render(f);

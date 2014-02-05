@@ -77,6 +77,12 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 	private ModelRenderer WreathJ;
 	private ModelRenderer Bow;
 
+	private ModelRenderer BunnyTail1;
+	private ModelRenderer BunnyTail2;
+	private ModelRenderer BunnyTail3;
+	private ModelRenderer BunnyEar1;
+	private ModelRenderer BunnyEar2;
+
 	private ModelRenderer pillarBottom;
 
 	private Random random;
@@ -85,7 +91,7 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 
 	public RenderCraftingPillar()
 	{
-		if(CraftingPillars.winter)
+		if (CraftingPillars.winter)
 			this.TEXTURE_WORKPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/craftingPillarFrozen.png");
 		else
 			this.TEXTURE_WORKPILLAR = new ResourceLocation(CraftingPillars.id + ":textures/models/craftingPillar.png");
@@ -134,7 +140,41 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 		this.top.mirror = true;
 		this.setRotation(this.top, 0F, 0F, 0F);
 
-		//Winter
+		if (CraftingPillars.easter)
+		{
+			BunnyTail1 = new ModelRenderer(model, 0, 35);
+			BunnyTail1.addBox(0F, 0F, 0F, 2, 4, 2);
+			BunnyTail1.setRotationPoint(-1F, 18F, 7F);
+			BunnyTail1.setTextureSize(128, 64);
+			BunnyTail1.mirror = true;
+			setRotation(BunnyTail1, 0F, 0F, 0F);
+			BunnyTail2 = new ModelRenderer(model, 0, 33);
+			BunnyTail2.addBox(0F, 0F, 0F, 4, 2, 2);
+			BunnyTail2.setRotationPoint(-2F, 19F, 7F);
+			BunnyTail2.setTextureSize(128, 64);
+			BunnyTail2.mirror = true;
+			setRotation(BunnyTail2, 0F, 0F, 0F);
+			BunnyTail3 = new ModelRenderer(model, 0, 36);
+			BunnyTail3.addBox(0F, 0F, 0F, 2, 2, 4);
+			BunnyTail3.setRotationPoint(-1F, 19F, 6F);
+			BunnyTail3.setTextureSize(128, 64);
+			BunnyTail3.mirror = true;
+			setRotation(BunnyTail3, 0F, 0F, 0F);
+			BunnyEar1 = new ModelRenderer(model, 1, 18);
+			BunnyEar1.addBox(-1.5F, -9F, -1F, 3, 10, 1);
+			BunnyEar1.setRotationPoint(3.5F, 9F, 9F);
+			BunnyEar1.setTextureSize(128, 64);
+			BunnyEar1.mirror = true;
+			setRotation(BunnyEar1, 0F, 0F, 0F);
+			BunnyEar2 = new ModelRenderer(model, 1, 18);
+			BunnyEar2.addBox(-1.5F, -9F, -1F, 3, 10, 1);
+			BunnyEar2.setRotationPoint(-3.5F, 9F, 9F);
+			BunnyEar2.setTextureSize(128, 64);
+			BunnyEar2.mirror = true;
+			setRotation(BunnyEar2, 0F, 0F, 0F);
+		}
+
+		// Winter
 		this.Icicle1A = new ModelRenderer(model, 122, 60);
 		this.Icicle1A.addBox(0F, 0F, 0F, 1, 2, 2);
 		this.Icicle1A.setRotationPoint(6F, 11F, -5F);
@@ -343,7 +383,7 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 
 	public void render(float f)
 	{
-		if(CraftingPillars.winter)
+		if (CraftingPillars.winter)
 		{
 			this.Icicle1A.render(f);
 			this.Icicle1B.render(f);
@@ -405,6 +445,15 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 
 		Minecraft.getMinecraft().renderEngine.bindTexture(this.TEXTURE_WORKPILLAR);
 		this.render(0.0625F);
+		if (CraftingPillars.easter)
+		{
+			f = 0.0625F;
+			BunnyTail1.render(f);
+			BunnyTail2.render(f);
+			BunnyTail3.render(f);
+			BunnyEar1.render(f);
+			BunnyEar2.render(f);
+		}
 		glPopMatrix();
 
 		TileEntityCraftingPillar workTile = (TileEntityCraftingPillar) tile;
@@ -413,11 +462,11 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 
 		glPushMatrix();
 		glTranslated(x, y, z);
-		for(int i = 0; i < 3; i++)
+		for (int i = 0; i < 3; i++)
 		{
-			for(int k = 0; k < 3; k++)
+			for (int k = 0; k < 3; k++)
 			{
-				if(workTile.getStackInSlot(i * 3 + k) != null)
+				if (workTile.getStackInSlot(i * 3 + k) != null)
 				{
 					citem.setEntityItemStack(workTile.getStackInSlot(i * 3 + k));
 					glPushMatrix();
@@ -429,7 +478,7 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 			}
 		}
 
-		if(workTile.getStackInSlot(workTile.getSizeInventory()) != null)
+		if (workTile.getStackInSlot(workTile.getSizeInventory()) != null)
 		{
 			glPushMatrix();
 			citem.hoverStart = -workTile.rot;
@@ -437,68 +486,75 @@ public class RenderCraftingPillar extends TileEntitySpecialRenderer implements I
 			this.resultRenderer.render(citem, 0.5F, 1.5F, 0.5F, workTile.showNum);
 			glPopMatrix();
 		}
-		
+
 		glPopMatrix();
 
-		if(CraftingPillars.modThaumcraft && workTile.getStackInSlot(10) != null)
+		if (CraftingPillars.modThaumcraft && workTile.getStackInSlot(10) != null)
 		{
 			glPushMatrix();
-				citem.hoverStart = 0;
-	
-				glTranslated(x, y, z);
-				glTranslated(0.5D, 0.5D, 0.5D);
-				glRotatef(-90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
-	
-				if(CraftingPillars.winter)
-					glTranslatef(0, -0.05F, 0.47F);
-				else
-					glTranslatef(0, 0, 0.4F);
-	
-				glRotatef(-45, 0, 0, 1);
-				glScalef(1.1F, 1.1F, 1.1F);
-	
-				glTranslatef(0, -0.28F, 0);
-	
-				citem.setEntityItemStack(workTile.getStackInSlot(10));
-				this.resultRenderer.render(citem, 0F, 0F, 0F, false);
-	
+			citem.hoverStart = 0;
+
+			glTranslated(x, y, z);
+			glTranslated(0.5D, 0.5D, 0.5D);
+			glRotatef(-90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
+
+			if (CraftingPillars.winter)
+				glTranslatef(0, -0.05F, 0.47F);
+			else
+				glTranslatef(0, 0, 0.4F);
+
+			glRotatef(-45, 0, 0, 1);
+			glScalef(1.1F, 1.1F, 1.1F);
+
+			glTranslatef(0, -0.28F, 0);
+
+			citem.setEntityItemStack(workTile.getStackInSlot(10));
+			this.resultRenderer.render(citem, 0F, 0F, 0F, false);
+
 			glPopMatrix();
 
-			if(workTile.getStackInSlot(workTile.getSizeInventory()) != null)
+			if (workTile.getStackInSlot(workTile.getSizeInventory()) != null)
 			{
 				glPushMatrix();
-					glTranslated(x, y + 1F, z);
-					
-					float r = 0.6F;
-					
-//					AspectList aspectsRecipe = workTile.aspectsForRecipe;
-//		
-//					if(aspectsRecipe != null)
-//					{
-						glDisable(GL_LIGHTING);
-						for(int i = 0; i < Aspect.getPrimalAspects().size(); i++)
-						{	
-							Aspect aspect = Aspect.getPrimalAspects().get(i);
-//							for(int j = 0; j < aspectsRecipe.size(); j++)
-//							{
-//								if(aspectsRecipe.getAspects()[j] != null)
-//								{
-//									FMLLog.info("is " + aspectsRecipe.getAspects()[j].getName() + " equals " + aspect.getName());
-//									if(aspectsRecipe.getAspects()[j].getName().equals(aspect.getName()))
-//									{
-										float theta = 2.0f * 3.1415926f * (float)i / (float)Aspect.getPrimalAspects().size();//get the current angle 
-						
-										float xC = (float) (r * Math.cos(theta));//calculate the x component 
-										float zC = (float) (r * Math.sin(theta));//calculate the z component 
-										
-										RenderingHelper.renderFacingQuad(0.5F + xC, 0.5F, 0.5F + zC, 1F, aspect.getImage(), new Color(aspect.getColor()));
-//										break;
-//									}
-//								}
-//							}
-						}
-						glEnable(GL_LIGHTING);
-//					}
+				glTranslated(x, y + 1F, z);
+
+				float r = 0.6F;
+
+				// AspectList aspectsRecipe = workTile.aspectsForRecipe;
+				//
+				// if(aspectsRecipe != null)
+				// {
+				glDisable(GL_LIGHTING);
+				for (int i = 0; i < Aspect.getPrimalAspects().size(); i++)
+				{
+					Aspect aspect = Aspect.getPrimalAspects().get(i);
+					// for(int j = 0; j < aspectsRecipe.size(); j++)
+					// {
+					// if(aspectsRecipe.getAspects()[j] != null)
+					// {
+					// FMLLog.info("is " +
+					// aspectsRecipe.getAspects()[j].getName() + " equals " +
+					// aspect.getName());
+					// if(aspectsRecipe.getAspects()[j].getName().equals(aspect.getName()))
+					// {
+					float theta = 2.0f * 3.1415926f * (float) i / (float) Aspect.getPrimalAspects().size();// get
+																											// the
+																											// current
+																											// angle
+
+					float xC = (float) (r * Math.cos(theta));// calculate the x
+																// component
+					float zC = (float) (r * Math.sin(theta));// calculate the z
+																// component
+
+					RenderingHelper.renderFacingQuad(0.5F + xC, 0.5F, 0.5F + zC, 1F, aspect.getImage(), new Color(aspect.getColor()));
+					// break;
+					// }
+					// }
+					// }
+				}
+				glEnable(GL_LIGHTING);
+				// }
 				glPopMatrix();
 			}
 		}

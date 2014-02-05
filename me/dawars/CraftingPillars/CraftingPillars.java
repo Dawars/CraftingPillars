@@ -140,6 +140,7 @@ public class CraftingPillars
 	public static boolean renderHitBoxes = true;
 	public static boolean winter;
 	public static boolean easter;
+	public static boolean valentine;
 	public static int maxTreeState;
 
 	public static AchievementPage achievementPage;
@@ -442,6 +443,7 @@ public class CraftingPillars
 
 			winter = (isWinterTime() && config.get("default", "enableWinter", true).getBoolean(false)) || config.get("default", "forceWinter", false).getBoolean(false);
 			easter = (isEasterTime() && config.get("default", "enableEaster", true).getBoolean(false)) || config.get("default", "forceEaster", false).getBoolean(false);
+			valentine = isValentineTime() || config.get("default", "forceValentine's day", false).getBoolean(false);
 
 			this.addItemsAndBlocks();
 			this.addAchievementsAndCreativeTab();
@@ -463,6 +465,7 @@ public class CraftingPillars
 			e.printStackTrace();
 		}
 	}
+
 
 	@EventHandler
 	public void modsLoaded(FMLPostInitializationEvent evt)
@@ -587,5 +590,12 @@ public class CraftingPillars
 		e.set(Calendar.MINUTE, 0);
 		e.set(Calendar.MILLISECOND, 0);
 		return c.after(b) && c.before(e);
+	}
+	
+
+	private boolean isValentineTime()
+	{
+		Calendar c = Calendar.getInstance();
+		return c.get(Calendar.MONTH) == Calendar.FEBRUARY && c.get(Calendar.DAY_OF_MONTH) == 14;
 	}
 }

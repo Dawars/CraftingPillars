@@ -44,18 +44,26 @@ public class CraftingPillarBlock extends BaseBlockContainer
 	@Override
 	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player)
 	{
-		if(!world.isRemote)
+		if (!world.isRemote)
 		{
 			TileEntityCraftingPillar workTile = (TileEntityCraftingPillar) world.getBlockTileEntity(x, y, z);
 
-			if(player.isSneaking())
+			if (player.isSneaking())
 			{
-				while(workTile.getStackInSlot(workTile.getSizeInventory()) != null)
+				while (workTile.getStackInSlot(workTile.getSizeInventory()) != null)
 					workTile.craftItem(player);
-			}
-			else if(workTile.getStackInSlot(workTile.getSizeInventory()) != null)
+			} else if (workTile.getStackInSlot(workTile.getSizeInventory()) != null)
 			{
 				workTile.craftItem(player);
+			}
+		} else
+		{
+			for (int i = 0; i < 7; ++i)
+			{
+				double d0 = world.rand.nextGaussian() * 0.02D;
+				double d1 = world.rand.nextGaussian() * 0.02D;
+				double d2 = world.rand.nextGaussian() * 0.02D;
+				world.spawnParticle("heart", x + (double) (world.rand.nextFloat()), y + 1, z + (double) (world.rand.nextFloat()), d0, d1, d2);
 			}
 		}
 	}
@@ -74,93 +82,92 @@ public class CraftingPillarBlock extends BaseBlockContainer
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
 	{
-		if(world.isRemote)
+		if (world.isRemote)
 			return true;
 
 		TileEntityCraftingPillar workTile = (TileEntityCraftingPillar) world.getBlockTileEntity(x, y, z);
 
 		ItemStack equipped = player.getCurrentEquippedItem();
 
-		//Thaumcraft start
-		if(CraftingPillars.modThaumcraft)
+		// Thaumcraft start
+		if (CraftingPillars.modThaumcraft)
 		{
-			if(hitY < 1F && hitY > 0F)
+			if (hitY < 1F && hitY > 0F)
 			{
-				if(!player.isSneaking())
+				if (!player.isSneaking())
 				{
-					if(equipped != null && workTile.getStackInSlot(10) == null && workTile.isItemValidForSlot(10, equipped))
+					if (equipped != null && workTile.getStackInSlot(10) == null && workTile.isItemValidForSlot(10, equipped))
 					{
 						ItemStack in = equipped.copy();
-						if(!player.capabilities.isCreativeMode)
+						if (!player.capabilities.isCreativeMode)
 							equipped.stackSize--;
 
 						in.stackSize = 1;
 						workTile.setInventorySlotContents(10, in);
 						return true;
 					}
-				} else {
-					if(workTile.getStackInSlot(10) != null)
+				} else
+				{
+					if (workTile.getStackInSlot(10) != null)
 						workTile.dropItemFromSlot(10, player);
 					return true;
 				}
 			}
 		}
-		//Thaumcraft end
+		// Thaumcraft end
 
-		if(hitY < 1F && !player.isSneaking())
+		if (hitY < 1F && !player.isSneaking())
 		{
 			workTile.showNum = !workTile.showNum;
 			workTile.onInventoryChanged();
 		}
 
-		if(hitY == 1F)
+		if (hitY == 1F)
 		{
-			if(player.isSneaking())
+			if (player.isSneaking())
 			{
 				hitX = (int) Math.floor(hitX / 0.33F);
-				if(hitX > 2)
+				if (hitX > 2)
 					hitX = 2;
-				if(hitX < 0)
+				if (hitX < 0)
 					hitX = 0;
 				hitZ = (int) Math.floor(hitZ / 0.33F);
-				if(hitZ > 2)
+				if (hitZ > 2)
 					hitZ = 2;
-				if(hitZ < 0)
+				if (hitZ < 0)
 					hitZ = 0;
 
 				int i = (int) (hitX * 3 + hitZ);
 
-				if(workTile.getStackInSlot(i) != null)
+				if (workTile.getStackInSlot(i) != null)
 					workTile.dropItemFromSlot(i, player);
-			}
-			else if(equipped != null)
+			} else if (equipped != null)
 			{
 				hitX = (int) Math.floor(hitX / 0.33F);
-				if(hitX > 2)
+				if (hitX > 2)
 					hitX = 2;
-				if(hitX < 0)
+				if (hitX < 0)
 					hitX = 0;
 				hitZ = (int) Math.floor(hitZ / 0.33F);
-				if(hitZ > 2)
+				if (hitZ > 2)
 					hitZ = 2;
-				if(hitZ < 0)
+				if (hitZ < 0)
 					hitZ = 0;
 
 				int i = (int) (hitX * 3 + hitZ);
 
-				if(workTile.getStackInSlot(i) == null)
+				if (workTile.getStackInSlot(i) == null)
 				{
 
 					ItemStack in = equipped.copy();
-					if(!player.capabilities.isCreativeMode)
+					if (!player.capabilities.isCreativeMode)
 						equipped.stackSize--;
 
 					in.stackSize = 1;
 					workTile.setInventorySlotContents(i, in);
-				}
-				else if((workTile.getStackInSlot(i).isItemEqual(equipped)) && (workTile.getStackInSlot(i).stackSize < workTile.getStackInSlot(i).getMaxStackSize()))
+				} else if ((workTile.getStackInSlot(i).isItemEqual(equipped)) && (workTile.getStackInSlot(i).stackSize < workTile.getStackInSlot(i).getMaxStackSize()))
 				{
-					if(!player.capabilities.isCreativeMode)
+					if (!player.capabilities.isCreativeMode)
 						equipped.stackSize--;
 
 					workTile.decrStackSize(i, -1);
@@ -173,36 +180,41 @@ public class CraftingPillarBlock extends BaseBlockContainer
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int par5, int par6)
 	{
-		if(!world.isRemote)
+		if (!world.isRemote)
 		{
-			//			TileEntityCraftingPillar workTile = (TileEntityCraftingPillar) world.getBlockTileEntity(x, y, z);
-			//			for(int i = 0; i < 3; i++)
-			//			{
-			//				for(int k = 0; k < 3; k++)
-			//				{
-			//					if(workTile.getStackInSlot(i * 3 + k) != null)
-			//					{
-			//						EntityItem itemDropped = new EntityItem(world, x + 0.1875D + i * 0.3125D, y + 1D, z + 0.1875D + k * 0.3125D, workTile.getStackInSlot(i * 3 + k));
-			//						itemDropped.motionX = itemDropped.motionY = itemDropped.motionZ = 0D;
-			//						
-			//						if(workTile.getStackInSlot(i * 3 + k).hasTagCompound())
-			//							itemDropped.getEntityItem().setTagCompound((NBTTagCompound) workTile.getStackInSlot(i * 3 + k).getTagCompound().copy());
-			//						
-			//						world.spawnEntityInWorld(itemDropped);
-			//					}
-			//				}
-			//			}
+			// TileEntityCraftingPillar workTile = (TileEntityCraftingPillar)
+			// world.getBlockTileEntity(x, y, z);
+			// for(int i = 0; i < 3; i++)
+			// {
+			// for(int k = 0; k < 3; k++)
+			// {
+			// if(workTile.getStackInSlot(i * 3 + k) != null)
+			// {
+			// EntityItem itemDropped = new EntityItem(world, x + 0.1875D + i *
+			// 0.3125D, y + 1D, z + 0.1875D + k * 0.3125D,
+			// workTile.getStackInSlot(i * 3 + k));
+			// itemDropped.motionX = itemDropped.motionY = itemDropped.motionZ =
+			// 0D;
+			//
+			// if(workTile.getStackInSlot(i * 3 + k).hasTagCompound())
+			// itemDropped.getEntityItem().setTagCompound((NBTTagCompound)
+			// workTile.getStackInSlot(i * 3 + k).getTagCompound().copy());
+			//
+			// world.spawnEntityInWorld(itemDropped);
+			// }
+			// }
+			// }
 
 			TileEntityCraftingPillar pillarTile = (TileEntityCraftingPillar) world.getBlockTileEntity(x, y, z);
 
-			for(int i = 0; i < pillarTile.getSizeInventory() + 2; i++)
+			for (int i = 0; i < pillarTile.getSizeInventory() + 2; i++)
 			{
-				if(pillarTile.getStackInSlot(i) != null && i != 9)
+				if (pillarTile.getStackInSlot(i) != null && i != 9)
 				{
 					EntityItem itemDropped = new EntityItem(world, x + 0.5D, y, z + 0.5D, pillarTile.getStackInSlot(i));
 					itemDropped.motionX = itemDropped.motionY = itemDropped.motionZ = 0D;
 
-					if(pillarTile.getStackInSlot(i).hasTagCompound())
+					if (pillarTile.getStackInSlot(i).hasTagCompound())
 						itemDropped.getEntityItem().setTagCompound((NBTTagCompound) pillarTile.getStackInSlot(i).getTagCompound().copy());
 
 					world.spawnEntityInWorld(itemDropped);

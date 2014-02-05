@@ -414,6 +414,18 @@ public class RenderSentryPillar extends TileEntitySpecialRenderer implements ISi
 		glRotatef(180F, 1F, 0F, 0F);
 		Minecraft.getMinecraft().renderEngine.bindTexture(this.TEXTURE_SHOWOFFPILLAR);
 		this.render(0.0625F);
+
+		if (CraftingPillars.easter)
+		{
+			glRotatef(90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
+
+			f = 0.0625F;
+			BunnyTail1.render(f);
+			BunnyTail2.render(f);
+			BunnyTail3.render(f);
+			BunnyEar1.render(f);
+			BunnyEar2.render(f);
+		}
 		glPopMatrix();
 
 		TileEntitySentryPillar workTile = (TileEntitySentryPillar) tile;
@@ -421,7 +433,6 @@ public class RenderSentryPillar extends TileEntitySpecialRenderer implements ISi
 		citem.hoverStart = CraftingPillars.floatingItems ? workTile.rot : 0F;
 
 		glPushMatrix();
-		glRotatef(90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
 
 		glTranslated(x, y, z);
 
@@ -447,23 +458,6 @@ public class RenderSentryPillar extends TileEntitySpecialRenderer implements ISi
 			glPopMatrix();
 		}
 		glPopMatrix();
-		
-		if (CraftingPillars.easter)
-		{
-			glPushMatrix();
-			glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
-			glRotatef(-90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
-
-			glRotatef(180F, 1F, 0F, 0F);
-
-			f = 0.0625F;
-			BunnyTail1.render(f);
-			BunnyTail2.render(f);
-			BunnyTail3.render(f);
-			BunnyEar1.render(f);
-			BunnyEar2.render(f);
-			glPopMatrix();
-		}
 	}
 
 	@Override

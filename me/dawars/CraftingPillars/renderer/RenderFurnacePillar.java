@@ -274,6 +274,18 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 
 		Minecraft.getMinecraft().renderEngine.bindTexture(this.TEXTURE_FURNACEPILLAR);
 		this.render(0.0625F);
+
+		if (CraftingPillars.easter)
+		{
+			glRotatef(90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
+
+			f = 0.0625F;
+			BunnyTail1.render(f);
+			BunnyTail2.render(f);
+			BunnyTail3.render(f);
+			BunnyEar1.render(f);
+			BunnyEar2.render(f);
+		}
 		glPopMatrix();
 
 		TileEntityFurnacePillar pillarTile = (TileEntityFurnacePillar) tile;
@@ -349,23 +361,6 @@ public class RenderFurnacePillar extends TileEntitySpecialRenderer implements IS
 				RenderingHelper.renderFloatingTextWithBackground(0, 2.15F, 0, 0.4F, "" + pillarTile.getStackInSlot(2).stackSize, Color.white.getRGB(), new Color(0F, 0F, 0F, 0.5F));
 				glEnable(GL_LIGHTING);
 			}
-			glPopMatrix();
-		}
-
-		if (CraftingPillars.easter)
-		{
-			glPushMatrix();
-			glTranslated(x + 0.5D, y + 1.5D, z + 0.5D);
-			glRotatef(-90F * (tile.worldObj.getBlockMetadata(tile.xCoord, tile.yCoord, tile.zCoord) - 2), 0F, 1F, 0F);
-
-			glRotatef(180F, 1F, 0F, 0F);
-
-			f = 0.0625F;
-			BunnyTail1.render(f);
-			BunnyTail2.render(f);
-			BunnyTail3.render(f);
-			BunnyEar1.render(f);
-			BunnyEar2.render(f);
 			glPopMatrix();
 		}
 	}

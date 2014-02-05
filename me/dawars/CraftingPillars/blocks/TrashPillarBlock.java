@@ -71,7 +71,7 @@ public class TrashPillarBlock extends BaseBlockContainer
 			pillarTile.onInventoryChanged();
 			world.playSoundEffect(x + 0.5F, y + 0.5F, z + 0.5F, "random.click", 0.3F, world.rand.nextFloat() * 0.1F + 0.5F);
 
-			return true;
+			return false;
 		}
 
 		return false;
