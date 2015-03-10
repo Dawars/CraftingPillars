@@ -1,0 +1,130 @@
+import de.undercouch.gradle.tasks.download.Download
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            name 'forge'
+            url 'http://files.minecraftforge.net/maven'
+        }
+        maven {
+            name 'sonatype'
+            url 'https://oss.sonatype.org/content/repositories/snapshots/'
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+    }
+}
+
+// only buildscript blocks and other plugins blocks are allowed before plugins blocks
+plugins {
+	id 'de.undercouch.download' version '1.2'
+}
+
+// the setup command
+task setupWorkspace(type: Download) {
+    def eclipseDir = new File('eclipse')
+
+    if (!eclipseDir.isDirectory()) {
+        eclipseDir.mkdirs() // be sure we have the eclipse directory
+    }
+
+    def destination = new File(System.getProperty('user.dir'), 'forge.zip');
+
+    src 'http://files.minecraftforge.net/maven/net/minecraftforge/forge/' + forge_version + '/forge-' + forge_version + '-src.zip'
+    dest destination
+
+    doLast {
+        project.copy {
+            from zipTree(destination)
+            into 'forge'
+        }
+
+        // move the eclipse metadata into our workspace
+        project.file('forge/eclipse').renameTo(project.file('eclipse'))
+
+        // delete all of the forge stuff
+        project.file('forge').deleteDir()
+        project.file('forge.zip').delete()
+	}
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = gradle_version
+}
+
+apply plugin: 'forge'
+
+version = project_version
+group = 'T145.pillars'
+archivesBaseName = 'CraftingPillars'
+
+minecraft {
+    version = forge_version
+    runDir = 'eclipse'
+}
+
+dependencies {
+    compile fileTree(dir: 'lib', include: '*.jar')
+}
+
+processResources {
+    // this will ensure that this task is redone when the versions change.
+    inputs.property 'version', project.version
+    inputs.property 'mcversion', project.minecraft.version
+
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+                
+        // replace version and mcversion
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+        
+    // copy everything else, thats not the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
+
+String title = project.minecraft.version + '-' + project.version
+
+// modifies the actual release
+jar {
+    version = title
+}
+
+// add a developer release
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'dev'
+	version = title
+}
+
+// add a javadoc
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    from 'build/docs/javadoc'
+    classifier = 'javadoc'
+	version = title
+}
+
+// add a backup for all of the project source
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+    classifier = 'src'
+	version = title
+}
+
+// add an archive for the mod's API
+task apiZip(type: Zip) {
+    from (sourceSets.main.java) {
+        include 'T145/magistics/api/**'
+    }
+    classifier = 'api'
+	version = title
+}
+
+artifacts {
+    archives apiZip, javadocJar, deobfJar, sourceJar
+}
