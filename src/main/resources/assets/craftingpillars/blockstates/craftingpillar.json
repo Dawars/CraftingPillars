@@ -1,0 +1,16 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "textures": {
+            "side": "craftingpillars:blocks/craftingpillar_side",
+            "end": "craftingpillars:blocks/craftingpillar_top"
+        },
+        "model": "cube_column",
+        "uvlock": true
+    },
+    "variants": {
+        "normal": [{
+        
+        }]
+    }
+}
