@@ -1,6 +1,7 @@
 package me.dawars.craftingpillars;
 
 import me.dawars.craftingpillars.blocks.BlockCraftingPillar;
+import me.dawars.craftingpillars.tiles.TileEntityCraftingPillar;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -10,10 +11,12 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.logging.Logger;
 
@@ -24,6 +27,9 @@ public class CraftingPillars {
     public static final String VERSION = "2.0";
 
     public static final Logger LOGGER = Logger.getLogger(MODID);
+
+    @SidedProxy(clientSide = "me.dawars.craftingpillars.ClientProxy", serverSide = "me.dawars.craftingpillars.ServerProxy")
+    private static Proxy proxy;
 
     public static final CreativeTabs CREATIVETAB = new CreativeTabs("craftingpillars") {
         @Override
@@ -38,17 +44,25 @@ public class CraftingPillars {
     public void preInit(FMLPreInitializationEvent event) {
         LOGGER.info("Pre-Initialization...");
 
+        proxy.preInit(event);
+
+        GameRegistry.registerTileEntity(TileEntityCraftingPillar.class, "tileentity_craftingpillar");
+
         MinecraftForge.EVENT_BUS.register(this);
     }
 
     @EventHandler
     public void init(FMLInitializationEvent event) {
         LOGGER.info("Initialization...");
+
+        proxy.init(event);
     }
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         LOGGER.info("Post-Initialization...");
+
+        proxy.postInit(event);
     }
 
     @SubscribeEvent
