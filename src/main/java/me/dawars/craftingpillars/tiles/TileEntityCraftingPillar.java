@@ -33,12 +33,6 @@ public class TileEntityCraftingPillar extends TileEntity implements ITickable {
     }
 
     public void sendDataToClients() {
-        for (int i = 0; i < 3; ++i) {
-            for (int j = 0; j < 3; ++j) {
-                System.out.println(i+""+j+" "+inventory[i][j]);
-            }
-        }
-
         world.getPlayers(EntityPlayerMP.class,
                 (EntityPlayerMP player) -> player != null
                         && getDistanceSq(player.posX, player.posY, player.posZ) < getMaxRenderDistanceSquared())
@@ -57,7 +51,8 @@ public class TileEntityCraftingPillar extends TileEntity implements ITickable {
 
         if (player.isSneaking()) {
             if (!inventory[i][j].isEmpty()) {
-                world.spawnEntity(new EntityItem(world, pos.getX()+hitX, pos.getY()+1.1, pos.getZ()+hitZ, inventory[i][j]));
+                EntityItem entityItem = new EntityItem(world, pos.getX() + hitX, pos.getY() + 1.2, pos.getZ() + hitZ, inventory[i][j]);
+                world.spawnEntity(entityItem);
                 inventory[i][j].setCount(0);
                 sendDataToClients();
                 return true;
