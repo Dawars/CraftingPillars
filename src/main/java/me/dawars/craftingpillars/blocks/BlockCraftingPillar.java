@@ -27,7 +27,12 @@ public class BlockCraftingPillar extends BaseBlockPillar {
 
     @Override
     public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer playerIn) {
-        System.out.println("clicked");
+        if (!worldIn.isRemote) {
+            TileEntityCraftingPillar te = (TileEntityCraftingPillar) worldIn.getTileEntity(pos);
+            if (te != null) {
+                te.onPlayerLeftClickOnBlock(playerIn);
+            }
+        }
     }
 
     @Override

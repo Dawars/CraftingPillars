@@ -17,29 +17,39 @@ public class TESRCraftingPillar extends TileEntitySpecialRenderer<TileEntityCraf
 
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 3; ++j) {
-                if (!te.getItemStackAt(i, j).isEmpty()) {
+                if (!te.getStackInSlot(j*3 + i).isEmpty()) {
                     GlStateManager.pushMatrix();
+                    GlStateManager.pushAttrib();
 
                     GlStateManager.translate(x + 1./6 + 1./3*i, y + 1, z + 1./6 + 1./3*j);
-                    //GlStateManager.translate(-x, -y, -z);
-                    GlStateManager.scale(0.33, 0.33, 0.33);
+                    GlStateManager.scale(0.5, 0.5, 0.5);
 
-                    GlStateManager.pushAttrib();
                     RenderHelper.enableStandardItemLighting();
-
-                    entityItem.setItem(te.getItemStackAt(i, j));
+                    entityItem.setItem(te.getStackInSlot(j*3 + i));
                     Minecraft.getMinecraft().getRenderManager().doRenderEntity(entityItem,
                             0, 0, 0, 0, 0, false);
-                    //RenderEntityItem
-                    //Minecraft.getMinecraft().getRenderItem().renderItem(te.getItemStackAt(i, j), ItemCameraTransforms.TransformType.FIXED);
-
                     RenderHelper.disableStandardItemLighting();
-                    GlStateManager.popAttrib();
 
+                    GlStateManager.popAttrib();
                     GlStateManager.popMatrix();
                 }
             }
         }
+
+        GlStateManager.pushMatrix();
+        GlStateManager.pushAttrib();
+
+        GlStateManager.translate(x + 0.5, y + 1.5, z + 0.5);
+        //GlStateManager.scale(0.5, 0.5, 0.5);
+
+        RenderHelper.enableStandardItemLighting();
+        entityItem.setItem(te.getStackInSlot(9));
+        Minecraft.getMinecraft().getRenderManager().doRenderEntity(entityItem,
+                0, 0, 0, 0, 0, false);
+        RenderHelper.disableStandardItemLighting();
+
+        GlStateManager.popAttrib();
+        GlStateManager.popMatrix();
     }
 
     @Override
