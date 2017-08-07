@@ -4,11 +4,15 @@ import me.dawars.craftingpillars.blocks.BlockCraftingPillar;
 import me.dawars.craftingpillars.tileentity.TileEntityCraftingPillar;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -81,5 +85,34 @@ public class CraftingPillars {
 
     public void registerTileEntities() {
         GameRegistry.registerTileEntity(TileEntityCraftingPillar.class,MODID+":tileentity_craftingpillar");
+    }
+
+    @SubscribeEvent
+    public void onLeftClickBlockEvent(PlayerInteractEvent.LeftClickBlock event) {
+        LOGGER.info("leftclick: "+event.getWorld().isRemote+" "+event.getHitVec());
+
+        /*if (event.getWorld().isRemote) {
+            if (event.getFace() == EnumFacing.UP) {
+                Block block = event.getWorld().getBlockState(event.getPos()).getBlock();
+                if (block.getClass() == BlockCraftingPillar.class) {
+                    event.setCanceled(true);
+                    LOGGER.info("canceled!");
+                    // TODO maybe make custom method in BasePillar with hit vector
+                    block.onBlockClicked(event.getWorld(), event.getPos(), event.getEntityPlayer());
+                }
+            }
+        }*/
+    }
+
+    @SubscribeEvent
+    public void onBreakEvent(BlockEvent.BreakEvent event) {
+        LOGGER.info("breakevent: "+event.getWorld().isRemote);
+        /*if (event.getPlayer().isCreative() && event.getState().getBlock().getClass() == BlockCraftingPillar.class) {
+            TileEntityCraftingPillar te = (TileEntityCraftingPillar) event.getWorld().getTileEntity(event.getPos());
+            if (te != null && te.getResultStack() != null && te.getResultStack().stackSize > 0) {
+                event.setCanceled(true);
+                //MinecraftForge.EVENT_BUS.post(new PlayerInteractEvent.LeftClickBlock(event.getPlayer(), event.getPos(), ))
+            }
+        }*/
     }
 }
