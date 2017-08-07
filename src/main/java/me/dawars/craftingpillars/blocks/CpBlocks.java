@@ -8,10 +8,10 @@ import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class CpBlocks {
-    public static final Block craftingPillar = new BlockCraftingPillar("craftingpillar");
+    public static Block craftingPillar;
 
     public static void init() {
-
+        craftingPillar = new BlockCraftingPillar("craftingpillar");
     }
 
     public static void register() {
