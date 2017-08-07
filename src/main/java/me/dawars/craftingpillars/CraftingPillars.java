@@ -1,6 +1,7 @@
 package me.dawars.craftingpillars;
 
 import me.dawars.craftingpillars.blocks.BlockCraftingPillar;
+import me.dawars.craftingpillars.blocks.CpBlocks;
 import me.dawars.craftingpillars.tileentity.TileEntityCraftingPillar;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -8,7 +9,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -34,11 +34,10 @@ public class CraftingPillars {
     public static final CreativeTabs CREATIVETAB = new CreativeTabs("craftingpillars") {
         @Override
         public Item getTabIconItem() {
-            return Item.getItemFromBlock(BLOCK_CRAFTINGPILLAR);
+            return Item.getItemFromBlock(CpBlocks.craftingPillar);
         }
     };
 
-    public static final Block BLOCK_CRAFTINGPILLAR = new BlockCraftingPillar("craftingpillar");
 
     public CraftingPillars() {
         MinecraftForge.EVENT_BUS.register(this);
@@ -49,7 +48,17 @@ public class CraftingPillars {
         LOGGER.info("Pre-Initialization...");
 
         proxy.preInit(event);
+/*
 
+        GameRegistry.register(BLOCK_CRAFTINGPILLAR);
+        GameRegistry.register(new ItemBlock(BLOCK_CRAFTINGPILLAR).setRegistryName(BLOCK_CRAFTINGPILLAR.getRegistryName()));
+        GameRegistry.registerTileEntity(TileEntityCraftingPillar.class,MODID+":tileentity_craftingpillar");
+*/
+
+        CpBlocks.init();
+        CpBlocks.register();
+
+        MinecraftForge.EVENT_BUS.register(this);
         registerTileEntities();
     }
 
@@ -66,7 +75,7 @@ public class CraftingPillars {
 
         proxy.postInit(event);
     }
-
+/*
     @SubscribeEvent
     public void registerBlocks(RegistryEvent.Register<Block> event) {
         LOGGER.info("Registering blocks...");
@@ -77,7 +86,7 @@ public class CraftingPillars {
     public void registerItems(RegistryEvent.Register<Item> event) {
         LOGGER.info("Registering items...");
         event.getRegistry().registerAll(new ItemBlock(BLOCK_CRAFTINGPILLAR).setRegistryName(BLOCK_CRAFTINGPILLAR.getRegistryName()));
-    }
+    }*/
 
     public void registerTileEntities() {
         GameRegistry.registerTileEntity(TileEntityCraftingPillar.class,MODID+":tileentity_craftingpillar");

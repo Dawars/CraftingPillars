@@ -5,12 +5,21 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 public class TESRCraftingPillar extends TileEntitySpecialRenderer<TileEntityCraftingPillar> {
+    private static final EntityItem ITEM =
+            new EntityItem(Minecraft.getMinecraft().theWorld, 0, 0, 0, new ItemStack(Items.APPLE));
+
     @Override
     public void renderTileEntityAt(TileEntityCraftingPillar te, double x, double y, double z, float partialTicks, int destroyStage) {
         super.renderTileEntityAt(te, x, y, z, partialTicks, destroyStage);
 
+        ITEM.hoverStart = 0;
+
+        Minecraft.getMinecraft().getRenderManager().doRenderEntity(ITEM, x, y, z, 0, 0, false);
         EntityItem entityItem = new EntityItem(getWorld(),
                 0,
                 0,
@@ -48,6 +57,6 @@ public class TESRCraftingPillar extends TileEntitySpecialRenderer<TileEntityCraf
 
     @Override
     public boolean isGlobalRenderer(TileEntityCraftingPillar te) {
-        return true;
+        return false;
     }
 }
