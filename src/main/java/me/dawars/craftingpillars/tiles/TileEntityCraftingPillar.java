@@ -1,8 +1,8 @@
 package me.dawars.craftingpillars.tiles;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -46,17 +46,20 @@ public class TileEntityCraftingPillar extends TileEntity implements ITickable, I
         }
     }
 
-    public void onChanged() {
+    private void onChanged() {
         // TODO craft result
         for (int i = 0; i < 9; ++i) {
             craftMatrix.setInventorySlotContents(i, inventory[i]);
         }
         inventory[RESULTSLOT] = CraftingManager.findMatchingResult(craftMatrix, world);
 
-        world.getPlayers(EntityPlayerMP.class,
+        /*world.getPlayers(EntityPlayerMP.class,
                 (EntityPlayerMP player) -> player != null
                         && getDistanceSq(player.posX, player.posY, player.posZ) < getMaxRenderDistanceSquared())
-                .forEach((EntityPlayerMP player) -> player.connection.sendPacket(getUpdatePacket()));
+                .forEach((EntityPlayerMP player) -> player.connection.sendPacket(getUpdatePacket()));*/
+        markDirty();
+        IBlockState state = world.getBlockState(pos);
+        world.notifyBlockUpdate(getPos(), state, state, 3);
     }
 
     public void onPlayerLeftClickOnBlock(EntityPlayer player) {
