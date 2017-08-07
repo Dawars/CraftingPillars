@@ -22,7 +22,7 @@ public class TileEntityCraftingPillar extends TileEntity implements ITickable, I
     private static final int RESULTSLOT = 9;
 
     private ItemStack[] inventory = new ItemStack[10];
-    private float itemRot = 0;
+    private float itemRot = 0, itemRotSpeed = 0.05f;
     private Container container = new Container() {
         @Override
         public boolean canInteractWith(EntityPlayer playerIn) {
@@ -31,8 +31,8 @@ public class TileEntityCraftingPillar extends TileEntity implements ITickable, I
     };
     private InventoryCrafting craftMatrix = new InventoryCrafting(container, 3, 3);
 
-    public float getItemRotation() {
-        return itemRot;
+    public float getItemRotation(float partialTicks) {
+        return itemRot + itemRotSpeed*partialTicks;
     }
 
     public TileEntityCraftingPillar() {
@@ -42,7 +42,7 @@ public class TileEntityCraftingPillar extends TileEntity implements ITickable, I
     @Override
     public void update() {
         if (world.isRemote) {
-            itemRot += 0.01f;
+            itemRot += itemRotSpeed;
         }
     }
 
