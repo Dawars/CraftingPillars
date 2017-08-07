@@ -1,7 +1,7 @@
 package me.dawars.craftingpillars;
 
 import me.dawars.craftingpillars.client.render.TESRCraftingPillar;
-import me.dawars.craftingpillars.tiles.TileEntityCraftingPillar;
+import me.dawars.craftingpillars.tileentity.TileEntityCraftingPillar;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;

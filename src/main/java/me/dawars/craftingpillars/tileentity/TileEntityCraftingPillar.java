@@ -1,4 +1,4 @@
-package me.dawars.craftingpillars.tiles;
+package me.dawars.craftingpillars.tileentity;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
@@ -15,7 +15,7 @@ import net.minecraft.util.ITickable;
 
 import javax.annotation.Nullable;
 
-public class TileEntityCraftingPillar extends TileEntity implements ITickable, IInventory, ISidedInventory {
+public class TileEntityCraftingPillar extends TileEntity implements ITickable, ISidedInventory {
     private static final int RESULTSLOT = 9;
 
     private ItemStack[] inventory = new ItemStack[10];
@@ -131,7 +131,9 @@ public class TileEntityCraftingPillar extends TileEntity implements ITickable, I
 
     @Override
     public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
-        return false;
+        return index == RESULTSLOT
+                && stack.isItemEqual(inventory[RESULTSLOT])
+                && stack.stackSize <= inventory[RESULTSLOT].stackSize;
     }
 
     @Override
@@ -169,6 +171,7 @@ public class TileEntityCraftingPillar extends TileEntity implements ITickable, I
     @Override
     public void setInventorySlotContents(int index, @Nullable ItemStack stack) {
         inventory[index] = stack;
+        onChanged();
     }
 
     @Override

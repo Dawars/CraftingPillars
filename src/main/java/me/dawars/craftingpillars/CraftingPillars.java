@@ -1,12 +1,12 @@
 package me.dawars.craftingpillars;
 
 import me.dawars.craftingpillars.blocks.BlockCraftingPillar;
-import me.dawars.craftingpillars.tiles.TileEntityCraftingPillar;
+import me.dawars.craftingpillars.tileentity.TileEntityCraftingPillar;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -40,17 +40,17 @@ public class CraftingPillars {
 
     public static final Block BLOCK_CRAFTINGPILLAR = new BlockCraftingPillar("craftingpillar");
 
+    public CraftingPillars() {
+        MinecraftForge.EVENT_BUS.register(this);
+    }
+
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         LOGGER.info("Pre-Initialization...");
 
         proxy.preInit(event);
 
-        GameRegistry.register(BLOCK_CRAFTINGPILLAR);
-        GameRegistry.register(new ItemBlock(BLOCK_CRAFTINGPILLAR).setRegistryName(BLOCK_CRAFTINGPILLAR.getRegistryName()));
-        GameRegistry.registerTileEntity(TileEntityCraftingPillar.class,MODID+":tileentity_craftingpillar");
-
-        MinecraftForge.EVENT_BUS.register(this);
+        registerTileEntities();
     }
 
     @EventHandler
@@ -77,5 +77,9 @@ public class CraftingPillars {
     public void registerItems(RegistryEvent.Register<Item> event) {
         LOGGER.info("Registering items...");
         event.getRegistry().registerAll(new ItemBlock(BLOCK_CRAFTINGPILLAR).setRegistryName(BLOCK_CRAFTINGPILLAR.getRegistryName()));
+    }
+
+    public void registerTileEntities() {
+        GameRegistry.registerTileEntity(TileEntityCraftingPillar.class,MODID+":tileentity_craftingpillar");
     }
 }

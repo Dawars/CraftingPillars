@@ -1,6 +1,6 @@
 package me.dawars.craftingpillars.client.render;
 
-import me.dawars.craftingpillars.tiles.TileEntityCraftingPillar;
+import me.dawars.craftingpillars.tileentity.TileEntityCraftingPillar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
