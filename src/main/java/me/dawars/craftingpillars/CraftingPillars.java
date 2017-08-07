@@ -29,12 +29,12 @@ public class CraftingPillars {
     public static final Logger LOGGER = LogManager.getLogger(MODID);
 
     @SidedProxy(clientSide = "me.dawars.craftingpillars.ClientProxy", serverSide = "me.dawars.craftingpillars.ServerProxy")
-    private static Proxy proxy;
+    private static CommonProxy proxy;
 
     public static final CreativeTabs CREATIVETAB = new CreativeTabs("craftingpillars") {
         @Override
-        public ItemStack getTabIconItem() {
-            return new ItemStack(BLOCK_CRAFTINGPILLAR);
+        public Item getTabIconItem() {
+            return Item.getItemFromBlock(BLOCK_CRAFTINGPILLAR);
         }
     };
 
@@ -46,7 +46,9 @@ public class CraftingPillars {
 
         proxy.preInit(event);
 
-        GameRegistry.registerTileEntity(TileEntityCraftingPillar.class, "tileentity_craftingpillar");
+        GameRegistry.register(BLOCK_CRAFTINGPILLAR);
+        GameRegistry.register(new ItemBlock(BLOCK_CRAFTINGPILLAR).setRegistryName(BLOCK_CRAFTINGPILLAR.getRegistryName()));
+        GameRegistry.registerTileEntity(TileEntityCraftingPillar.class,MODID+":tileentity_craftingpillar");
 
         MinecraftForge.EVENT_BUS.register(this);
     }
