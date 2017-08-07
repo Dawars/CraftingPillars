@@ -21,7 +21,6 @@ public class TESRCraftingPillar extends TileEntitySpecialRenderer<TileEntityCraf
         ITEM.hoverStart = 0;
 
         Minecraft.getMinecraft().getRenderManager().doRenderEntity(ITEM, x, y, z, 0, 0, false);
-/*
         EntityItem entityItem = new EntityItem(getWorld(),
                 0,
                 0,
@@ -54,12 +53,11 @@ public class TESRCraftingPillar extends TileEntitySpecialRenderer<TileEntityCraf
             Minecraft.getMinecraft().getRenderManager().doRenderEntity(entityItem,
                     0, 0, 0, 0, 0, false);
             GlStateManager.popMatrix();
-        }*/
+        }
     }
 
-   /* @Override
+    @Override
     public boolean isGlobalRenderer(TileEntityCraftingPillar te) {
-        return true;
+        return false;
     }
-*/
 }

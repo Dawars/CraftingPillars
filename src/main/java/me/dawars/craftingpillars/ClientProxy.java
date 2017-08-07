@@ -19,8 +19,9 @@ public class ClientProxy extends CommonProxy {
     public void init(FMLInitializationEvent event) {
         super.init(event);
 
-//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCraftingPillar.class, new TESRCraftingPillar());
         CpBlocks.registerRenderers();
+
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCraftingPillar.class, new TESRCraftingPillar());
     }
 
     @Override

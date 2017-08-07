@@ -29,7 +29,7 @@ public class TileEntityCraftingPillar extends TileEntity implements ITickable, I
     private InventoryCrafting craftMatrix = new InventoryCrafting(container, 3, 3);
 
     public float getItemRotation(float partialTicks) {
-        return itemRot + itemRotSpeed*partialTicks;
+        return itemRot + itemRotSpeed * partialTicks;
     }
 
     public ItemStack getResultStack() {
@@ -93,8 +93,15 @@ public class TileEntityCraftingPillar extends TileEntity implements ITickable, I
 
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
-        return new SPacketUpdateTileEntity(pos, 0, serializeNBT());
+        return new SPacketUpdateTileEntity(pos, getBlockMetadata(), serializeNBT());
     }
+
+    @Override
+    public NBTTagCompound getUpdateTag() {
+
+        return writeToNBT(super.getUpdateTag());
+    }
+
 
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
@@ -121,7 +128,7 @@ public class TileEntityCraftingPillar extends TileEntity implements ITickable, I
 
     @Override
     public int[] getSlotsForFace(EnumFacing side) {
-        return new int[] {RESULTSLOT};
+        return new int[]{RESULTSLOT};
     }
 
     @Override
@@ -182,10 +189,12 @@ public class TileEntityCraftingPillar extends TileEntity implements ITickable, I
     }
 
     @Override
-    public void openInventory(EntityPlayer player) { }
+    public void openInventory(EntityPlayer player) {
+    }
 
     @Override
-    public void closeInventory(EntityPlayer player) { }
+    public void closeInventory(EntityPlayer player) {
+    }
 
     @Override
     public boolean isItemValidForSlot(int index, ItemStack stack) {
@@ -198,7 +207,8 @@ public class TileEntityCraftingPillar extends TileEntity implements ITickable, I
     }
 
     @Override
-    public void setField(int id, int value) { }
+    public void setField(int id, int value) {
+    }
 
     @Override
     public int getFieldCount() {
@@ -206,7 +216,8 @@ public class TileEntityCraftingPillar extends TileEntity implements ITickable, I
     }
 
     @Override
-    public void clear() { }
+    public void clear() {
+    }
 
     @Override
     public String getName() {

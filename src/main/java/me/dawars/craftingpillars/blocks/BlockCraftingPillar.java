@@ -2,6 +2,7 @@ package me.dawars.craftingpillars.blocks;
 
 import me.dawars.craftingpillars.CraftingPillars;
 import me.dawars.craftingpillars.tiles.TileEntityCraftingPillar;
+
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -13,20 +14,26 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
-public class BlockCraftingPillar extends BaseBlockPillar {
+public class BlockCraftingPillar extends BaseTileBlock {
     public BlockCraftingPillar(String name) {
         super(name);
     }
+
+    @Override
+    public TileEntity createNewTileEntity(World world, int i) {
+        return new TileEntityCraftingPillar();
+    }
+// TODO: fix neighbouring side transparency
 
     @Override
     public boolean hasTileEntity(IBlockState state) {
         return true;
     }
 
-    @Override
+    /*    @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileEntityCraftingPillar();
-    }
+    }*/
 
     @Override
     public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer playerIn) {

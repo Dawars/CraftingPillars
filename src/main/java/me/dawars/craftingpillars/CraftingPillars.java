@@ -62,6 +62,8 @@ public class CraftingPillars {
         LOGGER.info("Initialization...");
 
         proxy.init(event);
+
+        GameRegistry.registerTileEntity(TileEntityCraftingPillar.class, MODID+":tileentity_craftingpillar");
     }
 
     @EventHandler
