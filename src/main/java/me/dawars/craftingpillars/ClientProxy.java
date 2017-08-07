@@ -1,5 +1,6 @@
 package me.dawars.craftingpillars;
 
+import me.dawars.craftingpillars.blocks.CpBlocks;
 import me.dawars.craftingpillars.client.render.TESRCraftingPillar;
 import me.dawars.craftingpillars.tiles.TileEntityCraftingPillar;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -18,7 +19,8 @@ public class ClientProxy extends CommonProxy {
     public void init(FMLInitializationEvent event) {
         super.init(event);
 
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCraftingPillar.class, new TESRCraftingPillar());
+//        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCraftingPillar.class, new TESRCraftingPillar());
+        CpBlocks.registerRenderers();
     }
 
     @Override
