@@ -1,17 +1,10 @@
 package me.dawars.craftingpillars;
 
-import me.dawars.craftingpillars.blocks.BlockCraftingPillar;
 import me.dawars.craftingpillars.blocks.CpBlocks;
 import me.dawars.craftingpillars.tileentity.TileEntityCraftingPillar;
-import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;

@@ -127,16 +127,7 @@ public class BlockCraftingPillar extends BaseTileBlock {
             // spawning items in world
             TileEntityCraftingPillar te = (TileEntityCraftingPillar) worldIn.getTileEntity(pos);
             if (te != null) {
-                for (int i = 0; i < 9; ++i) {
-                    ItemStack itemStack = te.removeStackFromSlot(i);
-                    if (itemStack != null) {
-                        worldIn.spawnEntityInWorld(new EntityItem(worldIn,
-                                pos.getX() + 0.5,
-                                pos.getY() + 1,
-                                pos.getZ() + 0.5,
-                                itemStack));
-                    }
-                }
+                te.dropItems();
             }
         }
 

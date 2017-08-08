@@ -1,9 +1,11 @@
 package me.dawars.craftingpillars.tileentity;
 
+import me.dawars.craftingpillars.CraftingPillars;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.*;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,10 +17,7 @@ import net.minecraft.util.ITickable;
 
 import javax.annotation.Nullable;
 
-public class TileEntityCraftingPillar extends TileEntity implements ITickable, ISidedInventory {
-    private static final int RESULTSLOT = 9;
-
-    private ItemStack[] inventory = new ItemStack[10];
+public class TileEntityCraftingPillar extends TileEntity implements ITickable {
     private float itemRot = 0, itemRotSpeed = 0.05f;
     private Container container = new Container() {
         @Override
@@ -27,13 +26,18 @@ public class TileEntityCraftingPillar extends TileEntity implements ITickable, I
         }
     };
     private InventoryCrafting craftMatrix = new InventoryCrafting(container, 3, 3);
+    private ItemStack resultStack = null;
 
     public float getItemRotation(float partialTicks) {
         return itemRot + itemRotSpeed * partialTicks;
     }
 
     public ItemStack getResultStack() {
-        return getStackInSlot(RESULTSLOT);
+        return resultStack;
+    }
+
+    public ItemStack getStackInSlot(int i) {
+        return craftMatrix.getStackInSlot(i);
     }
 
     @Override
@@ -43,65 +47,119 @@ public class TileEntityCraftingPillar extends TileEntity implements ITickable, I
         }
     }
 
+    public void dropItems() {
+        for (int i = 0; i < craftMatrix.getSizeInventory(); ++i) {
+            ItemStack stack = craftMatrix.removeStackFromSlot(i);
+            if (stack != null) {
+                worldObj.spawnEntityInWorld(new EntityItem(worldObj,
+                        pos.getX() + 0.5,
+                        pos.getY() + 1,
+                        pos.getZ() + 0.5,
+                        stack));
+            }
+        }
+    }
+
     public ItemStack craftItem() {
-        return null;
+        ItemStack[] remaining = CraftingManager.getInstance().getRemainingItems(craftMatrix, worldObj);
+
+        for (int i = 0; i < remaining.length; ++i) {
+            ItemStack current = craftMatrix.getStackInSlot(i);
+
+            if (current != null) {
+                --current.stackSize;
+                if (current.stackSize <= 0) {
+                    current = null;
+                }
+            }
+
+            if (remaining[i] != null) {
+                if (current == null) {
+                    current = remaining[i];
+                } else if (ItemStack.areItemsEqual(current, remaining[i])
+                        && ItemStack.areItemStackTagsEqual(current, remaining[i])) {
+                    current.stackSize += remaining[i].stackSize;
+                } else {
+                    worldObj.spawnEntityInWorld(new EntityItem(worldObj,
+                            pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5,
+                            remaining[i]));
+                }
+            }
+
+            craftMatrix.setInventorySlotContents(i, current);
+        }
+
+        ItemStack ret = resultStack;
+        onChanged();
+        return ret;
     }
 
     public void playerCraftItem(EntityPlayer player) {
-
+        ItemStack stack = craftItem();
+        // TODO onCrafting(player, stack)
+        if (stack != null) {
+            worldObj.spawnEntityInWorld(new EntityItem(worldObj,
+                    pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5,
+                    stack));
+        }
     }
 
     public void playerInsertItem(int slotIndex, ItemStack itemStack, boolean wholeStack) {
-        if (inventory[slotIndex] == null || inventory[slotIndex].stackSize <= 0) {
-            inventory[slotIndex] = itemStack.splitStack(wholeStack ? itemStack.stackSize : 1);
+        ItemStack current = craftMatrix.getStackInSlot(slotIndex);
+
+        if (current == null) { // if the slot is empty
+            craftMatrix.setInventorySlotContents(slotIndex,
+                    wholeStack ? itemStack.copy() : itemStack.splitStack(1));
             onChanged();
-        } else if (inventory[slotIndex].isItemEqual(itemStack)) {
+        } else if (ItemStack.areItemsEqual(current, itemStack)
+                && ItemStack.areItemStackTagsEqual(current, itemStack)) {
+            // if the slot has the same item as the player in his hand
             int amount = Math.min(wholeStack ? itemStack.stackSize : 1,
-                    inventory[slotIndex].getMaxStackSize() - inventory[slotIndex].stackSize);
-            inventory[slotIndex].stackSize += amount;
-            itemStack.stackSize -= amount;
-            onChanged();
+                    current.getMaxStackSize() - current.stackSize);
+            if (amount > 0) {
+                current.stackSize += amount;
+                itemStack.stackSize -= amount;
+                onChanged();
+            }
         }
     }
 
     public void playerExtractItem(int slotIndex, float hitX, float hitZ, boolean wholeStack) {
-        if (inventory[slotIndex] == null || inventory[slotIndex].stackSize <= 0) {
-            return;
+        if (craftMatrix.getStackInSlot(slotIndex) != null) {
+            worldObj.spawnEntityInWorld(new EntityItem(worldObj,
+                    pos.getX() + hitX,
+                    pos.getY() + 1,
+                    pos.getZ() + hitZ,
+                    wholeStack ? craftMatrix.removeStackFromSlot(slotIndex)
+                               : craftMatrix.decrStackSize(slotIndex, 1)));
+            onChanged();
         }
-
-        worldObj.spawnEntityInWorld(new EntityItem(worldObj,
-                pos.getX() + hitX,
-                pos.getY() + 1,
-                pos.getZ() + hitZ,
-                inventory[slotIndex].splitStack(wholeStack ? inventory[slotIndex].stackSize : 1)));
-        if (inventory[slotIndex].stackSize <= 0) {
-            inventory[slotIndex] = null;
-        }
-        onChanged();
     }
 
     private void onChanged() {
-        for (int i = 0; i < 9; ++i) {
-            craftMatrix.setInventorySlotContents(i, inventory[i]);
-        }
-        inventory[RESULTSLOT] = CraftingManager.getInstance().findMatchingRecipe(craftMatrix, worldObj);
+        // refreshing the crafting result
+        resultStack = CraftingManager.getInstance().findMatchingRecipe(craftMatrix, worldObj);
 
+        for (int i = 0; i < craftMatrix.getSizeInventory(); ++i) {
+            CraftingPillars.LOGGER.info("slot"+i+" = "+craftMatrix.getStackInSlot(i));
+        }
+        CraftingPillars.LOGGER.info("result = "+resultStack);
+
+        // notifying the world about the change
         markDirty();
         IBlockState state = worldObj.getBlockState(pos);
         worldObj.notifyBlockUpdate(getPos(), state, state, 3);
     }
 
     @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        return new SPacketUpdateTileEntity(pos, getBlockMetadata(), serializeNBT());
-    }
-
-    @Override
     public NBTTagCompound getUpdateTag() {
-
         return writeToNBT(super.getUpdateTag());
     }
 
+    @Override
+    public SPacketUpdateTileEntity getUpdatePacket() {
+        return new SPacketUpdateTileEntity(pos, getBlockMetadata(), getUpdateTag());
+    }
 
     @Override
     public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
@@ -110,10 +168,14 @@ public class TileEntityCraftingPillar extends TileEntity implements ITickable, I
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound compound) {
-        for (int i = 0; i < inventory.length; ++i) {
-            if (inventory[i] != null) {
-                compound.setTag(String.format("slot%d", i), inventory[i].serializeNBT());
+        for (int i = 0; i < craftMatrix.getSizeInventory(); ++i) {
+            ItemStack stack = craftMatrix.getStackInSlot(i);
+            if (stack != null) {
+                compound.setTag("slot"+i, stack.serializeNBT());
             }
+        }
+        if (resultStack != null) {
+            compound.setTag("result", resultStack.serializeNBT());
         }
         return super.writeToNBT(compound);
     }
@@ -121,114 +183,10 @@ public class TileEntityCraftingPillar extends TileEntity implements ITickable, I
     @Override
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
-        for (int i = 0; i < inventory.length; ++i) {
-            inventory[i] = ItemStack.loadItemStackFromNBT(compound.getCompoundTag(String.format("slot%d", i)));
+        for (int i = 0; i < craftMatrix.getSizeInventory(); ++i) {
+             craftMatrix.setInventorySlotContents(i,
+                     ItemStack.loadItemStackFromNBT(compound.getCompoundTag("slot"+i)));
         }
-    }
-
-    @Override
-    public int[] getSlotsForFace(EnumFacing side) {
-        return new int[]{RESULTSLOT};
-    }
-
-    @Override
-    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
-        return false;
-    }
-
-    @Override
-    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
-        return index == RESULTSLOT
-                && stack.isItemEqual(inventory[RESULTSLOT])
-                && stack.stackSize <= inventory[RESULTSLOT].stackSize;
-    }
-
-    @Override
-    public int getSizeInventory() {
-        return inventory.length;
-    }
-
-    @Nullable
-    @Override
-    public ItemStack getStackInSlot(int index) {
-        return inventory[index];
-    }
-
-    @Nullable
-    @Override
-    public ItemStack decrStackSize(int index, int count) {
-        // TODO overview crafting
-        ItemStack ret = index == RESULTSLOT
-                ? craftItem()
-                : inventory[index] == null ? null : inventory[index].splitStack(count);
-        onChanged();
-        return ret;
-    }
-
-    @Nullable
-    @Override
-    public ItemStack removeStackFromSlot(int index) {
-        // TODO overview crafting
-        ItemStack ret = index == RESULTSLOT ? craftItem() : inventory[index];
-        inventory[index] = null;
-        onChanged();
-        return ret;
-    }
-
-    @Override
-    public void setInventorySlotContents(int index, @Nullable ItemStack stack) {
-        inventory[index] = stack;
-        onChanged();
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 64;
-    }
-
-    @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
-        return true;
-    }
-
-    @Override
-    public void openInventory(EntityPlayer player) {
-    }
-
-    @Override
-    public void closeInventory(EntityPlayer player) {
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int index, ItemStack stack) {
-        return false;
-    }
-
-    @Override
-    public int getField(int id) {
-        return 0;
-    }
-
-    @Override
-    public void setField(int id, int value) {
-    }
-
-    @Override
-    public int getFieldCount() {
-        return 0;
-    }
-
-    @Override
-    public void clear() {
-    }
-
-    @Override
-    public String getName() {
-        return "craftingpillar";
-    }
-
-    @Override
-    public boolean hasCustomName() {
-        return false;
+        resultStack = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("result"));
     }
 }
