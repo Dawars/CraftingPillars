@@ -1,7 +1,9 @@
 {
   "variants": {
-    "normal": {
-      "model": "craftingpillars:craftingpillar"
-    }
+    "facing=north": {"model": "craftingpillars:craftingpillar"},
+    "facing=east": {"model": "craftingpillars:craftingpillar", "y":90},
+    "facing=south": {"model": "craftingpillars:craftingpillar", "y":180},
+    "facing=west": {"model": "craftingpillars:craftingpillar", "y":270}
+
   }
 }

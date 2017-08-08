@@ -1,7 +1,10 @@
 package me.dawars.craftingpillars.blocks;
 
 import me.dawars.craftingpillars.tileentity.TileEntityCraftingPillar;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -9,13 +12,63 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
 
 public class BlockCraftingPillar extends BaseTileBlock {
+
+    public static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+
     public BlockCraftingPillar(String name) {
         super(name);
+        setDefaultState(blockState.getBaseState().withProperty(FACING, EnumFacing.NORTH));
+    }
+
+    /**
+     * Set the direction of the block based on the player orientation
+     *
+     * @param world
+     * @param pos
+     * @param facing
+     * @param hitX
+     * @param hitY
+     * @param hitZ
+     * @param meta
+     * @param placer
+     * @param stack
+     * @return
+     */
+    @Override
+    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, ItemStack stack) {
+        return super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer, stack)
+                .withProperty(FACING, placer.getHorizontalFacing());
+    }
+
+    /**
+     * Get metadata from location
+     * @param state
+     * @return
+     */
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(FACING).getHorizontalIndex();
+    }
+
+    /**
+     * Get state from meta (deprecated, don't know what i should use)
+     * @param meta
+     * @return
+     */
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta));
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, FACING);
     }
 
     @Override
@@ -28,11 +81,6 @@ public class BlockCraftingPillar extends BaseTileBlock {
     public boolean hasTileEntity(IBlockState state) {
         return true;
     }
-
-    /*    @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileEntityCraftingPillar();
-    }*/
 
     @Override
     public void onBlockClicked(World worldIn, BlockPos pos, EntityPlayer playerIn) {
