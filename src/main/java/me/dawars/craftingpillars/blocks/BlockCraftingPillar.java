@@ -1,5 +1,6 @@
 package me.dawars.craftingpillars.blocks;
 
+import me.dawars.craftingpillars.CraftingPillars;
 import me.dawars.craftingpillars.tileentity.TileEntityCraftingPillar;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
@@ -122,8 +123,8 @@ public class BlockCraftingPillar extends BaseTileBlock {
 
     @Override
     public void breakBlock(World worldIn, BlockPos pos, IBlockState state) {
-        // TODO drop inventory
         if (!worldIn.isRemote) {
+            // spawning items in world
             TileEntityCraftingPillar te = (TileEntityCraftingPillar) worldIn.getTileEntity(pos);
             if (te != null) {
                 for (int i = 0; i < 9; ++i) {
@@ -147,7 +148,8 @@ public class BlockCraftingPillar extends BaseTileBlock {
         if (worldIn.isRemote) {
             return true;
         }
-
+        // TODO: handle rotation
+        CraftingPillars.LOGGER.info(hitX + ", " + hitZ);
         if (side == EnumFacing.UP) {
             TileEntityCraftingPillar te = (TileEntityCraftingPillar) worldIn.getTileEntity(pos);
             if (te != null) {
