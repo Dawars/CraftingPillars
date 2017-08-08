@@ -1,11 +1,11 @@
 package me.dawars.craftingpillars.tileentity;
 
 import me.dawars.craftingpillars.CraftingPillars;
+import me.dawars.craftingpillars.blocks.BlockCraftingPillar;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.*;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,8 +14,7 @@ import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-
-import javax.annotation.Nullable;
+import net.minecraft.util.math.Vec3i;
 
 public class TileEntityCraftingPillar extends TileEntity implements ITickable {
     private float itemRot = 0, itemRotSpeed = 0.05f;
@@ -38,6 +37,32 @@ public class TileEntityCraftingPillar extends TileEntity implements ITickable {
 
     public ItemStack getStackInSlot(int i) {
         return craftMatrix.getStackInSlot(i);
+    }
+
+    //012
+    //345
+    //678
+
+    public float getSlotX(int i) {
+        EnumFacing facing = worldObj.getBlockState(pos).getValue(BlockCraftingPillar.FACING);
+        Vec3i vecInvZ = facing.getDirectionVec();
+        Vec3i vecX = vecInvZ.crossProduct(new Vec3i(0,-1,0));
+        return 0.5f
+                - vecInvZ.getX()*5.f/16f*(i/3 - 1)
+                - vecX.getX()*5.f/16f*(i%3 - 1);
+    }
+
+    public float getSlotZ(int i) {
+        EnumFacing facing = worldObj.getBlockState(pos).getValue(BlockCraftingPillar.FACING);
+        Vec3i vecInvZ = facing.getDirectionVec();
+        Vec3i vecX = vecInvZ.crossProduct(new Vec3i(0,-1,0));
+        return 0.5f
+                - vecInvZ.getZ()*5.f/16f*(i/3 - 1)
+                - vecX.getZ()*5.f/16f*(i%3 - 1);
+    }
+
+    public int getSlotIndex(float x, float z) {
+        return 0;
     }
 
     @Override
