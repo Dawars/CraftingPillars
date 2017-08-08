@@ -61,6 +61,10 @@ public class TileEntityCraftingPillar extends TileEntity implements ITickable {
     }
 
     public ItemStack craftItem() {
+        if (resultStack == null) {
+            return null;
+        }
+
         ItemStack[] remaining = CraftingManager.getInstance().getRemainingItems(craftMatrix, worldObj);
 
         for (int i = 0; i < remaining.length; ++i) {
@@ -96,8 +100,8 @@ public class TileEntityCraftingPillar extends TileEntity implements ITickable {
 
     public void playerCraftItem(EntityPlayer player) {
         ItemStack stack = craftItem();
-        // TODO onCrafting(player, stack)
         if (stack != null) {
+            // TODO onCrafting(player, stack)
             worldObj.spawnEntityInWorld(new EntityItem(worldObj,
                     pos.getX() + 0.5, pos.getY() + 1.5, pos.getZ() + 0.5,
                     stack));
