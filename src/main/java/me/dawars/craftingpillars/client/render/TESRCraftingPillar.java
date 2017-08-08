@@ -12,6 +12,10 @@ import net.minecraft.item.ItemStack;
 public class TESRCraftingPillar extends TileEntitySpecialRenderer<TileEntityCraftingPillar> {
     private static final EntityItem ITEM =
             new EntityItem(Minecraft.getMinecraft().theWorld, 0, 0, 0, new ItemStack(Items.APPLE));
+    private final EntityItem entityItem = new EntityItem(getWorld(),
+            0,
+            0,
+            0);
 
     @Override
     public void renderTileEntityAt(TileEntityCraftingPillar te, double x, double y, double z, float partialTicks, int destroyStage) {
@@ -20,16 +24,14 @@ public class TESRCraftingPillar extends TileEntitySpecialRenderer<TileEntityCraf
         ITEM.hoverStart = 0;
 
         Minecraft.getMinecraft().getRenderManager().doRenderEntity(ITEM, x, y, z, 0, 0, false);
-        EntityItem entityItem = new EntityItem(getWorld(),
-                0,
-                0,
-                0);
+
         entityItem.hoverStart = 0;
 
         for (int i = 0; i < 3; ++i) {
             for (int j = 0; j < 3; ++j) {
-                if (te.getStackInSlot(j*3 + i) != null && te.getStackInSlot(j*3 + i).stackSize > 0) {
-                    entityItem.setEntityItemStack(te.getStackInSlot(j * 3 + i));
+                ItemStack stackInSlot = te.getStackInSlot(j * 3 + i);
+                if (stackInSlot != null && stackInSlot.stackSize > 0) {
+                    entityItem.setEntityItemStack(stackInSlot);
                     entityItem.hoverStart = 0;
 
                     // TODO lightning not working?
