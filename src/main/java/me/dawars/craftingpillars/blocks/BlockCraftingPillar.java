@@ -71,11 +71,39 @@ public class BlockCraftingPillar extends BaseTileBlock {
         return new BlockStateContainer(this, FACING);
     }
 
+    /**
+     * Does nothing for us?
+     * @param state
+     * @return
+     */
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+    /**
+     *Fixes rendering lightmap and neighboring block sides
+     * @param state
+     * @return
+     */
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
+    /**
+     * Does nothing for us?
+     * @return
+     */
+    @Override
+    public boolean isVisuallyOpaque() {
+        return false;
+    }
+
     @Override
     public TileEntity createNewTileEntity(World world, int i) {
         return new TileEntityCraftingPillar();
     }
-// TODO: fix neighbouring side transparency
 
     @Override
     public boolean hasTileEntity(IBlockState state) {
