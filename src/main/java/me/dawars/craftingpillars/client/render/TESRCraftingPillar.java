@@ -12,10 +12,7 @@ import net.minecraft.item.ItemStack;
 public class TESRCraftingPillar extends TileEntitySpecialRenderer<TileEntityCraftingPillar> {
     private static final EntityItem ITEM =
             new EntityItem(Minecraft.getMinecraft().theWorld, 0, 0, 0, new ItemStack(Items.APPLE));
-    private final EntityItem entityItem = new EntityItem(getWorld(),
-            0,
-            0,
-            0);
+    private final EntityItem entityItem = new EntityItem(Minecraft.getMinecraft().theWorld, 0, 0, 0);
 
     @Override
     public void renderTileEntityAt(TileEntityCraftingPillar te, double x, double y, double z, float partialTicks, int destroyStage) {
