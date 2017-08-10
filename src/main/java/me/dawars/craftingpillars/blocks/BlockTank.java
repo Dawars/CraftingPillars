@@ -1,5 +1,6 @@
 package me.dawars.craftingpillars.blocks;
 
+import me.dawars.craftingpillars.tileentity.TileBase;
 import me.dawars.craftingpillars.tileentity.TileTank;
 import me.dawars.craftingpillars.util.FluidHelper;
 import net.minecraft.block.state.IBlockState;
@@ -39,7 +40,7 @@ public class BlockTank extends BaseTileBlock {
 
     @Override
     public boolean hasComparatorInputOverride(IBlockState state) {
-
+// FIXME comparator in TE
         return true;
     }
 
@@ -70,15 +71,27 @@ public class BlockTank extends BaseTileBlock {
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
 
-        TileEntity tile = world.getTileEntity(pos);
+        TileBase tile = (TileBase) world.getTileEntity(pos); // FIXME add external update util
 
         if (tile != null) {
             IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
             if (FluidHelper.isFluidHandler(heldItem) && FluidHelper.interactWithHandler(heldItem, handler, player, hand)) {
+                tile.updateBlock();// FIXME refactor this
                 return true;
             }
         }
         return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
     }
 
+    @Override
+    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
+        TileEntity tile = world.getTileEntity(pos);
+
+        if (tile instanceof TileTank) {
+            TileTank tank = (TileTank) tile;
+            return tank.getFluidLightLevel();
+        }
+
+        return super.getLightValue(state, world, pos);
+    }
 }

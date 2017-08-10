@@ -6,13 +6,16 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.client.FMLClientHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -31,13 +34,12 @@ public class TileTank extends TilePillar implements ITickable {
         // TODO pump out on sides
 
         if (this.worldObj.isRemote) {
-/* // FIXME light in base class
-                int lightValue = getFluidLightLevel();
-                if (prevLightValue != lightValue) {
-                    prevLightValue = lightValue;
-                    worldObj.lightupdateLightByType(EnumSkyBlock.Block, xCoord, yCoord, zCoord);
-                }
-*/
+            // FIXME light state change
+            int lightValue = getFluidLightLevel();
+            if (prevLightValue != lightValue) {
+                prevLightValue = lightValue;
+                worldObj.setLightFor(EnumSkyBlock.BLOCK, pos, lightValue);
+            }
 
             EntityPlayerSP player = FMLClientHandler.instance().getClient().thePlayer;
             if (pos.distanceSq(player.posX, player.posY, player.posZ) < 128) {
@@ -49,9 +51,9 @@ public class TileTank extends TilePillar implements ITickable {
                 for (int i = 0; i < this.blobs.size(); i++)
                     this.blobs.get(i).update(0.1F);
             }
-
-            System.out.println(blobs.size());
         }
+
+        CraftingPillars.LOGGER.info(getTankFluidAmount());
     }
 
     @Override
@@ -67,6 +69,14 @@ public class TileTank extends TilePillar implements ITickable {
         return tag;
     }
 
+    public boolean isEmpty() {
+        return tank.getFluidAmount() <= 0;
+    }
+
+    public FluidTank getTank() {
+        return tank;
+    }
+
     public int getTankCapacity() {
 
         return tank.getCapacity();
@@ -76,12 +86,6 @@ public class TileTank extends TilePillar implements ITickable {
 
         return tank.getFluidAmount();
     }
-
-    @Nullable
-    public Fluid getFluid() {
-        return tank.getFluid() == null ? null : tank.getFluid().getFluid();
-    }
-
 
     /* CAPABILITIES */
     @Override
@@ -97,19 +101,26 @@ public class TileTank extends TilePillar implements ITickable {
         return super.getCapability(capability, facing);
     }
 
-    public FluidTank getTank() {
-        return tank;
-    }
 
+    /* Metaball rendering */
+    @SideOnly(Side.CLIENT)
     public void addBlob() {
         this.blobs.add(new Blobs(this.random.nextInt(12) + 2.5F, this.random.nextInt(9) + 4.5F, this.random.nextInt(12) + 2.5F, 4));
     }
 
+    @SideOnly(Side.CLIENT)
     public void removeBlob() {
-        this.blobs.remove(this.random.nextInt(this.blobs.size()));
+        this.blobs.remove(random.nextInt(this.blobs.size()));
     }
 
+    @SideOnly(Side.CLIENT)
     public List<Blobs> getBlobs() {
         return blobs;
+    }
+
+    public int getFluidLightLevel() {
+        if (isEmpty()) return 0;
+        FluidStack tankFluid = tank.getFluid();
+        return tankFluid == null ? 0 : tankFluid.getFluid().getLuminosity(tankFluid);
     }
 }

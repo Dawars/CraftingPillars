@@ -5,7 +5,8 @@ import me.dawars.craftingpillars.blocks.BlockCraftingPillar;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.*;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
@@ -46,19 +47,19 @@ public class TileEntityCraftingPillar extends TileEntity implements ITickable {
     public float getSlotX(int i) {
         EnumFacing facing = worldObj.getBlockState(pos).getValue(BlockCraftingPillar.FACING);
         Vec3i vecInvZ = facing.getDirectionVec();
-        Vec3i vecX = vecInvZ.crossProduct(new Vec3i(0,-1,0));
+        Vec3i vecX = vecInvZ.crossProduct(new Vec3i(0, -1, 0));
         return 0.5f
-                - vecInvZ.getX()*5.f/16f*(i/3 - 1)
-                - vecX.getX()*5.f/16f*(i%3 - 1);
+                - vecInvZ.getX() * 5.f / 16f * (i / 3 - 1)
+                - vecX.getX() * 5.f / 16f * (i % 3 - 1);
     }
 
     public float getSlotZ(int i) {
         EnumFacing facing = worldObj.getBlockState(pos).getValue(BlockCraftingPillar.FACING);
         Vec3i vecInvZ = facing.getDirectionVec();
-        Vec3i vecX = vecInvZ.crossProduct(new Vec3i(0,-1,0));
+        Vec3i vecX = vecInvZ.crossProduct(new Vec3i(0, -1, 0));
         return 0.5f
-                - vecInvZ.getZ()*5.f/16f*(i/3 - 1)
-                - vecX.getZ()*5.f/16f*(i%3 - 1);
+                - vecInvZ.getZ() * 5.f / 16f * (i / 3 - 1)
+                - vecX.getZ() * 5.f / 16f * (i % 3 - 1);
     }
 
     public int getSlotIndex(float x, float z) {
@@ -160,7 +161,7 @@ public class TileEntityCraftingPillar extends TileEntity implements ITickable {
                     pos.getY() + 1,
                     pos.getZ() + hitZ,
                     wholeStack ? craftMatrix.removeStackFromSlot(slotIndex)
-                               : craftMatrix.decrStackSize(slotIndex, 1)));
+                            : craftMatrix.decrStackSize(slotIndex, 1)));
             onChanged();
         }
     }
@@ -170,9 +171,9 @@ public class TileEntityCraftingPillar extends TileEntity implements ITickable {
         resultStack = CraftingManager.getInstance().findMatchingRecipe(craftMatrix, worldObj);
 
         for (int i = 0; i < craftMatrix.getSizeInventory(); ++i) {
-            CraftingPillars.LOGGER.info("slot"+i+" = "+craftMatrix.getStackInSlot(i));
+            CraftingPillars.LOGGER.info("slot" + i + " = " + craftMatrix.getStackInSlot(i));
         }
-        CraftingPillars.LOGGER.info("result = "+resultStack);
+        CraftingPillars.LOGGER.info("result = " + resultStack);
 
         // notifying the world about the change
         markDirty();
@@ -200,7 +201,7 @@ public class TileEntityCraftingPillar extends TileEntity implements ITickable {
         for (int i = 0; i < craftMatrix.getSizeInventory(); ++i) {
             ItemStack stack = craftMatrix.getStackInSlot(i);
             if (stack != null) {
-                compound.setTag("slot"+i, stack.serializeNBT());
+                compound.setTag("slot" + i, stack.serializeNBT());
             }
         }
         if (resultStack != null) {
@@ -213,8 +214,8 @@ public class TileEntityCraftingPillar extends TileEntity implements ITickable {
     public void readFromNBT(NBTTagCompound compound) {
         super.readFromNBT(compound);
         for (int i = 0; i < craftMatrix.getSizeInventory(); ++i) {
-             craftMatrix.setInventorySlotContents(i,
-                     ItemStack.loadItemStackFromNBT(compound.getCompoundTag("slot"+i)));
+            craftMatrix.setInventorySlotContents(i,
+                    ItemStack.loadItemStackFromNBT(compound.getCompoundTag("slot" + i)));
         }
         resultStack = ItemStack.loadItemStackFromNBT(compound.getCompoundTag("result"));
     }

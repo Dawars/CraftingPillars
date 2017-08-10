@@ -11,54 +11,9 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fml.client.FMLClientHandler;
 import org.lwjgl.opengl.GL11;
 
 public class RendererTank extends TileEntitySpecialRenderer<TileTank> {
-   /* public void renderTileEntityAt(TileTank te, double x, double y, double z, float partialTicks, int destroyStage) {
-        GlStateManager.pushMatrix();
-        GlStateManager.disableLighting();
-        int capacity = te.getTankCapacity();
-        FluidStack fluid = te.getTank().getFluid();
-        if (fluid != null) {
-            Tessellator tess = Tessellator.getInstance();
-            VertexBuffer buffer = tess.getBuffer();
-
-            buffer.setTranslation(x, y, z);
-
-            bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
-            TextureAtlasSprite still = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(fluid.getFluid().getStill().toString());
-            TextureAtlasSprite flow = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(fluid.getFluid().getFlowing().toString());
-
-            float percentage = (float) fluid.amount / (float) capacity;
-            double posY = 3f/16 + 10/16f * percentage;
-
-            // top
-            buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-            buffer.pos(2f / 16f, posY, 14f / 16f).tex(still.getInterpolatedU(2), still.getInterpolatedV(14)).endVertex();
-            buffer.pos(14f / 16f, posY, 14f / 16f).tex(still.getInterpolatedU(14), still.getInterpolatedV(14)).endVertex();
-            buffer.pos(14f / 16f, posY, 2f / 16f).tex(still.getInterpolatedU(14), still.getInterpolatedV(2)).endVertex();
-            buffer.pos(2f / 16f, posY, 2f / 16f).tex(still.getInterpolatedU(2), still.getInterpolatedV(2)).endVertex();
-
-            //north
-            buffer.pos(0, 0, 0).tex(still.)
-
-            // south
-            buffer.pos(14f / 16f, 3f / 16f, 14f / 16f).tex(flow.getInterpolatedU(2), flow.getInterpolatedV(16*percentage)).endVertex();
-            buffer.pos(14f / 16f, posY, 14f / 16f).tex(flow.getInterpolatedU(2), flow.getInterpolatedV(0)).endVertex();
-            buffer.pos(2f / 16f, posY, 14f / 16f).tex(flow.getInterpolatedU(14), flow.getInterpolatedV(0)).endVertex();
-            buffer.pos(2f / 16f, 3f / 16f, 14f / 16f).tex(flow.getInterpolatedU(14), flow.getInterpolatedV(16*percentage)).endVertex();
-
-
-
-
-            tess.draw();
-
-            buffer.setTranslation(0, 0, 0);
-        }
-        GlStateManager.enableLighting();
-        GlStateManager.popMatrix();
-    }*/
 
     @Override
     public void renderTileEntityAt(TileTank te, double x, double y, double z, float partialTicks, int destroyStage) {
@@ -66,7 +21,7 @@ public class RendererTank extends TileEntitySpecialRenderer<TileTank> {
 
 
         if (te.isShowNum() && te.getTankFluidAmount() > 0) {
-            /*GlStateManager.pushMatrix();
+            /*GlStateManager.pushMatrix(); // TODO draw text
             GlStateManager.translate(x + 0.5D, y + 1, z + 0.5D);
 
             GlStateManager.disableLighting();
@@ -81,13 +36,17 @@ public class RendererTank extends TileEntitySpecialRenderer<TileTank> {
 
         if (te.getTankCapacity() <= 0)
             return;
-//        System.out.println("rendering");
 
-//        EntityPlayerSP player = FMLClientHandler.instance().getClient().thePlayer;
-//        if (player.getDistanceSq(x, y, z) < 128) {
+        EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
+//        if (player.getDistanceSq(x, y, z) < 128) { // FIXME distance calc
 
         GlStateManager.pushMatrix();
-        GlStateManager.disableLighting();
+//        GlStateManager.disableLighting();
+//        GlStateManager.enableAlpha();
+        GlStateManager.enableBlend();
+
+//        GlStateManager.translate(0.05F, 0.05F, 0.05F);
+//        GlStateManager.scale(.99,.99,.99); // FIXME dont overlap with glass pane
         int capacity = te.getTankCapacity();
         FluidStack fluid = te.getTank().getFluid();
         if (fluid != null) {
@@ -99,11 +58,8 @@ public class RendererTank extends TileEntitySpecialRenderer<TileTank> {
             bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
             TextureAtlasSprite still = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(fluid.getFluid().getStill().toString());
             TextureAtlasSprite flow = Minecraft.getMinecraft().getTextureMapBlocks().getAtlasSprite(fluid.getFluid().getFlowing().toString());
+            // TODO gas opacity
 
-            float percentage = (float) fluid.amount / (float) capacity;
-            double posY = 3f / 16 + 10 / 16f * percentage;
-
-            // top
             buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 
 
@@ -179,9 +135,13 @@ public class RendererTank extends TileEntitySpecialRenderer<TileTank> {
 
             buffer.setTranslation(0, 0, 0);
 
-            GlStateManager.enableLighting();
-            GlStateManager.popMatrix();
         }
-//        }
+        GlStateManager.disableBlend();
+//        GlStateManager.disableAlpha();
+//        GlStateManager.enableLighting();
+        GlStateManager.popMatrix();
+        /*} else {
+            // TODO render block liquid
+        }*/
     }
 }
