@@ -2,6 +2,7 @@ package me.dawars.craftingpillars;
 
 import me.dawars.craftingpillars.blocks.CpBlocks;
 import me.dawars.craftingpillars.tileentity.TileEntityCraftingPillar;
+import me.dawars.craftingpillars.tileentity.TileTank;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
@@ -46,12 +47,6 @@ public class CraftingPillars {
         LOGGER.info("Pre-Initialization...");
 
         proxy.preInit(event);
-/*
-
-        GameRegistry.register(BLOCK_CRAFTINGPILLAR);
-        GameRegistry.register(new ItemBlock(BLOCK_CRAFTINGPILLAR).setRegistryName(BLOCK_CRAFTINGPILLAR.getRegistryName()));
-        GameRegistry.registerTileEntity(TileEntityCraftingPillar.class,MODID+":tileentity_craftingpillar");
-*/
 
         CpBlocks.init();
         CpBlocks.register();
@@ -88,6 +83,7 @@ public class CraftingPillars {
 
     public void registerTileEntities() {
         GameRegistry.registerTileEntity(TileEntityCraftingPillar.class,MODID+":tileentity_craftingpillar");
+        GameRegistry.registerTileEntity(TileTank.class,MODID+":TE_tank");
     }
 
     @SubscribeEvent

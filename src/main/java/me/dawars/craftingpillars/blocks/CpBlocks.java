@@ -7,19 +7,33 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class CpBlocks {
-    public static Block craftingPillar;
+
+    private static final List<BaseBlock> inits = new LinkedList<>();
+
+    public static final BaseBlock craftingPillar = new BlockCraftingPillar("craftingpillar");
+    public static final BaseBlock tankPillar = new BlockTank("tank_pillar");
 
     public static void init() {
-        craftingPillar = new BlockCraftingPillar("craftingpillar");
+        inits.add(craftingPillar);
+        inits.add(tankPillar);
+
+
     }
 
     public static void register() {
-        registerBlock(craftingPillar);
+        for (BaseBlock block : inits) {
+            registerBlock(block);
+        }
     }
 
     public static void registerRenderers() {
-        registerRenderer(craftingPillar);
+        for (BaseBlock block : inits) {
+            registerRenderer(block);
+        }
     }
 
     private static void registerBlock(Block block) {
