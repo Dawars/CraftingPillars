@@ -56,12 +56,21 @@ repositories {
 
 dependencies {
     compile "codechicken:CodeChickenLib:${config.mc_version}-${config.ccl_version}:deobf"
+//    compile "codechicken:CodeChickenCore:${config.mc_version}-1.0.4.35:deobf"
+//    compile "codechicken:NotEnoughItems:${config.mc_version}-1.0.4.90:deobf"
+
     compile "cofh:CoFHCore:${config.mc_version}-${config.cofhcore_version}:deobf"
     compile "cofh:ThermalFoundation:${config.mc_version}-${config.tf_version}:deobf"
     compile "cofh:ThermalExpansion:${config.mc_version}-${config.te_version}:deobf"
     compile "cofh:ThermalDynamics:${config.mc_version}-${config.td_version}:deobf"
 
     compile "mrtjp:ProjectRed:${config.mc_version}-${config.pr_version}:deobf"
+
+//    compile "slimeknights.mantle:Mantle:${config.mc_version}-${config.mantle_version}:deobf" // older mc?
+//    compile "slimeknights:TConstruct:${config.mc_version}-${config.tk_version}:deobf"
+
+
+
 
 
 }
