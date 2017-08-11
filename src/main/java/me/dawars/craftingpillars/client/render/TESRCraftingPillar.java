@@ -30,27 +30,19 @@ public class TESRCraftingPillar extends TileEntitySpecialRenderer<TileEntityCraf
 
         entityItem.hoverStart = 0; // crafting ingredients stay still
 
-        for (int i = 0; i < 3; ++i) {
-            for (int j = 0; j < 3; ++j) {
-                ItemStack stackInSlot = te.getStackInSlot(j * 3 + i);
-                if (stackInSlot != null && stackInSlot.stackSize > 0) {
-                    renderItem(stackInSlot,
-                            3. / 16 + x + 5. / 16 * i,
-                            y + 1 - 2. / 16,
-                            3. / 16 + z + 5. / 16 * j,
-                            4. / 8);
-                }
+        for (int i = 0; i < 9; ++i) {
+            ItemStack stack = te.getStackInSlot(i);
+            if (stack != null) {
+                renderItem(stack,
+                        x + te.getSlotX(i),
+                        y + 1 - 2./16,
+                        z + te.getSlotZ(i),
+                        4./8);
             }
         }
 
-        /*renderItem(new ItemStack(Items.APPLE, 1),
-                x + te.getSlotX(8),
-                y + 1.1,
-                z + te.getSlotZ(8),
-                1);*/
-
         if (te.getResultStack() != null) {
-            entityItem.hoverStart = te.getItemRotation(partialTicks); // crafting result spins
+            entityItem.hoverStart = te.getItemRotation(partialTicks); // crafting result spins and bobs
             renderItem(te.getResultStack(), x + 0.5, y + 1.5, z + 0.5, 1);
         }
     }

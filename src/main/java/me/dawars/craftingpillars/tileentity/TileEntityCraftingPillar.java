@@ -39,30 +39,35 @@ public class TileEntityCraftingPillar extends TileEntity implements ITickable {
         return craftMatrix.getStackInSlot(i);
     }
 
-    //012
-    //345
-    //678
-
     public float getSlotX(int i) {
         EnumFacing facing = worldObj.getBlockState(pos).getValue(BlockCraftingPillar.FACING);
-        Vec3i vecInvZ = facing.getDirectionVec();
-        Vec3i vecX = vecInvZ.crossProduct(new Vec3i(0,-1,0));
+        double rad = facing.getHorizontalIndex() * Math.PI / 2;
         return 0.5f
-                - vecInvZ.getX()*5.f/16f*(i/3 - 1)
-                - vecX.getX()*5.f/16f*(i%3 - 1);
+                + (float)Math.sin(rad)*5f/16f*(i/3 - 1)
+                - (float)Math.cos(rad)*5f/16f*(i%3 - 1);
     }
 
     public float getSlotZ(int i) {
         EnumFacing facing = worldObj.getBlockState(pos).getValue(BlockCraftingPillar.FACING);
-        Vec3i vecInvZ = facing.getDirectionVec();
-        Vec3i vecX = vecInvZ.crossProduct(new Vec3i(0,-1,0));
+        double rad = facing.getHorizontalIndex() * Math.PI / 2;
         return 0.5f
-                - vecInvZ.getZ()*5.f/16f*(i/3 - 1)
-                - vecX.getZ()*5.f/16f*(i%3 - 1);
+                - (float)Math.cos(rad)*5f/16f*(i/3 - 1)
+                - (float)Math.sin(rad)*5f/16f*(i%3 - 1);
     }
 
     public int getSlotIndex(float x, float z) {
-        return 0;
+        EnumFacing facing = worldObj.getBlockState(pos).getValue(BlockCraftingPillar.FACING);
+        double rad = facing.getHorizontalIndex() * Math.PI / 2;
+
+        x -= 0.5f;
+        z -= 0.5f;
+        float nx = x*(float)Math.cos(rad) + z*(float)Math.sin(rad);
+        float nz = - x*(float)Math.sin(rad) + z*(float)Math.cos(rad);
+
+        int i = nx < -2.5/16 ? 2 : nx <= 2.5/16 ? 1 : 0;
+        int j = nz < -2.5/16 ? 2 : nz <= 2.5/16 ? 1 : 0;
+
+        return j*3 + i;
     }
 
     @Override

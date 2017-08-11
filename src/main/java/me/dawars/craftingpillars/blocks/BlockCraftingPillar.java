@@ -144,9 +144,7 @@ public class BlockCraftingPillar extends BaseTileBlock {
         if (side == EnumFacing.UP) {
             TileEntityCraftingPillar te = (TileEntityCraftingPillar) worldIn.getTileEntity(pos);
             if (te != null) {
-                int slot = hitX > 0.33f ? (hitX > 0.66f ? 2 : 1) : 0;
-                slot += hitZ > 0.33f ? (hitZ > 0.66f ? 6 : 3) : 0;
-
+                int slot = te.getSlotIndex(hitX, hitZ);
                 if (heldItem == null || heldItem.stackSize <= 0) {
                     te.playerExtractItem(slot, hitX, hitZ, playerIn.isSneaking());
                 } else {
