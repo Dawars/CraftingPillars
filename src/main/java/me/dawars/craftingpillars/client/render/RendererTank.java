@@ -48,7 +48,7 @@ public class RendererTank extends TileEntitySpecialRenderer<TileTank> {
 //        GlStateManager.translate(0.05F, 0.05F, 0.05F);
 //        GlStateManager.scale(.99,.99,.99); // FIXME dont overlap with glass pane
         int capacity = te.getTankCapacity();
-        FluidStack fluid = te.getTank().getFluid();
+        FluidStack fluid = te.getFluidTank().getFluid();
         if (fluid != null) {
             Tessellator tess = Tessellator.getInstance();
             VertexBuffer buffer = tess.getBuffer();

@@ -56,6 +56,7 @@ repositories {
 
 dependencies {
     compile "codechicken:CodeChickenLib:${config.mc_version}-${config.ccl_version}:deobf"
+    compile "codechicken:EnderStorage:${config.mc_version}-${config.ender_storage_version}:deobf"
     compile "cofh:CoFHCore:${config.mc_version}-${config.cofhcore_version}:deobf"
     compile "cofh:ThermalFoundation:${config.mc_version}-${config.tf_version}:deobf"
     compile "cofh:ThermalExpansion:${config.mc_version}-${config.te_version}:deobf"
