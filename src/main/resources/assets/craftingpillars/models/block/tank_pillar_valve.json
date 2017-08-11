@@ -1,0 +1,59 @@
+{
+    "__comment": "Model generated using MrCrayfish's Model Creator (https://mrcrayfish.com/tools?id=mc)",
+    "textures": {
+        "particle": "craftingpillars:blocks/palestone",
+        "4": "craftingpillars:blocks/tank_valve"
+    },
+    "display": {
+        "gui": {
+            "rotation": [ 30, 225, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 0.625, 0.625, 0.625 ]
+        },
+        "ground": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 3, 0 ],
+            "scale": [ 0.25, 0.25, 0.25 ]
+        },
+        "fixed": {
+            "rotation": [ 0, 0, 0 ],
+            "translation": [ 0, 0, 0 ],
+            "scale": [ 0.5, 0.5, 0.5 ]
+        },
+        "thirdperson_righthand": {
+            "rotation": [ 75, 45, 0 ],
+            "translation": [ 0, 2.5, 0 ],
+            "scale": [ 0.375, 0.375, 0.375 ]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [ 75, 255, 0 ],
+            "translation": [ 0, 2.5, 0 ],
+            "scale": [ 0.375, 0.375, 0.375 ]
+        },
+        "firstperson_righthand": {
+            "rotation": [ 0, 45, 0 ],
+            "translation": [ 0, 2.5, 0 ],
+            "scale": [ 0.4, 0.4, 0.4 ]
+        },
+        "firstperson_lefthand": {
+            "rotation": [ 0, 225, 0 ],
+            "translation": [ 0, 2.5, 0 ],
+            "scale": [ 0.4, 0.4, 0.4 ]
+        }
+    },
+    "elements": [
+        {
+            "name": "ValveN",
+            "from": [ 5.00, 5.00, 0.00 ],
+            "to": [ 11.00, 11.00, 3.00 ],
+            "faces": {
+                "north": { "texture": "#4", "uv": [ 3.00, 6.00, 9.00, 12.00 ] },
+                "east": { "texture": "#4", "uv": [ 0.00, 6.00, 3.00, 12.00 ] },
+                "south": { "texture": "#4", "uv": [ 3.00, 6.00, 9.00, 12.00 ] },
+                "west": { "texture": "#4", "uv": [ 9.00, 6.00, 12.00, 12.00 ] },
+                "up": { "texture": "#4", "uv": [ 0.00, 0.00, 6.00, 3.00 ] },
+                "down": { "texture": "#4", "uv": [ 0.00, 3.00, 6.00, 6.00 ] }
+            }
+        }
+    ]
+}

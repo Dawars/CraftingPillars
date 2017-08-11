@@ -1,5 +1,6 @@
 package me.dawars.craftingpillars.blocks;
 
+import me.dawars.craftingpillars.tileentity.TileBase;
 import me.dawars.craftingpillars.tileentity.TilePillar;
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.state.IBlockState;
@@ -28,5 +29,12 @@ public abstract class BaseTileBlock extends BaseBlock implements ITileEntityProv
             return true;
         }
         return super.onBlockActivated(worldIn, pos, state, playerIn, hand, heldItem, side, hitX, hitY, hitZ);
+    }
+
+    @Override
+    public int getComparatorInputOverride(IBlockState blockState, World world, BlockPos pos) {
+
+        TileEntity tile = world.getTileEntity(pos);
+        return tile instanceof TileBase && tile.hasWorldObj() ? ((TileBase) tile).getComparatorInputOverride() : 0;
     }
 }

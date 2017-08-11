@@ -1,12 +1,11 @@
 package me.dawars.craftingpillars.tileentity;
 
-import me.dawars.craftingpillars.CraftingPillars;
 import me.dawars.craftingpillars.client.render.Blobs;
+import me.dawars.craftingpillars.util.helpers.ServerHelper;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -27,19 +26,12 @@ public class TileTank extends TilePillar implements ITickable {
 
     private List<Blobs> blobs = new ArrayList<>();
 
-    private int prevLightValue = 0;
+    private int compareTracker;
 
     @Override
     public void update() {
-        // TODO pump out on sides
 
-        if (this.worldObj.isRemote) {
-            // FIXME light state change
-            int lightValue = getFluidLightLevel();
-            if (prevLightValue != lightValue) {
-                prevLightValue = lightValue;
-                worldObj.setLightFor(EnumSkyBlock.BLOCK, pos, lightValue);
-            }
+        if (ServerHelper.isClientWorld(worldObj)) {
 
             EntityPlayerSP player = FMLClientHandler.instance().getClient().thePlayer;
             if (pos.distanceSq(player.posX, player.posY, player.posZ) < 128) {
@@ -51,9 +43,20 @@ public class TileTank extends TilePillar implements ITickable {
                 for (int i = 0; i < this.blobs.size(); i++)
                     this.blobs.get(i).update(0.1F);
             }
-        }
 
-        CraftingPillars.LOGGER.info(getTankFluidAmount());
+            return;
+        }
+//        transferFluid(); // TODO maybe batch tanks in cubes/column?
+
+        if (updateOnInterval(32)) {// FIXME change to constant
+            int curScale = tank.getFluid() == null ? 0 : tank.getFluid().amount * 15 / tank.getCapacity();
+            if (curScale != compareTracker) {
+                compareTracker = curScale;
+                callNeighborTileChange();
+            }
+
+            updateLighting();
+        }
     }
 
     @Override
@@ -73,8 +76,13 @@ public class TileTank extends TilePillar implements ITickable {
         return tank.getFluidAmount() <= 0;
     }
 
-    public FluidTank getTank() {
+    public FluidTank getFluidTank() {
         return tank;
+    }
+
+    public FluidStack getTankFluid() {
+
+        return tank.getFluid();
     }
 
     public int getTankCapacity() {

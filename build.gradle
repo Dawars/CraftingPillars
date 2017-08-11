@@ -59,6 +59,7 @@ dependencies {
 //    compile "codechicken:CodeChickenCore:${config.mc_version}-1.0.4.35:deobf"
 //    compile "codechicken:NotEnoughItems:${config.mc_version}-1.0.4.90:deobf"
 
+    compile "codechicken:EnderStorage:${config.mc_version}-${config.ender_storage_version}:deobf"
     compile "cofh:CoFHCore:${config.mc_version}-${config.cofhcore_version}:deobf"
     compile "cofh:ThermalFoundation:${config.mc_version}-${config.tf_version}:deobf"
     compile "cofh:ThermalExpansion:${config.mc_version}-${config.te_version}:deobf"
