@@ -3,28 +3,13 @@ package me.dawars.craftingpillars.blocks;
 import me.dawars.craftingpillars.tileentity.TileBase;
 import me.dawars.craftingpillars.tileentity.TileTank;
 import me.dawars.craftingpillars.util.FluidHelper;
-import mrtjp.core.util.Enum;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockFlower;
-import net.minecraft.block.BlockFlowerPot;
-import net.minecraft.block.BlockPlanks;
-import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFlowerPot;
 import net.minecraft.util.*;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.ChunkCache;
 import net.minecraft.world.IBlockAccess;
@@ -36,7 +21,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 public class BlockTank extends BaseTileBlock {
     public BlockTank(String name) {
@@ -112,28 +96,17 @@ public class BlockTank extends BaseTileBlock {
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
 
-        TileBase tile = (TileBase) world.getTileEntity(pos); // FIXME add external update util
+        TileBase tile = (TileBase) world.getTileEntity(pos);
 
         if (tile != null) {
             IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
             if (FluidHelper.isFluidHandler(heldItem) && FluidHelper.interactWithHandler(heldItem, handler, player, hand)) {
-                tile.updateBlock();// FIXME refactor this
+                tile.markDirty();
+                tile.callBlockUpdate();
                 return true;
             }
         }
         return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
-    }
-
-    @Override
-    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
-        TileEntity tile = world.getTileEntity(pos);
-
-        if (tile instanceof TileTank) {
-            TileTank tank = (TileTank) tile;
-            return tank.getFluidLightLevel();
-        }
-
-        return super.getLightValue(state, world, pos);
     }
 
     /**

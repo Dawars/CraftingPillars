@@ -29,6 +29,7 @@ public class TilePillar extends TileBase {
 
     public void toggleShow() {
         showNum = !showNum;
-        updateBlock();
+        markDirty();
+        callBlockUpdate();
     }
 }

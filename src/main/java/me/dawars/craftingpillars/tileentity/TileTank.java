@@ -12,11 +12,16 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.client.FMLClientHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -29,18 +34,24 @@ public class TileTank extends TilePillar implements ITickable {
     private List<Blobs> blobs = new ArrayList<>();
 
     private int compareTracker;
+    private int lastDisplayLevel;
+
+
+    private boolean renderFlag = true;
+    private boolean cached = false;
 
     @Override
     public void update() {
-//        CraftingPillars.LOGGER.info(getTankFluidAmount());
+        CraftingPillars.LOGGER.info(getTankFluidAmount());
 
         if (ServerHelper.isClientWorld(worldObj)) {
 
             EntityPlayerSP player = FMLClientHandler.instance().getClient().thePlayer;
             if (pos.distanceSq(player.posX, player.posY, player.posZ) < 128) {
-                while (this.blobs.size() < getTankFluidAmount() / Fluid.BUCKET_VOLUME)
+                int numBlob = (getTankFluidAmount() + Fluid.BUCKET_VOLUME - 1) / Fluid.BUCKET_VOLUME;
+                while (this.blobs.size() < numBlob)
                     this.addBlob();
-                while (this.blobs.size() > getTankFluidAmount() / Fluid.BUCKET_VOLUME)
+                while (this.blobs.size() > numBlob)
                     this.removeBlob();
 
                 for (int i = 0; i < this.blobs.size(); i++)
@@ -56,25 +67,101 @@ public class TileTank extends TilePillar implements ITickable {
             int curScale = tank.getFluid() == null ? 0 : tank.getFluid().amount * 15 / tank.getCapacity();
             if (curScale != compareTracker) {
                 compareTracker = curScale;
-                callNeighborTileChange();
+//                updateAdjacentHandlers(false);
+                sendTilePacket(Side.CLIENT);
             }
+            if (!cached) {
+                updateLighting();
+//                updateAdjacentHandlers(false);
+                sendTilePacket(Side.CLIENT);
+            }
+        }
+        if (renderFlag && updateOnInterval(4)) {
+            updateRender();
+        }
+    }
+/*
+//  update connected tanks above and below
+    protected void updateAdjacentHandlers(boolean packet) {
 
+        if (ServerHelper.isClientWorld(worldObj)) {
+            return;
+        }
+        boolean curAutoOutput = enableAutoOutput;
+
+        adjacentTanks[0] = BlockHelper.getAdjacentTileEntity(this, EnumFacing.DOWN) instanceof TileTank;
+        enableAutoOutput |= adjacentTanks[0];
+
+        adjacentTanks[1] = BlockHelper.getAdjacentTileEntity(this, EnumFacing.UP) instanceof TileTank;
+
+        if (packet && curAutoOutput != enableAutoOutput) {
+            sendTilePacket(Side.CLIENT);
+        }
+        cached = true;
+    }*/
+
+    public void updateRender() {
+
+        renderFlag = false;
+        boolean sendUpdate = false;
+
+        int curDisplayLevel = 0;
+        int curLight = getLightValue();
+
+        if (tank.getFluidAmount() > 0) {
+            curDisplayLevel = blobs.size();
+            if (curDisplayLevel == 0) {
+                curDisplayLevel = 1;
+            }
+            if (lastDisplayLevel == 0) {
+                lastDisplayLevel = curDisplayLevel;
+                sendUpdate = true;
+            }
+        } else if (lastDisplayLevel != 0) {
+            lastDisplayLevel = 0;
+            sendUpdate = true;
+        }
+        if (curDisplayLevel != lastDisplayLevel) {
+            lastDisplayLevel = curDisplayLevel;
+            sendUpdate = true;
+        }
+        if (curLight != getLightValue()) {
             updateLighting();
+            sendUpdate = true;
+        }
+        if (sendUpdate) {
+            CraftingPillars.LOGGER.info("updateRender");
+            sendTilePacket(Side.CLIENT);
         }
     }
 
-    @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        super.readFromNBT(tag);
-        tank.readFromNBT(tag);
+    public int getLightValue() {
+        return tank.getFluid() == null ? 0 : tank.getFluid().getFluid().getLuminosity();
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        tag = super.writeToNBT(tag);
-        tank.writeToNBT(tag);
-        return tag;
+    public void invalidate() {
+
+        cached = false;
+        super.invalidate();
     }
+
+    /* NBT METHODS */
+    @Override
+    public void readFromNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
+
+        tank.readFromNBT(nbt);
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
+
+        tank.writeToNBT(nbt);
+        return nbt;
+    }
+
     /* NETWORK METHODS */
 
     /* SERVER -> CLIENT */
@@ -97,7 +184,6 @@ public class TileTank extends TilePillar implements ITickable {
         FluidStack fluidStack = payload.getFluidStack();
         tank.setFluid(fluidStack);
 
-        CraftingPillars.LOGGER.info("handleTilePacket "+fluidStack.amount);
         callBlockUpdate();
     }
 
@@ -131,13 +217,56 @@ public class TileTank extends TilePillar implements ITickable {
         return capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
-            return (T) tank;
-        return super.getCapability(capability, facing);
+    public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
+
+        if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+            return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+
+                @Override
+                public IFluidTankProperties[] getTankProperties() {
+
+                    FluidTankInfo info = tank.getInfo();
+                    return new IFluidTankProperties[]{new FluidTankProperties(info.fluid, info.capacity, true, true)};
+                }
+
+                @Override
+                public int fill(FluidStack resource, boolean doFill) {
+
+                    if (resource == null || from == EnumFacing.DOWN) {
+                        return 0;
+                    }
+                    renderFlag = true;
+                    int amount = tank.fill(resource, doFill);
+
+                    /*if (adjacentTanks[1] && from != EnumFacing.UP) {
+                        if (amount != resource.amount) {
+                            FluidStack remaining = resource.copy();
+                            remaining.amount -= amount;
+                            return amount + FluidHelper.insertFluidIntoAdjacentFluidHandler(worldObj, pos, EnumFacing.UP, remaining, doFill);
+                        }
+                    }*/
+                    return amount;
+                }
+
+                @Nullable
+                @Override
+                public FluidStack drain(FluidStack resource, boolean doDrain) {
+                    renderFlag = true;
+                    return tank.drain(resource, doDrain);
+                }
+
+                @Nullable
+                @Override
+                public FluidStack drain(int maxDrain, boolean doDrain) {
+                    renderFlag = true;
+                    return tank.drain(maxDrain, doDrain);
+                }
+            });
+        }
+        return super.getCapability(capability, from);
     }
+
 
 
     /* Metaball rendering */
@@ -156,9 +285,4 @@ public class TileTank extends TilePillar implements ITickable {
         return blobs;
     }
 
-    public int getFluidLightLevel() {
-        if (isEmpty()) return 0;
-        FluidStack tankFluid = tank.getFluid();
-        return tankFluid == null ? 0 : tankFluid.getFluid().getLuminosity(tankFluid);
-    }
 }

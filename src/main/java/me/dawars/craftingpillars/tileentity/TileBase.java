@@ -22,18 +22,9 @@ import java.util.Random;
 public class TileBase extends TileEntity implements ITilePacketHandler{
     private static final Random rand = new Random();
 
-    private int tickCount = rand.nextInt(256);
-
-    public void updateBlock() {
-        markDirty();
-
-        IBlockState state = worldObj.getBlockState(pos);
-        worldObj.notifyBlockUpdate(getPos(), state, state, 3);
-    }
-
 
     protected final boolean updateOnInterval(int tickInterval) {
-        return tickCount % tickInterval == 0;
+        return worldObj.getTotalWorldTime() % tickInterval == 0;
     }
 
     protected void updateLighting() {

@@ -10,6 +10,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -36,5 +37,17 @@ public abstract class BaseTileBlock extends BaseBlock implements ITileEntityProv
 
         TileEntity tile = world.getTileEntity(pos);
         return tile instanceof TileBase && tile.hasWorldObj() ? ((TileBase) tile).getComparatorInputOverride() : 0;
+    }
+
+
+    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
+        TileEntity tile = world.getTileEntity(pos);
+
+        if (tile instanceof TileBase) {
+            TileBase tank = (TileBase) tile;
+            return tank.getLightValue();
+        }
+
+        return super.getLightValue(state, world, pos);
     }
 }
