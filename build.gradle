@@ -1,14 +1,18 @@
 buildscript {
     repositories {
         jcenter()
-        maven { url = "http://files.minecraftforge.net/maven" }
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT'
     }
 }
+
 apply plugin: 'net.minecraftforge.gradle.forge'
-//Only edit below this line, the above code adds and enables the nessasary things for Forge to be setup.
+apply plugin: 'maven'
 
 
 version = "2.0.0"
@@ -20,59 +24,168 @@ compileJava {
     sourceCompatibility = targetCompatibility = "1.8"
 }
 
-minecraft {
-    version = "1.10.2-12.18.3.2185"
-    runDir = "run"
-    
-    // the mappings can be changed at any time, and must be in the following format.
-    // snapshot_YYYYMMDD   snapshot are built nightly.
-    // stable_#            stables are built at the discretion of the MCP team.
-    // Use non-default mappings at your own risk. they may not allways work.
-    // simply re-run your setup task after changing the mappings to update your workspace.
-    mappings = "snapshot_20161111"
-    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+// Define properties file
+ext.configFile = file "build.properties"
+
+configFile.withReader {
+    // Load config.  It shall from now be referenced as simply config or project.config
+    def prop = new Properties()
+    prop.load(it)
+    project.ext.config = new ConfigSlurper().parse prop
+}
+
+repositories {
+    maven {
+        name = "ChickenBones Maven"
+        url = "http://chickenbones.net/maven/"
+    }
+    maven {
+        name = "Covers Maven"
+        url = "http://maven.covers1624.net"
+    }
+    maven {
+        name = "JEI Maven"
+        url = "http://dvs1.progwml6.com/files/maven"
+    }
+    maven {
+        name = "ic2-and-forestry"
+        url = "http://maven.ic2.player.to/"
+    }
+
 }
 
 dependencies {
-    // you may put jars on which you depend on in ./libs
-    // or you may define them like so..
-    //compile "some.group:artifact:version:classifier"
-    //compile "some.group:artifact:version"
-      
-    // real examples
-    //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
-    //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
+    compile "codechicken:CodeChickenLib:${config.mc_version}-${config.ccl_version}:deobf"
+//    compile "codechicken:CodeChickenCore:${config.mc_version}-1.0.4.35:deobf"
+//    compile "codechicken:NotEnoughItems:${config.mc_version}-1.0.4.90:deobf"
 
-    // the 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
-    //provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
+    compile "codechicken:EnderStorage:${config.mc_version}-${config.ender_storage_version}:deobf"
+    compile "cofh:CoFHCore:${config.mc_version}-${config.cofhcore_version}:deobf"
+    compile "cofh:ThermalFoundation:${config.mc_version}-${config.tf_version}:deobf"
+    compile "cofh:ThermalExpansion:${config.mc_version}-${config.te_version}:deobf"
+    compile "cofh:ThermalDynamics:${config.mc_version}-${config.td_version}:deobf"
 
-    // the deobf configurations:  'deobfCompile' and 'deobfProvided' are the same as the normal compile and provided,
-    // except that these dependencies get remapped to your current MCP mappings
-    //deobfCompile 'com.mod-buildcraft:buildcraft:6.0.8:dev'
-    //deobfProvided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
+    compile "mrtjp:ProjectRed:${config.mc_version}-${config.pr_version}:deobf"
 
-    // for more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
+//    compile "slimeknights.mantle:Mantle:${config.mc_version}-${config.mantle_version}:deobf" // older mc?
+//    compile "slimeknights:TConstruct:${config.mc_version}-${config.tk_version}:deobf"
+
+
+
+
 
 }
+version = "${project.config.mod_version}." + (System.getenv("BUILD_NUMBER") ?: "1")
 
-processResources
-{
-    // this will ensure that this task is redone when the versions change.
+println config.mc_version + "-" + config.forge_version
+// Setup the forge minecraft plugin data. Specify the preferred forge/minecraft version here
+minecraft {
+    version = config.mc_version + "-" + config.forge_version
+    mappings = config.mappings
+    runDir = "run"
+    replace '${mod_version}', project.config.mod_version
+    makeObfSourceJar = false
+}
+
+
+processResources {
     inputs.property "version", project.version
-    inputs.property "mcversion", project.minecraft.version
+    inputs.property "mc_version", project.config.mc_version
 
-    // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-                
-        // replace version and mcversion
-        expand 'version':project.version, 'mcversion':project.minecraft.version
+        expand 'version': project.version, 'mc_version': project.config.mc_version
     }
-        
-    // copy everything else, thats not the mcmod.info
-    from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
+    rename '(.+_at.cfg)', 'META-INF/$1'
+}
+
+version = "${project.minecraft.version}-${project.version}"
+def commonManifest = {
+    attributes 'FMLAT': 'cofh_at.cfg'
+}
+
+jar {
+    classifier = 'universal'
+    manifest commonManifest
+}
+
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'deobf'
+    manifest commonManifest
+}
+
+task srcJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+    manifest commonManifest
+}
+
+// Tell the artifact system about our extra jars
+artifacts {
+    archives deobfJar
+    archives srcJar
+}
+
+
+// Configure an upload task.
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            if (project.hasProperty("local_maven") || project.hasProperty("maven_pass")) {
+                if (project.hasProperty("maven_pass")) {
+                    println "Uploading to remote maven."
+                    repository(url: "http://maven_upload.covers1624.net/") {
+                        authentication(userName: "cofh", password: project.getProperty("maven_pass"))
+                    }
+                } else {
+                    println "Uploading to local maven."
+                    repository(url: "file://${local_maven}")
+                }
+                pom {
+                    groupId = project.group
+                    // Force the maven upload to use the <mcversion>-<version> syntax preferred at files
+                    artifactId = project.archivesBaseName
+                    project {
+                        name project.archivesBaseName
+                        packaging 'jar'
+                        description 'CraftingPillars'
+                        url 'https://github.com/Dawars/CraftingPillars'
+
+                        scm {
+                            url 'https://github.com/Dawars/CraftingPillars'
+                            connection 'scm:git:git://github.com/Dawars/CraftingPillars.git'
+                            developerConnection 'scm:git:git@github.com:Dawars/CraftingPillars.git'
+                        }
+
+                        issueManagement {
+                            system 'github'
+                            url 'https://github.com/Dawars/CraftingPillars/issues'
+                        }
+// TODO: add licence
+                        licenses {
+                            license {
+                                name "All rights reserved"
+                                url 'https://github.com/CoFH/ThermalExpansion/blob/master/README.md'
+                                distribution 'repo'
+                            }
+                        }
+
+                        developers {
+                            developer {
+                                id 'Dawars'
+                                name 'Dawars'
+                                roles { role 'developer' }
+                            }
+                            developer {
+                                id 'FBalazs'
+                                name 'FBalazs'
+                                roles { role 'developer' }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

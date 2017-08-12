@@ -4,10 +4,11 @@ import me.dawars.craftingpillars.CraftingPillars;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 
-public class BaseBlockPillar extends Block {
+public class BaseBlock extends Block {
 
-    public BaseBlockPillar(String name) {
+    public BaseBlock(String name) {
         super(Material.ROCK);
         setHardness(1.5f);
         setResistance(10f);
@@ -16,4 +17,15 @@ public class BaseBlockPillar extends Block {
         setUnlocalizedName(name);
         setRegistryName(CraftingPillars.MODID, name);
     }
+
+    /**
+     *Fixes rendering lightmap and neighboring block sides
+     * @param state
+     * @return
+     */
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
 }

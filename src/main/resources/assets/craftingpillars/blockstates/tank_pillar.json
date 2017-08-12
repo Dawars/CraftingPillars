@@ -1,0 +1,17 @@
+{
+  "multipart": [
+    {   "apply": { "model": "craftingpillars:tank_pillar"}},
+    {   "when": { "north": "true" },
+      "apply": { "model": "craftingpillars:tank_pillar_valve" }
+    },
+    {   "when": { "east": "true" },
+      "apply": { "model": "craftingpillars:tank_pillar_valve", "y": 90 }
+    },
+    {   "when": { "south": "true" },
+      "apply": { "model": "craftingpillars:tank_pillar_valve", "y": 180 }
+    },
+    {   "when": { "west": "true" },
+      "apply": { "model": "craftingpillars:tank_pillar_valve", "y": 270}
+    }
+  ]
+}
