@@ -1,11 +1,12 @@
 package me.dawars.craftingpillars;
 
+import me.dawars.craftingpillars.blocks.BlockCraftingPillar;
 import me.dawars.craftingpillars.blocks.CpBlocks;
 import me.dawars.craftingpillars.tileentity.TileEntityCraftingPillar;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -46,12 +47,6 @@ public class CraftingPillars {
         LOGGER.info("Pre-Initialization...");
 
         proxy.preInit(event);
-/*
-
-        GameRegistry.register(BLOCK_CRAFTINGPILLAR);
-        GameRegistry.register(new ItemBlock(BLOCK_CRAFTINGPILLAR).setRegistryName(BLOCK_CRAFTINGPILLAR.getRegistryName()));
-        GameRegistry.registerTileEntity(TileEntityCraftingPillar.class,MODID+":tileentity_craftingpillar");
-*/
 
         CpBlocks.init();
         CpBlocks.register();
@@ -73,49 +68,19 @@ public class CraftingPillars {
 
         proxy.postInit(event);
     }
-/*
-    @SubscribeEvent
-    public void registerBlocks(RegistryEvent.Register<Block> event) {
-        LOGGER.info("Registering blocks...");
-        event.getRegistry().registerAll(BLOCK_CRAFTINGPILLAR);
-    }
-
-    @SubscribeEvent
-    public void registerItems(RegistryEvent.Register<Item> event) {
-        LOGGER.info("Registering items...");
-        event.getRegistry().registerAll(new ItemBlock(BLOCK_CRAFTINGPILLAR).setRegistryName(BLOCK_CRAFTINGPILLAR.getRegistryName()));
-    }*/
 
     public void registerTileEntities() {
         GameRegistry.registerTileEntity(TileEntityCraftingPillar.class,MODID+":tileentity_craftingpillar");
     }
 
     @SubscribeEvent
-    public void onLeftClickBlockEvent(PlayerInteractEvent.LeftClickBlock event) {
-        LOGGER.info("leftclick: "+event.getWorld().isRemote+" "+event.getHitVec());
-
-        /*if (event.getWorld().isRemote) {
-            if (event.getFace() == EnumFacing.UP) {
-                Block block = event.getWorld().getBlockState(event.getPos()).getBlock();
-                if (block.getClass() == BlockCraftingPillar.class) {
-                    event.setCanceled(true);
-                    LOGGER.info("canceled!");
-                    // TODO maybe make custom method in BasePillar with hit vector
-                    block.onBlockClicked(event.getWorld(), event.getPos(), event.getEntityPlayer());
-                }
-            }
-        }*/
-    }
-
-    @SubscribeEvent
     public void onBreakEvent(BlockEvent.BreakEvent event) {
-        LOGGER.info("breakevent: "+event.getWorld().isRemote);
-        /*if (event.getPlayer().isCreative() && event.getState().getBlock().getClass() == BlockCraftingPillar.class) {
-            TileEntityCraftingPillar te = (TileEntityCraftingPillar) event.getWorld().getTileEntity(event.getPos());
-            if (te != null && te.getResultStack() != null && te.getResultStack().stackSize > 0) {
+        if (!event.getWorld().isRemote && event.getPlayer().isCreative() && event.getPlayer().isSneaking()) {
+            Block block = event.getState().getBlock();
+            if (block.getClass() == BlockCraftingPillar.class) {
                 event.setCanceled(true);
-                //MinecraftForge.EVENT_BUS.post(new PlayerInteractEvent.LeftClickBlock(event.getPlayer(), event.getPos(), ))
+                block.onBlockClicked(event.getWorld(), event.getPos(), event.getPlayer());
             }
-        }*/
+        }
     }
 }

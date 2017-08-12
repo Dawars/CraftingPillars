@@ -43,7 +43,7 @@ public class TESRCraftingPillar extends TileEntitySpecialRenderer<TileEntityCraf
 
         if (te.getResultStack() != null) {
             entityItem.hoverStart = te.getItemRotation(partialTicks); // crafting result spins and bobs
-            renderItem(te.getResultStack(), x + 0.5, y + 1.5, z + 0.5, 1);
+            renderItem(te.getResultStack(), x + 0.5, y + 1.25, z + 0.5, 1);
         }
     }
 }
