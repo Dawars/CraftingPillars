@@ -1,6 +1,9 @@
 package me.dawars.craftingpillars;
 
 import me.dawars.craftingpillars.blocks.CpBlocks;
+import me.dawars.craftingpillars.network.PacketCraftingPillar;
+import me.dawars.craftingpillars.network.PacketHandler;
+import me.dawars.craftingpillars.network.PacketTile;
 import me.dawars.craftingpillars.tileentity.TileEntityCraftingPillar;
 import me.dawars.craftingpillars.tileentity.TileTank;
 import net.minecraft.creativetab.CreativeTabs;
@@ -27,8 +30,8 @@ public class CraftingPillars {
 
     public static final Logger LOGGER = LogManager.getLogger(MODID);
 
-    @SidedProxy(clientSide = "me.dawars.craftingpillars.ClientProxy", serverSide = "me.dawars.craftingpillars.ServerProxy")
-    private static CommonProxy proxy;
+    @SidedProxy(clientSide = "me.dawars.craftingpillars.ClientProxy", serverSide = "me.dawars.craftingpillars.Proxy")
+    public static Proxy proxy;
 
     public static final CreativeTabs CREATIVETAB = new CreativeTabs("craftingpillars") {
         @Override
@@ -45,6 +48,10 @@ public class CraftingPillars {
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         LOGGER.info("Pre-Initialization...");
+
+        PacketHandler.preInit();
+
+        PacketTile.initialize();
 
         proxy.preInit(event);
 
@@ -65,6 +72,7 @@ public class CraftingPillars {
     @EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         LOGGER.info("Post-Initialization...");
+        PacketHandler.postInit();
 
         proxy.postInit(event);
     }

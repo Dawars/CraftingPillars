@@ -1,6 +1,8 @@
 package me.dawars.craftingpillars.tileentity;
 
+import me.dawars.craftingpillars.CraftingPillars;
 import me.dawars.craftingpillars.client.render.Blobs;
+import me.dawars.craftingpillars.network.PacketCraftingPillar;
 import me.dawars.craftingpillars.util.helpers.ServerHelper;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,6 +32,7 @@ public class TileTank extends TilePillar implements ITickable {
 
     @Override
     public void update() {
+//        CraftingPillars.LOGGER.info(getTankFluidAmount());
 
         if (ServerHelper.isClientWorld(worldObj)) {
 
@@ -46,6 +49,7 @@ public class TileTank extends TilePillar implements ITickable {
 
             return;
         }
+
 //        transferFluid(); // TODO maybe batch tanks in cubes/column?
 
         if (updateOnInterval(32)) {// FIXME change to constant
@@ -71,6 +75,32 @@ public class TileTank extends TilePillar implements ITickable {
         tank.writeToNBT(tag);
         return tag;
     }
+    /* NETWORK METHODS */
+
+    /* SERVER -> CLIENT */
+    @Override
+    public PacketCraftingPillar getTilePacket() {
+
+        PacketCraftingPillar payload = super.getTilePacket();
+        CraftingPillars.LOGGER.info("getTilePacket");
+        payload.addFluidStack(tank.getFluid());
+
+        return payload;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void handleTilePacket(PacketCraftingPillar payload) {
+
+        super.handleTilePacket(payload);
+
+        FluidStack fluidStack = payload.getFluidStack();
+        tank.setFluid(fluidStack);
+
+        CraftingPillars.LOGGER.info("handleTilePacket "+fluidStack.amount);
+        callBlockUpdate();
+    }
+
 
     public boolean isEmpty() {
         return tank.getFluidAmount() <= 0;
