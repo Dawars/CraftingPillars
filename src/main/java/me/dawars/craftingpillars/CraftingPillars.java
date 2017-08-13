@@ -2,12 +2,12 @@ package me.dawars.craftingpillars;
 
 import me.dawars.craftingpillars.blocks.BlockCraftingPillar;
 import me.dawars.craftingpillars.blocks.CpBlocks;
-import me.dawars.craftingpillars.network.PacketCraftingPillar;
 import me.dawars.craftingpillars.network.PacketHandler;
 import me.dawars.craftingpillars.network.PacketTile;
 import me.dawars.craftingpillars.tileentity.TileEntityCraftingPillar;
-import net.minecraft.block.Block;
+import me.dawars.craftingpillars.tileentity.TileSmelter;
 import me.dawars.craftingpillars.tileentity.TileTank;
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
@@ -81,6 +81,7 @@ public class CraftingPillars {
     public void registerTileEntities() {
         GameRegistry.registerTileEntity(TileEntityCraftingPillar.class,MODID+":tileentity_craftingpillar");
         GameRegistry.registerTileEntity(TileTank.class,MODID+":TE_tank");
+        GameRegistry.registerTileEntity(TileSmelter.class, MODID + ":TE_smelter");
     }
 
     @SubscribeEvent

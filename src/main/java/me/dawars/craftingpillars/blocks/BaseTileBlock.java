@@ -24,6 +24,11 @@ public abstract class BaseTileBlock extends BaseBlock implements ITileEntityProv
     public abstract TileEntity createNewTileEntity(World world, int i);
 
     @Override
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
+    }
+
+    @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (playerIn.getHeldItemMainhand() == null && worldIn.getTileEntity(pos) instanceof TilePillar) {
             ((TilePillar) worldIn.getTileEntity(pos)).toggleShow();

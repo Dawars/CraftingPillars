@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "normal": {
+      "model": "craftingpillars:smelting_pillar"
+    },
+    "facing=north": {
+      "model": "craftingpillars:smelting_pillar"
+    },
+    "facing=east": {
+      "model": "craftingpillars:smelting_pillar",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "craftingpillars:smelting_pillar",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "craftingpillars:smelting_pillar",
+      "y": 270
+    }
+  }
+}
