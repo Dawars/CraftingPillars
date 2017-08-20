@@ -42,8 +42,6 @@ public class TileTank extends TilePillar implements ITickable {
 
     @Override
     public void update() {
-        CraftingPillars.LOGGER.info(getTankFluidAmount());
-
         if (ServerHelper.isClientWorld(worldObj)) {
 
             EntityPlayerSP player = FMLClientHandler.instance().getClient().thePlayer;

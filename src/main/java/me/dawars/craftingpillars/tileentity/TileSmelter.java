@@ -1,6 +1,5 @@
 package me.dawars.craftingpillars.tileentity;
 
-import me.dawars.craftingpillars.blocks.BlockSmelter;
 import me.dawars.craftingpillars.inventory.InventorySmelter;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -97,12 +96,13 @@ public class TileSmelter extends TilePillar implements ITickable {
             if (flag != this.isBurning()) {
                 flag1 = true;
                 // set state
-                BlockSmelter.setState(this.isBurning(), this.worldObj, this.pos);
+//                BlockSmelter.setState(this.isBurning(), this.worldObj, this.pos);
             }
         }
 
         if (flag1) {
             this.markDirty();
+            callBlockUpdate();
         }
 
         // update lighting
