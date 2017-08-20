@@ -1,4 +1,4 @@
-package me.dawars.craftingpillars.util;
+package me.dawars.craftingpillars.util.helpers;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;

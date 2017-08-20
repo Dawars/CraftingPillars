@@ -2,7 +2,7 @@ package me.dawars.craftingpillars.blocks;
 
 import me.dawars.craftingpillars.tileentity.TileBase;
 import me.dawars.craftingpillars.tileentity.TileTank;
-import me.dawars.craftingpillars.util.FluidHelper;
+import me.dawars.craftingpillars.util.helpers.FluidHelper;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;

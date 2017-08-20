@@ -1,6 +1,5 @@
 package me.dawars.craftingpillars.tileentity;
 
-import me.dawars.craftingpillars.CraftingPillars;
 import me.dawars.craftingpillars.client.render.Blobs;
 import me.dawars.craftingpillars.network.PacketCraftingPillar;
 import me.dawars.craftingpillars.util.helpers.ServerHelper;
@@ -33,15 +32,13 @@ public class TileTank extends TilePillar implements ITickable {
 
     private List<Blobs> blobs = new ArrayList<>();
 
-    private int compareTracker;
     private int lastDisplayLevel;
 
-
     private boolean renderFlag = true;
-    private boolean cached = false;
 
     @Override
     public void update() {
+
         if (ServerHelper.isClientWorld(worldObj)) {
 
             EntityPlayerSP player = FMLClientHandler.instance().getClient().thePlayer;
@@ -61,87 +58,38 @@ public class TileTank extends TilePillar implements ITickable {
 
 //        transferFluid(); // TODO maybe batch tanks in cubes/column?
 
-        if (updateOnInterval(32)) {// FIXME change to constant
-            int curScale = tank.getFluid() == null ? 0 : tank.getFluid().amount * 15 / tank.getCapacity();
-            if (curScale != compareTracker) {
-                compareTracker = curScale;
-//                updateAdjacentHandlers(false);
-                sendTilePacket(Side.CLIENT);
-            }
-            if (!cached) {
-                updateLighting();
-//                updateAdjacentHandlers(false);
-                sendTilePacket(Side.CLIENT);
-            }
-        }
         if (renderFlag && updateOnInterval(4)) {
             updateRender();
         }
+
+        super.update(); // update light and comparator
     }
-/*
-//  update connected tanks above and below
-    protected void updateAdjacentHandlers(boolean packet) {
 
-        if (ServerHelper.isClientWorld(worldObj)) {
-            return;
-        }
-        boolean curAutoOutput = enableAutoOutput;
-
-        adjacentTanks[0] = BlockHelper.getAdjacentTileEntity(this, EnumFacing.DOWN) instanceof TileTank;
-        enableAutoOutput |= adjacentTanks[0];
-
-        adjacentTanks[1] = BlockHelper.getAdjacentTileEntity(this, EnumFacing.UP) instanceof TileTank;
-
-        if (packet && curAutoOutput != enableAutoOutput) {
-            sendTilePacket(Side.CLIENT);
-        }
-        cached = true;
-    }*/
-
+    /**
+     * Send packet when blob number changes
+     */
     public void updateRender() {
-
         renderFlag = false;
-        boolean sendUpdate = false;
 
-        int curDisplayLevel = 0;
-        int curLight = getLightValue();
-
-        if (tank.getFluidAmount() > 0) {
-            curDisplayLevel = blobs.size();
-            if (curDisplayLevel == 0) {
-                curDisplayLevel = 1;
-            }
-            if (lastDisplayLevel == 0) {
-                lastDisplayLevel = curDisplayLevel;
-                sendUpdate = true;
-            }
-        } else if (lastDisplayLevel != 0) {
-            lastDisplayLevel = 0;
-            sendUpdate = true;
-        }
+        // calc display level
+        int curDisplayLevel = blobs.size();
+        // check update
         if (curDisplayLevel != lastDisplayLevel) {
             lastDisplayLevel = curDisplayLevel;
-            sendUpdate = true;
-        }
-        if (curLight != getLightValue()) {
-            updateLighting();
-            sendUpdate = true;
-        }
-        if (sendUpdate) {
-            CraftingPillars.LOGGER.info("updateRender");
+
             sendTilePacket(Side.CLIENT);
         }
     }
 
+    @Override
     public int getLightValue() {
         return tank.getFluid() == null ? 0 : tank.getFluid().getFluid().getLuminosity();
     }
 
     @Override
-    public void invalidate() {
+    public int getComparatorInputOverride() {
 
-        cached = false;
-        super.invalidate();
+        return tank.getFluid() == null ? 0 : tank.getFluid().amount * 15 / tank.getCapacity();
     }
 
     /* NBT METHODS */
@@ -167,7 +115,6 @@ public class TileTank extends TilePillar implements ITickable {
     public PacketCraftingPillar getTilePacket() {
 
         PacketCraftingPillar payload = super.getTilePacket();
-        CraftingPillars.LOGGER.info("getTilePacket");
         payload.addFluidStack(tank.getFluid());
 
         return payload;
@@ -264,7 +211,6 @@ public class TileTank extends TilePillar implements ITickable {
         }
         return super.getCapability(capability, from);
     }
-
 
 
     /* Metaball rendering */

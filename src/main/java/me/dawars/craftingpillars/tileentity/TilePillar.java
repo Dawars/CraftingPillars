@@ -3,12 +3,19 @@ package me.dawars.craftingpillars.tileentity;
 import me.dawars.craftingpillars.inventory.FakeInventoryAdapter;
 import me.dawars.craftingpillars.inventory.IInventoryAdapter;
 import me.dawars.craftingpillars.inventory.InventorySmelter;
+import me.dawars.craftingpillars.util.Constants;
+import me.dawars.craftingpillars.util.helpers.BlockHelper;
+import me.dawars.craftingpillars.util.helpers.ServerHelper;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
@@ -16,12 +23,34 @@ import net.minecraftforge.items.wrapper.SidedInvWrapper;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TilePillar extends TileBase implements ISidedInventory {
+/**
+ * Basic functions of a Pillar: Inventory, displaying text, setting light, comparator value
+ */
+public class TilePillar extends TileBase implements ISidedInventory, ITickable {
     private static final String SHOW_NUM_KEY = "show_num";
+
     private boolean showNum;
+    private int compareTracker;
 
     @Nonnull
     private IInventoryAdapter<TilePillar> inventory = FakeInventoryAdapter.instance();
+
+
+    @Override
+    public void update() {
+        if (ServerHelper.isServerWorld(worldObj)) {
+            if (updateOnInterval(Constants.RENDERING_NETWORK_UPDATES)) {
+                int curScale = getComparatorInputOverride();
+                if (curScale != compareTracker) {
+                    compareTracker = curScale;
+                    BlockHelper.callNeighborTileChange(worldObj, pos); // update comparator
+                }
+
+                updateLighting();
+                sendTilePacket(Side.CLIENT);
+            }
+        }
+    }
 
     // Show the number of items/liquid in a container
     public boolean isShowNum() {
@@ -32,7 +61,7 @@ public class TilePillar extends TileBase implements ISidedInventory {
         this.showNum = showNum;
     }
 
-    /* INVENTORY BASICS  from Forestry*/
+    /* INVENTORY BASICS  from Forestry */
     public IInventoryAdapter<TilePillar> getInternalInventory() {
         return inventory;
     }
@@ -165,6 +194,27 @@ public class TilePillar extends TileBase implements ISidedInventory {
     @Override
     public void clear() {
     }
+
+    /* Block Light */
+    protected void updateLighting() {
+
+        int light2 = worldObj.getLightFor(EnumSkyBlock.BLOCK, getPos()), light1 = getLightValue();
+        if (light1 != light2 && worldObj.checkLightFor(EnumSkyBlock.BLOCK, getPos())) {
+            IBlockState state = worldObj.getBlockState(getPos());
+            worldObj.notifyBlockUpdate(pos, state, state, 3);
+        }
+    }
+
+    /**
+     * Light level of the block
+     *
+     * @return
+     */
+    public int getLightValue() {
+
+        return 0;
+    }
+
 
     @Nonnull
     @Override

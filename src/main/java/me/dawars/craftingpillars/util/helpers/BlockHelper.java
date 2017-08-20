@@ -1,4 +1,4 @@
-package me.dawars.craftingpillars.util;
+package me.dawars.craftingpillars.util.helpers;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -341,12 +341,12 @@ public final class BlockHelper {
 		world.notifyBlockUpdate(pos, state, state, 3);
 	}
 
-	public void callNeighborStateChange(World world, BlockPos pos) {
+	public static void callNeighborStateChange(World world, BlockPos pos) {
 
 		world.notifyNeighborsOfStateChange(pos, world.getBlockState(pos).getBlock());
 	}
 
-	public void callNeighborTileChange(World world, BlockPos pos) {
+	public static void callNeighborTileChange(World world, BlockPos pos) {
 
 		world.updateComparatorOutputLevel(pos, world.getBlockState(pos).getBlock());
 	}

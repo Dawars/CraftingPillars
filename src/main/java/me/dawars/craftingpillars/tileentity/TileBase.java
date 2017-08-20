@@ -10,7 +10,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.fml.relauncher.Side;
 
 import javax.annotation.Nullable;
@@ -19,7 +18,7 @@ import java.util.Random;
 /**
  * Contains various functions from ThermalExpansion and Forestry.
  */
-public class TileBase extends TileEntity implements ITilePacketHandler{
+public class TileBase extends TileEntity implements ITilePacketHandler {
     private static final Random rand = new Random();
 
 
@@ -27,34 +26,10 @@ public class TileBase extends TileEntity implements ITilePacketHandler{
         return worldObj.getTotalWorldTime() % tickInterval == 0;
     }
 
-    protected void updateLighting() {
-
-        int light2 = worldObj.getLightFor(EnumSkyBlock.BLOCK, getPos()), light1 = getLightValue();
-        if (light1 != light2 && worldObj.checkLightFor(EnumSkyBlock.BLOCK, getPos())) {
-            IBlockState state = worldObj.getBlockState(getPos());
-            worldObj.notifyBlockUpdate(pos, state, state, 3);
-        }
-    }
-
-    public int getLightValue() {
-
-        return 0;
-    }
-
     public void callBlockUpdate() {
 
         IBlockState state = worldObj.getBlockState(pos);
         worldObj.notifyBlockUpdate(pos, state, state, 3);
-    }
-
-    public void callNeighborStateChange() {
-
-        worldObj.notifyNeighborsOfStateChange(pos, getBlockType());
-    }
-
-    public void callNeighborTileChange() {
-
-        worldObj.updateComparatorOutputLevel(pos, getBlockType());
     }
 
     public void markChunkDirty() {
@@ -74,23 +49,6 @@ public class TileBase extends TileEntity implements ITilePacketHandler{
         return 0;
     }
 
-
-    /* Networking */
-    /*@Override
-    public NBTTagCompound getUpdateTag() {
-        return writeToNBT(super.getUpdateTag());
-    }
-
-    @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        return new SPacketUpdateTileEntity(pos, getBlockMetadata(), getUpdateTag());
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-        deserializeNBT(pkt.getNbtCompound());
-    }
-*/
     /* NETWORK METHODS */
     @Nullable
     @Override
@@ -120,6 +78,7 @@ public class TileBase extends TileEntity implements ITilePacketHandler{
 
     /**
      * Construct a packet to send
+     *
      * @return
      */
     public PacketCraftingPillar getTilePacket() {
