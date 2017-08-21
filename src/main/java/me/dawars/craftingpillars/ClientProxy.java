@@ -1,10 +1,12 @@
 package me.dawars.craftingpillars;
 
 import me.dawars.craftingpillars.blocks.CpBlocks;
+import me.dawars.craftingpillars.client.render.RendererCrafting;
+import me.dawars.craftingpillars.client.render.RendererShowcase;
 import me.dawars.craftingpillars.client.render.RendererSmelter;
 import me.dawars.craftingpillars.client.render.RendererTank;
-import me.dawars.craftingpillars.client.render.TESRCraftingPillar;
 import me.dawars.craftingpillars.tileentity.TileEntityCraftingPillar;
+import me.dawars.craftingpillars.tileentity.TileShowcase;
 import me.dawars.craftingpillars.tileentity.TileSmelter;
 import me.dawars.craftingpillars.tileentity.TileTank;
 import net.minecraft.client.Minecraft;
@@ -32,9 +34,10 @@ public class ClientProxy extends Proxy {
 
         CpBlocks.registerRenderers();
 
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCraftingPillar.class, new TESRCraftingPillar());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCraftingPillar.class, new RendererCrafting());
         ClientRegistry.bindTileEntitySpecialRenderer(TileTank.class, new RendererTank());
         ClientRegistry.bindTileEntitySpecialRenderer(TileSmelter.class, new RendererSmelter());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileShowcase.class, new RendererShowcase());
     }
 
     @Override

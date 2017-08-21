@@ -10,13 +10,15 @@
  ******************************************************************************/
 package me.dawars.craftingpillars.inventory;
 
+import me.dawars.craftingpillars.CraftingPillars;
+import me.dawars.craftingpillars.tileentity.TileBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 
-public class InventoryAdapterTile<T extends TileEntity> extends InventoryAdapter {
+public class InventoryAdapterTile<T extends TileBase> extends InventoryAdapter {
 
     protected final T tile;
+    private boolean renderUpdate = false;
 
     public InventoryAdapterTile(T tile, int size, String name) {
         this(tile, size, name, 64);
@@ -31,6 +33,22 @@ public class InventoryAdapterTile<T extends TileEntity> extends InventoryAdapter
     public void markDirty() {
         super.markDirty();
         tile.markDirty();
+
+        CraftingPillars.LOGGER.info("Inventory " + getName());
+        for (int i = 0; i < getSizeInventory(); i++) {
+            CraftingPillars.LOGGER.info(getStackInSlot(i));
+        }
+    }
+
+    /**
+     * Check if rendering update is required and resets flag
+     *
+     * @return
+     */
+    public boolean isDirty() {
+        boolean flag = renderUpdate;
+        renderUpdate = false;
+        return flag;
     }
 
     @Override

@@ -26,7 +26,6 @@ import net.minecraft.util.text.ITextComponent;
 public class InventoryAdapter implements IInventoryAdapter<TilePillar> {
 
     private final IInventory inventory;
-    private boolean allowAutomation = true;
 
     //private boolean debug = false;
 
@@ -40,12 +39,6 @@ public class InventoryAdapter implements IInventoryAdapter<TilePillar> {
 
     public InventoryAdapter(IInventory inventory) {
         this.inventory = inventory;
-        configureSided();
-    }
-
-    public InventoryAdapter disableAutomation() {
-        this.allowAutomation = false;
-        return this;
     }
 
     //	public InventoryAdapter enableDebug() {
@@ -82,11 +75,13 @@ public class InventoryAdapter implements IInventoryAdapter<TilePillar> {
 
     @Override
     public ItemStack decrStackSize(int slotId, int count) {
+        markDirty();
         return inventory.decrStackSize(slotId, count);
     }
 
     @Override
     public void setInventorySlotContents(int slotId, ItemStack itemstack) {
+        markDirty();
         inventory.setInventorySlotContents(slotId, itemstack);
     }
 
@@ -107,6 +102,7 @@ public class InventoryAdapter implements IInventoryAdapter<TilePillar> {
 
     @Override
     public ItemStack removeStackFromSlot(int slotIndex) {
+        markDirty();
         return inventory.removeStackFromSlot(slotIndex);
     }
 
@@ -138,23 +134,9 @@ public class InventoryAdapter implements IInventoryAdapter<TilePillar> {
     public void closeInventory(EntityPlayer player) {
     }
 
-    /* ISIDEDINVENTORY */
-    private int[] slotMap;
-
     @Override
     public int[] getSlotsForFace(EnumFacing side) {
-        if (allowAutomation) {
-            return slotMap;
-        }
         return Constants.SLOTS_NONE;
-    }
-
-    private void configureSided() {
-        int count = getSizeInventory();
-        slotMap = new int[count];
-        for (int i = 0; i < count; i++) {
-            slotMap[i] = i;
-        }
     }
 
     @Override

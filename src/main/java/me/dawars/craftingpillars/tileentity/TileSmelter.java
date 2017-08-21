@@ -1,21 +1,19 @@
 package me.dawars.craftingpillars.tileentity;
 
 import me.dawars.craftingpillars.inventory.InventorySmelter;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
+import me.dawars.craftingpillars.network.PacketCraftingPillar;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
 import static me.dawars.craftingpillars.inventory.InventorySmelter.*;
-import static net.minecraft.tileentity.TileEntityFurnace.getItemBurnTime;
 
 public class TileSmelter extends TilePillar implements ITickable {
     /**
@@ -26,11 +24,51 @@ public class TileSmelter extends TilePillar implements ITickable {
      * The number of ticks that a fresh copy of the currently-burning item would keep the furnace burning for
      */
     private int currentItemBurnTime;
-    private int cookTime;
+    public int cookTime;
     private int totalCookTime;
+    // TODO check if it drops xp (on breaking?)
 
     public TileSmelter() {
-        setInternalInventory(new InventorySmelter(this, 3, "inventory_smelter"));
+        setInternalInventory(new InventorySmelter(this, 3, "inv_smelter"));
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
+
+        this.furnaceBurnTime = nbt.getInteger("BurnTime");
+        this.cookTime = nbt.getInteger("CookTime");
+        this.totalCookTime = nbt.getInteger("CookTimeTotal");
+        this.currentItemBurnTime = TileEntityFurnace.getItemBurnTime(getStackInSlot(SLOT_FUEL));
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
+        nbt.setInteger("BurnTime", this.furnaceBurnTime);
+        nbt.setInteger("CookTime", this.cookTime);
+        nbt.setInteger("CookTimeTotal", this.totalCookTime);
+
+        return nbt;
+    }
+/* NETWORK METHODS */
+
+    /* SERVER -> CLIENT */
+    @Override
+    public PacketCraftingPillar getTilePacket() {
+
+        PacketCraftingPillar payload = super.getTilePacket();
+
+        return payload;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void handleTilePacket(PacketCraftingPillar payload) {
+
+        super.handleTilePacket(payload);
+
+        callBlockUpdate();
     }
 
     /**
@@ -42,125 +80,137 @@ public class TileSmelter extends TilePillar implements ITickable {
 
     @SideOnly(Side.CLIENT)
     public static boolean isBurning(IInventory inventory) {
+        // FIXME STATIC rendering helper function, FIELD STUFF
         return inventory.getField(0) > 0;
     }
 
-    @Override
-    public void update() {
-        // update cooking
-        ItemStack stackRaw = getInternalInventory().getStackInSlot(SLOT_RAW);
-        ItemStack stackFuel = getInternalInventory().getStackInSlot(SLOT_FUEL);
-        ItemStack stackResult = getInternalInventory().getStackInSlot(SLOT_COOKED);
+    public void update() {/*
         boolean flag = this.isBurning();
         boolean flag1 = false;
 
-        if (this.isBurning()) {
-            --this.furnaceBurnTime;
+        if (isBurning()) {
+            furnaceBurnTime--;
         }
 
-        if (!this.worldObj.isRemote) {
-            if (this.isBurning() || stackFuel != null && stackRaw != null) {
-                if (!this.isBurning() && this.canSmelt()) {
-                    this.furnaceBurnTime = getItemBurnTime(stackFuel);
-                    this.currentItemBurnTime = this.furnaceBurnTime;
+        if (!worldObj.isRemote) {
+            ItemStack stackRaw = getStackInSlot(SLOT_RAW);
+            ItemStack stackFuel = getStackInSlot(SLOT_FUEL);
 
-                    if (this.isBurning()) {
+
+            if (isBurning() || stackFuel != null && stackRaw != null) {
+                if (!isBurning() && canSmelt()) {
+                    furnaceBurnTime = TileEntityFurnace.getItemBurnTime(stackFuel);
+                    currentItemBurnTime = furnaceBurnTime;
+
+                    if (isBurning()) {
                         flag1 = true;
 
-                        if (stackRaw != null) {
-                            getInternalInventory().decrStackSize(SLOT_RAW, 1);
-
-                            if (stackRaw.stackSize == 0) {
-                                getInternalInventory().setInventorySlotContents(SLOT_RAW, stackRaw.getItem().getContainerItem(stackRaw));
+                        if (stackFuel != null) {
+                            decrStackSize(SLOT_FUEL, 1);
+                            if (stackFuel.stackSize == 0) {
+                                setInventorySlotContents(SLOT_FUEL, stackFuel.getItem().getContainerItem(stackFuel));
                             }
                         }
                     }
                 }
 
-                if (this.isBurning() && this.canSmelt()) {
-                    ++this.cookTime;
+                if (isBurning() && canSmelt()) {
+                    cookTime++;
 
-                    if (this.cookTime == this.totalCookTime) {
-                        this.cookTime = 0;
-                        this.totalCookTime = getCookTime(stackRaw);
-                        this.smeltItem();
+                    if (cookTime == totalCookTime) {
+                        cookTime = 0;
+                        totalCookTime = getCookTime(stackRaw);
+                        CraftingPillars.LOGGER.info("Smelting item");
+                        smeltItem();
                         flag1 = true;
                     }
                 } else {
-                    this.cookTime = 0;
+                    cookTime = 0;
                 }
-            } else if (!this.isBurning() && this.cookTime > 0) {
-                this.cookTime = MathHelper.clamp_int(this.cookTime - 2, 0, this.totalCookTime);
+            } else if (!isBurning() && cookTime > 0) {
+                cookTime = MathHelper.clamp_int(cookTime - 2, 0, totalCookTime);
             }
 
-            if (flag != this.isBurning()) {
+            if (flag != isBurning()) {
                 flag1 = true;
-                // set state
-//                BlockSmelter.setState(this.isBurning(), this.worldObj, this.pos);
+                // FIXME burning block state
+//                BlockFurnace.setState(isBurning(), worldObj, pos);
             }
         }
 
         if (flag1) {
-            this.markDirty();
+            markDirty();
             callBlockUpdate();
         }
+*/
 
-        // update lighting
+        // TODO if inventory is dirty, cause of automation update
+//        if(getInternalInventory().renderUpdate)
 
+
+        super.update(); // light and comparator
     }
 
     public int getCookTime(@Nullable ItemStack stack) {
-        return 180; // little faster
+        return 200;
     }
-
 
     /**
      * Returns true if the furnace can smelt an item, i.e. has a source item, destination stack isn't full, etc.
      */
-    private boolean canSmelt() {
-        ItemStack stackToCook = getInternalInventory().getStackInSlot(InventorySmelter.SLOT_RAW);
-        ItemStack resultStack = getInternalInventory().getStackInSlot(InventorySmelter.SLOT_COOKED);
-        if (stackToCook == null) {
+    public boolean canSmelt() {
+
+        ItemStack stackRaw = getStackInSlot(SLOT_RAW);
+        ItemStack stackFuel = getStackInSlot(SLOT_FUEL);
+        ItemStack stackCooked = getStackInSlot(SLOT_COOKED);
+        if (stackRaw == null) {
             return false;
         } else {
-            ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(stackToCook);
+            ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(stackRaw);
             if (itemstack == null) return false;
-            if (resultStack == null) return true;
-            if (!resultStack.isItemEqual(itemstack)) return false;
-            int result = resultStack.stackSize + itemstack.stackSize;
-            return result <= getInventoryStackLimit() && result <= resultStack.getMaxStackSize(); //Forge BugFix: Make it respect stack sizes properly.
+            if (stackCooked == null) return true;
+            if (!stackCooked.isItemEqual(itemstack)) return false;
+            int result = stackCooked.stackSize + itemstack.stackSize;
+            return result <= getInventoryStackLimit() && result <= stackCooked.getMaxStackSize(); //Forge BugFix: Make it respect stack sizes properly.
         }
     }
-
 
     /**
      * Turn one item from the furnace source stack into the appropriate smelted item in the furnace result stack
      */
     public void smeltItem() {
-        if (this.canSmelt()) {
-            ItemStack stackRaw = getInternalInventory().getStackInSlot(SLOT_RAW);
-            ItemStack stackFuel = getInternalInventory().getStackInSlot(SLOT_FUEL);
-            ItemStack stackResult = getInternalInventory().getStackInSlot(SLOT_COOKED);
+        if (canSmelt()) {
+
+            ItemStack stackRaw = getStackInSlot(SLOT_RAW);
+            ItemStack stackFuel = getStackInSlot(SLOT_FUEL);
+            ItemStack stackCooked = getStackInSlot(SLOT_COOKED);
 
             ItemStack itemstack = FurnaceRecipes.instance().getSmeltingResult(stackRaw);
 
-            if (stackResult == null) {
-                getInternalInventory().setInventorySlotContents(SLOT_COOKED, itemstack.copy());
-            } else if (stackResult.getItem() == itemstack.getItem()) {
-                int sum = stackResult.stackSize + itemstack.stackSize;
-                getInternalInventory().setInventorySlotContents(SLOT_COOKED, new ItemStack(stackResult.getItem(), sum));
-                // Forge BugFix: Results may have multiple items
+            if (stackCooked == null) {
+                setInventorySlotContents(SLOT_COOKED, itemstack.copy());
+//            } else if (stackCooked.isItemEqual(itemstack)) { // itemDamage sensitive
+            } else if (stackCooked.getItem() == itemstack.getItem()) {
+                int amount = stackCooked.stackSize + itemstack.stackSize;
+                setInventorySlotContents(SLOT_COOKED, new ItemStack(stackCooked.getItem(), amount)); // Forge BugFix: Results may have multiple items
             }
-
+/*
+            // remove sponge filling bucket with water
             if (stackRaw.getItem() == Item.getItemFromBlock(Blocks.SPONGE) && stackRaw.getMetadata() == 1 &&
                     stackFuel != null && stackFuel.getItem() == Items.BUCKET) {
-                getInternalInventory().setInventorySlotContents(SLOT_FUEL, new ItemStack(Items.WATER_BUCKET));
-            }
-            getInternalInventory().decrStackSize(SLOT_RAW, 1);
+                setInventorySlotContents(SLOT_FUEL, new ItemStack(Items.WATER_BUCKET));
+            }*/
+            decrStackSize(SLOT_RAW, 1);
 
-            if (stackRaw.stackSize <= 0) {
-                getInternalInventory().setInventorySlotContents(SLOT_RAW, null);
+            if (getStackInSlot(SLOT_RAW).stackSize <= 0) {
+
+                setInventorySlotContents(SLOT_RAW, null);
             }
         }
+    }
+
+    @Override
+    public int getLightValue() {
+        return isBurning() ? 14 : 0;
     }
 }

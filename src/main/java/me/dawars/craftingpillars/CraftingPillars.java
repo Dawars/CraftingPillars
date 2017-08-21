@@ -5,6 +5,7 @@ import me.dawars.craftingpillars.blocks.CpBlocks;
 import me.dawars.craftingpillars.network.PacketHandler;
 import me.dawars.craftingpillars.network.PacketTile;
 import me.dawars.craftingpillars.tileentity.TileEntityCraftingPillar;
+import me.dawars.craftingpillars.tileentity.TileShowcase;
 import me.dawars.craftingpillars.tileentity.TileSmelter;
 import me.dawars.craftingpillars.tileentity.TileTank;
 import net.minecraft.block.Block;
@@ -82,6 +83,7 @@ public class CraftingPillars {
         GameRegistry.registerTileEntity(TileEntityCraftingPillar.class,MODID+":tileentity_craftingpillar");
         GameRegistry.registerTileEntity(TileTank.class,MODID+":TE_tank");
         GameRegistry.registerTileEntity(TileSmelter.class, MODID + ":TE_smelter");
+        GameRegistry.registerTileEntity(TileShowcase.class, MODID + ":TE_showcase");
     }
 
     @SubscribeEvent

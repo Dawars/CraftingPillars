@@ -88,7 +88,6 @@ public class TileBase extends TileEntity implements ITilePacketHandler {
 
     @Override
     public void handleTilePacket(PacketCraftingPillar payload) {
-
     }
 
 

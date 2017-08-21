@@ -17,12 +17,13 @@ public class CpBlocks {
     public static final BaseBlock craftingPillar = new BlockCraftingPillar("craftingpillar");
     public static final BaseBlock tankPillar = new BlockTank("tank_pillar");
     public static final BaseBlock smeltingPillar = new BlockSmelter("smelting_pillar");
+    public static final BaseBlock showcasePillar = new BlockShowcase("showcase_pillar");
 
     public static void init() {
         inits.add(craftingPillar);
         inits.add(tankPillar);
         inits.add(smeltingPillar);
-
+        inits.add(showcasePillar);
 
     }
 

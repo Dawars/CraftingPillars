@@ -103,16 +103,29 @@ public class BlockSmelter extends BaseTileBlock {
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-       /* if (ServerHelper.isServerWorld(worldIn)) {
-            TileSmelter te = (TileSmelter) worldIn.getTileEntity(pos);
-            if (te != null) {
-                CraftingPillars.LOGGER.info(te.getInternalInventory());
+        if (worldIn.isRemote)
+            return true;
 
-//                if (InventoryUtil.tryAddStack(te.getInternalInventory(), heldItem, false)) {
-//                    return true;
+        TileSmelter te = (TileSmelter) worldIn.getTileEntity(pos);
+
+        if (te != null) {
+
+            for (int slot : te.getSlotsForFace(side)) {
+                if (te.canInsertItem(slot, heldItem, side)) {
+                    ItemStack stackInSlot = te.getStackInSlot(slot);
+                    if (stackInSlot == null) {
+                        te.setInventorySlotContents(slot, heldItem.copy());
+                        return true;
+                    } else {
+                        if (heldItem.isItemEqual(stackInSlot)) {
+                            te.decrStackSize(slot, -1);
+                            return true;
+                        }
+                    }
                 }
             }
-        }*/
+        }
+
         return super.onBlockActivated(worldIn, pos, state, playerIn, hand, heldItem, side, hitX, hitY, hitZ);
     }
 }

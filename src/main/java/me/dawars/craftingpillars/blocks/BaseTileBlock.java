@@ -30,7 +30,7 @@ public abstract class BaseTileBlock extends BaseBlock implements ITileEntityProv
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
-        if (playerIn.getHeldItemMainhand() == null && worldIn.getTileEntity(pos) instanceof TilePillar) {
+        if (!playerIn.isSneaking() && heldItem == null && worldIn.getTileEntity(pos) instanceof TilePillar) {
             ((TilePillar) worldIn.getTileEntity(pos)).toggleShow();
             return true;
         }
@@ -49,7 +49,7 @@ public abstract class BaseTileBlock extends BaseBlock implements ITileEntityProv
         TileEntity tile = world.getTileEntity(pos);
 
         if (tile instanceof TileBase) {
-            TileBase tank = (TileBase) tile;
+            TilePillar tank = (TilePillar) tile;
             return tank.getLightValue();
         }
 

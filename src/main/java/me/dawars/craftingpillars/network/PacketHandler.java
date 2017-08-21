@@ -171,10 +171,10 @@ public class PacketHandler extends MessageToMessageCodec<FMLProxyPacket, PacketB
 	public static void handleNBTPacket(NBTTagCompound tagCompound) {
 
 		try {
-			instance.injectPacket(tagCompound.getByteArray("CoFH:data"));
-		} catch (Exception e) {
-			FMLLog.severe("Unable to handle CoFH packet!");
-			e.printStackTrace();
+            instance.injectPacket(tagCompound.getByteArray("CraftingPillars:data"));
+        } catch (Exception e) {
+            FMLLog.severe("Unable to handle CraftingPillars packet!");
+            e.printStackTrace();
 		}
 	}
 
@@ -245,8 +245,8 @@ public class PacketHandler extends MessageToMessageCodec<FMLProxyPacket, PacketB
 		byte discriminator = (byte) instance.packets.indexOf(packetBase.getClass());
 		buf.writeByte(discriminator);
 		packetBase.encodeInto(null, buf);
-		inputTag.setByteArray("CoFH:data", buf.array());
-		return inputTag;
+        inputTag.setByteArray("CraftingPillars:data", buf.array());
+        return inputTag;
 	}
 
 	public static SPacketUpdateTileEntity toTilePacket(PacketBase packet, BlockPos pos) {

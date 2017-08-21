@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 
-public class TESRCraftingPillar extends TileEntitySpecialRenderer<TileEntityCraftingPillar> {
+public class RendererCrafting extends TileEntitySpecialRenderer<TileEntityCraftingPillar> {
     private final EntityItem entityItem = new EntityItem(Minecraft.getMinecraft().theWorld, 0, 0, 0);
 
     private void doRenderItem(ItemStack itemStack) {

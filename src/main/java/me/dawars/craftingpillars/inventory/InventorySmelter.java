@@ -2,6 +2,7 @@ package me.dawars.craftingpillars.inventory;
 
 import me.dawars.craftingpillars.tileentity.TileSmelter;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 
@@ -17,15 +18,19 @@ public class InventorySmelter extends InventoryAdapterTile<TileSmelter> {
 
     @Override
     public int[] getSlotsForFace(EnumFacing side) {
-        return new int[]{SLOT_FUEL, SLOT_COOKED, SLOT_RAW};
+        return new int[]{SLOT_RAW, SLOT_FUEL, SLOT_COOKED};
     }
 
     @Override
     public boolean canInsertItem(int slot, ItemStack stack, EnumFacing side) {
+        // FIXME add inv helper functions
         if (slot == SLOT_FUEL) {
-            return TileEntityFurnace.isItemFuel(stack);
+            return TileEntityFurnace.isItemFuel(stack) /* && InventoryHelper.canInsertItem(stack, inventory, slot) */;
         }
-        return slot != SLOT_COOKED && super.canInsertItem(slot, stack, side);
+        if (slot == SLOT_RAW) {
+            return FurnaceRecipes.instance().getSmeltingResult(stack) != null /* && InventoryHelper.canInsertItem(stack, inventory, slot) */;
+        }
+        return super.canInsertItem(slot, stack, side);
     }
 
     @Override

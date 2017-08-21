@@ -2,7 +2,6 @@ package me.dawars.craftingpillars.tileentity;
 
 import me.dawars.craftingpillars.inventory.FakeInventoryAdapter;
 import me.dawars.craftingpillars.inventory.IInventoryAdapter;
-import me.dawars.craftingpillars.inventory.InventorySmelter;
 import me.dawars.craftingpillars.util.Constants;
 import me.dawars.craftingpillars.util.helpers.BlockHelper;
 import me.dawars.craftingpillars.util.helpers.ServerHelper;
@@ -47,7 +46,7 @@ public class TilePillar extends TileBase implements ISidedInventory, ITickable {
                 }
 
                 updateLighting();
-                sendTilePacket(Side.CLIENT);
+                sendTilePacket(Side.CLIENT); // update invs?
             }
         }
     }
@@ -66,7 +65,7 @@ public class TilePillar extends TileBase implements ISidedInventory, ITickable {
         return inventory;
     }
 
-    protected final void setInternalInventory(InventorySmelter inv) {
+    protected final void setInternalInventory(IInventoryAdapter<TilePillar> inv) {
         if (inv == null) {
             throw new NullPointerException("Inventory cannot be null");
         }
