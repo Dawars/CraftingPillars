@@ -1,7 +1,7 @@
 package me.dawars.craftingpillars;
 
 import me.dawars.craftingpillars.blocks.CpBlocks;
-import me.dawars.craftingpillars.client.render.RendererTank;
+import me.dawars.craftingpillars.client.render.TESRTankPillar;
 import me.dawars.craftingpillars.client.render.TESRCraftingPillar;
 import me.dawars.craftingpillars.tileentity.TileEntityCraftingPillar;
 import me.dawars.craftingpillars.tileentity.TileTank;
@@ -31,7 +31,7 @@ public class ClientProxy extends Proxy {
         CpBlocks.registerRenderers();
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCraftingPillar.class, new TESRCraftingPillar());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileTank.class, new RendererTank());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileTank.class, new TESRTankPillar());
     }
 
     @Override

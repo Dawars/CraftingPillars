@@ -13,7 +13,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
-public class RendererTank extends TileEntitySpecialRenderer<TileTank> {
+public class TESRTankPillar extends TileEntitySpecialRenderer<TileTank> {
 
     @Override
     public void renderTileEntityAt(TileTank te, double x, double y, double z, float partialTicks, int destroyStage) {
