@@ -1,0 +1,28 @@
+tile.craftingpillar.name=Crafting Pillar
+tile.tank_pillar.name=Tank Pillar
+
+itemGroup.craftingpillars=Crafting Pillars
+
+achievement.gettingstarted=Getting Started
+achievement.gettingstarted.desc=Craft a BasicPillar
+
+achievement.recursion=Recursion I
+achievement.recursion.desc=Craft a CraftingPillar in a CraftingPillar!
+
+achievement.showoff=Recursion II
+achievement.showoff.desc=Show off your Showcase Pillar!
+
+achievement.recursion3=Recursion III
+achievement.recursion3.desc=Get a present from a present!
+
+achievement.christmaspillar=Christmas Event
+achievement.christmaspillar.desc=Celebrate Christmas with us!
+
+achievement.christmasdiamond=Diamond Mania
+achievement.christmasdiamond.desc=Unwrap a Diamond!
+
+achievement.liquids=Liquid Tanks!
+achievement.liquids.desc=Store liquids in an ancient way!
+
+achievement.elysiandisc=Preparing with music!
+achievement.elysiandisc.desc=Listen to the Elysium Theme disc!

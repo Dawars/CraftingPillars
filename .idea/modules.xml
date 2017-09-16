@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/CraftingPillars.iml" filepath="$PROJECT_DIR$/CraftingPillars.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/CraftingPillars_api.iml" filepath="$PROJECT_DIR$/.idea/modules/CraftingPillars_api.iml" group="CraftingPillars" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/CraftingPillars_main.iml" filepath="$PROJECT_DIR$/.idea/modules/CraftingPillars_main.iml" group="CraftingPillars" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/CraftingPillars_test.iml" filepath="$PROJECT_DIR$/.idea/modules/CraftingPillars_test.iml" group="CraftingPillars" />
+    </modules>
+  </component>
+</project>

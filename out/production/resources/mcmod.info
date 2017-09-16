@@ -1,0 +1,16 @@
+[
+{
+  "modid": "craftingpillars",
+  "name": "Crafting Pillars",
+  "description": "Crafting Pillars mod.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["FBalazs", "Dawars"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

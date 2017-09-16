@@ -1,25 +1,17 @@
 package me.dawars.craftingpillars;
 
-import me.dawars.craftingpillars.blocks.BlockCraftingPillar;
-import me.dawars.craftingpillars.blocks.CpBlocks;
-import me.dawars.craftingpillars.network.PacketCraftingPillar;
-import me.dawars.craftingpillars.network.PacketHandler;
-import me.dawars.craftingpillars.network.PacketTile;
-import me.dawars.craftingpillars.tileentity.TileEntityCraftingPillar;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
-import me.dawars.craftingpillars.tileentity.TileTank;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -31,8 +23,8 @@ public class CraftingPillars {
 
     public static final Logger LOGGER = LogManager.getLogger(MODID);
 
-    @SidedProxy(clientSide = "me.dawars.craftingpillars.ClientProxy", serverSide = "me.dawars.craftingpillars.Proxy")
-    public static Proxy proxy;
+    @SidedProxy(clientSide = "me.dawars.craftingpillars.ClientProxy", serverSide = "me.dawars.craftingpillars.ServerProxy")
+    public static IProxy proxy;
 
     public static final CreativeTabs CREATIVETAB = new CreativeTabs("craftingpillars") {
         @Override
@@ -46,34 +38,25 @@ public class CraftingPillars {
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    @EventHandler
+    @Mod.EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         LOGGER.info("Pre-Initialization...");
 
-        PacketHandler.preInit();
-
-        PacketTile.initialize();
+        registerTileEntities();
 
         proxy.preInit(event);
-
-        CpBlocks.init();
-        CpBlocks.register();
-
-        MinecraftForge.EVENT_BUS.register(this);
-        registerTileEntities();
     }
 
-    @EventHandler
+    @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
         LOGGER.info("Initialization...");
 
         proxy.init(event);
     }
 
-    @EventHandler
+    @Mod.EventHandler
     public void postInit(FMLPostInitializationEvent event) {
         LOGGER.info("Post-Initialization...");
-        PacketHandler.postInit();
 
         proxy.postInit(event);
     }
@@ -85,7 +68,7 @@ public class CraftingPillars {
 
     @SubscribeEvent
     public void onBreakEvent(BlockEvent.BreakEvent event) {
-        if (!event.getWorld().isRemote && event.getPlayer().isCreative() && event.getPlayer().isSneaking()) {
+        if (!event.world.isRemote && event.getPlayer().capabilities.isCreativeMode && event.getPlayer().isSneaking()) {
             Block block = event.getState().getBlock();
             if (block.getClass() == BlockCraftingPillar.class) {
                 event.setCanceled(true);
