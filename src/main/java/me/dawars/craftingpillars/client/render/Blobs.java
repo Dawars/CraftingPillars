@@ -8,7 +8,7 @@ public class Blobs
     public float x, y, z, velX, velY, velZ;
     public int strength;
 
-    public static int scale = 2;
+    public static int scale = 1;
 
     private Random random = new Random();
 
