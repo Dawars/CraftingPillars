@@ -15,6 +15,8 @@ import org.lwjgl.opengl.GL11;
 
 public class TESRTankPillar extends TileEntitySpecialRenderer<TileTank> {
 
+    private final static float THRESHOLD = 1;
+
     @Override
     public void renderTileEntityAt(TileTank te, double x, double y, double z, float partialTicks, int destroyStage) {
         super.renderTileEntityAt(te, x, y, z, partialTicks, destroyStage);
@@ -64,14 +66,6 @@ public class TESRTankPillar extends TileEntitySpecialRenderer<TileTank> {
 
 
             float[][][] field = Blobs.fieldStrength(te.getBlobs());
-            for (int i = 0; i < 16; i++)
-                for (int j = 0; j < 16; j++)
-                    for (int k = 0; k < 16; k++)
-                        if ((int) field[i][j][k] > 0
-                                && (i != 0 && (int) field[i - 1][j][k] != 0 && i != 15 && (int) field[i + 1][j][k] != 0 && j != 0 && (int) field[i][j - 1][k] != 0 && j != 15
-                                && (int) field[i][j + 1][k] != 0 && k != 0 && (int) field[i][j][k - 1] != 0 && k != 15 && (int) field[i][j][k + 1] != 0)) {
-                            field[i][j][k] = 0F;
-                        }
 
             float xMax = still.getMaxU();
             float xMin = still.getMinU();
@@ -83,8 +77,8 @@ public class TESRTankPillar extends TileEntitySpecialRenderer<TileTank> {
             for (int i = 0; i < 16; i++)
                 for (int j = 0; j < 16; j++)
                     for (int k = 0; k < 16; k++)
-                        if ((int) field[i][j][k] > 0) {
-                            if (j == 15 || (int) field[i][j + 1][k] == 0) {
+                        if (field[i][j][k] >= THRESHOLD) { // Cell is in the blob
+                            if (j == 15 || field[i][j + 1][k] < THRESHOLD) { // neighbour is outside (or at space bound)
 
                                 buffer.pos((i) / 16F, (j + 1) / 16F, (k) / 16F).tex(xMin + i * iconSize, yMin + k * iconSize).endVertex();
                                 buffer.pos((i) / 16F, (j + 1) / 16F, (k + 1) / 16F).tex(xMin + i * iconSize, yMin + (k + 1) * iconSize).endVertex();
@@ -93,28 +87,28 @@ public class TESRTankPillar extends TileEntitySpecialRenderer<TileTank> {
 
                             }
 
-                            if (j == 0 || (int) field[i][j - 1][k] == 0) {
+                            if (j == 0 || (int) field[i][j - 1][k] < THRESHOLD) {
                                 buffer.pos((i) / 16F, (j) / 16F, (k + 1) / 16F).tex(xMin + i * iconSize, yMin + k * iconSize).endVertex();
                                 buffer.pos((i) / 16F, (j) / 16F, (k) / 16F).tex(xMin + i * iconSize, yMin + (k + 1) * iconSize).endVertex();
                                 buffer.pos((i + 1) / 16F, (j) / 16F, (k) / 16F).tex(xMin + (i + 1) * iconSize, yMin + (k + 1) * iconSize).endVertex();
                                 buffer.pos((i + 1) / 16F, (j) / 16F, (k + 1) / 16F).tex(xMin + (i + 1) * iconSize, yMin + k * iconSize).endVertex();
                             }
 
-                            if (k == 15 || (int) field[i][j][k + 1] == 0) {// FIXME tex coords
+                            if (k == 15 || (int) field[i][j][k + 1] < THRESHOLD) {// FIXME tex coords
                                 buffer.pos((i) / 16F, (j + 1) / 16F, (k + 1) / 16F).tex(xMin + i * iconSize, yMin + (j + 1) * iconSize).endVertex();
                                 buffer.pos((i) / 16F, (j) / 16F, (k + 1) / 16F).tex(xMin + i * iconSize, yMin + (k + 1) * iconSize).endVertex();
                                 buffer.pos((i + 1) / 16F, (j) / 16F, (k + 1) / 16F).tex(xMin + (i + 1) * iconSize, yMin + (j + 1) * iconSize).endVertex();
                                 buffer.pos((i + 1) / 16F, (j + 1) / 16F, (k + 1) / 16F).tex(xMin + (i + 1) * iconSize, yMin + j * iconSize).endVertex();
 
                             }
-                            if (k == 0 || (int) field[i][j][k - 1] == 0) {
+                            if (k == 0 || (int) field[i][j][k - 1] < THRESHOLD) {
                                 buffer.pos((i + 1) / 16F, (j + 1) / 16F, (k) / 16F).tex(xMin + i * iconSize, yMin + j * iconSize).endVertex();
                                 buffer.pos((i + 1) / 16F, (j) / 16F, (k) / 16F).tex(xMin + i * iconSize, yMin + (j + 1) * iconSize).endVertex();
                                 buffer.pos((i) / 16F, (j) / 16F, (k) / 16F).tex(xMin + (i + 1) * iconSize, yMin + (j + 1) * iconSize).endVertex();
                                 buffer.pos((i) / 16F, (j + 1) / 16F, (k) / 16F).tex(xMin + (i + 1) * iconSize, yMin + j * iconSize).endVertex();
                             }
 
-                            if (i == 15 || (int) field[i + 1][j][k] == 0) {
+                            if (i == 15 || (int) field[i + 1][j][k] < THRESHOLD) {
                                 buffer.pos((i + 1) / 16F, (j + 1) / 16F, (k + 1) / 16F).tex(xMin + k * iconSize, yMin + j * iconSize).endVertex();
                                 buffer.pos((i + 1) / 16F, (j) / 16F, (k + 1) / 16F).tex(xMin + k * iconSize, yMin + (j + 1) * iconSize).endVertex();
                                 buffer.pos((i + 1) / 16F, (j) / 16F, (k) / 16F).tex(xMin + (k + 1) * iconSize, yMin + (j + 1) * iconSize).endVertex();
@@ -122,7 +116,7 @@ public class TESRTankPillar extends TileEntitySpecialRenderer<TileTank> {
 
                             }
 
-                            if (i == 0 || (int) field[i - 1][j][k] == 0) {
+                            if (i == 0 || (int) field[i - 1][j][k] < THRESHOLD) {
                                 buffer.pos((i) / 16F, (j) / 16F, (k + 1) / 16F).tex(xMin + j * iconSize, yMin + k * iconSize).endVertex();
                                 buffer.pos((i) / 16F, (j + 1) / 16F, (k + 1) / 16F).tex(xMin + j * iconSize, yMin + (k + 1) * iconSize).endVertex();
                                 buffer.pos((i) / 16F, (j + 1) / 16F, (k) / 16F).tex(xMin + (j + 1) * iconSize, yMin + (k + 1) * iconSize).endVertex();
